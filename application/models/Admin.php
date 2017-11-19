@@ -42,7 +42,6 @@ class Admin extends CI_Model
 
 
 	public function get_afp($idafp = null){
-
 		$afp_data = $this->db->select('id, nombre, porc, exregimen, codprevired')
 						  ->from('rem_afp a')
 						  ->where('a.active = 1')
@@ -50,6 +49,7 @@ class Admin extends CI_Model
 		                  ->order_by('a.nombre');
 		$afp_data = is_null($idafp) ? $afp_data : $afp_data->where('a.id',$idafp);  		                  
 		$query = $this->db->get();
+
 		$datos = is_null($idafp) ? $query->result() : $query->row();
 		return $datos;
 	}	
@@ -133,6 +133,8 @@ class Admin extends CI_Model
 
 
 	}	
+
+
 
 }
 

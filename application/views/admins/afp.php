@@ -22,7 +22,7 @@
 									          </div>
 									          <?php endif; ?>
 
-													<h3 class="inner-tittle two">Tabla de Ingreso de AFP <button type="button" class="btn btn-primary btn-flat btn-pri" data-toggle="modal" data-target="#myModal_AFP"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Ingreso</button></h3>
+													<h3 class="inner-tittle two">Tabla de Ingreso de AFP <button type="button" class="btn btn-primary btn-flat btn-pri" data-toggle="modal" data-target="#myModal_AFP" class="nuevo"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Ingreso</button></h3>
 
 													
 														  <div class="graph">
@@ -51,7 +51,7 @@
 																			<td><?php echo $afp->porc." %";?></td>
 																			<td><?php echo $afp->exregimen == 1 ? 'SI': 'NO';?></td>
 																			<td>
-																				<a href="<?php echo base_url();?>admins/add_afp/<?php echo $afp->id;?>" class="btn btn-info" id="opciones" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+																				<a href="#" data-idafp="<?php echo $afp->id;?>" class="btn btn-info edit-afp" id="opciones" data-toggle="modal" data-target="#myModal_AFP" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
         																		
         																		<a href="<?php echo base_url();?>admins/delete_afp/<?php echo $afp->id;?>" data-toggle="tooltip"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
 																			</td> 
@@ -87,8 +87,8 @@
 	      	<br>
 	      	<input type="text" name="porc" class="form-control" id="porc" placeholder="Porcentaje:">
 	      	<br>
-			<div class="checkbox-inline"><label><input type="checkbox" name="exregimen"> Ex-Régimen</label></div>
-			<input type="hidden" name="idafp" value="0" >
+			<div class="checkbox-inline"><label><input type="checkbox" name="exregimen" id="exregimen"> Ex-Régimen</label></div>
+			<input type="hidden" name="idafp" id="idafp" value="0" >
 			<br>
 			<br>
 			<button type = "submit" class = "btn btn-info" id="comando">Ingresar</button>
@@ -98,3 +98,41 @@
 	  </div>
 	</div>	
 </form>								
+
+<script>
+$('.edit-afp').on('click',function(){
+	var idafp = $(this).data('idafp');
+ // Send data to back-end
+
+        $.ajax({
+            type: "GET",
+            url: '<?php echo base_url();?>admins/get_afp/'+idafp,
+            async: false,
+        }).success(function(response) {
+
+        	var_json = $.parseJSON(response);
+        	$('#nombre').val(var_json.nombre);
+        	$('#porc').val(var_json.porc);
+        	
+        	if(var_json.exregimen == 1){
+        		$('#exregimen').attr('checked','checked');
+        	}else{
+        		$('#exregimen').attr('checked','');
+        	}
+        	$('#idafp').val(idafp);
+        	
+        });
+
+})
+
+
+
+$('#nuevo').on('click',function(){
+        	$('#nombre').val('');
+        	$('#porc').val('');
+        	$('#exregimen').attr('checked','');
+        	$('#idafp').val(0);
+})
+
+
+</script>

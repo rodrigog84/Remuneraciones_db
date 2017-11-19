@@ -255,6 +255,15 @@ class Admins extends CI_Controller {
 
 	}
 
+	public function get_afp($idafp = null){
+
+
+		$datos = $this->admin->get_afp($idafp);
+
+		//print_r($datos);
+		echo json_encode($datos);
+	}
+
 
 
 }
