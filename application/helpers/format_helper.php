@@ -60,6 +60,177 @@ if (!function_exists('month2string'))
 }
 
 
+if (!function_exists('randomstring'))
+{
+
+  function randomstring($large)
+  {
+    $pattern1 = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $key = "";
+    for($i=0;$i<$large;$i++){
+      $key .= $pattern1{rand(0,35)};
+    }
+    return $key;
+  }
+
+}
+
+if (!function_exists('randomstring_mm'))
+{
+
+  function randomstring_mm($large)
+  {
+    $pattern1 = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    $key = "";
+    for($i=0;$i<$large;$i++){
+      $key .= $pattern1{rand(0,61)};
+    }
+    return $key;
+  }
+
+}
+
+
+
+if (!function_exists('trackid'))
+{
+
+  function trackid($valor)
+  {
+    return str_pad($valor, 5, "0", STR_PAD_LEFT); ;
+  }
+
+}
+
+
+
+if (!function_exists('format_rut'))
+{
+
+  function format_rut($rut)
+  {
+
+    return $rut == '' ? '' : number_format( substr ($rut, 0 , -1 ) , 0, "", ".") . '-' . substr ( $rut, strlen( $rut) -1 , 1 );
+  }
+
+}
+
+
+
+if (!function_exists('date2string'))
+{
+
+  function date2string($month,$year)
+  {
+
+    $text = '';
+
+    if($month == 1 and $year == 2010){
+      return "Saldo Inicial";
+    }else{
+
+      switch ($month)
+      {
+        case 1:
+          $text = 'Enero';
+          break;
+        case 2:
+          $text = 'Febrero';
+          break;
+        case 3:
+          $text = 'Marzo';
+          break;
+        case 4:
+          $text = 'Abril';
+          break;
+        case 5:
+          $text = 'Mayo';
+          break;
+        case 6:
+          $text = 'Junio';
+          break;
+        case 7:
+          $text = 'Julio';
+          break;
+        case 8:
+          $text = 'Agosto';
+          break;
+        case 9:
+          $text = 'Septiembre';
+          break;
+        case 10:
+          $text = 'Octubre';
+          break;
+        case 11:
+          $text = 'Noviembre';
+          break;
+        case 12:
+          $text = 'Diciembre';
+          break;                                                                      
+        default:
+          $text = '';
+          break;
+      }
+
+      return $text." de ".$year;
+    }
+    
+  }
+
+}
+
+
+  if (!function_exists('ordenLetrasExcel'))
+  {
+
+    function ordenLetrasExcel($valor)
+    {
+
+      $orden_letras[0] = "A";
+      $orden_letras[1] = "B";
+      $orden_letras[2] = "C";
+      $orden_letras[3] = "D";
+      $orden_letras[4] = "E";
+      $orden_letras[5] = "F";
+      $orden_letras[6] = "G";
+      $orden_letras[7] = "H";
+      $orden_letras[8] = "I";
+      $orden_letras[9] = "J";
+      $orden_letras[10] = "K";
+      $orden_letras[11] = "L";
+      $orden_letras[12] = "M";
+      $orden_letras[13] = "N";
+      $orden_letras[14] = "O";
+      $orden_letras[15] = "P";
+      $orden_letras[16] = "Q";
+      $orden_letras[17] = "R";
+      $orden_letras[18] = "S";
+      $orden_letras[19] = "T";
+      $orden_letras[20] = "U";
+      $orden_letras[21] = "V";
+      $orden_letras[22] = "W";
+      $orden_letras[23] = "X";
+      $orden_letras[24] = "Y";
+      $orden_letras[25] = "Z";
+      $orden_letras[26] = "AA";
+      $orden_letras[27] = "AB";
+      $orden_letras[28] = "AC";
+      $orden_letras[29] = "AD";
+      $orden_letras[30] = "AE";
+      $orden_letras[31] = "AF";
+      $orden_letras[32] = "AG";
+      $orden_letras[33] = "AH";
+      $orden_letras[34] = "AI";
+      $orden_letras[35] = "AJ";
+      $orden_letras[36] = "AK";
+      $orden_letras[37] = "AL";
+
+      return $orden_letras[$valor];
+    }
+
+  }
+
+
 if (!function_exists('valorEnLetras'))
 {
 
@@ -116,7 +287,7 @@ if (!function_exists('valorEnLetras'))
   $I11 = "/100 M.N. "; 
 
   //$C3 = $signo.$H6.$I6.$H7.$I7.$H8.$I8.$H9.$I9.$H10.$I10.$H11.$I11; 
-  $C3 = $signo.$H6.$I6.$H7.$I7.$H8.$I8.$H9.$I9.$H10.$I10; 
+  $C3 = $signo.$H6.$I6.$H7.$H8.$I8.$H9.$H10.$I10; 
 
   return $C3; //Retornar el resultado 
 
@@ -254,169 +425,528 @@ if (!function_exists('valorEnLetras'))
 
 }
 
-if (!function_exists('randomstring_mm'))
+
+if (!function_exists('extraecaracteres'))
 {
 
-  function randomstring_mm($large)
-  {
-    $pattern1 = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    $key = "";
-    for($i=0;$i<$large;$i++){
-      $key .= $pattern1{rand(0,61)};
-    }
-    return $key;
-  }
-
-}
-
-
-
-if (!function_exists('trackid'))
-{
-
-  function trackid($valor)
-  {
-    return str_pad($valor, 5, "0", STR_PAD_LEFT); ;
-  }
-
-}
-
-
-
-if (!function_exists('format_rut'))
-{
-
-  function format_rut($rut)
-  {
-    return number_format( substr ($rut, 0 , -1 ) , 0, "", ".") . '-' . substr ( $rut, strlen( $rut) -1 , 1 );
-  }
-
-}
-
-
-
-if (!function_exists('date2string'))
-{
-
-  function date2string($month,$year)
+  function extraecaracteres($str,$number)
   {
 
-    $text = '';
-
-    if($month == 1 and $year == 2010){
-      return "Saldo Inicial";
+    $cant_caracteres = strlen($str);
+    if($cant_caracteres > $number){
+      return substr($str,0,$number)." ...";
     }else{
-
-      switch ($month)
-      {
-        case 1:
-          $text = 'Enero';
-          break;
-        case 2:
-          $text = 'Febrero';
-          break;
-        case 3:
-          $text = 'Marzo';
-          break;
-        case 4:
-          $text = 'Abril';
-          break;
-        case 5:
-          $text = 'Mayo';
-          break;
-        case 6:
-          $text = 'Junio';
-          break;
-        case 7:
-          $text = 'Julio';
-          break;
-        case 8:
-          $text = 'Agosto';
-          break;
-        case 9:
-          $text = 'Septiembre';
-          break;
-        case 10:
-          $text = 'Octubre';
-          break;
-        case 11:
-          $text = 'Noviembre';
-          break;
-        case 12:
-          $text = 'Diciembre';
-          break;                                                                      
-        default:
-          $text = '';
-          break;
-      }
-
-      return $text." de ".$year;
+      return $str;
     }
+
     
   }
 
+}  
+
+
+
+if (!function_exists('sanear_string'))
+{
+
+  function sanear_string($string)
+  {
+
+    $string = trim($string);
+ 
+    $string = str_replace(
+        array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
+        array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'),
+        $string
+    );
+ 
+    $string = str_replace(
+        array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'),
+        array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'),
+        $string
+    );
+ 
+    $string = str_replace(
+        array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'),
+        array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'),
+        $string
+    );
+ 
+    $string = str_replace(
+        array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'),
+        array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'),
+        $string
+    );
+ 
+    $string = str_replace(
+        array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'),
+        array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'),
+        $string
+    );
+ 
+    $string = str_replace(
+        array('ñ', 'Ñ', 'ç', 'Ç'),
+        array('n', 'N', 'c', 'C',),
+        $string
+    );
+ 
+    //Esta parte se encarga de eliminar cualquier caracter extraño
+    $string = str_replace(
+        array("\\", "¨", "º", "-", "~",
+             "#", "@", "|", "!", "'",
+             "·", "$", "%", "&", "/",
+             "(", ")", "?", "'", "¡",
+             "¿", "[", "^", "<code>", "]",
+             "+", "}", "{", "¨", "´",
+             ">", "< ", ";", ",", ":",
+             ".", " "),
+        '',
+        $string
+    );
+ 
+ 
+    return $string;
+
+    
+  }
+
+
+if (!function_exists('dias_transcurridos'))
+{
+
+  function dias_transcurridos($fecha_i,$fecha_f)
+  {
+    $dias = (strtotime($fecha_i)-strtotime($fecha_f))/86400;
+    $dias   = abs($dias); $dias = floor($dias);   
+    return $dias;
+  }
+
+}  
+
+
+if (!function_exists('meses_transcurridos'))
+{
+
+  function meses_transcurridos($fecha_i,$fecha_f)
+  {
+
+    $fechainicial = new DateTime($fecha_i);
+    $fechafinal = new DateTime($fecha_f);
+
+    $diferencia = $fechainicial->diff($fechafinal);
+
+    $meses = ( $diferencia->y * 12 ) + $diferencia->m;
+    return $meses;
+  }
+
+} 
+
+
+if (!function_exists('tipo_ingreso'))
+{
+
+  function tipo_ingreso($tipo_ingreso)
+  {
+
+    $tipo_ingreso_result = "";
+    switch ($tipo_ingreso) {
+        case 'cc':
+            $tipo_ingreso_result = "Cuenta Corriente";
+            break;
+        case 'fr':
+            $tipo_ingreso_result = "Fondo de Reserva";
+            break;
+        case 'na':
+            $tipo_ingreso_result = "No Afecta Banco";
+            break;
+    }
+
+    return $tipo_ingreso_result;
+  }
+
 }
 
 
-  if (!function_exists('ordenLetrasExcel'))
+
+if (!function_exists('ultimo_dia_mes'))
+{
+
+  function ultimo_dia_mes($month,$year)
   {
+    return date("d",(mktime(0,0,0,$month+1,1,$year)-1));;
+  }
 
-    function ordenLetrasExcel($valor)
-    {
+}
 
-      $orden_letras[0] = "A";
-      $orden_letras[1] = "B";
-      $orden_letras[2] = "C";
-      $orden_letras[3] = "D";
-      $orden_letras[4] = "E";
-      $orden_letras[5] = "F";
-      $orden_letras[6] = "G";
-      $orden_letras[7] = "H";
-      $orden_letras[8] = "I";
-      $orden_letras[9] = "J";
-      $orden_letras[10] = "K";
-      $orden_letras[11] = "L";
-      $orden_letras[12] = "M";
-      $orden_letras[13] = "N";
-      $orden_letras[14] = "O";
-      $orden_letras[15] = "P";
-      $orden_letras[16] = "Q";
-      $orden_letras[17] = "R";
-      $orden_letras[18] = "S";
-      $orden_letras[19] = "T";
-      $orden_letras[20] = "U";
-      $orden_letras[21] = "V";
-      $orden_letras[22] = "W";
-      $orden_letras[23] = "X";
-      $orden_letras[24] = "Y";
-      $orden_letras[25] = "Z";
 
-      return $orden_letras[$valor];
+if (!function_exists('formato_fecha'))
+{
+
+  function formato_fecha($fecha,$formato_origen,$formato_destino)
+  {
+    if($formato_origen == 'd/m/Y' && $formato_destino == 'Y-m-d'){
+      return substr($fecha,6,4)."-".substr($fecha,3,2)."-".substr($fecha,0,2);
+
+    }else if($formato_origen == 'Y-m-d' && $formato_destino == 'd/m/Y'){
+      return substr($fecha,8,2)."/".substr($fecha,5,2)."/".substr($fecha,0,4);
+    }else if($formato_origen == 'Y-m-d' && $formato_destino == 'd-m-Y'){
+      return substr($fecha,8,2)."-".substr($fecha,5,2)."-".substr($fecha,0,4);
     }
 
   }
+}
 
 
-if (!function_exists('caftotd'))
+
+if (!function_exists('dias_vacaciones'))
 {
 
-  function caftotd($caf)
+  function dias_vacaciones($fecinicio,$saldoinicvac)
   {
-      if($caf == 33){
-        $tipodocumento = 101;
-      }else if($caf == 61){
-        $tipodocumento = 102;
-      }else if($caf == 34){
-        $tipodocumento = 103;
-      }else if($caf == 56){
-        $tipodocumento = 104;
-      }else if($caf == 52){
-        $tipodocumento = 105;
-      }
-    return $tipodocumento;
+
+
+    $anno_inicio = substr($fecinicio,0,4);
+    $mes_inicio = substr($fecinicio,5,2);
+
+    $fecinicio_mesinicio = $anno_inicio."-".$mes_inicio."-01";
+
+    $meses = meses_transcurridos($fecinicio_mesinicio,date("Y-m-d"));
+
+    #MESES DONDE SE CALCULARÁN VACACIONES COMPLETAS
+    $meses_completos = ($meses - 1) <= 0 ? 0 : ($meses - 1);
+
+
+
+    #MESES PROPORCIONALES (PRIMERO Y ULTIMO)
+
+    $dias_mes_inic = $meses == 0 ? dias_transcurridos($fecinicio,date("Y-m-d")) : dias_transcurridos($fecinicio,$anno_inicio."-".$mes_inicio."-".ultimo_dia_mes($anno_inicio,$mes_inicio));
+    #$mes_prop_mes_inic = round($dias_mes_inic/30,2);
+    $mes_prop_mes_inic = $dias_mes_inic/30;
+
+
+    $dias_mes_fin = $meses == 0 ? 0 : dias_transcurridos(date("Y-m")."-01",date("Y-m-d"));
+    #$mes_prop_mes_fin = round($dias_mes_fin/30,2);
+    $mes_prop_mes_fin = $dias_mes_fin/30;
+
+    $meses_totales = $meses_completos + $mes_prop_mes_inic + $mes_prop_mes_fin;
+
+    $vacaciones_totales = round($meses_totales*1.25,2) + $saldoinicvac;
+   
+    return $vacaciones_totales;
+
+
+
+
+  }
+}
+
+
+
+if (!function_exists('num_dias_progresivos'))
+{
+
+  function num_dias_progresivos($fecinicio,$saldoinicvac,$array_progresivos)
+  {
+
+    $cartola = cartola_dias_progresivos($fecinicio,$saldoinicvac,$array_progresivos);
+    //var_dump($cartola); exit;
+    $sum = array_sum(array_column($cartola, 'dias'));
+    return $sum;
   }
 
 }
+
+if (!function_exists('dia_progresivo'))
+{
+
+  function dia_progresivo($fecinicio)
+  {
+
+    $array_rangos = array();
+    $fecha_hoy = date("Y-m-d");
+    $timestamp_hoy = strtotime($fecha_hoy);
+
+    //$fecinicio = formato_fecha($fecinicio,'d/m/Y','Y-m-d');
+    $feciniccalculo = $fecinicio;
+
+
+    $timestamp_annos_despues = strtotime('+3 year',strtotime($feciniccalculo));
+
+    return $timestamp_annos_despues <= $timestamp_hoy ?  date("Y-m-d",$timestamp_annos_despues) : false;
+
+  }
+}
+
+
+if (!function_exists('cartola_vacaciones'))
+{
+
+  function cartola_vacaciones($fecinicio,$saldoinicvac,$cartola_progresivos)
+  {
+
+
+    $dias_progresivos = 0;
+    foreach ($cartola_progresivos as $progresivos) {
+      $dias_progresivos += $progresivos['fecinicio'] == 'Saldo Inicial' ? $progresivos['dias'] : 0;
+    }
+
+
+    $array_cartola = array();
+
+      $array_cartola[] = array('fecinicio' => "Saldo Inicial",
+                               'fecfin' => "",
+                                'dias' => $saldoinicvac,
+                                'diasprogresivos' => $dias_progresivos);
+
+
+    $fecha_hoy = date("Y-m-d");
+
+    $timestamp_hoy = strtotime($fecha_hoy);
+
+    $feciniccalculo = $fecinicio;
+
+
+    $timestamp_anno_despues = strtotime('+1 year',strtotime($feciniccalculo));
+    $timestamp_ult_anno = strtotime('-1 day',$timestamp_anno_despues);
+    $fecha_ult_anno = date("Y-m-d",$timestamp_ult_anno); 
+
+
+    while($timestamp_ult_anno < $timestamp_hoy){
+
+
+      $dias_progresivos = 0;
+      foreach ($cartola_progresivos as $progresivos) {
+        $dias_progresivos += $progresivos['fecinicio'] == $fecinicio ? $progresivos['dias'] : 0;
+      }
+
+      $array_cartola[] = array('fecinicio' => $fecinicio,
+                               'fecfin' => $fecha_ult_anno,
+                                'dias' => round(12*1.25,2),
+                                'diasprogresivos' => $dias_progresivos);
+
+       $fecinicio = date("Y-m-d",$timestamp_anno_despues); 
+       $timestamp_anno_despues = strtotime('+1 year',$timestamp_anno_despues);
+       $timestamp_ult_anno = strtotime('-1 day',$timestamp_anno_despues);
+       $fecha_ult_anno = date("Y-m-d",$timestamp_ult_anno); 
+       #$fecinicio = date("Y-m-d",$timestamp_ult_anno); 
+       
+
+      
+    }
+
+      $dias_progresivos = 0;
+      foreach ($cartola_progresivos as $progresivos) {
+        $dias_progresivos += $progresivos['fecinicio'] == $fecinicio ? $progresivos['dias'] : 0;
+      }
+
+
+    $dias_final = dias_vacaciones($fecinicio,0);
+      $array_cartola[] = array('fecinicio' => $fecinicio,
+                               'fecfin' => $fecha_hoy,
+                                'dias' => $dias_final,
+                                'diasprogresivos' => $dias_progresivos);
+
+      return $array_cartola;
+
+  }
+}
+
+
+
+if (!function_exists('cartola_dias_progresivos'))
+{
+
+  function cartola_dias_progresivos($fecinicio,$saldoinicvac,$array_progresivos)
+  {
+
+    $array_cartola = array();
+
+      $array_cartola[] = array('fecinicio' => "Saldo Inicial",
+                               'fecfin' => "",
+                                'dias' => $saldoinicvac);    
+
+    $fecha_hoy = date("Y-m-d");
+    $timestamp_hoy = strtotime($fecha_hoy);
+
+
+    $feciniccalculo = $fecinicio;
+
+
+    $timestamp_anno_despues = strtotime('+1 year',strtotime($feciniccalculo));
+    $timestamp_ult_anno = strtotime('-1 day',$timestamp_anno_despues);
+    $fecha_ult_anno = date("Y-m-d",$timestamp_ult_anno); 
+
+    $dias_acum = 0;
+    while($timestamp_ult_anno < $timestamp_hoy){
+
+      $dias_progresivos_periodo = 0;
+      foreach ($array_progresivos as $progresivos) {
+        $timestamp_prog = strtotime($progresivos->fechainicio);
+        $timestamp_fecinicio = strtotime($fecinicio);
+        if($progresivos->fechainicio == substr($fecinicio,0,4)){
+            $dias_progresivos_periodo = $progresivos->dias;  
+        }
+      }
+      $dias_acum += $dias_progresivos_periodo;
+
+      $array_cartola[] = array('fecinicio' => $fecinicio,
+                               'fecfin' => $fecha_ult_anno,
+                                'dias' => $dias_acum);
+
+       $fecinicio = date("Y-m-d",$timestamp_anno_despues); 
+       $timestamp_anno_despues = strtotime('+1 year',$timestamp_anno_despues);
+       $timestamp_ult_anno = strtotime('-1 day',$timestamp_anno_despues);
+       $fecha_ult_anno = date("Y-m-d",$timestamp_ult_anno); 
+       #$fecinicio = date("Y-m-d",$timestamp_ult_anno); 
+       
+
+      
+    }
+
+      $dias_progresivos_periodo = 0;
+      foreach ($array_progresivos as $progresivos) {
+        $timestamp_prog = strtotime($progresivos->fechainicio);
+        $timestamp_fecinicio = strtotime($fecinicio);
+        if($progresivos->fechainicio == substr($fecinicio,0,4)){
+            $dias_progresivos_periodo = $progresivos->dias;  
+        }
+
+      }
+      $dias_acum += $dias_progresivos_periodo;
+
+      $array_cartola[] = array('fecinicio' => $fecinicio,
+                               'fecfin' => $fecha_hoy,
+                                'dias' => $dias_acum);
+
+      //var_dump($array_cartola); exit;
+
+      return $array_cartola;
+  }
+}
+
+
+
+/*if (!function_exists('cartola_dias_progresivos'))
+{
+
+  function cartola_dias_progresivos($fecinicio,$array_progresivos)
+  {
+
+    $array_cartola = array();
+
+    $fecha_hoy = date("Y-m-d");
+    $timestamp_hoy = strtotime($fecha_hoy);
+
+
+    $feciniccalculo = $fecinicio;
+
+
+    $timestamp_anno_despues = strtotime('+1 year',strtotime($feciniccalculo));
+    $timestamp_ult_anno = strtotime('-1 day',$timestamp_anno_despues);
+    $fecha_ult_anno = date("Y-m-d",$timestamp_ult_anno); 
+
+
+    while($timestamp_ult_anno < $timestamp_hoy){
+
+      $dias_progresivos_periodo = 0;
+      foreach ($array_progresivos as $progresivos) {
+        $timestamp_prog = strtotime($progresivos->fechacumple);
+        if($timestamp_ult_anno < $timestamp_prog){
+            break;
+        }else{
+          $dias_progresivos_periodo = $progresivos->acumulado;
+        }
+      }
+
+      $array_cartola[] = array('fecinicio' => $fecinicio,
+                               'fecfin' => $fecha_ult_anno,
+                                'dias' => $dias_progresivos_periodo);
+
+       $fecinicio = date("Y-m-d",$timestamp_anno_despues); 
+       $timestamp_anno_despues = strtotime('+1 year',$timestamp_anno_despues);
+       $timestamp_ult_anno = strtotime('-1 day',$timestamp_anno_despues);
+       $fecha_ult_anno = date("Y-m-d",$timestamp_ult_anno); 
+       #$fecinicio = date("Y-m-d",$timestamp_ult_anno); 
+       
+
+      
+    }
+
+      $dias_progresivos_periodo = 0;
+      foreach ($array_progresivos as $progresivos) {
+        $timestamp_prog = strtotime($progresivos->fechacumple);
+        if($timestamp_hoy < $timestamp_prog){
+            break;
+        }else{
+          $dias_progresivos_periodo = $progresivos->acumulado;
+        }
+      }
+
+      $array_cartola[] = array('fecinicio' => $fecinicio,
+                               'fecfin' => $fecha_hoy,
+                                'dias' => $dias_progresivos_periodo);
+
+      return $array_cartola;
+  }
+}*/
+
+
+
+
+if (!function_exists('get_periodos_vacaciones'))
+{
+
+  function get_periodos_vacaciones($fecinicio)
+  {
+
+    $array_cartola = array();
+
+    $fecha_hoy = date("Y-m-d");
+    $timestamp_hoy = strtotime($fecha_hoy);
+
+
+    $feciniccalculo = $fecinicio;
+
+
+    $timestamp_anno_despues = strtotime('+1 year',strtotime($feciniccalculo));
+    $timestamp_ult_anno = strtotime('-1 day',$timestamp_anno_despues);
+    $fecha_ult_anno = date("Y-m-d",$timestamp_ult_anno); 
+
+
+    while($timestamp_ult_anno < $timestamp_hoy){
+
+      $array_cartola[] = array('fecinicio' => $fecinicio,
+                               'fecfin' => $fecha_ult_anno);
+
+       $fecinicio = date("Y-m-d",$timestamp_anno_despues); 
+       $timestamp_anno_despues = strtotime('+1 year',$timestamp_anno_despues);
+       $timestamp_ult_anno = strtotime('-1 day',$timestamp_anno_despues);
+       $fecha_ult_anno = date("Y-m-d",$timestamp_ult_anno); 
+      
+    }
+
+
+      $array_cartola[] = array('fecinicio' => $fecinicio,
+                               'fecfin' => $fecha_ult_anno);
+
+      return $array_cartola;
+  }
+}
+
+
+
+if (!function_exists('primera_mayuscula'))
+{
+
+  function primera_mayuscula($palabra)
+  {
+
+ 
+      return ucwords(strtolower($palabra));
+  }
+}
+
+} 
 
            
 

@@ -22,7 +22,7 @@
 									          </div>
 									          <?php endif; ?>
 
-													<h3 class="inner-tittle two">Tabla de Ingreso de AFP <button type="button" class="btn btn-primary btn-flat btn-pri" data-toggle="modal" data-target="#myModal_AFP" class="nuevo"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Ingreso</button></h3>
+													<h3 class="inner-tittle two">Tabla de Ingreso de AFP <button type="button" class="btn btn-primary btn-flat btn-pri" data-toggle="modal" data-target="#myModal_AFP" id="nuevo"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Ingreso</button></h3>
 
 													
 														  <div class="graph">
@@ -115,9 +115,9 @@ $('.edit-afp').on('click',function(){
         	$('#porc').val(var_json.porc);
         	
         	if(var_json.exregimen == 1){
-        		$('#exregimen').attr('checked','checked');
+        		$('#exregimen').prop('checked','checked');
         	}else{
-        		$('#exregimen').attr('checked','');
+        		$('#exregimen').prop('checked','');
         	}
         	$('#idafp').val(idafp);
         	
@@ -130,7 +130,7 @@ $('.edit-afp').on('click',function(){
 $('#nuevo').on('click',function(){
         	$('#nombre').val('');
         	$('#porc').val('');
-        	$('#exregimen').attr('checked','');
+        	$('#exregimen').prop('checked','');
         	$('#idafp').val(0);
 })
 

@@ -136,6 +136,154 @@ class Admin extends CI_Model
 
 
 
+
+	public function get_tabla_impuesto(){
+
+		$this->db->select('id, desde, hasta, factor, rebaja, tasa_maxima')
+						  ->from('rem_tabla_impuesto')
+		                  ->order_by('desde','asc');
+
+		$query = $this->db->get();
+		return $query->result();
+	}	
+
+
+	public function edit_tabla_impuesto($array_impuesto){
+
+		foreach ($array_impuesto as $key => $impuesto) {
+			$datos = array(
+					'desde' => str_replace(".","",$impuesto['desde']),
+					'hasta' => isset($impuesto['hasta']) ? str_replace(".","",$impuesto['hasta']) : 999999999,
+					'factor' => str_replace(",",".",$impuesto['factor']),
+					'rebaja' => str_replace(".","",$impuesto['rebaja']),
+					);
+
+			$this->db->where('id', $key);
+			$this->db->update('rem_tabla_impuesto',$datos); 
+		}
+		
+		return 1;
+	}	
+
+
+
+	public function get_tabla_asig_familiar($idtramo = null){
+
+		$tramo_data = $this->db->select('id, tramo, desde, hasta, monto')
+						  ->from('rem_tabla_asig_familiar')
+		                  ->order_by('desde','asc');
+		$tramo_data = is_null($idtramo) ? $tramo_data : $tramo_data->where('id',$idtramo);  		                  
+		$query = $this->db->get();
+		return is_null($idtramo) ? $query->result() : $query->row();
+		//return $query->result();
+	}		
+
+
+
+	public function edit_tabla_asig_familiar($array_asig_familiar){
+
+		foreach ($array_asig_familiar as $key => $asig_familiar) {
+			$datos = array(
+					'desde' => str_replace(".","",$asig_familiar['desde']),
+					'hasta' => isset($asig_familiar['hasta']) ? str_replace(".","",$asig_familiar['hasta']) : 999999999,
+					'monto' => str_replace(".","",$asig_familiar['monto'])
+					);
+
+			$this->db->where('id', $key);
+			$this->db->update('rem_tabla_asig_familiar',$datos); 
+		}
+		
+		return 1;
+	}
+
+
+
+	public function get_feriado($idferiado = null){
+
+		$feriado_data = $this->db->select('id, CONVERT(varchar, fecha, 103) as fecha, fecha as fecha_sformat',false)
+						  ->from('rem_feriado f')
+						  ->where('f.active = 1')
+		                  ->order_by('f.fecha','desc');
+		$feriado_data = is_null($idferiado) ? $feriado_data : $feriado_data->where('f.id',$idferiado);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idferiado) ? $query->result() : $query->row();
+		return $datos;
+	}
+
+
+
+
+	public function add_feriado($array_datos){
+
+
+		$this->db->select('f.id')
+						  ->from('rem_feriado as f')
+		                  ->where('f.fecha', strtoupper($array_datos['fecha']))
+		                  ->where('f.active = 1');		
+
+		$query = $this->db->get();
+		$datos = $query->row();
+		if(count($datos) == 0){ // nueva afp  no existe
+			if($array_datos['idferiado'] == 0){
+				$data = array(
+			      	'fecha' => $array_datos['fecha'],
+			      	'active' => 1,
+			      	'created_at' => date('Ymd H:i:s')
+				);
+
+				$this->db->insert('rem_feriado', $data);
+				$idferiado = $this->db->insert_id();
+
+				return 1;
+			}else{
+				$data = array(
+			      	'fecha' => $array_datos['fecha']
+				);
+
+
+				$this->db->where('id', $array_datos['idferiado']);
+				$this->db->update('rem_feriado',$data); 
+				return 1;
+			}
+		}else{ // ya existe feriado
+
+			if($array_datos['idferiado'] != 0){
+				$data = array(
+			      	'fecha' => $array_datos['fecha']
+				);
+
+
+				$this->db->where('id', $array_datos['idferiado']);
+				$this->db->update('rem_feriado',$data); 
+				return 1;
+			}else{
+				return -1;	
+			}
+			
+		}
+
+	}	
+
+
+
+	public function delete_feriado($idferiado){
+
+
+		$this->db->where('id', $idferiado);
+		$this->db->update('rem_feriado',array('active' => '0')); 
+
+		return 1;
+		/*if($this->db->affected_rows() > 0){ // se eliminó proveedor correctamente
+			return 1;
+		}else{ // no hubo eliminación de proveedor
+			return -1;
+		}*/
+
+
+
+	}	
+
+
 }
 
 

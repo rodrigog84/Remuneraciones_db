@@ -35,6 +35,35 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 <script src="<?php echo base_url();?>js/jquery.easydropdown.js"></script>
 
+
+<?php if(isset($formValidation)){ ?>    
+    <!--link rel="stylesheet" href="<?php echo base_url(); ?>vendor/bootstrap/css/bootstrap.css"/-->
+    <!--link rel="stylesheet" href="<?php echo base_url(); ?>dist/css/formValidation.css"/-->
+    <script type="text/javascript" src="<?php echo base_url(); ?>dist/js/formValidation.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>dist/js/framework/bootstrap.js"></script>
+<?php } ?>      
+
+
+  <?php if(isset($mask)){ ?>
+        <script src="<?php echo base_url(); ?>plugins/jquery.mask.min.js"></script>
+  <?php } ?>    
+
+
+    <!-- DATA TABES SCRIPT -->
+      <?php if(isset($dataTables)){ ?>
+        <script src="<?php echo base_url(); ?>plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="<?php echo base_url(); ?>plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+        <!--link href="<?php echo base_url(); ?>plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" /-->
+      <?php } ?>  
+
+            
+      <?php if(isset($datetimepicker)){ ?>
+       <link href="<?php echo base_url(); ?>js/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.es.js" charset="UTF-8"></script>
+      <?php } ?>      
+
+
 <!--//skycons-icons-->
 </head> 
 <body>
