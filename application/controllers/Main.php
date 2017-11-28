@@ -37,7 +37,39 @@ class Main extends CI_Controller {
 	public function dashboard($unidad_id = '')
 	{
 
-		$this->load->model('ion_auth_model');
+		$this->load->model('ion_auth_model');	
+		$this->load->model('admin');
+
+		if($this->session->userdata('level') == 2){
+			// SI YA SELECCIONO COMUNIDAD, NO ES NECESARIO ELEGIR NUEVAMENTE
+			$unidad_id = $unidad_id == '' && $this->session->userdata('empresaid') ? $this->session->userdata('empresaid') : $unidad_id;
+
+			$empresas_asignadas = $unidad_id != '' ? $this->admin->empresas_asignadas($this->session->userdata('user_id'),$this->session->userdata('level'),$unidad_id) : $this->admin->empresas_asignadas($this->session->userdata('user_id'),$this->session->userdata('level'));
+
+
+			$num_empresas = count($this->admin->empresas_asignadas($this->session->userdata('user_id'),$this->session->userdata('level')));
+
+			if(count($empresas_asignadas) > 1){ // EN CASO DE TENER MÁS DE UNA COMUNIDAD LO ENVÍA A LA PÁGINA DE SELECCIÓN
+				$content = array(
+							'menu' => 'Selecci&oacute;n Comunidad',
+							'title' => 'Comunidades',
+							'subtitle' => 'Selecci&oacute;n de Comunidad');
+
+				$vars['content_menu'] = $content;
+				$vars['comunidades'] = $empresas_asignadas;
+				$vars['content_view'] = 'admin/asigna_comunidad';
+				$template = "template_lock";
+				//$this->load->view('template_lock',$vars);	
+			}else if(count($empresas_asignadas) == 1){ 			
+				$this->session->set_userdata('empresaid',$empresas_asignadas->id);
+				$this->session->set_userdata('empresanombre',$empresas_asignadas->nombre);
+
+
+			}
+
+		}
+
+
 		$vars['content_view'] = 'dashboard';
 		$template = "template";
 

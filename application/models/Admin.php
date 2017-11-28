@@ -284,6 +284,23 @@ class Admin extends CI_Model
 	}	
 
 
+
+	public function empresas_asignadas($userid,$levelid,$empresaid = null){
+
+		$empresa_data = $this->db->select('c.id, c.nombre ')
+						  ->from('rem_empresa as c')
+						  ->join('rem_usuario_empresa as uc','c.id = uc.idempresa')
+		                  ->where('uc.idusuario', $userid)
+		                  ->where('c.active = 1')
+		                  ->order_by('c.nombre asc');
+		$empresa_data = is_null($empresaid) ? $empresa_data : $empresa_data->where('c.id',$empresaid);  				                 
+		$query = $this->db->get();
+		$datos = $query->num_rows() == 1 ? $datos = $query->row() : $query->result();
+		return $datos;
+
+	}
+
+
 }
 
 

@@ -1,1 +1,6 @@
-select * into contribuyentes_autorizados from contribuyentes_autorizados_1
+create table rem_usuario_empresa (
+idusuario int,
+idempresa int
+)
+
+insert into rem_usuario_empresa (idusuario,idempresa) values (6,17);

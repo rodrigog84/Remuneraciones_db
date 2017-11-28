@@ -18,7 +18,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- jQuery -->
 <link href='//fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'>
 <!-- lined-icons -->
-<link rel="stylesheet" href="css/icon-font.min.css" type='text/css' />
+<link rel="stylesheet" href="<?php echo base_url();?>css/icon-font.min.css" type='text/css' />
 <!-- //lined-icons -->
 <script src="<?php echo base_url();?>js/jquery-1.10.2.min.js"></script>
 <script src="<?php echo base_url();?>js/amcharts.js"></script>	
@@ -204,12 +204,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<!--/sidebar-menu-->
 				<div class="sidebar-menu">
 					<header class="logo">
-					<a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="inicio.html"> <span id="logo"> <h1>Configuración</h1></span> 
+					<a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="inicio.html"> <span id="logo"> <h1><?php echo $this->session->userdata('level') == 1 ? 'Configuraci&oacute;n' : 'IS RRHH';?></h1></span> 
 					<!--<img id="logo" src="" alt="Logo"/>--> 
 				  </a> 
 				</header>
 			<div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
 			<!--/down-->
+			<?php if($this->session->userdata('level') == 2){ ?>
+			<div class="down">	
+				<p><?php echo $this->session->userdata('empresanombre'); ?></p>
+				<ul>
+					<li><a class="tooltips" href="inicio.html"><span>Salir</span><i class="lnr lnr-power-switch"></i></a></li>
+				</ul>
+			</div>			
+			<?php } ?>
 			
 							   <!--//down-->
                            <div class="menu">
