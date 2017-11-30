@@ -87,31 +87,7 @@
 </form>
 
   <script>
-      $(function () {
-        $('#listado').dataTable({
-          "bLengthChange": true,
-          "bFilter": true,
-          "bInfo": true,
-          "bSort": false,
-          "bAutoWidth": false,
-          "aLengthMenu" : [[5,15,30,45,100,-1],[5,15,30,45,100,'Todos']],
-          "iDisplayLength": 5,
-          "oLanguage": {
-              "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
-              "sZeroRecords": "No se encontraron registros",
-              "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
-              "sInfoEmpty": "Mostrando 0 de 0 registros",
-              "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
-              "sSearch":        "Buscar:",
-            "oPaginate": {
-                "sFirst":    "Primero",
-                "sLast":    "Último",
-                "sNext":    "Siguiente",
-                "sPrevious": "Anterior"
-            }              
-          }          
-        });
-      });
+             
 
     $(".form_date").datetimepicker({
         format: "dd/mm/yyyy",

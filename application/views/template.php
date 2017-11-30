@@ -36,6 +36,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="<?php echo base_url();?>js/jquery.easydropdown.js"></script>
 
 
+      <?php if(!isset($jQuery213)){ ?>
+            <!--script src="<?php echo base_url(); ?>plugins/jQuery/jQuery-2.1.3.min.js"></script-->
+      <?php } ?>  	
+
 <?php if(isset($formValidation)){ ?>    
     <!--link rel="stylesheet" href="<?php echo base_url(); ?>vendor/bootstrap/css/bootstrap.css"/-->
     <!--link rel="stylesheet" href="<?php echo base_url(); ?>dist/css/formValidation.css"/-->
@@ -62,6 +66,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.es.js" charset="UTF-8"></script>
       <?php } ?>      
+
+
+     <?php if(isset($jqueryRut)){ ?>
+        <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.Rut/jquery.Rut.js" charset="UTF-8"></script>
+      <?php } ?> 
 
 
 <!--//skycons-icons-->
