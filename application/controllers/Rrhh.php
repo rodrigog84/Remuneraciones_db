@@ -179,7 +179,10 @@ class Rrhh extends CI_Controller {
 			$regiones = $this->admin->get_regiones();
 			$estados_civiles = $this->admin->get_estado_civil();
 			$cargos = $this->admin->get_cargos();
-
+			$paises = $this->admin->get_paises();
+			$idiomas = $this->admin->get_idiomas();
+			$personal = $this->admin->get_personal_total();
+			
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 
 			/**** CARGA DE DATOS TRABAJADOR ****/
@@ -240,10 +243,14 @@ class Rrhh extends CI_Controller {
 								'active' => is_null($idtrabajador) ? "1" : $trabajador->active,
 								);
 			
+
 			$vars['content_menu'] = $content;				
 			$vars['regiones'] = $regiones;
 			$vars['estados_civiles'] = $estados_civiles;			
 			$vars['cargos'] = $cargos;
+			$vars['paises'] = $paises;
+			$vars['idiomas'] = $idiomas;
+			$vars['personal'] = $personal;
 			$vars['tramos_asig_familiar'] = $tramos_asig_familiar;
 			$vars['content_view'] = 'rrhh/add_trabajador';
 			$vars['datos_form'] = $datos_form;

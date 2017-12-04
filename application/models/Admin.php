@@ -460,6 +460,32 @@ public function get_bonos($idtrabajador = null){
 	}		
 
 
+
+
+	public function get_paises($idpais = null){
+
+			$paises_data = $this->db->select('id, iso, nombre')	
+						  ->from('rem_paises')
+		                  ->order_by('nombre');
+		$paises_data = is_null($idpais) ? $paises_data : $paises_data->where('id',$idpais);  		                  
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+
+
+	public function get_idiomas($ididioma = null){
+
+			$idiomas_data = $this->db->select('id, nombre')	
+						  ->from('rem_idioma')
+						  ->where('valido',1)
+		                  ->order_by('nombre');
+		$idiomas_data = is_null($ididioma) ? $idiomas_data : $idiomas_data->where('id',$ididioma);  		                  
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	
 }
 
 
