@@ -33,34 +33,30 @@ class Centro_costo extends CI_Controller {
 		redirect('main/dashboard');	
 	}
 
-
-
-
-
 	
 	public function centrocosto()
 	{	
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-			$resultid = $this->session->flashdata('afp_result');
+			$resultid = $this->session->flashdata('centrocosto_result');
 			if($resultid == 1){
-				$vars['message'] = "AFP Agregada correctamente";
+				$vars['message'] = "Centro Costo Agregada correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';				
 			}elseif($resultid == 2){
-				$vars['message'] = "Error al agregar AFP. AFP ya existe";
+				$vars['message'] = "Error al agregar Centro de Costo. Centro de Costo ya existe";
 				$vars['classmessage'] = 'danger';
 				$vars['icon'] = 'fa-ban';
 			}elseif($resultid == 3){
-				$vars['message'] = "AFP Editada correctamente";
+				$vars['message'] = "Centro de Costos Editada correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';				
 			}elseif($resultid == 4){
-				$vars['message'] = "Error al eliminar AFP. AFP no existe";
+				$vars['message'] = "Error al eliminar Centro de Costos. Centro de Costos no existe";
 				$vars['classmessage'] = 'danger';
 				$vars['icon'] = 'fa-ban';				
 			}elseif($resultid == 5){
-				$vars['message'] = "AFP Eliminada correctamente";
+				$vars['message'] = "Centro de Costos Eliminada correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';								
 			}
@@ -68,17 +64,17 @@ class Centro_costo extends CI_Controller {
 
 			
 
-			$afps = $this->admin->get_afp();
+			$centrocostos = $this->admin->get_centro_costo();
 
 			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',
-						'subtitle' => 'Administraci&oacute;n de Afp');
+						'subtitle' => 'Administraci&oacute;n de Centro de Costos');
 
 			
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'admins/centrocosto';
-			$vars['afps'] = $afps;
+			$vars['centrocostos'] = $centrocostos;
 			$vars['dataTables'] = true;
 			
 			
@@ -103,29 +99,29 @@ class Centro_costo extends CI_Controller {
 	}
 
 
-	public function add_afp($idafp = 0)
+	public function add_centrocosto($idcentrocosto = 0)
 	{
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 			$this->load->model('remuneracion');
-			$afp = $this->remuneracion->get_afp($idafp);
+			$centrodecosto = $this->remuneracion->get_centrodecosto($idcentrodecosto);
 
 			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',
-						'subtitle' => 'Administraci&oacute;n de Afp');
+						'subtitle' => 'Administraci&oacute;n de Centro de Costos');
 
 			$datos_form = array(
-							'idafp' => count($afp) == 0 ? 0 : $afp->id,
-							'nombre' => count($afp) == 0 ? '' : $afp->nombre,
-							'porc' => count($afp) == 0 ? '' : $afp->porc,
-							'exregimen' => count($afp) == 0 ? 0 : $afp->exregimen
+							'idcentrocosto' => count($centrocosto) == 0 ? 0 : $centrocosto->id,
+							'nombre' => count($centrocosto) == 0 ? '' : $centrocosto->nombre,
+							'idempresa' => count($centrocosto) == 0 ? '' : $centrocosto->idempresa,
+							'codigo' => count($centrocosto) == 0 ? 0 : $centrocosto->codigo
 							);
 			
 			$vars['content_menu'] = $content;				
-			$vars['content_view'] = 'remuneraciones/add_afp';
-			$vars['titulo'] = $idafp == '' ? "Agregar Afp" : "Editar Afp";
+			$vars['content_view'] = 'remuneraciones/add_centrocosto';
+			$vars['titulo'] = $idcentrocosto == '' ? "Agregar Centro Costo" : "Editar Centro Costo";
 			$vars['datos_form'] = $datos_form;
 			$vars['formValidation'] = true;
 			$vars['mask'] = true;
@@ -153,35 +149,35 @@ class Centro_costo extends CI_Controller {
 
 
 
-	public function submit_afp(){
+	public function submit_centrocosto(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 			$nombre = $this->input->post('nombre');	
-			$porc = $this->input->post('porc');	
-			$exregimen = $this->input->post('exregimen') == 'on' ? 1 : 0;	
-			$idafp = $this->input->post('idafp');
+			$idempresa = $this->input->post('idempresa');	
+			$codigo = $this->input->post('codigo');	
+			$idcentrocosto = $this->input->post('idcentrocosto');
 
 			$array_datos = array(
 								'nombre' => $nombre,
-								'porc' => $porc,
-								'exregimen' => $exregimen,
-								'idafp' => $idafp);
+								'idempresa' => $porc,
+								'codigo' => $exregimen,
+								'idcentrocosto' => $idcentrocosto);
 
 
-			$result = $this->admin->add_afp($array_datos);
+			$result = $this->admin->add_centrodecosto($array_datos);
 
 			if($result == -1){
-				$this->session->set_flashdata('afp_result', 2);	
+				$this->session->set_flashdata('centrodecosto_result', 2);	
 			}else{
-				if($idafp == 0){
-					$this->session->set_flashdata('afp_result', 1);	
+				if($idcentrodecosto == 0){
+					$this->session->set_flashdata('centrodecosto_result', 1);	
 				}else{
-					$this->session->set_flashdata('afp_result', 3);	
+					$this->session->set_flashdata('centrodecosto_result', 3);	
 				}
 			}
 
 			
-			redirect('admins/afp');	
+			redirect('Centro_costo/centrocosto');	
 
 
 		}else{
@@ -194,21 +190,21 @@ class Centro_costo extends CI_Controller {
 	}
 
 
-	public function delete_afp($idafp = 0)
+	public function delete_centrocosto($idcentrocosto = 0)
 	{
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
-			$result = $this->admin->delete_afp($idafp);
+			$result = $this->admin->delete_centrocosto($idcentrocosto);
 			var_dump($result);
 			if($result == -1){
-				$this->session->set_flashdata('afp_result', 4);	
+				$this->session->set_flashdata('centrocosto_result', 4);	
 			}else{
-				$this->session->set_flashdata('afp_result', 5);	
+				$this->session->set_flashdata('centrocosto_result', 5);	
 				
 			}
 
-			redirect('admins/afp');	
+			redirect('admins/centrocosto');	
 
 		}else{
 			$content = array(
@@ -225,321 +221,13 @@ class Centro_costo extends CI_Controller {
 
 	}
 
-	public function get_afp($idafp = null){
+	public function get_centrocosto($idcentrocosto = null){
 
 
-		$datos = $this->admin->get_afp($idafp);
+		$datos = $this->admin->get_centrocosto($idcentrocosto);
 
 		//print_r($datos);
 		echo json_encode($datos);
 	}
-
-
-
-	public function impto_unico()
-	{
-		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-			$resultid = $this->session->flashdata('impuesto_result');
-			if($resultid == 1){
-				$vars['message'] = "Impuesto &Uacute;nico actualizado correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';		
-			}
-
-			$tabla_impuesto = $this->admin->get_tabla_impuesto(); 
-
-			/*$content = array(
-						'menu' => 'Remuneraciones',
-						'title' => 'Remuneraciones',
-						'subtitle' => 'Impuesto &Uacute;nico');*/
-
-			$vars['formValidation'] = true;
-			$vars['mask'] = true;			
-			//$vars['content_menu'] = $content;				
-			$vars['content_view'] = 'admins/impto_unico';
-			$vars['tabla_impuesto'] = $tabla_impuesto;
-			
-			$template = "template";
-			
-
-			$this->load->view($template,$vars);	
-
-		}else{
-			$content = array(
-						'menu' => 'Error 403',
-						'title' => 'Error 403',
-						'subtitle' => '403 error');
-
-
-			$vars['content_menu'] = $content;				
-			$vars['content_view'] = 'forbidden';
-			$this->load->view('template',$vars);
-
-		}
-
-	}	
-
-			public function submit_impuesto_unico()
-			{
-
-
-				if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-
-					$array_datos = $this->input->post(NULL,true);
-					$array_impuesto = array();
-					foreach ($array_datos as $key => $dato) {
-						$array_elem = explode("_",$key);
-						$id_impuesto = $array_elem[1];
-						$tipo_valor = $array_elem[0];
-						$array_impuesto[$id_impuesto][$tipo_valor] = $dato;
-					}
-
-					$this->admin->edit_tabla_impuesto($array_impuesto);
-					$this->session->set_flashdata('impuesto_result', 1);
-					redirect('admins/impto_unico');				
-
-				}else{
-					$content = array(
-								'menu' => 'Error 403',
-								'title' => 'Error 403',
-								'subtitle' => '403 error');
-
-
-					$vars['content_menu'] = $content;	
-					$vars['content_view'] = 'forbidden';
-					$this->load->view('template',$vars);
-
-				}
-
-			}		
-
-
-	public function asig_familiar()
-	{
-		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-			$resultid = $this->session->flashdata('asig_familiar_result');
-			if($resultid == 1){
-				$vars['message'] = "Asignaci&oacute;n Familiar actualizada correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';		
-			}
-
-			$tabla_asig_familiar = $this->admin->get_tabla_asig_familiar(); 
-
-			/*$content = array(
-						'menu' => 'Remuneraciones',
-						'title' => 'Remuneraciones',
-						'subtitle' => 'Asignaci&oacute;n Familiar');*/
-
-
-			$vars['formValidation'] = true;
-			$vars['mask'] = true;			
-			//$vars['content_menu'] = $content;				
-			$vars['content_view'] = 'admins/asig_familiar';
-			$vars['tabla_asig_familiar'] = $tabla_asig_familiar;
-			
-			$template = "template";
-			
-
-			$this->load->view($template,$vars);	
-
-		}else{
-			$content = array(
-						'menu' => 'Error 403',
-						'title' => 'Error 403',
-						'subtitle' => '403 error');
-
-
-			$vars['content_menu'] = $content;				
-			$vars['content_view'] = 'forbidden';
-			$this->load->view('template',$vars);
-
-		}
-
-	}				
-
-
-			public function submit_asignacion_familiar()
-			{
-
-
-				if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-
-					$array_datos = $this->input->post(NULL,true);
-					$array_asig_familiar = array();
-					foreach ($array_datos as $key => $dato) {
-						$array_elem = explode("_",$key);
-						$id_asig_familiar = $array_elem[1];
-						$tipo_valor = $array_elem[0];
-						$array_asig_familiar[$id_asig_familiar][$tipo_valor] = $dato;
-					}
-
-					$this->admin->edit_tabla_asig_familiar($array_asig_familiar);
-					$this->session->set_flashdata('asig_familiar_result', 1);
-					redirect('admins/asig_familiar');				
-
-				}else{
-					$content = array(
-								'menu' => 'Error 403',
-								'title' => 'Error 403',
-								'subtitle' => '403 error');
-
-
-					$vars['content_menu'] = $content;	
-					$vars['content_view'] = 'forbidden';
-					$this->load->view('template',$vars);
-
-				}
-
-			}			
-
-
-
-	public function feriados()
-	{
-
-		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-
-			$resultid = $this->session->flashdata('feriado_result');
-			if($resultid == 1){
-				$vars['message'] = "Feriado Agregado correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';				
-			}elseif($resultid == 2){
-				$vars['message'] = "Error al agregar Feriado. Feriado ya existe";
-				$vars['classmessage'] = 'danger';
-				$vars['icon'] = 'fa-ban';
-			}elseif($resultid == 3){
-				$vars['message'] = "Feriado Editado correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';				
-			}elseif($resultid == 4){
-				$vars['message'] = "Error al eliminar Feriado. Feriado no existe";
-				$vars['classmessage'] = 'danger';
-				$vars['icon'] = 'fa-ban';				
-			}elseif($resultid == 5){
-				$vars['message'] = "Feriado Eliminado correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';								
-			}
-
-
-			//$this->load->model('remuneracion');
-
-			$feriados = $this->admin->get_feriado();
-
-
-			/*$content = array(
-						'menu' => 'Remuneraciones',
-						'title' => 'Remuneraciones',
-						'subtitle' => 'Administraci&oacute;n de Feriados');
-			*/
-			
-			//$vars['content_menu'] = $content;			
-			$vars['datetimepicker'] = true;	
-			$vars['content_view'] = 'admins/feriados';
-			$vars['feriados'] = $feriados;
-			$vars['dataTables'] = true;
-			
-			
-			$template = "template";
-			
-
-			$this->load->view($template,$vars);	
-
-		}else{
-			$content = array(
-						'menu' => 'Error 403',
-						'title' => 'Error 403',
-						'subtitle' => '403 error');
-
-
-			$vars['content_menu'] = $content;				
-			$vars['content_view'] = 'forbidden';
-			$this->load->view('template',$vars);
-
-		}
-
-	}
-
-
-	public function submit_feriado(){
-		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-
-			$fecha = $this->input->post('fecha');	
-			$idferiado = $this->input->post('idferiado');
-
-			$array_datos = array(
-								'fecha' => formato_fecha($fecha,'d/m/Y','Y-m-d'),
-								'idferiado' => $idferiado);
-
-			$result = $this->admin->add_feriado($array_datos);
-
-			if($result == -1){
-				$this->session->set_flashdata('feriado_result', 2);	
-			}else{
-				if($idferiado == 0){
-					$this->session->set_flashdata('feriado_result', 1);	
-				}else{
-					$this->session->set_flashdata('feriado_result', 3);	
-				}
-			}
-
-			
-			redirect('admins/feriados');	
-
-
-		}else{
-			$vars['content_view'] = 'forbidden';
-			$this->load->view('template',$vars);
-
-		}		
-
-
-	}
-
-
-
-	public function delete_feriado($idferiado = 0)
-	{
-
-		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-
-			$result = $this->admin->delete_feriado($idferiado);
-			if($result == -1){
-				$this->session->set_flashdata('feriado_result', 4);	
-			}else{
-				$this->session->set_flashdata('feriado_result', 5);	
-				
-			}
-
-			redirect('admins/feriados');	
-
-		}else{
-			$content = array(
-						'menu' => 'Error 403',
-						'title' => 'Error 403',
-						'subtitle' => '403 error');
-
-
-			$vars['content_menu'] = $content;				
-			$vars['content_view'] = 'forbidden';
-			$this->load->view('template',$vars);
-
-		}
-
-	}
-
-
-	public function get_feriado($idferiado = null){
-
-
-		$datos = $this->admin->get_feriado($idferiado);
-
-		//print_r($datos);
-		echo json_encode($datos);
-	}
-
 
 }
-

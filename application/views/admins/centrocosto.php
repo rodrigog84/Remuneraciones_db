@@ -22,7 +22,7 @@
 									          </div>
 									          <?php endif; ?>
 
-													<h3 class="inner-tittle two">Tabla de Ingreso de AFP <button type="button" class="btn btn-primary btn-flat btn-pri" data-toggle="modal" data-target="#myModal_AFP" id="nuevo"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Ingreso</button></h3>
+													<h3 class="inner-tittle two">Tabla de Ingreso Centro de Costo<button type="button" class="btn btn-primary btn-flat btn-pri" data-toggle="modal" data-target="#myModal_CENTROCOSTO" id="nuevo"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Ingreso</button></h3>
 
 													
 														  <div class="graph">
@@ -33,27 +33,25 @@
 																	<thead> 
 																		<tr>
 																			<th>#</th>
-																			<th>Nombre de AFP:</th> 
-																			<th>Porcentaje:</th> 
-																			<th>Ex Régimen</th> 
-																			<th>Opciones</th> 
-																			
+																			<th>Nombre Centro de Costo:</th> 
+																			<th>Empresa:</th> 
+																			<th>Codigo</th>					
 
 																		</tr> 
 																	</thead> 
 																	<tbody> 
-												                      <?php if(count($afps) > 0 ){ ?>
+												                      <?php if(count($centrocosto) > 0 ){ ?>
 												                        <?php $i = 1; ?>
-												                        <?php foreach ($afps as $afp) { ?>																	
+												                        <?php foreach ($centrocostos as $centrocosto) { ?>																	
 																		<tr class="active" id="variable">
 																			<td><?php echo $i ;?></td>
-																			<td><?php echo $afp->nombre;?></td> 
-																			<td><?php echo $afp->porc." %";?></td>
-																			<td><?php echo $afp->exregimen == 1 ? 'SI': 'NO';?></td>
+																			<td><?php echo $centrodecosto->nombre;?></td> 
+																			<td><?php echo $centrodecosto->idempresa;?></td>
+																			<td><?php echo $centrodecosto->codigo;?></td>
 																			<td>
-																				<a href="#" data-idafp="<?php echo $afp->id;?>" class="btn btn-info edit-afp" id="opciones" data-toggle="modal" data-target="#myModal_AFP" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+																				<a href="#" data-idcentrodecosto="<?php echo $centrodecosto->id;?>" class="btn btn-info edit-centrocosto" id="opciones" data-toggle="modal" data-target="#myModal_CENTROCOSTO" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
         																		
-        																		<a href="<?php echo base_url();?>admins/delete_afp/<?php echo $afp->id;?>" data-toggle="tooltip"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
+        																		<a href="<?php echo base_url();?>centrocosto/delete_centrocosto/<?php echo $centrocosto->id;?>" data-toggle="tooltip"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
 																			</td> 
 																			
 																		</tr> 
@@ -72,23 +70,23 @@
 											</div>
 									<!--/charts-inner-->
 
-<!-- //Modal ingresar AFP -->
-<form id="basicBootstrapForm" action="<?php echo base_url();?>admins/submit_afp" id="basicBootstrapForm" method="post">
-	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="myModal_AFP">
+<!-- //Modal ingresar CENTROCOSTO -->
+<form id="basicBootstrapForm" action="<?php echo base_url();?>Centro_costo/submit_centrocosto" id="basicBootstrapForm" method="post">
+	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="myModal_CENTROCOSTO">
 	  <div class="modal-dialog modal-sm" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="exampleModalLabel">Ingreso de AFP</h4>
+	        <h4 class="modal-title" id="exampleModalLabel">Ingreso de Centro de Costo</h4>
 	      </div>
 
 	      <div class="modal-body">
-	      	<input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre de AFP:">
+	      	<input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre de Centro de Costo:">
 	      	<br>
-	      	<input type="text" name="porc" class="form-control" id="porc" placeholder="Porcentaje:">
+	      	<input type="text" name="idempresa" class="form-control" id="idempresa" placeholder="Empresa:">
 	      	<br>
-			<div class="checkbox-inline"><label><input type="checkbox" name="exregimen" id="exregimen"> Ex-Régimen</label></div>
-			<input type="hidden" name="idafp" id="idafp" value="0" >
+			<input type="text" name="codigo" class="form-control" id="codigo" placeholder="Codigo:">
+			<input type="hidden" name="idcentrodecosto" id="idcentrodecosto" value="0" >
 			<br>
 			<br>
 			<button type = "submit" class = "btn btn-info" id="comando">Ingresar</button>
@@ -100,26 +98,21 @@
 </form>								
 
 <script>
-$('.edit-afp').on('click',function(){
-	var idafp = $(this).data('idafp');
+$('.edit-centrocosto').on('click',function(){
+	var idcentrodecosto = $(this).data('idcentrodecosto');
  // Send data to back-end
 
         $.ajax({
             type: "GET",
-            url: '<?php echo base_url();?>admins/get_afp/'+idafp,
+            url: '<?php echo base_url();?>Centro_costo/get_centrodecosto/'+idcentrodecosto,
             async: false,
         }).success(function(response) {
 
         	var_json = $.parseJSON(response);
         	$('#nombre').val(var_json.nombre);
-        	$('#porc').val(var_json.porc);
-        	
-        	if(var_json.exregimen == 1){
-        		$('#exregimen').prop('checked','checked');
-        	}else{
-        		$('#exregimen').prop('checked','');
-        	}
-        	$('#idafp').val(idafp);
+        	$('#idempresa').val(var_json.idempresa);        	
+        	$('#codigo').val(var_json.codigo);  
+        	$('#idcentrodecosto').val(idcentrodecosto);
         	
         });
 
@@ -131,7 +124,7 @@ $('#nuevo').on('click',function(){
         	$('#nombre').val('');
         	$('#porc').val('');
         	$('#exregimen').prop('checked','');
-        	$('#idafp').val(0);
+        	$('#idcentrodecosto').val(0);
 })
 
 
