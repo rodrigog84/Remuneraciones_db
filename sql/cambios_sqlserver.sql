@@ -27,7 +27,7 @@ insert into rem_role
 values
 (47,2)
 
-create table rem_estudio (
+create table rem_estudios (
 id int identity,
 idempresa int,
 nombre varchar(100),
@@ -367,3 +367,26 @@ insert into rem_role
 (appid,levelid)
 values
 (48,2)
+
+## Crea Tabla Tipo Contrato
+
+create table rem_tipocontrato (
+id int identity,
+idempresa int,
+nombre varchar(100),
+codigo varchar(10),
+valido tinyint,
+fecha datetime default getdate()
+)
+
+## Crea Tabla Ine
+
+create table rem_ine (
+id int identity,
+idempresa int,
+nombre varchar(100),
+codigo varchar(10),
+valido tinyint,
+fecha datetime default getdate()
+)
+
