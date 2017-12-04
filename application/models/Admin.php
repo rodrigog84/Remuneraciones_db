@@ -313,6 +313,153 @@ class Admin extends CI_Model
 	}
 
 
+
+
+	public function get_empresas($idempresa = null){
+
+		$empresas_data = $this->db->select("c.id , c.nombre, c.rut, c.dv, c.direccion, c.fono, c.fono2, c.idregion, c.idcomuna, c.email, c.saldo, c.caja, c.fondoreserva, c.fondoreservainicial, c.idcaja, c.idmutual, c.porcmutual, c.cajainicial, c.fecinicio, c.fecvencimiento, fecvencimiento as fecvencimiento_sformat, c.fecinicio as fecinicio_sformat ",false)
+						  ->from('rem_empresa c')
+						  ->where('c.active = 1')
+		                  ->order_by('c.nombre asc');
+
+		$empresas_data = is_null($idempresa) ? $empresas_data : $empresas_data->where('id',$idempresa);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idempresa) ? $query->result() : $query->row();		
+		return $datos;
+
+	}	
+
+
+public function get_personal_total($idtrabajador = null){
+
+		$personal_data = $this->db->select('id, idempresa, rut, dv, nombre, apaterno, amaterno, fecnacimiento, sexo, idecivil, nacionalidad, direccion, idregion, idcomuna, fono, email, fecingreso, idcargo, tipocontrato, parttime, segcesantia, fecafc, diastrabajo, horasdiarias, horassemanales, sueldobase, tipogratificacion, gratificacion, asigfamiliar, cargassimples, cargasinvalidas, cargasmaternales, cargasretroactivas, idasigfamiliar, movilizacion, colacion, pensionado, idafp, adicafp, tipoahorrovol, ahorrovol, instapv, nrocontratoapv, tipocotapv, cotapv, formapagoapv, depconvapv, idisapre, valorpactado, fecinicvacaciones, saldoinicvacaciones, saldoinicvacprog, active')
+						  ->from('rem_personal p')
+						  ->where('p.idempresa',$this->session->userdata('empresaid'))
+						  ->order_by('p.active','desc')
+		                  ->order_by('p.nombre');
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id',$idtrabajador);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
+		return $datos;
+	}	
+
+
+	public function get_apv($idapv = null){
+
+		$apv_data = $this->db->select('id, nombre, codprevired')
+						  ->from('rem_apv a')
+						  ->where('a.active = 1')
+		                  ->order_by('a.nombre');
+		$apv_data = is_null($idapv) ? $apv_data : $apv_data->where('a.id',$idapv);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idapv) ? $query->result() : $query->row();
+		return $datos;
+	}	
+
+
+public function get_isapre($idisapre = null){
+
+		$isapre_data = $this->db->select('id, nombre, codprevired')
+						  ->from('rem_isapre i')
+						  ->where('i.active = 1')
+		                  ->order_by('i.id');
+		$isapre_data = is_null($idisapre) ? $isapre_data : $isapre_data->where('i.id',$idisapre);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idisapre) ? $query->result() : $query->row();
+		return $datos;
+	}
+
+
+public function get_cajas_compensacion($idcaja = null){
+
+		$caja_data = $this->db->select('id, nombre, codprevired')
+						  ->from('rem_cajas_compensacion c')
+						  ->where('c.active = 1')
+		                  ->order_by('c.id');
+		$caja_data = is_null($idcaja) ? $caja_data : $caja_data->where('c.id',$idcaja);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idcaja) ? $query->result() : $query->row();
+		return $datos;
+	}		
+
+
+public function get_mutual_seguridad($idmutual = null){
+
+		$mutual_data = $this->db->select('id, nombre, codprevired')
+						  ->from('rem_mutual_seguridad m')
+						  ->where('m.active = 1')
+		                  ->order_by('m.id');
+		$mutual_data = is_null($idmutual) ? $mutual_data : $mutual_data->where('m.id',$idmutual);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idmutual) ? $query->result() : $query->row();
+		return $datos;
+	}	
+
+
+public function get_parametros_generales(){
+
+		$comunidades_data = $this->db->select('uf , sueldominimo, csimples, cinvalidas, cmaternales, tasasis, topeimponible')
+						  ->from('rem_parametros_generales');
+		$query = $this->db->get();						  
+		return $query->row();
+
+	}	
+
+
+	public function get_regiones(){
+
+		$this->db->select('idregion , nombre ')
+						  ->from('rem_region')
+		                  ->order_by('idregion asc');
+		$query = $this->db->get();
+		$datos = $query->result();
+
+		return $datos;
+
+	}	
+
+
+public function get_estado_civil(){
+
+		$this->db->select('id , nombre ')
+						  ->from('rem_estado_civil')
+						  ->where('activo = 1')
+		                  ->order_by('nombre asc');
+		$query = $this->db->get();
+
+		return $query->result();
+
+	}		
+
+
+
+public function get_cargos($idcargo = null){
+		$cargos_data = $this->db->select('c.id , c.idempresa, c.nombre, c.idpadre, c2.nombre as nombrepadre,  (select count(*) from rem_cargos where idpadre = c.id) as hijos ', false)
+						  ->from('rem_cargos c')
+						  ->join('rem_cargos c2','c.idpadre = c2.id','left')
+						  ->where('(c.idempresa = '.$this->session->userdata('empresaid') . ' or c.idempresa is null)')
+						  ->where('c.activo = 1')
+		                  ->order_by('c2.id asc');
+		$cargos_data = is_null($idcargo) ? $cargos_data : $cargos_data->where('c.id',$idcargo);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idcargo) ? $query->result() : $query->row();
+		return $datos;
+	}	
+
+
+
+public function get_bonos($idtrabajador = null){
+
+		//$bonos_data = $this->db->select('id, idpersonal, descripcion, monto, date_format(fecha,"%d/%m/%Y") as fecha, proporcional, imponible, fijo')
+			$bonos_data = $this->db->select('id, idpersonal, descripcion, monto, fecha')	
+						  ->from('rem_bonos_personal b')
+						  ->where('b.idpersonal',$idtrabajador)
+		                  ->order_by('b.id');
+		$query = $this->db->get();
+		return $query->result();
+	}		
+
+
 }
 
 
