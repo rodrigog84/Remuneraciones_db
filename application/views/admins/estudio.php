@@ -40,9 +40,9 @@
 																		</tr> 
 																	</thead> 
 																	<tbody> 
-												                      <?php if(count($estudio) > 0 ){ ?>
+												                      <?php if(count($estudios) > 0 ){ ?>
 												                        <?php $i = 1; ?>
-												                        <?php foreach ($estudio as $estudio) { ?>																	
+												                        <?php foreach ($estudios as $estudio) { ?>																	
 																		<tr class="active" id="variable">
 																			<td><?php echo $i ;?></td>
 																			<td><?php echo $estudio->nombre;?></td> 

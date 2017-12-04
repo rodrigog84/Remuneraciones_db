@@ -73,7 +73,7 @@ class Estudios extends CI_Controller {
 
 			
 			$vars['content_menu'] = $content;				
-			$vars['content_view'] = 'admins/estudios';
+			$vars['content_view'] = 'admins/estudio';
 			$vars['estudios'] = $estudio;
 			$vars['dataTables'] = true;
 			
