@@ -64,7 +64,7 @@ class Estudios extends CI_Controller {
 
 			
 
-			$estudio = $this->admin->get_estudio();
+			$estudio = $this->admin->get_estudios();
 
 			$content = array(
 						'menu' => 'Remuneraciones',

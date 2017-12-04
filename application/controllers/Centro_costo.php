@@ -59,10 +59,7 @@ class Centro_costo extends CI_Controller {
 				$vars['message'] = "Centro de Costos Eliminada correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';								
-			}
-
-
-			
+			}			
 
 			$centrocostos = $this->admin->get_centro_costo();
 

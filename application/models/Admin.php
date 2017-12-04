@@ -41,7 +41,7 @@ class Admin extends CI_Model
 	}
 
 	public function get_estudios($idestudios = null){
-		$centrodecosto_data = $this->db->select('id, idempresa, nombre, codigo, valido, fecha')
+		$estudio_data = $this->db->select('id, idempresa, nombre, codigo, valido, fecha')
 						  ->from('rem_estudios a')
 						  ->where('a.valido = 1')
 						  ->order_by('a.nombre');
