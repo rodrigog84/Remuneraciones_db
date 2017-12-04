@@ -72,7 +72,8 @@ class CI_DB_sqlsrv_driver extends CI_DB {
 		if(empty($connection['UID']) && empty($connection['PWD'])) {
 			unset($connection['UID'], $connection['PWD']);
 		}
-		
+		//$aa = sqlsrv_connect($this->hostname, $connection);
+		//print_r(sqlsrv_errors()); exit;
 		return sqlsrv_connect($this->hostname, $connection);
 		//$aa = sqlsrv_connect($this->hostname, $connection);
 		//print_r(sqlsrv_errors());

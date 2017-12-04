@@ -133,6 +133,71 @@ class Admins extends CI_Controller {
 	}
 
 
+    public function isapre()
+	{	
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			$resultid = $this->session->flashdata('isapre_result');
+			if($resultid == 1){
+				$vars['message'] = "Isapre Agregada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';				
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al agregar Isapre. Isapre ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 3){
+				$vars['message'] = "Isapre Editada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['ico n'] = 'fa-check';				
+			}elseif($resultid == 4){
+				$vars['message'] = "Error al eliminar Isapre. Isapre no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';				
+			}elseif($resultid == 5){
+				$vars['message'] = "Isapre Eliminada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';								
+			}
+
+
+			
+
+			$isapres = $this->admin->get_isapre();
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Administraci&oacute;n de Isapre');
+
+			
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'admins/isapre';
+			$vars['isapres'] = $isapres;
+			$vars['dataTables'] = true;
+			
+			
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+
 	public function add_afp($idafp = 0)
 	{
 
@@ -223,6 +288,43 @@ class Admins extends CI_Controller {
 
 	}
 
+    public function submit_isapre(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$nombre = $this->input->post('nombre');	
+			$codprevired = $this->input->post('codprevired');	
+			$idisapre = $this->input->post('idisapre');
+
+			$array_datos = array(
+								'nombre' => $nombre,
+								'codprevired' => $codprevired,
+								'idisapre' => $idisapre);
+
+
+			$result = $this->admin->add_isapre($array_datos);
+
+			if($result == -1){
+				$this->session->set_flashdata('isapre_result', 2);	
+			}else{
+				if($idisapre == 0){
+					$this->session->set_flashdata('isapre_result', 1);	
+				}else{
+					$this->session->set_flashdata('isapre_result', 3);	
+				}
+			}
+
+			
+			redirect('admins/isapre');	
+
+
+		}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}
 
 	public function delete_afp($idafp = 0)
 	{

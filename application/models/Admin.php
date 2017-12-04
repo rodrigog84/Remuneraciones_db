@@ -55,6 +55,18 @@ class Admin extends CI_Model
 	}	
 
 
+    public function get_isapre($idisapre = null){
+		$isapre_data = $this->db->select('id, nombre, active, codprevired')
+						  ->from('rem_isapre a')
+						  ->where('a.active = 1')
+						  ->order_by('a.nombre')
+		                  ->order_by('a.codprevired');
+		$isapre_data = is_null($idisapre) ? $isapre_data : $isapre_data->where('a.id',$idisapre);  		                  
+		$query = $this->db->get();
+
+		$datos = is_null($idisapre) ? $query->result() : $query->row();
+		return $datos;
+	}	
 
 	public function add_afp($array_datos){
 
