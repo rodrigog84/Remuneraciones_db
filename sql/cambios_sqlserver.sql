@@ -286,3 +286,16 @@ INSERT INTO rem_paises (id,iso,nombre) VALUES(237, 'YE', 'Yemen');
 INSERT INTO rem_paises (id,iso,nombre) VALUES(238, 'DJ', 'Yibuti');
 INSERT INTO rem_paises (id,iso,nombre) VALUES(239, 'ZM', 'Zambia');
 INSERT INTO rem_paises (id,iso,nombre) VALUES(240, 'ZW', 'Zimbabue');
+
+
+## CREACION TABLA IDIOMAS
+CREATE TABLE rem_idioma (
+id int primary key identity,
+nombre varchar(80) DEFAULT NULL,
+valido tinyint,
+fecha datetime default getdate()
+)
+
+
+INSERT INTO rem_idioma (nombre,valido) VALUES('Español',1);
+INSERT INTO rem_idioma (nombre,valido) VALUES('Ingles',1);
