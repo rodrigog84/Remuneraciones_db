@@ -64,7 +64,7 @@ class Estudios extends CI_Controller {
 
 			
 
-			$estudio = $this->admin->get_estudios();
+			$estudio = $this->Admin->get_estudios();
 
 			$content = array(
 						'menu' => 'Remuneraciones',
@@ -73,8 +73,8 @@ class Estudios extends CI_Controller {
 
 			
 			$vars['content_menu'] = $content;				
-			$vars['content_view'] = 'Estudios/estudios';
-			$vars['estudios'] = $estudios;
+			$vars['content_view'] = 'admins/estudios';
+			$vars['estudios'] = $estudio;
 			$vars['dataTables'] = true;
 			
 			
