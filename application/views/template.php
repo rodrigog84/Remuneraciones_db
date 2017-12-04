@@ -25,7 +25,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="<?php echo base_url();?>js/serial.js"></script>	
 <script src="<?php echo base_url();?>js/light.js"></script>	
 <script src="<?php echo base_url();?>js/radar.js"></script>	
-<link href="<?php echo base_url();?>css/barChart.css" rel='stylesheet' type='text/css' />
+<!--link href="<?php echo base_url();?>css/barChart.css" rel='stylesheet' type='text/css' /-->
 <link href="<?php echo base_url();?>css/fabochart.css" rel='stylesheet' type='text/css' />
 <!--clock init-->
 <script src="<?php echo base_url();?>js/css3clock.js"></script>

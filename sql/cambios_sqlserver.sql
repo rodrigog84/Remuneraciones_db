@@ -312,6 +312,8 @@ fecha datetime default getdate()
 
 
 
+
+
 INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase A1',1);
 INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase A2',1);
 INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase A3',1);
@@ -322,3 +324,46 @@ INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase C',1);
 INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase D',1);
 INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase E',1);
 INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase F',1);
+
+
+
+## CREACION TABLA ESTUDIOS
+CREATE TABLE rem_estudios (
+id int primary key identity,
+nombre varchar(80) DEFAULT NULL,
+valido tinyint,
+fecha datetime default getdate()
+)
+
+INSERT INTO rem_estudios (nombre,valido) VALUES('Basico',1);
+INSERT INTO rem_estudios(nombre,valido) VALUES('Medio',1);
+INSERT INTO rem_estudios (nombre,valido) VALUES('Superior Incompleto',1);
+INSERT INTO rem_estudios (nombre,valido) VALUES('Superior Completo',1);
+
+## AGREGA CAMPOS FICHA
+
+alter table rem_personal add numficha int;
+alter table rem_personal add idnacionalidad int;
+alter table rem_personal add tiporenta varchar(30);
+alter table rem_personal add idestudio int;
+alter table rem_personal add titulo varchar(100);
+alter table rem_personal add ididioma int;
+alter table rem_personal add idjefe int;
+alter table rem_personal add idlicencia int;
+alter table rem_personal add tipodocumento varchar(50);
+alter table rem_personal add tallapolera varchar(10);
+alter table rem_personal add tallapantalon varchar(10);
+alter table rem_personal add idcentrocosto int;
+alter table rem_personal add cbeneficio varchar(100);
+alter table rem_personal add idreemplazo int;
+
+
+insert into rem_app 
+(funcion,nombre,menuid,visible,valid,orden)
+values
+('rrhh/submit_trabajador',NULL,4,0,1,NULL)
+
+insert into rem_role
+(appid,levelid)
+values
+(48,2)

@@ -474,6 +474,43 @@ public function get_bonos($idtrabajador = null){
 		return $query->result();
 	}
 
+	public function get_licencia_conducir($idlicencia = null){
+
+			$licencia_data = $this->db->select('id, nombre')	
+						  ->from('rem_licencia_conducir')
+						  ->where('valido',1)
+		                  ->order_by('nombre');
+		$licencia_data = is_null($idlicencia) ? $licencia_data : $licencia_data->where('id',$idlicencia);  		                  
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function get_estudios($idestudio = null){
+
+			$estudios_data = $this->db->select('id, nombre')	
+						  ->from('rem_estudios')
+						  ->where('valido',1)
+		                  ->order_by('nombre');
+		$estudios_data = is_null($idestudio) ? $estudios_data : $estudios_data->where('id',$idestudio);  		                  
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+
+	public function get_centro_costo($idcentrocosto = null){
+
+			$centrocosto_data = $this->db->select('id, nombre, codigo')	
+						  ->from('rem_centro_costo')
+						  ->where('valido',1)
+						  ->where('idempresa',$this->session->userdata('empresaid'))
+		                  ->order_by('nombre');
+		$centrocosto_data = is_null($idcentrocosto) ? $centrocosto_data : $centrocosto_data->where('id',$idcentrocosto);  		                  
+		$query = $this->db->get();
+
+		return $query->result();
+	}	
+
+
 
 }
 

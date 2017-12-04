@@ -1,4 +1,17 @@
-<!--sub-heard-part--><form id="basicBootstrapForm" action="<?php echo base_url();?>remuneraciones/submit_trabajador" id="basicBootstrapForm" method="post">
+<?php if(isset($message)): ?>
+     <div class="row">
+        <div class="col-md-12">
+                  <div class="alert alert-<?php echo $classmessage; ?> alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4><i class="icon fa <?php echo $icon;?>"></i> Alerta!</h4>
+                <?php echo $message;?>
+              </div>
+    </div>            
+  </div>
+  <?php endif; ?>
+
+
+<!--sub-heard-part--><form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_trabajador" id="basicBootstrapForm" method="post">
 <!--sub-heard-part-->
 								<div class="sub-heard-part">
 									<ul class="nav nav-tabs">
@@ -43,7 +56,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="rut" id="rut"  class="form-control1" id="" placeholder="98.123.456-7" title="Escriba Rut" required"Escriba Rut">
+																<input type="text" name="rut" id="rut"  class="form-control1"  placeholder="98.123.456-7" title="Escriba Rut" >
 															</td>
 															<td>
 																<input type="text" name="numficha" id="numficha" class="form-control1" id="" placeholder="Número de Ficha">
@@ -85,7 +98,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" id="datepicker" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" required=""/>
+																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" id="datepicker" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
 																<select name="nacionalidad" id="nacionalidad" class="form-control1">
@@ -201,10 +214,11 @@
 														<tbody>
 															<td>
 																<select name="estudios" id="estudios" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
+																	<option>Seleccione Nivel Educacional</option>
+						                                    		<?php foreach ($estudios as $estudio) { ?>
+								                                      <?php $estudioselected = $estudio->id == $datos_form['idestudio'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $estudio->id;?>" <?php echo $estudioselected;?> ><?php echo $estudio->nombre;?></option>
+								                                    <?php } ?>
 																</select>
 															</td>
 															<td>
@@ -263,11 +277,12 @@
 														</thead>
 														<tbody>
 															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
+																<select name="licencia" id="licencia" class="form-control1">
+																	<option>Seleccione Tipo Licencia</option>
+						                                    		<?php foreach ($licencias as $licencia) { ?>
+								                                      <?php $licenciaselected = $licencia->id == $datos_form['idlicencia'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $licencia->id;?>" <?php echo $licenciaselected;?> ><?php echo $licencia->nombre;?></option>
+								                                    <?php } ?>
 																</select>
 															</td>
 															<td>
@@ -292,7 +307,13 @@
 																<input type="text" name="tipo_documento" id="tipo_documento" class="form-control1" placeholder="Tipo de Documento">
 															</td>
 															<td>
-																<input type="text" name="centro_costo" id="centro_costo" class="form-control1" placeholder="Centro de Costo">
+																<select name="centro_costo" id="centro_costo" class="form-control1">
+																	<option>Seleccione Centro Costo</option>
+						                                    		<?php foreach ($centros_costo as $centro_costo) { ?>
+								                                      <?php $centrocostoselected = $centro_costo->id == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $centro_costo->id;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
+								                                    <?php } ?>
+																</select>
 															</td>
 														</tbody>
 													</table>
@@ -310,7 +331,7 @@
 																<input type="text" name="beneficio" id="beneficio" class="form-control1" placeholder="C de Beneficio">
 															</td>
 															<td>
-																<input type="text" name="numero_celular" id="numero_celular" class="form-control1" placeholder="Número de Celular">
+																<input type="text" name="fono" id="fono" class="form-control1" placeholder="Número de Celular">
 															</td>
 														</tbody>
 													</table>
@@ -369,13 +390,13 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" required=""/>
+																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
-																<input placeholder="Fecha Retiro" class="form-control1" id="datepicker3" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" required=""/>
+																<input placeholder="Fecha Retiro" class="form-control1" id="datepicker3" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
-																<input placeholder="Fecha de Finiquito" class="form-control1" id="datepicker4" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" required=""/>
+																<input placeholder="Fecha de Finiquito" class="form-control1" id="datepicker4" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 		
 														</tbody>
@@ -468,10 +489,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Real" class="form-control1" id="fecha_real" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" required=""/>
+																<input placeholder="Fecha Real" class="form-control1" id="fecha_real" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
-																<input placeholder="1er Vencimiento" class="form-control1" id="vencimiento_1" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" required=""/>
+																<input placeholder="1er Vencimiento" class="form-control1" id="vencimiento_1" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 														</tbody>
 													</table>
@@ -543,10 +564,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Incorp.AFP" class="form-control1" id="datepicker5" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" required=""/>
+																<input placeholder="Fecha Incorp.AFP" class="form-control1" id="datepicker5" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
-																<input placeholder="Fecha Seguro Cesantia" class="form-control1" id="datepicker6" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" required=""/>
+																<input placeholder="Fecha Seguro Cesantia" class="form-control1" id="datepicker6" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 														</tbody>
 													</table>
@@ -581,7 +602,7 @@
 															</td>
 
 															<td>
-																<input placeholder="Vencimiento Plan" class="form-control1" id="datepicker9" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" required=""/>
+																<input placeholder="Vencimiento Plan" class="form-control1" id="datepicker9" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 														</tbody>
 													</table>
@@ -616,10 +637,10 @@
 																<input type="text" name="estado_apvc" class="form-control1" id="estado_apvc" placeholder="Estado APVC">
 															</td>
 															<td>
-																<input placeholder="Fecha APVC" class="form-control1" id="datepicker10" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" required=""/>
+																<input placeholder="Fecha APVC" class="form-control1" id="datepicker10" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
-																<input placeholder="Término de Subsidio" class="form-control1" id="datepicker11" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" required=""/>
+																<input placeholder="Término de Subsidio" class="form-control1" id="datepicker11" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 														</tbody>
 													</table>
@@ -693,7 +714,7 @@
 																<input type="text" name="cta_bancaria" class="form-control1" id="cta_bancaria" placeholder="Nº Cuenta Bancaria">
 															</td>
 															<td>
-																<input type="text" name="rut" class="form-control1" id="rut" placeholder="Rut">
+																<input type="text" name="rutfp" class="form-control1" id="rutfp" placeholder="Rut">
 															</td>
 														</tbody>
 													</table>
@@ -707,10 +728,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="nombre" class="form-control1" id="nombre" placeholder="Nombre Completo">
+																<input type="text" name="nombrefp" class="form-control1" id="nombrefp" placeholder="Nombre Completo">
 															</td>
 															<td>
-																<input type="text" name="email" class="form-control1" id="email" placeholder="Email">
+																<input type="text" name="emailfp" class="form-control1" id="emailfp" placeholder="Email">
 															</td>
 														</tbody>
 													</table>
@@ -770,7 +791,7 @@
 																<input type="text" name="codigo_anexo" class="form-control1" id="codigo_anexo" placeholder="Código de Anexo">
 															</td>
 															<td>
-																<input placeholder="2do Vencimiento" class="form-control1" id="datepicker12" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" required=""/>
+																<input placeholder="2do Vencimiento" class="form-control1" id="datepicker12" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 														</tbody>
 													</table>
@@ -885,8 +906,8 @@
 										</div>
 										<br>
 										<br>
-										<a href="#" type="button" class="btn btn-info">Guardar</a>
-										<a href="colaborador.html" type="button" class="btn btn-success">Volver</a>	
+										<input type="submit" class="btn btn-info" value="Guardar">
+										<a href="<?php echo base_url();?>rrhh/mantencion_personal" class="btn btn-success">Volver</a>	
 									</div>
 								</div>
 
