@@ -299,3 +299,26 @@ fecha datetime default getdate()
 
 INSERT INTO rem_idioma (nombre,valido) VALUES('Español',1);
 INSERT INTO rem_idioma (nombre,valido) VALUES('Ingles',1);
+
+
+## CREACION TABLA LICENCIA CONDUCIR
+
+CREATE TABLE rem_licencia_conducir (
+id int primary key identity,
+nombre varchar(80) DEFAULT NULL,
+valido tinyint,
+fecha datetime default getdate()
+)
+
+
+
+INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase A1',1);
+INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase A2',1);
+INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase A3',1);
+INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase A4',1);
+INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase A5',1);
+INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase B',1);
+INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase C',1);
+INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase D',1);
+INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase E',1);
+INSERT INTO rem_licencia_conducir (nombre,valido) VALUES('Clase F',1);
