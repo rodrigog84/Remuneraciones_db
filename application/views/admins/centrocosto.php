@@ -40,9 +40,9 @@
 																		</tr> 
 																	</thead> 
 																	<tbody> 
-												                      <?php if(count($centrocosto) > 0 ){ ?>
+												                      <?php if(count($centrocostos) > 0 ){ ?>
 												                        <?php $i = 1; ?>
-												                        <?php foreach ($centrocostos as $centrocosto) { ?>																	
+												                        <?php foreach ($$centrocostos as $centrocosto) { ?>																	
 																		<tr class="active" id="variable">
 																			<td><?php echo $i ;?></td>
 																			<td><?php echo $centrodecosto->nombre;?></td> 
