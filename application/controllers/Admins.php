@@ -33,10 +33,6 @@ class Admins extends CI_Controller {
 		redirect('main/dashboard');	
 	}
 
-
-
-
-
 	public function submit_personal_afp(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
@@ -411,7 +407,7 @@ class Admins extends CI_Controller {
 
 	}	
 
-			public function submit_impuesto_unico()
+	public function submit_impuesto_unico()
 			{
 
 

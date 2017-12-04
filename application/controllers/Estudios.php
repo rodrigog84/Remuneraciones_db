@@ -18,7 +18,7 @@ class Estudios extends CI_Controller {
       			$this->session->set_userdata('menu_list',json_decode($this->ion_auth_model->get_menu($this->session->userdata('user_id'))));
       		}
 
-      		if($this->router->fetch_class()."/".$this->router->fetch_method() != "main/dashboard" && !$this->session->userdata('comunidadid') && ($this->session->userdata('level') == 1)){
+      		if($this->router->fetch_class()."/".$this->router->fetch_method() != "main/dashboard" && !$this->session->userdata('comunidadid') && ($this->session->userdata('level') == 2)){
       			redirect('main/dashboard');	      			
       		}
       }
@@ -73,7 +73,7 @@ class Estudios extends CI_Controller {
 
 			
 			$vars['content_menu'] = $content;				
-			$vars['content_view'] = 'admins/estudios';
+			$vars['content_view'] = 'Estudios/estudios';
 			$vars['estudios'] = $estudios;
 			$vars['dataTables'] = true;
 			
@@ -164,7 +164,7 @@ class Estudios extends CI_Controller {
 								'idestudios' => $idestudios);
 
 
-			$result = $this->admin->add_estudio($array_datos);
+			$result = $this->admin->add_estudios($array_datos);
 
 			if($result == -1){
 				$this->session->set_flashdata('estudio_result', 2);	
@@ -172,7 +172,7 @@ class Estudios extends CI_Controller {
 				if($idestudios == 0){
 					$this->session->set_flashdata('estudio_result', 1);	
 				}else{
-					$this->session->set_flashdata('estudioo_result', 3);	
+					$this->session->set_flashdata('estudio_result', 3);	
 				}
 			}
 
@@ -190,7 +190,7 @@ class Estudios extends CI_Controller {
 	}
 
 
-	public function delete_estudio($idestudios = 0)
+	public function delete_estudios($idestudios = 0)
 	{
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
@@ -204,7 +204,7 @@ class Estudios extends CI_Controller {
 				
 			}
 
-			redirect('admins/estudio');	
+			redirect('Estudios/estudio');	
 
 		}else{
 			$content = array(

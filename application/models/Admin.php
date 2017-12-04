@@ -40,6 +40,93 @@ class Admin extends CI_Model
 		$this->load->helper('format');
 	}
 
+	public function get_estudios($idestudios = null){
+		$centrodecosto_data = $this->db->select('id, idempresa, nombre, codigo, valido, fecha')
+						  ->from('rem_estudios a')
+						  ->where('a.valido = 1')
+						  ->order_by('a.nombre');
+		$estudio_data = is_null($idestudios) ? $estudio_data : $estudio_data->where('a.id',$idestudios);  		                  
+		$query = $this->db->get();
+
+		$datos = is_null($idestudios) ? $query->result() : $query->row();
+		return $datos;
+	}
+
+	public function add_estudios($array_datos){
+
+
+		$this->db->select('a.id')
+						  ->from('rem_estudios as a')
+		                  ->where('upper(a.nombre)', strtoupper($array_datos['nombre']))
+		                  ->where('a.valido = 1');		
+
+		$query = $this->db->get();
+		$datos = $query->row();
+		if(count($datos) == 0){ // nueva afp  no existe
+			if($array_datos['idestudios'] == 0){
+				$data = array(
+			      	'nombre' => $array_datos['nombre'],
+			      	'idempresa' => $array_datos['idempresa'],
+			      	'codigo' => $array_datos['codigo'],
+			      	'valido' => 1,
+			      	'fecha' => date('Ymd H:i:s')			      	
+				);
+
+				$this->db->insert('rem_estudios', $data);
+				$idafp = $this->db->insert_id();
+
+				return 1;
+			}else{
+				$data = array(
+			      	'nombre' => $array_datos['nombre'],
+			      	'idempresa' => $array_datos['idempresa'],
+			      	'codigo' => $array_datos['codigo'],
+			      	'valido' => 1,
+				);
+
+				$this->db->where('id', $array_datos['idestudios']);
+				$this->db->update('rem_estudios',$data); 
+				return 1;
+			}
+		}else{ // ya existe proveedor nuevo
+
+			if($array_datos['idestudios'] != 0){
+				$data = array(
+			      	'nombre' => $array_datos['nombre'],
+			      	'idempresa' => $array_datos['idempresa'],
+			      	'codigo' => $array_datos['codigo'],
+			      	'valido' => 1,		      	
+				);
+
+
+				$this->db->where('id', $array_datos['idestudios']);
+				$this->db->update('rem_estudios',$data); 
+				return 1;
+			}else{
+				return -1;	
+			}
+			
+		}
+
+	}
+
+	public function delete_estudios($idestudios){
+
+
+		$this->db->where('id', $idestudios);
+		$this->db->update('rem_estudios',array('valido' => '0')); 
+
+		return 1;
+		/*if($this->db->affected_rows() > 0){ 
+			return 1;
+		}else{ 
+			return -1;
+		}*/
+
+
+
+	}
+
 	public function get_centrodecosto($idcentrodecosto = null){
 		$centrodecosto_data = $this->db->select('id, idempresa, nombre, codigo, valido, fecha')
 						  ->from('rem_centro_costo a')
@@ -50,10 +137,7 @@ class Admin extends CI_Model
 
 		$datos = is_null($idcentrodecosto) ? $query->result() : $query->row();
 		return $datos;
-	}	
-
-
-
+	}
 
 	public function add_centrodecosto($array_datos){
 
@@ -111,15 +195,13 @@ class Admin extends CI_Model
 			
 		}
 
-	}	
-
-
+	}
 
 	public function delete_centrodecosto($idcentrodecosto){
 
 
 		$this->db->where('id', $idcentrodecosto);
-		$this->db->update('rem_centro_costo',array('active' => '0')); 
+		$this->db->update('rem_centro_costo',array('valido' => '0')); 
 
 		return 1;
 		/*if($this->db->affected_rows() > 0){ 
@@ -576,18 +658,6 @@ public function get_bonos($idtrabajador = null){
 		$query = $this->db->get();
 		return $query->result();
 	}
-
-	public function get_estudios($idestudio = null){
-
-			$estudios_data = $this->db->select('id, nombre')	
-						  ->from('rem_estudios')
-						  ->where('valido',1)
-		                  ->order_by('nombre');
-		$estudios_data = is_null($idestudio) ? $estudios_data : $estudios_data->where('id',$idestudio);  		                  
-		$query = $this->db->get();
-		return $query->result();
-	}
-
 
 	public function get_centro_costo($idcentrocosto = null){
 
