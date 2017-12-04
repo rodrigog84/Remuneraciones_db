@@ -34,11 +34,11 @@ class Estudios extends CI_Controller {
 	}
 
 	
-	public function estudios()
+	public function estudio()
 	{	
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-			$resultid = $this->session->flashdata('estudios_result');
+			$resultid = $this->session->flashdata('estudio_result');
 			if($resultid == 1){
 				$vars['message'] = "Estudios Agregada correctamente";
 				$vars['classmessage'] = 'success';
@@ -177,7 +177,7 @@ class Estudios extends CI_Controller {
 			}
 
 			
-			redirect('Estudios/estudios');	
+			redirect('Estudios/estudio');	
 
 
 		}else{
@@ -224,7 +224,7 @@ class Estudios extends CI_Controller {
 	public function get_estudio($idestudios = null){
 
 
-		$datos = $this->admin->get_estudio($idestudios);
+		$datos = $this->admin->get_estudios($idestudios);
 
 		//print_r($datos);
 		echo json_encode($datos);

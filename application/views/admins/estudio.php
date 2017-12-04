@@ -51,7 +51,7 @@
 																			<td>
 																				<a href="#" data-idestudios="<?php echo $estudio->id;?>" class="btn btn-info edit-estudio" id="opciones" data-toggle="modal" data-target="#myModal_ESTUDIO" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
         																		
-        																		<a href="<?php echo base_url();?>estudios/delete_estudio/<?php echo $estudio->id;?>" data-toggle="tooltip"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
+        																		<a href="<?php echo base_url();?>estudios/delete_estudios/<?php echo $estudio->id;?>" data-toggle="tooltip"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
 																			</td> 
 																			
 																		</tr> 
