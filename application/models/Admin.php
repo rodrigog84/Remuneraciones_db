@@ -48,6 +48,9 @@ class Admin extends CI_Model
 		$estudio_data = is_null($idestudios) ? $estudio_data : $estudio_data->where('a.id',$idestudios);  		                  
 		$query = $this->db->get();
 
+		//echo $this->db->last_query();
+		//exit;
+
 		$datos = is_null($idestudios) ? $query->result() : $query->row();
 		return $datos;
 	}
