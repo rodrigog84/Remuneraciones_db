@@ -545,12 +545,13 @@
 																</select>
 															</td>
 															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
-																</select>
+																<select name="afp" id="afp" class="form-control1">
+																	<option>Seleccione AFP</option>
+						                                    		<?php foreach ($afps as $afp) { ?>
+								                                      <?php $afpselected = $afp->id == $datos_form['idafp'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $afp->id;?>" <?php echo $afpselected;?> ><?php echo $afp->nombre;?></option>
+								                                    <?php } ?>
+								                                   </select>
 															</td>
 														</tbody>
 													</table>
@@ -584,7 +585,13 @@
 																<input type="text" name="cese" class="form-control1" id="cese" placeholder="Cese AFC">
 															</td>
 															<td>
-																<input type="text" name="isapre" class="form-control1" id="isapre" placeholder="Isapre">
+																<select name="isapre" id="isapre" class="form-control1">
+																	<option>Seleccione Isapre</option>
+						                                    		<?php foreach ($isapres as $isapre) { ?>
+								                                      <?php $isapreselected = $isapre->id == $datos_form['idisapre'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $isapre->id;?>" <?php echo $isapreselected;?> ><?php echo $isapre->nombre;?></option>
+								                                    <?php } ?>
+								                                   </select>
 															</td>
 														</tbody>
 													</table>

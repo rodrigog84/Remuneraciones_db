@@ -186,6 +186,8 @@ class Rrhh extends CI_Controller {
 			$licencias = $this->admin->get_licencia_conducir();
 			$estudios = $this->admin->get_estudios();
 			$centros_costo = $this->admin->get_centro_costo();
+			$afps = $this->admin->get_afp();
+			$isapres = $this->admin->get_isapre();
 			
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 
@@ -263,6 +265,8 @@ class Rrhh extends CI_Controller {
 			$vars['estudios'] = $estudios;
 			$vars['centros_costo'] = $centros_costo;
 			$vars['tramos_asig_familiar'] = $tramos_asig_familiar;
+			$vars['afps'] = $afps;
+			$vars['isapres'] = $isapres;
 			$vars['content_view'] = 'rrhh/add_trabajador';
 			$vars['datos_form'] = $datos_form;
 			$vars['bonos'] = $bonos;
@@ -318,6 +322,10 @@ class Rrhh extends CI_Controller {
 			$idcentrocosto = $this->input->post('centro_costo');
 			$cbeneficio = $this->input->post('beneficio');
 			$fono = $this->input->post('fono');
+			$afp = $this->input->post('afp');
+			$isapre = $this->input->post('isapre');
+			$sueldo_base = $this->input->post('sueldo_base');
+			
 
 
 			/*$idregion = $this->input->post('region');
@@ -376,6 +384,9 @@ class Rrhh extends CI_Controller {
 								'idcentrocosto' => $idcentrocosto,
 								'cbeneficio' => $cbeneficio,
 								'fono' => $fono,
+								'idafp' => $afp,
+								'idisapre' => $isapre,
+								'sueldobase' => $sueldo_base,
 								
 								//DATOS POR DEFECTO
 								'idregion' => 1,
@@ -394,7 +405,7 @@ class Rrhh extends CI_Controller {
 								'diastrabajo' => 30,
 								'horasdiarias' => 8,
 								'horassemanales' => 45,
-								'sueldobase' => 250000,
+								//'sueldobase' => 250000,
 								'tipogratificacion' => 'SG',
 								'gratificacion' => 0,
 								'cargassimples' => 0,
@@ -405,7 +416,10 @@ class Rrhh extends CI_Controller {
 								'asigfamiliar' => 0,
 								'movilizacion' => 0,
 								'colacion' => 0,
-								'active' => 1
+								'active' => 1,
+
+								//OTROS
+								'adicafp' => 0,
 
 
 
