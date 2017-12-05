@@ -235,6 +235,10 @@ class Rrhh extends CI_Controller {
 								'sueldobase' => is_null($idtrabajador) ? "" : number_format($trabajador->sueldobase,0,".","."),
 								'tipogratificacion' => is_null($idtrabajador) ? "" : $trabajador->tipogratificacion,
 								'gratificacion' => is_null($idtrabajador) ? "" : number_format($trabajador->gratificacion,0,".","."),
+
+
+
+
 								'cargassimples' => is_null($idtrabajador) ? "" : $trabajador->cargassimples,
 								'cargasinvalidas' => is_null($idtrabajador) ? "" : $trabajador->cargasinvalidas,
 								'cargasmaternales' => is_null($idtrabajador) ? "" : $trabajador->cargasmaternales,
@@ -371,7 +375,38 @@ class Rrhh extends CI_Controller {
 								'tipodocumento' => $tipodocumento,
 								'idcentrocosto' => $idcentrocosto,
 								'cbeneficio' => $cbeneficio,
+								'fono' => $fono,
 								
+								//DATOS POR DEFECTO
+								'idregion' => 1,
+								'idcomuna' => 1,
+								'fecingreso' => '2017-09-05',
+								'fecinicvacaciones' => '2017-09-05',
+								'saldoinicvacaciones' => 0,
+								'saldoinicvacprog' => 0,
+								'diasprogresivos' => 0,
+								'diasvactomados' => 0,
+								'diasprogtomados' => 0,
+								'tipocontrato' => 'I',
+								'parttime' => 0,
+								'segcesantia' => 0,
+								'pensionado' => 0,
+								'diastrabajo' => 30,
+								'horasdiarias' => 8,
+								'horassemanales' => 45,
+								'sueldobase' => 250000,
+								'tipogratificacion' => 'SG',
+								'gratificacion' => 0,
+								'cargassimples' => 0,
+								'cargasinvalidas' => 0,
+								'cargasmaternales' => 0,
+								'cargasretroactivas' => 0,
+								'idasigfamiliar' => NULL,
+								'asigfamiliar' => 0,
+								'movilizacion' => 0,
+								'colacion' => 0,
+								'active' => 1
+
 
 
 								/*'idregion' => $idregion,
@@ -415,7 +450,7 @@ class Rrhh extends CI_Controller {
 					$this->session->set_flashdata('personal_result', 6);
 				}
 			}
-			redirect('remuneraciones/personal');	
+			redirect('rrhh/mantencion_personal');	
 
 
 
