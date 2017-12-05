@@ -390,3 +390,7 @@ valido tinyint,
 fecha datetime default getdate()
 )
 
+
+update rem_app set menuid=3 where id=49
+
+delete from rem_app where id=9
