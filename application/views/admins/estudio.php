@@ -104,7 +104,7 @@ $('.edit-estudios').on('click',function(){
 
         $.ajax({
             type: "GET",
-            url: '<?php echo base_url();?>Estudios/get_estudios/'+idestudios,
+            url: '<?php echo base_url();?>Estudios/get_estudio/'+idestudios,
             async: false,
         }).success(function(response) {
 
