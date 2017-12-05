@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>IS RR.HH</title>
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>images/logo.ico">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Augment Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
@@ -25,7 +26,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="<?php echo base_url();?>js/serial.js"></script>	
 <script src="<?php echo base_url();?>js/light.js"></script>	
 <script src="<?php echo base_url();?>js/radar.js"></script>	
-<!--link href="<?php echo base_url();?>css/barChart.css" rel='stylesheet' type='text/css' /-->
+<link href="<?php echo base_url();?>css/barChart.css" rel='stylesheet' type='text/css' />
 <link href="<?php echo base_url();?>css/fabochart.css" rel='stylesheet' type='text/css' />
 <!--clock init-->
 <script src="<?php echo base_url();?>js/css3clock.js"></script>
@@ -86,7 +87,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<input type="text" value="Search" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Buscar';}" class="text"/>
 								<input type="submit" value="">
 							</form>
-							<div class="close"><img src="images/cross.png" /></div>
+							<div class="close"><img src="<?php echo base_url();?>images/cross.png" /></div>
 						</div>
 						<div class="srch"><button></button></div>
 						<script type="text/javascript">
@@ -114,7 +115,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										<li>
 											<a href="<?php echo base_url();?>auth/logout">
 												<div class="user_img">
-													<img src="images/cerrar.png" alt="cerrar">
+													<img src=" <?php echo base_url();?>images/cerrar.png" alt="cerrar">
 												</div>
 												<div class="notification_desc">
 												
@@ -213,7 +214,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<!--/sidebar-menu-->
 				<div class="sidebar-menu">
 					<header class="logo">
-					<a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="inicio.html"> <span id="logo"> <h1><?php echo $this->session->userdata('level') == 1 ? 'Configuraci&oacute;n' : 'IS RRHH';?></h1></span> 
+					<a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="<?php echo base_url();?>main/dashboard"> <span id="logo"> <h1><?php echo $this->session->userdata('level') == 1 ? 'Configuraci&oacute;n' : 'IS RRHH';?></h1></span> 
 					<!--<img id="logo" src="" alt="Logo"/>--> 
 				  </a> 
 				</header>
@@ -221,17 +222,35 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<!--/down-->
 			<?php if($this->session->userdata('level') == 2){ ?>
 			<div class="down">	
-				<p><?php echo $this->session->userdata('empresanombre'); ?></p>
+				
+				<a href="index.html"><img src="<?php echo base_url();?>images/admin.jpg"></a>
 				<ul>
-					<li><a class="tooltips" href="inicio.html"><span>Salir</span><i class="lnr lnr-power-switch"></i></a></li>
+					<li><a class="tooltips" href="perfil.html"><span>Perfil</span><i class="lnr lnr-user"></i></a></li>
+					<li><a class="tooltips" href="seleccion_empresa.html"><span>CerrarEmpr</span><i class="lnr lnr-power-switch"></i></a></li>
 				</ul>
+				<a href="#"><span class=" name-caret">Jasmin Leo</span></a>
+				<p><?php echo $this->session->userdata('empresanombre'); ?></p>
+			</div>			
+			<?php } ?>
+
+			<?php if($this->session->userdata('level') == 1){ ?>
+			<div class="down">	
+				
+				<a href="index.html"><img src="<?php echo base_url();?>images/admin.jpg"></a>
+				<ul>
+					<li><a class="tooltips" href="perfil.html"><span>Perfil</span><i class="lnr lnr-user"></i></a></li>
+					<li><a class="tooltips" href="<?php echo base_url();?>auth/logout"><span>Cerrar</span><i class="lnr lnr-power-switch"></i></a></li>
+				</ul>
+				<a href="#"><span class=" name-caret">Jasmin Leo</span></a>
+				
 			</div>			
 			<?php } ?>
 			
 							   <!--//down-->
                            <div class="menu">
 									<ul id="menu" >
-										<li><a href="<?php echo base_url();?>main/dashboard"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+										<li><a href="<?php echo base_url();?>main/dashboard"><i class="fa fa-bars"></i>Menu</a></li>
+
 										<?php foreach ($this->session->userdata('menu_list') as $menu): ?>
 										                <?php 
 										                  if($menu->menuleaf == 0 && $menu->cant_visible > 0){
@@ -251,7 +270,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										                  <?php $angle_left = $menu->menuleaf == 0 ? "fa-angle-right" : ""; ?>
 										                  <li class="menu-academico">
 										                    <a href="<?php echo base_url().$menuhref; ?>">
-										                      <i class="fa <?php echo $menu->menuimg;?>"></i>
+										                      <i class="fa fa-table  <?php echo $menu->menuimg;?>"></i>
 										                      <span><?php echo $menu->menuname;?></span>
 										                      <span class="fa <?php echo $angle_left; ?>" style="float: right"></span>
 										                    </a>
@@ -299,6 +318,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="text/javascript" src="<?php echo base_url();?>js/CSSPlugin.min.js"></script>
 <script src="<?php echo base_url();?>js/jquery.nicescroll.js"></script>
 <script src="<?php echo base_url();?>js/scripts.js"></script>
+
+<!--datepickert-->
+<script src="<?php echo base_url();?>js/jquery-ui.js"></script>
+<link rel="stylesheet" href="<?php echo base_url();?>css/jquery-ui.css" />
+<!--datepickert-->
 
 <!-- Bootstrap Core JavaScript -->
    <script src="<?php echo base_url();?>js/bootstrap.min.js"></script>

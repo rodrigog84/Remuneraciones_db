@@ -8,12 +8,11 @@
  *
  */
 .datetimepicker {
-	padding: 4px;
-	margin-top: 1px;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	direction: ltr;
+	font-family: 'Open Sans', sans-serif;
+	background:rgba(64, 63, 69, 1);
+	color: #fff;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1.2em;
 }
 
 .datetimepicker-inline {

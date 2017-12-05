@@ -48,7 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'DESKTOP-LEUD44H\SQLEXPRESS';
+$db['default']['hostname'] = 'LAPTOP-S9V4TM1J';
 $db['default']['port'] = 1433; //'chilefor_admin21'
 $db['default']['username'] = ''; //'chilefor_admin21'
 $db['default']['password'] = ''; //'^o6_5+TGP8JK';
