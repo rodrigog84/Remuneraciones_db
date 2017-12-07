@@ -294,7 +294,7 @@ class Rrhh extends CI_Controller {
 	public function submit_trabajador(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 			//echo "<pre>";
-			//print_r($this->input->post(NULL,true)); 
+			//print_r($this->input->post(NULL,true));  EXIT;
 			$idtrabajador = $this->input->post("idtrabajador");
        		$rut = str_replace(".","",$this->input->post("rut"));
 			$arrayRut = explode("-",$rut);
@@ -405,7 +405,7 @@ class Rrhh extends CI_Controller {
 								'diastrabajo' => 30,
 								'horasdiarias' => 8,
 								'horassemanales' => 45,
-								'sueldobase' => 250000,
+								//'sueldobase' => 250000,
 								'tipogratificacion' => 'SG',
 								'gratificacion' => 0,
 								'cargassimples' => 0,
