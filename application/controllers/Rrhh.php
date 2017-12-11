@@ -480,5 +480,241 @@ class Rrhh extends CI_Controller {
 
 
 
+	public function calculo_remuneraciones($resultid = '')
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+			$resultid = $this->session->flashdata('calculo_remuneraciones_result');
+			if($resultid == 1){
+				$vars['message'] = "Remuneraciones calculadas correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al Calcular Remuneraciones. Falta informaci&oacute;n para per&iacute;odo seleccionado";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}else if($resultid == 3){
+				$vars['message'] = "Remuneracion aprobada";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';					
+			}else if($resultid == 4){
+				$vars['message'] = "Remuneracion rechazada.  Puede corregir los valores necesarios para calcular nuevamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';					
+			}
+			
+
+
+			$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos(); 
+
+			/*$personal = $this->remuneracion->get_personal(); 
+			
+			$array_remuneracion_trabajador = array();
+			$mensajes = array();
+			$mensaje_html = array();
+			foreach ($periodos_remuneracion as $periodos) {
+				$mensajes[$periodos->id] = array();
+
+				
+				$estado = "Informaci&oacute;n Completa";
+				if(is_null($periodos->cierre)){
+					foreach ($personal as $trabajador) {
+						if(is_null($trabajador->idafp)){
+		                   	   if(!in_array("Informaci&oacute;n Afp", $mensajes[$periodos->id])){
+		                   	   		array_push($mensajes[$periodos->id],"Informaci&oacute;n Afp");
+		                   	   }				
+		                       $estado = "Falta Informaci&oacute;n";
+		                   	   //break;
+		                }
+
+		                if(is_null($trabajador->tipoahorrovol)){						
+		                		
+		                   	   if(!in_array("Informaci&oacute;n Afp", $mensajes[$periodos->id])){
+		                   	   		array_push($mensajes[$periodos->id],"Informaci&oacute;n Afp");
+		                   	   }	                	
+		                       $estado = "Falta Informaci&oacute;n";
+		                   	   //break;
+						}
+
+
+						if(is_null($trabajador->idisapre)){						
+		                   	   if(!in_array("Informaci&oacute;n Cotizaci&oacute;n de Salud", $mensajes[$periodos->id])){
+		                   	   		array_push($mensajes[$periodos->id],"Informaci&oacute;n Cotizaci&oacute;n de Salud");
+		                   	   }	
+		                       $estado = "Falta Informaci&oacute;n";
+		                   	   //break;						                	
+						}
+
+						$datos_remuneracion = $this->remuneracion->get_datos_remuneracion($periodos->mes,$periodos->anno,$trabajador->id); 
+						if(count($datos_remuneracion) == 0){
+		                   	   if(!in_array("Informaci&oacute;n Asistencia", $mensajes[$periodos->id])){
+		                   	   		array_push($mensajes[$periodos->id],"Informaci&oacute;n Asistencia");
+		                   	   }										
+		                   	   if(!in_array("Informaci&oacute;n Descuentos", $mensajes[$periodos->id])){
+		                   	   		array_push($mensajes[$periodos->id],"Informaci&oacute;n Descuentos");
+		                   	   }										
+		                   	   if(!in_array("Informaci&oacute;n Horas Extras", $mensajes[$periodos->id])){
+		                   	   		array_push($mensajes[$periodos->id],"Informaci&oacute;n Horas Extras");
+		                   	   }		
+		                   	   if(!in_array("Informaci&oacute;n Anticipos/Aguinaldo", $mensajes[$periodos->id])){
+		                   	   		array_push($mensajes[$periodos->id],"Informaci&oacute;n Anticipos/Aguinaldo");
+		                   	   }												                   	   															
+		                       $estado = "Falta Informaci&oacute;n";
+		                   	   //break;
+						}else{
+							if(is_null($datos_remuneracion->diastrabajo)){
+		                   	   if(!in_array("Informaci&oacute;n Asistencia", $mensajes[$periodos->id])){
+		                   	   		array_push($mensajes[$periodos->id],"Informaci&oacute;n Asistencia");
+		                   	   }										
+		                       $estado = "Falta Informaci&oacute;n";
+		                   	   //break;
+							}
+
+							if( 
+							   is_null($datos_remuneracion->horasdescuento) || 
+							   is_null($datos_remuneracion->montodescuento)
+							   ){
+		                   	   if(!in_array("Informaci&oacute;n Descuentos", $mensajes[$periodos->id])){
+		                   	   		array_push($mensajes[$periodos->id],"Informaci&oacute;n Descuentos");
+
+		                   	   }										
+		                       $estado = "Falta Informaci&oacute;n";
+		                   	   //break;
+							}
+
+							if(is_null($datos_remuneracion->horasextras50) || 
+							   is_null($datos_remuneracion->montohorasextras50) || 
+							   is_null($datos_remuneracion->horasextras100) || 
+							   is_null($datos_remuneracion->montohorasextras100)
+							   ){
+		                   	   if(!in_array("Informaci&oacute;n Horas Extras", $mensajes[$periodos->id])){
+		                   	   		array_push($mensajes[$periodos->id],"Informaci&oacute;n Horas Extras");
+		                   	   }										
+		                       $estado = "Falta Informaci&oacute;n";
+		                   	   //break;
+							}
+
+							if(is_null($periodos->anticipo)){
+								if(is_null($datos_remuneracion->anticipo) || 
+								   is_null($datos_remuneracion->aguinaldo)){
+				                   	   if(!in_array("Informaci&oacute;n Anticipos/Aguinaldo", $mensajes[$periodos->id])){
+				                   	   		array_push($mensajes[$periodos->id],"Informaci&oacute;n Anticipos/Aguinaldo");
+				                   	   }										
+				                       $estado = "Falta Informaci&oacute;n";
+				                   	   //break;
+								}
+							}
+						} // end else
+
+
+					} // end foreach
+
+				}
+
+
+				$periodos->estado = $estado;
+
+				$mensaje_html[$periodos->id] = "";
+				if(count($mensajes[$periodos->id]) > 0){
+					$mensaje_html[$periodos->id] .= "<ul>";
+					foreach ($mensajes[$periodos->id] as $mensaje) {
+						$mensaje_html[$periodos->id] .= "<li>" . $mensaje . "</li>";
+					}
+					$mensaje_html[$periodos->id] .= "</ul>";
+				}
+			}
+	*/
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Calculo Remuneraci&oacute;n');
+
+			$vars['content_menu'] = $content;				
+			$vars['periodos_remuneracion'] = $periodos_remuneracion;	
+			//$vars['mensaje_html'] = $mensaje_html;	
+			$vars['content_view'] = 'rrhh/calculo_remuneraciones';
+
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+
+	public function submit_calculo_remuneraciones($idperiodo){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			set_time_limit(0);
+			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion_by_periodo($idperiodo); 
+
+			#SIGNIFICA QUE AÚN NO SE CARGA, POR TANTO SE CARGARÁN DATOS INICIALES
+			if(count($datos_remuneracion) == 0){
+				$this->rrhh_model->set_datos_iniciales_periodo_rem(12,2017); 
+				$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion_by_periodo($idperiodo); 
+			}
+
+			$periodo_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos($idperiodo); 
+
+			/*$estado = "Informaci&oacute;n Completa";
+			foreach ($datos_remuneracion as $remuneracion) {
+				if(is_null($remuneracion->diastrabajo) || 
+				   is_null($remuneracion->horasdescuento) || 
+				   is_null($remuneracion->montodescuento) || 
+				   is_null($remuneracion->horasextras50) || 
+				   is_null($remuneracion->montohorasextras50) || 
+				   is_null($remuneracion->horasextras100) || 
+				   is_null($remuneracion->montohorasextras100) || 
+				   (is_null($remuneracion->anticipo) && is_null($periodo_remuneracion->anticipo)) || 
+				   is_null($remuneracion->aguinaldo) && is_null($periodo_remuneracion->anticipo)){
+                   $estado = "Falta Informaci&oacute;n";
+               	   break;
+				}
+			}			
+		*/
+
+			//if($estado == 'Falta Informaci&oacute;n'){ // no permite calcular remuneraciones
+			//	$this->session->set_flashdata('calculo_remuneraciones_result', 2);
+			//	
+
+			//}else{
+				 $this->rrhh->calcular_remuneraciones($idperiodo); 
+				 $this->session->set_flashdata('calculo_remuneraciones_result', 1);
+
+			//}
+			redirect('rrhh/calculo_remuneraciones');	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}		
+
+
+
+
 }
 

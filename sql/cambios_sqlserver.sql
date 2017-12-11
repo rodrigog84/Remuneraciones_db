@@ -394,3 +394,80 @@ fecha datetime default getdate()
 update rem_app set menuid=3 where id=49
 
 delete from rem_app where id=9
+
+
+## CREA MENÚ DE CALCULO DE REMUNERACIONES
+insert into rem_app 
+(funcion,nombre,menuid,visible,valid,orden)
+values
+('rrhh/calculo_remuneraciones','Calculo Remuneraciones',8,1,1,4)
+
+
+
+insert into rem_role
+(appid,levelid)
+values
+(49,2)
+
+
+
+#INSERTA PERIODO DICIEMBRE
+insert into rem_periodo (mes,anno,inicial,fechacorte,updated_at)
+values (12,2017,0,null,getdate())
+
+
+
+insert into rem_app 
+(funcion,nombre,menuid,visible,valid,orden)
+values
+('rrhh/submit_calculo_remuneraciones',NULL,8,0,1,NULL)
+
+
+insert into rem_role
+(appid,levelid)
+values
+(50,2)
+
+alter table rem_remuneracion add idempresa bigint 
+
+
+update r
+set idempresa = p.idempresa
+from rem_remuneracion r
+inner join rem_personal p on
+r.idpersonal = p.id
+
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR ufperiodo
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR sueldobase
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR movilizacion
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR colacion
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR bonosimponibles
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR bonosnoimponibles
+ALTER TABLE rem_remuneracion ADD DEFAULT 30 FOR diastrabajo
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR valorhora
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR horasdescuento
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR montodescuento
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR valorhorasextras50
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR horasextras50
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR montohorasextras50
+
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR valorhorasextras100
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR horasextras100
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR montohorasextras100
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR anticipo
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR aguinaldo
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR aguinaldobruto
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR descuentos
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR prestamos
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR gratificacion
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR cargasretroactivas
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR montocargaretroactiva
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR asigfamiliar
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR totalhaberes
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR sueldoimponible
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR sueldonoimponible
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR cotizacionobligatoria
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR porccomafp
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR porcadicafp
+ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR comisionafp
+
