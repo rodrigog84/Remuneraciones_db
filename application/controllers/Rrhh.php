@@ -668,7 +668,6 @@ class Rrhh extends CI_Controller {
 			}
 
 			$periodo_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos($idperiodo); 
-
 			/*$estado = "Informaci&oacute;n Completa";
 			foreach ($datos_remuneracion as $remuneracion) {
 				if(is_null($remuneracion->diastrabajo) || 
@@ -691,7 +690,7 @@ class Rrhh extends CI_Controller {
 			//	
 
 			//}else{
-				 $this->rrhh->calcular_remuneraciones($idperiodo); 
+				 $this->rrhh_model->calcular_remuneraciones($idperiodo); 
 				 $this->session->set_flashdata('calculo_remuneraciones_result', 1);
 
 			//}

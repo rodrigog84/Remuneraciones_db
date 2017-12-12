@@ -471,3 +471,7 @@ ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR porccomafp
 ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR porcadicafp
 ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR comisionafp
 
+
+
+ALTER TABLE rem_remuneracion
+	ADD sueldoimponibleimposiciones INT

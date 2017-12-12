@@ -348,15 +348,14 @@ public function add_personal($array_datos,$idtrabajador){
 		//$periodo = $this->admin->get_periodo_by_id($idperiodo);
 		$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
 
-		$tabla_impuesto = $this->get_tabla_impuesto();
+		$tabla_impuesto = $this->admin->get_tabla_impuesto();
 		
 
 
-		$parametros = $this->get_parametros_generales();
+		$parametros = $this->admin->get_parametros_generales();
 		$monto_total_sueldos = 0;
 		$tope_legal_gratificacion = ($parametros->sueldominimo*4.75)/12;
 
-		$this->load->model('account');
 
 		$array_pago_afp = array();
 		$array_pago_isapre = array();
@@ -369,17 +368,18 @@ public function add_personal($array_datos,$idtrabajador){
 		$suma_impuesto = 0;
 		$tope_imponible = (int)($parametros->uf*$parametros->topeimponible);
 
-		$this->db->query('update rem_remuneracion r 
-						  inner join gc_personal p on r.idpersonal = p.id
-						  set r.active = 0
-						  where p.idempresa = ' . $this->session->userdata('empresaid') . ' and r.idperiodo = ' . $idperiodo );
+		$this->db->query('update r 
+							set r.active = 0
+							from rem_remuneracion r 
+						    inner join rem_personal p on r.idpersonal = p.id
+                            where p.idempresa = ' . $this->session->userdata('empresaid') . ' and r.idperiodo = ' . $idperiodo );
 
 		$personal = $this->get_personal(); 
 		foreach ($personal as $trabajador) { // calculo de sueldos por cada trabajador
 			$datos_remuneracion = $this->get_datos_remuneracion_by_periodo($idperiodo,$trabajador->id);
 
 			$datos_bonos = array();
-			//$datos_bonos = $this->get_bonos($trabajador->id);
+			//$datos_bonos = $this->get_bonos($trabajador->id); // se modifica esto porque aún no existen bonos
 			$bonos_imponibles = 0;
 			$bonos_no_imponibles = 0;
 
@@ -601,7 +601,8 @@ public function add_personal($array_datos,$idtrabajador){
 			//exit;
 
 
-			$datos_descuentos = $this->get_descuento($idperiodo,'D',$trabajador->id);
+			//$datos_descuentos = $this->get_descuento($idperiodo,'D',$trabajador->id);
+			$datos_descuentos = array();
 			$monto_descuento = 0;
 			foreach ($datos_descuentos as $info_descuento) {
 				$monto_descuento += $info_descuento->monto;
@@ -612,7 +613,8 @@ public function add_personal($array_datos,$idtrabajador){
 			}
 
 
-			$datos_prestamos = $this->get_descuento($idperiodo,'P',$trabajador->id);
+			//$datos_prestamos = $this->get_descuento($idperiodo,'P',$trabajador->id);
+			$datos_prestamos = array();
 			$monto_prestamos = 0;
 			foreach ($datos_prestamos as $info_prestamos) {
 				$monto_prestamos += $info_prestamos->monto;
@@ -648,7 +650,8 @@ public function add_personal($array_datos,$idtrabajador){
 			#Y POR DIAS NO TRABAJADOS, EL PROPORCIONAL AL SUELDO IMPONIBLE ANTEIOR.  SI NO EXISTE, EN BASE AL CONTRATO
 
 			#1.- VERIFICAR SI TIENE LICENCIA EN EL PERÍODO
-			$movimientos = $this->get_lista_movimientos($trabajador->id,null,$idperiodo,3);
+			//$movimientos = $this->get_lista_movimientos($trabajador->id,null,$idperiodo,3);
+			$movimientos = array();
 			$tiene_licencia = count($movimientos) > 0 ? true : false;
 
 			//ocupo esta query para sacar el ultimo sueldo imponible, sino tomar suedo base según contrato.
@@ -748,324 +751,28 @@ limit 1		*/
 				);
 			$this->db->where('idpersonal', $datos_remuneracion->idpersonal);
 			$this->db->where('idperiodo', $datos_remuneracion->idperiodo);
-			$this->db->update('gc_remuneracion',$data_remuneracion); 	
+			$this->db->where('idempresa', $this->session->userdata('empresaid'));
+			$this->db->update('rem_remuneracion',$data_remuneracion); 	
 
 			// VUELVE A CERO LA ASIGNACION FAMILIAR POR CARGAS RETROACTIVAS
 			$this->db->where('id', $trabajador->id);
-			$this->db->update('gc_personal',array('asigfamiliar' => 0,
+			$this->db->update('rem_personal',array('asigfamiliar' => 0,
 												'cargasretroactivas' => 0)); 	
 
 
 			// AGREGA CUENTA CON SUELDO LIQUIDO
 			//$cuenta_sueldo = $sueldo_liquido - $datos_remuneracion->aguinaldo;
 			$cuenta_sueldo = $sueldo_liquido;
-			
-       		$datos_cuenta = array(
-       						'formapago' => 'gc',
-       						'nombreproveedor' => $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno,
-       						'documento' =>  date("Ym").$trabajador->id,
-       						'tipodoc' =>  $cuenta_sueldo >= 0 ? 8 : 4, //SI ES NEGATIVO ES NOTA DE CRÉDITO
-       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-       						'concepto' =>  52, //revisar
-       						'descripcion' => "Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-       						'monto' => abs($cuenta_sueldo),
-       						'idperiodo' => $idperiodo
-			       			);
-       		$this->account->add_cuenta_remuneracion($datos_cuenta);
 
 
-
-       		if(is_null($periodo->anticipo)){  #SOLO SE CREAN LAS CUENTAS SI NO SE TRASPASARON DATOS
-	       		if($datos_remuneracion->anticipo > 0){ // AGREGA CUENTA POR ANTICIPO
-		       		$datos_cuenta = array(
-		       						'formapago' => 'gc',
-		       						'nombreproveedor' => $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno,
-		       						'documento' =>  date("Ym").$trabajador->id,
-		       						'tipodoc' =>  9,
-		       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-15",
-		       						'concepto' =>  53, //revisar
-		       						'descripcion' => "Anticipo Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-		       						'monto' => $datos_remuneracion->anticipo,
-		       						'idperiodo' => $idperiodo
-					       			);
-		       		$this->account->add_cuenta_remuneracion($datos_cuenta);
-
-	       		}
-
-	       		if($datos_remuneracion->aguinaldo > 0){
-
-	 	       		$datos_cuenta = array(
-		       						'formapago' => 'gc',
-		       						'nombreproveedor' => $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno,
-		       						'documento' =>  date("Ym").$trabajador->id,
-		       						'tipodoc' =>  10,
-		       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-		       						'concepto' =>  54, //revisar
-		       						'descripcion' => "Aguinaldo Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-		       						'monto' => $datos_remuneracion->aguinaldo,
-		       						'idperiodo' => $idperiodo
-					       			);
-		       		$this->account->add_cuenta_remuneracion($datos_cuenta);      			
-	       		}
-       		}
 
        		//calculamos los montos detinados a afp
-
-       		if($datos_afp->exregimen != 2){ // omitimos No Cotiza y Pensionado
-				$monto_afp = $cot_obligatoria + $comision_afp;
-				if(!array_key_exists($trabajador->idafp, $array_pago_afp)){
-					$array_pago_afp[$trabajador->idafp]['monto_afp'] = 0;	
-					$array_pago_afp[$trabajador->idafp]['monto_sis'] = 0;	
-					$array_pago_afp[$trabajador->idafp]['monto_afc'] = 0;	
-					$array_pago_afp[$trabajador->idafp]['nombre'] = $datos_afp->nombre;	
-				}
-				
-				$array_pago_afp[$trabajador->idafp]['monto_afp'] += $monto_afp;	
-				$array_pago_afp[$trabajador->idafp]['monto_sis'] += $seginvalidez;	
-				$array_pago_afp[$trabajador->idafp]['monto_afc'] += $aportesegcesantia + $segcesantia; //SE SUMA APORTE EMPRESA + APORTE EMPLEADOR	
-			}
-
-
-			// calculamos montos destinados a isapre y ips
-			if($trabajador->idisapre == 1){
-				$suma_ips += $cot_fonasa + $cot_inp;
-			}else{
-				if(!array_key_exists($trabajador->idisapre, $array_pago_isapre)){
-					$datos_isapre = $this->get_isapre($trabajador->idisapre);
-
-					$array_pago_isapre[$trabajador->idisapre]['monto'] = 0;	
-					$array_pago_isapre[$trabajador->idisapre]['nombre'] = $datos_isapre->nombre;	
-				}	
-
-				$array_pago_isapre[$trabajador->idisapre]['monto'] += $cot_salud_oblig + $adic_isapre;			
-			}			
-
-			// CALCULA TOTAL A PAGAR POR CONDOMINIO.  LA SUMA PASARÁ A GGCC
-			$monto_total_sueldos += $sueldo_imponible;	
-
 		}
 
-
-		// AGREGAR DESCUENTOS A GASTO COMUN
-		foreach ($array_descuentos as $idtipodescuento => $monto_otros_descuentos) {
-
-				$tipo_descuento = $this->get_tipo_descuento($idtipodescuento);
-
- 	       		$datos_cuenta = array(
-	       						'formapago' => 'gc',
-	       						'nombreproveedor' => "Otros Descuentos",
-	       						'documento' =>  date("Ym").$idtipodescuento,
-	       						'tipodoc' =>  12,
-	       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-	       						'concepto' =>  80, //revisar
-	       						'descripcion' => "Otros Descuentos " .date2string($periodo->mes,$periodo->anno),
-	       						'monto' => $monto_otros_descuentos,
-	       						'idperiodo' => $idperiodo
-				       			);
-	       		$this->account->add_cuenta_remuneracion($datos_cuenta);   
-		   	       		 
-		}
-
-
-		// AGREGAR PRESTAMOS A GASTO COMUN
-		foreach ($array_prestamos as $idtipodescuento => $monto_descto_prestamos) {
-
-				$tipo_descuento = $this->get_tipo_descuento($idtipodescuento);
-
- 	       		$datos_cuenta = array(
-	       						'formapago' => 'gc',
-	       						'nombreproveedor' => "Prestamos ".$tipo_descuento->nombre,
-	       						'documento' =>  date("Ym").$idtipodescuento,
-	       						'tipodoc' =>  12,
-	       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-	       						'concepto' =>  80, //revisar
-	       						'descripcion' => "Prestamos " .$tipo_descuento->nombre ." " .date2string($periodo->mes,$periodo->anno),
-	       						'monto' => $monto_descto_prestamos,
-	       						'idperiodo' => $idperiodo
-				       			);
-	       		$this->account->add_cuenta_remuneracion($datos_cuenta);   
-		   	       		 
-		}		
-
-
-
-
-		foreach ($array_pago_afp as $idafp => $pagoafp) {
-
-				if($pagoafp['monto_afp'] > 0){
-	 	       		$datos_cuenta = array(
-		       						'formapago' => 'gc',
-		       						'nombreproveedor' => "AFP ".$pagoafp['nombre'],
-		       						'documento' =>  date("Ym").$idafp,
-		       						'tipodoc' =>  11,
-		       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-		       						'concepto' =>  55, //revisar
-		       						'descripcion' => "Pagos Previsionales AFP Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-		       						'monto' => $pagoafp['monto_afp'],
-		       						'idperiodo' => $idperiodo
-					       			);
-		       		$this->account->add_cuenta_remuneracion($datos_cuenta);   
-	       		}
-
-	       		if( $pagoafp['monto_afc'] > 0){
-		       		$datos_cuenta = array(
-	       						'formapago' => 'gc',
-	       						'nombreproveedor' => "AFP ".$pagoafp['nombre']." (AFC)",
-	       						'documento' =>  date("Ym"),
-	       						'tipodoc' =>  11,
-	       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-	       						'concepto' =>  55, //revisar
-	       						'descripcion' => "Pagos Previsionales Seguro de Cesant&iacute;a Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-	       						'monto' => $pagoafp['monto_afc'],
-	       						'idperiodo' => $idperiodo
-				       			);
-	       			$this->account->add_cuenta_remuneracion($datos_cuenta); 
-       			}
-
-       			if($pagoafp['monto_sis'] > 0){
-		       		$datos_cuenta = array(
-	       						'formapago' => 'gc',
-	       						'nombreproveedor' => "AFP ".$pagoafp['nombre']." (SIS)",
-	       						'documento' =>  date("Ym"),
-	       						'tipodoc' =>  11,
-	       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-	       						'concepto' =>  55, //revisar
-	       						'descripcion' => "Pagos Previsionales Seguro de Invalidez y Sobrevivencia Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-	       						'monto' => $pagoafp['monto_sis'],
-	       						'idperiodo' => $idperiodo
-				       			);
-	       			$this->account->add_cuenta_remuneracion($datos_cuenta);         		   	       		 
-       			}
-		}
-
-
-
-		foreach ($array_pago_isapre as $idisapre => $pagoisapre) {
-
-				if($pagoisapre['monto'] > 0){
-	 	       		$datos_cuenta = array(
-		       						'formapago' => 'gc',
-		       						'nombreproveedor' => "Isapre ".$pagoisapre['nombre'],
-		       						'documento' =>  date("Ym").$idisapre,
-		       						'tipodoc' =>  11,
-		       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-		       						'concepto' =>  55, //revisar
-		       						'descripcion' => "Pagos Previsionales Isapre Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-		       						'monto' => $pagoisapre['monto'],
-		       						'idperiodo' => $idperiodo
-					       			);
-		       		$this->account->add_cuenta_remuneracion($datos_cuenta);   
-	       		}
-        		   	       		 
-		}
-
-		$cargo_ips = $suma_ips - $suma_asig_familiar;
-
-   		if($cargo_ips > 0){
-
-	       		$datos_cuenta = array(
-       						'formapago' => 'gc',
-       						'nombreproveedor' => 'IPS',
-       						'documento' =>  date("Ym"),
-       						'tipodoc' =>  11,
-       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-       						'concepto' =>  55, //revisar
-       						'descripcion' => "Pagos Previsionales IPS Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-       						'monto' => $cargo_ips,
-       						'idperiodo' => $idperiodo
-			       			);
-       		$this->account->add_cuenta_remuneracion($datos_cuenta);      			
-   		}		
-
-   		if($suma_aporte_patronal > 0){
-
-	       		$datos_cuenta = array(
-       						'formapago' => 'gc',
-       						'nombreproveedor' => 'Mutual de Seguridad',
-       						'documento' =>  date("Ym"),
-       						'tipodoc' =>  11,
-       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-       						'concepto' =>  55, //revisar
-       						'descripcion' => "Pagos Previsionales Mutual de Seguridad Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-       						'monto' => $suma_aporte_patronal,
-       						'idperiodo' => $idperiodo
-			       			);
-       		$this->account->add_cuenta_remuneracion($datos_cuenta);      			
-   		}		
-
-
-
-   		if($suma_impuesto > 0){
-
-	       		$datos_cuenta = array(
-       						'formapago' => 'gc',
-       						'nombreproveedor' => 'Impuesto Segunda Categoría',
-       						'documento' =>  date("Ym"),
-       						'tipodoc' =>  14,
-       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-       						'concepto' =>  123, //revisar
-       						'descripcion' => "Pago Impuesto Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-       						'monto' => $suma_impuesto,
-       						'idperiodo' => $idperiodo
-			       			);
-       		$this->account->add_cuenta_remuneracion($datos_cuenta);      			
-   		}	
-
-   		/*$cargo_ips = $suma_seg_invalidez - $suma_asig_familiar;
-   		if($cargo_ips > 0){
-
-	       		$datos_cuenta = array(
-       						'formapago' => 'gc',
-       						'nombreproveedor' => 'IPS',
-       						'documento' =>  date("Ym"),
-       						'tipodoc' =>  11,
-       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-       						'concepto' =>  55, //revisar
-       						'descripcion' => "Pagos Previsionales IPS Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-       						'monto' => $cargo_ips
-			       			);
-       		$this->account->add_cuenta_remuneracion($datos_cuenta);      			
-   		}	*/
-
-
-   		/*if($suma_seg_cesantia > 0){
-
-	       		$datos_cuenta = array(
-       						'formapago' => 'gc',
-       						'nombreproveedor' => 'AFC Chile',
-       						'documento' =>  date("Ym"),
-       						'tipodoc' =>  11,
-       						'fecdocumento' => $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".$dia_mes,
-       						'concepto' =>  55, //revisar
-       						'descripcion' => "Pagos Previsionales Seguro de Cesant&iacute;a Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-       						'monto' => $suma_seg_cesantia
-			       			);
-       		$this->account->add_cuenta_remuneracion($datos_cuenta);      			
-   		}*/
-
-		/*if($monto_total_sueldos > 0){ // AGREGAR CUENTA EN GGCC
-
-       		$parametros = array(
-       						'idcargo' => 0,
-       						'nombreproveedor' => "Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-       						'fecpago' => date("Y-m-d"),
-       						'monto' => $monto_total_sueldos,
-       						'descripcion' => "Remuneraciones " .date2string($periodo->mes,$periodo->anno),
-       						'nombrearchivo' => '',
-       						'nombrerealarchivo' => ''
-			       			);
-
-       		$this->load->model('account');
-			$this->account->add_otros_cargos($parametros);
-
-
-
-		}*/
-
-		// CERRAR PERIODO
+ 		// CERRAR PERIODO
 		$this->db->where('idperiodo', $idperiodo);
-		$this->db->where('idcomunidad', $this->session->userdata('empresaid'));
-		$this->db->update('gc_periodo_remuneracion',array('cierre' => date("Y-m-d H:i:s"))); 
+		$this->db->where('idempresa', $this->session->userdata('empresaid'));
+		$this->db->update('rem_periodo_remuneracion',array('cierre' => date("Y-m-d H:i:s"))); 
 
 		$this->db->trans_complete();
 		return 1;
