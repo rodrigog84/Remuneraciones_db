@@ -109,7 +109,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									<ul class="dropdown-menu two first">
 										<li>
 											<div class="notification_header">
-												<h3>Cerrar Sesión</h3> 
+												<h3>Cambiar Empresa</h3> 
 											</div>
 										</li>
 										<li>
@@ -119,7 +119,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 												</div>
 												<div class="notification_desc">
 												
-													<p><span>Cerrar Sesión</span></p>
+													<p><span>Cambiar Empresa</span></p>
 												</div>
 												<div class="clearfix"></div>	
 											</a>
@@ -226,7 +226,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<a href="index.html"><img src="<?php echo base_url();?>images/admin.jpg"></a>
 				<ul>
 					<li><a class="tooltips" href="perfil.html"><span>Perfil</span><i class="lnr lnr-user"></i></a></li>
-					<li><a class="tooltips" href="seleccion_empresa.html"><span>CerrarEmpr</span><i class="lnr lnr-power-switch"></i></a></li>
+					<li><a class="tooltips" href="seleccion_empresa.html"><span>Cambiar Empresa</span><i class="lnr lnr-power-switch"></i></a></li>
 				</ul>
 				<a href="#"><span class=" name-caret">Jasmin Leo</span></a>
 				<p><?php echo $this->session->userdata('empresanombre'); ?></p>

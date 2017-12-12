@@ -577,9 +577,10 @@ class Admins extends CI_Controller {
 
 		}else{
 			$content = array(
-						'menu' => 'Error 403',
-						'title' => 'Error 403',
-						'subtitle' => '403 error');
+				'menu' => 'Error 403',
+				'title' => 'Error 403',
+				'subtitle' => '403 error'
+			);
 
 
 			$vars['content_menu'] = $content;				
