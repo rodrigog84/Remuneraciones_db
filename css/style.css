@@ -453,7 +453,7 @@ a.tooltips {
 }
 a.tooltips span {
      position: absolute;
-    width: 65px;
+    width: 120px;
     color: #FFFFFF;
     background: #09367D;
     height:35px;
