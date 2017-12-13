@@ -779,4 +779,623 @@ limit 1		*/
 	}	
 
 
+	public function get_periodos_cerrados($empresaid,$idperiodo = null){
+
+		$periodo_data = $this->db->select('p.id, p.mes, p.anno, pr.cierre, pr.aprueba, pr.cierre as cierre,  (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id where r.idperiodo = p.id and pe.idempresa = ' . $empresaid . ' and r.active = 1) as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id where r.idperiodo = p.id and pe.idempresa = ' . $empresaid . ' and r.active = 1) as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id where r.idperiodo = p.id and pe.idempresa = ' . $empresaid . ' and r.active = 1) as sueldoliquido ', false)
+						  ->from('rem_periodo as p')
+						  ->join('rem_periodo_remuneracion as pr','p.id = pr.idperiodo')
+		                  ->where('pr.idempresa', $empresaid)
+		                  ->where('pr.cierre is not null')
+		                  ->order_by('p.updated_at desc');
+		$comunidades_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.idperiodo',$idperiodo);
+		$query = $this->db->get();
+		$datos = is_null($idperiodo) ? $query->result() : $query->row();				                  
+		return $datos;
+
+	}
+
+
+
+
+	public function get_remuneraciones_by_periodo($idperiodo,$sinsueldo = null){
+		
+		$periodo_data = $this->db->select('r.id, r.idperiodo, pe.id as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.aportesegcesantia, r.sueldoimponibleimposiciones')
+						  ->from('rem_periodo as p')
+						  ->join('rem_remuneracion as r','r.idperiodo = p.id')
+						  ->join('rem_personal as pe','pe.id = r.idpersonal')
+						  ->join('rem_empresa as co','pe.idempresa = co.id')
+						  ->join('rem_periodo_remuneracion as pr','r.idperiodo = pr.idperiodo')
+						  ->join('rem_isapre as i','pe.idisapre = i.id')
+						  ->join('rem_cargos as c','pe.idcargo = c.id')
+						  ->join('rem_afp as a','pe.idafp = a.id')
+						  ->join('rem_apv as ap','pe.instapv = ap.id','left')						  
+		                  ->where('pe.idempresa', $this->session->userdata('empresaid'))
+		                  ->where('pr.idempresa', $this->session->userdata('empresaid'))
+		                  ->where('r.idperiodo', $idperiodo)
+		                  ->where('r.active = 1')
+		                  //->where('r.sueldoliquido <> 0')  //valida que se haya creado sueldo
+		                  ->order_by('pe.nombre asc');
+
+		$periodo_data = is_null($sinsueldo) ? $periodo_data->where('r.sueldoliquido <> 0') : $periodo_data;		                  
+		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
+		return $query->result();
+
+
+	}	
+
+
+
+public function get_remuneraciones_by_id($idremuneracion){
+		$periodo_data = $this->db->select('r.id, r.idperiodo, pe.id as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentos, r.prestamos')
+						  ->from('rem_periodo as p')
+						  ->join('rem_remuneracion as r','r.idperiodo = p.id')
+						  ->join('rem_personal as pe','pe.id = r.idpersonal')
+						  ->join('rem_periodo_remuneracion as pr','r.idperiodo = pr.idperiodo and pr.idempresa = ' . $this->session->userdata('empresaid'))
+						  ->join('rem_isapre as i','pe.idisapre = i.id')
+						  ->join('rem_cargos as c','pe.idcargo = c.id')
+						  ->join('rem_afp as a','pe.idafp = a.id')
+		                  ->where('pe.idempresa', $this->session->userdata('empresaid'))
+		                  ->where('r.id', $idremuneracion);
+		$query = $this->db->get();
+		return $query->row();
+
+
+	}	
+
+
+
+	private function get_pdf_content($idremuneracion){
+
+		$this->db->select('pdf_content ')
+						  ->from('rem_remuneracion ')
+						  ->where('id',$idremuneracion);
+		$query = $this->db->get();
+		return $query->row();
+	}
+
+
+
+	public function liquidacion($datos_remuneracion){
+
+			$this->load->model('admin');
+			$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
+			$content = $this->get_pdf_content($datos_remuneracion->id);
+
+			if($content->pdf_content == ''){ // EN CASO QUE POR ALGUN MOTIVO FALLARA LA EJECUCION INICIAL, SE CREA AHORA
+				$this->generar_contenido_comprobante($datos_remuneracion);
+				$content = $this->get_pdf_content($datos_remuneracion->id);
+
+			}
+
+			$this->load->library("mpdf");
+			$this->mpdf->mPDF(
+				'',    // mode - default ''
+				'',    // format - A4, for example, default ''
+				8,     // font size - default 0
+				'',    // default font family
+				10,    // margin_left
+				5,    // margin right
+				16,    // margin top
+				16,    // margin bottom
+				9,     // margin header
+				9,     // margin footer
+				'L'    // L - landscape, P - portrait
+				);  
+			//echo $html; exit;
+			$this->mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
+			$this->mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$this->mpdf->WriteHTML($content->pdf_content);
+			//$this->mpdf->SetFooter('Para más información visite: http://www.tugastocomun.cl');
+
+
+			// SE ALMACENA EL ARCHIVO
+			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_sueldos_".$datos_remuneracion->id.".pdf";
+			$this->mpdf->Output($nombre_archivo, "I");
+			
+	}	
+
+
+public function generar_contenido_comprobante($datos_remuneracion){
+
+			$html = '<html>
+					<head>
+					<style type="text/css">
+					.rounded {
+					 border:0.1mm solid #220044;
+					 background-color: #FAFAFA;
+					 background-clip: border-box;
+					 padding: 1em;
+						}
+
+					.recto {
+					 border:0.1mm solid #000000;
+					 background-color: #FAFAFA;
+					 background-clip: border-box;
+					 padding: 1em;
+						}
+
+
+					.tableClass { 
+						background-color: #ffffff; 
+						border-collapse: collapse;
+						font-family: DejaVuSansCondensed;
+						font-size: 9pt; 
+						line-height: 1.2;
+						margin-top: 2pt; 
+						margin-bottom: 5pt; 
+						width: 70%;
+						topntail: 0.02cm solid #ffffff; 
+					}
+
+					.theadClass { 
+						vertical-align: bottom; 
+					}
+
+					.tdClass { 
+						padding-left: 4mm; 
+						vertical-align: top; 
+						text-align:left;
+						padding-right: 4mm; 
+						padding-top: 0.5mm; 
+						padding-bottom: 0.5mm;
+						border-top: 1px solid #FFFFFF; 
+					}
+
+					.tdClassCenter { 
+						padding-left: 4mm; 
+						vertical-align: top; 
+						text-align:center;
+						padding-right: 4mm; 
+						padding-top: 0.5mm; 
+						padding-bottom: 0.5mm;
+						border-top: 1px solid #FFFFFF; 
+					}					
+
+					.tdClassNumber { 
+						text-align:right;
+					}
+
+					.headerRow td, .headerRow th { 
+						background-gradient: linear #E6B4AA #ffffff 0 1 0 0.2; 
+						padding: 1mm; 
+						text-align: left;
+					}	
+
+					.header4 { 
+						font-weight: ; 
+						font-size: 13pt; 
+						color: #080636;
+						font-family: DejaVuSansCondensed, sans-serif; 
+						margin-top: 10pt; 
+						margin-bottom: 7pt;
+						text-align: center;
+						margin-collapse:collapse; page-break-after:avoid; }										
+					</style>
+			</head>
+					<body>';
+
+
+			$monto_prevision = $datos_remuneracion->idisapre == 1 ? ' 7% ' : $datos_remuneracion->valorpactado . ' UF ';
+			$html .= '
+						<p><h4 class="header4">Liquidaci&oacute;n de Remuneraciones ' . date2string($datos_remuneracion->mes,$datos_remuneracion->anno) . '<!--br><br><img src="img/logo4_1_80p_color.png" width="100px"--></h4></p>
+						<hr>
+						<br>
+						<div class="recto">
+						<table class="" width="100%"  >
+						<thead class="theadClass">
+						<tr class="headerRow">
+						<th width="100%" colspan="4"><p>Datos Trabajador</p></th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+						<td class="tdClass" ><b><i>Nombre:</i></b></td>
+						<td class="tdClass" >' . $datos_remuneracion->nombre. ' ' . $datos_remuneracion->apaterno . ' ' . $datos_remuneracion->amaterno . '</td>
+						<td class="tdClass" ><b><i>Fecha Contrato:</i></b></td>
+						<td class="tdClass" >' . $datos_remuneracion->fecingreso . '</td>						
+						</tr>
+						<tr>
+						<td class="tdClass" ><b><i>Rut:</i></b></td>
+						<td class="tdClass" >' . number_format($datos_remuneracion->rut,0,".","."). '-' . $datos_remuneracion->dv . '</td>
+						<td class="tdClass" ><b><i>Previsi&oacute;n Salud:</i></b></td>
+						<td class="tdClass" >' . $datos_remuneracion->prev_salud . ' ' . $monto_prevision . ' </td>						
+						</tr>
+						<tr>
+						<td class="tdClass" ><b><i>Cargo:</i></b></td>
+						<td class="tdClass" >' . $datos_remuneracion->cargo . '</td>
+						<td class="tdClass" ><b><i>AFP:</i></b></td>
+						<td class="tdClass" >' . $datos_remuneracion->afp . ' ' . $datos_remuneracion->porc . '% </td>						
+						</tr>
+						</tbody>
+						</table>
+						</div>
+						<br>
+						<div class="recto">
+						<table class="" width="100%"  >
+						<thead class="theadClass">
+						<tr class="headerRow">
+						<th width="100%" colspan="4"><p>Datos Complementarios</p></th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+						<td class="tdClass" ><b><i>Nro. d&iacute;as trabajados:</i></b></td>
+						<td class="tdClass" >' . $datos_remuneracion->diastrabajo . '</td>
+						<td class="tdClass" ><b><i>Horas Extras 50%:</i></b></td>
+						<td class="tdClass" >' . round($datos_remuneracion->horasextras50,1) . ' </td>						
+						</tr>
+						<tr>
+						<td class="tdClass" ><b><i>Horas Descuento:</i></b></td>
+						<td class="tdClass" >' . $datos_remuneracion->horasdescuento . ' </td>						
+						<td class="tdClass" ><b><i>Horas Extras 100%:</i></b></td>
+						<td class="tdClass" >' . round($datos_remuneracion->horasextras100,1) . ' </td>						
+						</tr>
+						</tbody>
+						</table>
+						</div>
+						<br>
+						<div class="recto">
+						<table class="" width="100%"  >
+						<thead class="theadClass">
+						<tr class="headerRow">
+						<th width="70%" ><p>Detalle Haberes</p></th>
+						<th width="30%" ><p>&nbsp;</p></th>
+						</tr>
+						</thead>
+						<tbody>';
+
+						if($datos_remuneracion->sueldobase > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Sueldo Base</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->sueldobase,0,".",".") . '</td>
+									</tr>';
+						}
+
+						if($datos_remuneracion->gratificacion > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Gratificaci&oacute;n Legal</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->gratificacion,0,".",".") . '</td>
+									</tr>';
+						}						
+
+
+						//$datos_bonos_imponibles = $this->get_bonos_by_remuneracion($datos_remuneracion->id,true);
+
+						$datos_bonos_imponibles = array();
+
+						foreach ($datos_bonos_imponibles as $bono_imponible) {
+
+							$html .= '<tr>
+									<td class="tdClass" >' . $bono_imponible->descripcion . '</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($bono_imponible->monto,0,".",".") . '</td>
+									</tr>';
+
+						}
+
+						/*if($datos_remuneracion->bonosimponibles > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Bonos Imponibles</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->bonosimponibles,0,".",".") . '</td>
+									</tr>';
+						}*/												
+
+						if($datos_remuneracion->montohorasextras50 > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Horas Extras (50%)</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->montohorasextras50,0,".",".") . '</td>
+									</tr>';
+						}																		
+
+						if($datos_remuneracion->montohorasextras100 > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Horas Extras (100%)</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->montohorasextras100,0,".",".") . '</td>
+									</tr>';
+						}																								
+
+						if($datos_remuneracion->aguinaldo > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Aguinaldo</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->aguinaldobruto,0,".",".") . '</td>
+									</tr>';
+						}	
+
+						if($datos_remuneracion->sueldoimponible > 0){
+							$html .= '<tr>
+									<td class="tdClass" ><b>Total Imponible</b></td>
+									<td class="tdClass tdClassNumber" ><b>$ ' . number_format($datos_remuneracion->sueldoimponible,0,".",".") . '</b></td>
+									</tr>';
+						}
+
+				$html .= '<tr>
+						<td class="tdClass">&nbsp;</td>
+						<td class="tdClass">&nbsp;</td>
+						</tr>';
+
+						if($datos_remuneracion->movilizacion > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Movilizaci&oacute;n</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->movilizacion,0,".",".") . '</td>
+									</tr>';
+						}
+
+						if($datos_remuneracion->colacion > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Colaci&oacute;n</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->colacion,0,".",".") . '</td>
+									</tr>';
+						}
+
+
+						if($datos_remuneracion->asigfamiliar > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Asignaci&oacute;n Familiar</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->asigfamiliar,0,".",".") . '</td>
+									</tr>';
+						}
+
+						/*if($datos_remuneracion->bonosnoimponibles > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Bonos No Imponibles</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->bonosnoimponibles,0,".",".") . '</td>
+									</tr>';
+						}*/
+
+						//$datos_bonos_no_imponibles = $this->get_bonos_by_remuneracion($datos_remuneracion->id,false);
+
+						$datos_bonos_no_imponibles = array();
+
+						foreach ($datos_bonos_no_imponibles as $bono_no_imponible) {
+
+							$html .= '<tr>
+									<td class="tdClass" >' . $bono_no_imponible->descripcion . '</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($bono_no_imponible->monto,0,".",".") . '</td>
+									</tr>';
+
+						}												
+
+						if($datos_remuneracion->sueldonoimponible > 0){
+							$html .= '<tr>
+									<td class="tdClass" ><b>Total No Imponible</b></td>
+									<td class="tdClass tdClassNumber" ><b>$ ' . number_format($datos_remuneracion->sueldonoimponible,0,".",".") . '</b></td>
+									</tr>';
+						}
+
+
+						if($datos_remuneracion->totalhaberes > 0){
+							$html .= '<tr>
+									<td class="tdClass" ><b>Total Haberes</b></td>
+									<td class="tdClass tdClassNumber" ><b>$ ' . number_format($datos_remuneracion->totalhaberes,0,".",".") . '</b></td>
+									</tr>';
+						}
+
+				$html.=	'</tbody>
+						</table>
+						</div>
+						<br>
+						<div class="recto">
+						<table class="" width="100%"  >
+						<thead class="theadClass">
+						<tr class="headerRow">
+						<th width="70%" ><p>Detalle Descuentos</p></th>
+						<th width="30%" ><p>&nbsp;</p></th>
+						</tr>
+						</thead>
+						<tbody>';
+
+						if($datos_remuneracion->cotizacionobligatoria > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Cotizaci&oacute;n AFP Obligatoria</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->cotizacionobligatoria,0,".",".") . '</td>
+									</tr>';
+						}
+
+						if($datos_remuneracion->comisionafp > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Comisi&oacute;n AFP</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->comisionafp,0,".",".") . '</td>
+									</tr>';
+						}						
+
+						if($datos_remuneracion->adicafp > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Adicional AFP</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->adicafp,0,".",".") . '</td>
+									</tr>';
+						}						
+
+
+						if($datos_remuneracion->montoahorrovol > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Ahorro Voluntario</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->montoahorrovol,0,".",".") . '</td>
+									</tr>';
+						}
+
+
+						if($datos_remuneracion->montocotapv > 0){
+							$html .= '<tr>
+									<td class="tdClass" >APV</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->montocotapv,0,".",".") . '</td>
+									</tr>';
+						}
+
+						if($datos_remuneracion->cotizacionsalud > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Cotizaci&oacute;n Salud Obligatoria</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->cotizacionsalud,0,".",".") . '</td>
+									</tr>';
+						}																		
+
+						if($datos_remuneracion->cotadicisapre > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Cotizaci&oacute;n Adicional Isapre</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->cotadicisapre,0,".",".") . '</td>
+									</tr>';
+						}																														
+
+
+						if($datos_remuneracion->adicsalud > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Adicional Salud</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->adicsalud,0,".",".") . '</td>
+									</tr>';
+						}																								
+
+
+						if(($datos_remuneracion->fonasa + $datos_remuneracion->inp) > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Fonasa</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->fonasa+$datos_remuneracion->inp,0,".",".") . '</td>
+									</tr>';
+
+
+						}
+
+
+						if($datos_remuneracion->segcesantia > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Seguro de Cesant&iacute;a</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->segcesantia,0,".",".") . '</td>
+									</tr>';
+						}	
+
+
+						if($datos_remuneracion->impuesto > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Impuesto</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->impuesto,0,".",".") . '</td>
+									</tr>';
+						}
+
+
+
+						if($datos_remuneracion->totalleyessociales > 0){
+							$html .= '<tr>
+									<td class="tdClass" ><b>Total Leyes Sociales</b></td>
+									<td class="tdClass tdClassNumber" ><b>$ ' . number_format($datos_remuneracion->totalleyessociales,0,".",".") . '</b></td>
+									</tr>';
+						}
+
+						$html .= '<tr>
+								<td class="tdClass">&nbsp;</td>
+								<td class="tdClass">&nbsp;</td>
+								</tr>';						
+
+
+
+
+
+						if($datos_remuneracion->anticipo > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Anticipo</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->anticipo,0,".",".") . '</td>
+									</tr>';
+						}
+
+
+						if($datos_remuneracion->aguinaldo > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Descuento por Aguinaldo</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->aguinaldo,0,".",".") . '</td>
+									</tr>';
+						}							
+
+
+						if($datos_remuneracion->montodescuento > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Horas Descuento</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->montodescuento,0,".",".") . '</td>
+									</tr>';
+						}
+
+						//$datos_descuentos = $this->get_descuento($datos_remuneracion->idperiodo,'D',$datos_remuneracion->idtrabajador);
+
+						$datos_descuentos = array();
+
+						foreach ($datos_descuentos as $info_descuento) {
+
+							$html .= '<tr>
+									<td class="tdClass" >' . $info_descuento->descripcion . '</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($info_descuento->monto,0,".",".") . '</td>
+									</tr>';
+
+						}
+
+
+						//$datos_prestamos = $this->get_descuento($datos_remuneracion->idperiodo,'P',$datos_remuneracion->idtrabajador);
+
+						$datos_prestamos = array();
+
+						foreach ($datos_prestamos as $info_prestamos) {
+
+							$html .= '<tr>
+									<td class="tdClass" >' . $info_prestamos->descripcion . '</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($info_prestamos->monto,0,".",".") . '</td>
+									</tr>';
+
+						}
+
+
+						if($datos_remuneracion->otrosdescuentos > 0){
+							$html .= '<tr>
+									<td class="tdClass" ><b>Total Otros Descuentos</b></td>
+									<td class="tdClass tdClassNumber" ><b>$ ' . number_format($datos_remuneracion->otrosdescuentos,0,".",".") . '</b></td>
+									</tr>';
+						}
+
+						if($datos_remuneracion->totaldescuentos > 0){
+							$html .= '<tr>
+									<td class="tdClass" ><b>Total Descuentos</b></td>
+									<td class="tdClass tdClassNumber" ><b>$ ' . number_format($datos_remuneracion->totaldescuentos,0,".",".") . '</b></td>
+									</tr>';
+						}
+
+				$html.=	'</tbody>
+						</table>
+						</div>
+						<br>
+						<div class="recto">
+						<table class="" width="100%"  >
+						<thead class="theadClass">
+						<tr class="headerRow">
+						<th width="70%" ><p>L&iacute;quido a Pagar (Total Haberes - Total Descuentos)</p></th>
+						<th width="30%" class="tdClassNumber" style="text-align: right;"><b>$ ' . number_format($datos_remuneracion->sueldoliquido,0,".",".") . '</b></th>
+						</tr>
+						</thead>
+						</table>
+						</div>
+						<hr>
+						<p style="text-align:left;font-size: 12px;" ><b>Son: '.valorEnLetras($datos_remuneracion->sueldoliquido).'</b></p>
+						<br>
+						<table width="100%" border="0">
+							<tr>
+								<td width="10%">&nbsp;</td>
+								<td width="20%" style="border-bottom:1pt solid black;">&nbsp;</td>
+								<td width="40%">&nbsp;</td>
+								<td width="20%" style="border-bottom:1pt solid black;">&nbsp;</td>
+								<td width="10%">&nbsp;</td>
+							</tr>
+							<tr>
+								<td width="10%">&nbsp;</td>
+								<td width="20%" style="text-align:center">Firma Trabajador</td>
+								<td width="40%">&nbsp;</td>
+								<td width="20%" style="text-align:center">Firma Empleador</td>
+								<td width="10%">&nbsp;</td>
+							</tr>							
+						</table>
+
+		';
+
+			$html .=	"</body>
+						</html>";
+
+						//echo $html; exit;
+				
+				$this->db->where('id',$datos_remuneracion->id);
+				$this->db->update('rem_remuneracion', array('pdf_content' => $html));			
+
+	}	
+
 }

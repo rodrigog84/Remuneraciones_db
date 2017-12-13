@@ -624,7 +624,10 @@ class Rrhh extends CI_Controller {
 					$mensaje_html[$periodos->id] .= "</ul>";
 				}
 			}
+
 	*/
+			$estado = "Informaci&oacute;n Completa";
+			//$periodos_remuneracion->estado = $estado;
 			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',

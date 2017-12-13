@@ -614,6 +614,21 @@ public function get_cargos($idcargo = null){
 
 
 
+	public function datos_empresa($empresaid){
+
+		$this->db->select('c.id, c.nombre, c.rut, c.dv, c.direccion, co.nombre as comuna, c.maxfolioabono, c.maxfoliopago, c.textoggcc, c.logo ')
+						  ->from('rem_empresa as c')
+						  ->join('rem_comuna as co','c.idcomuna = co.idcomuna','left')
+		                  ->where('c.id', $empresaid)
+		                  ->order_by('c.nombre asc');
+		$query = $this->db->get();
+		$datos = $query->row();
+		return $datos;
+
+	}	
+
+
+
 public function get_bonos($idtrabajador = null){
 
 		//$bonos_data = $this->db->select('id, idpersonal, descripcion, monto, date_format(fecha,"%d/%m/%Y") as fecha, proporcional, imponible, fijo')

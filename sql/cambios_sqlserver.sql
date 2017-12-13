@@ -475,3 +475,31 @@ ALTER TABLE rem_remuneracion ADD DEFAULT 0 FOR comisionafp
 
 ALTER TABLE rem_remuneracion
 	ADD sueldoimponibleimposiciones INT
+
+
+
+insert into rem_app 
+(funcion,nombre,menuid,visible,valid,orden)
+values
+('remuneraciones/ver_remuneraciones_periodo',NULL,5,0,1,NULL)
+
+
+insert into rem_role
+(appid,levelid)
+values
+(51,2)
+
+
+
+insert into rem_app 
+(funcion,nombre,menuid,visible,valid,orden)
+values
+('remuneraciones/liquidacion',NULL,5,0,1,NULL)
+
+
+insert into rem_role
+(appid,levelid)
+values
+(52,2)
+
+alter table rem_empresa add logo varchar(50)
