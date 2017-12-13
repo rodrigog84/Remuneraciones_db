@@ -503,3 +503,9 @@ values
 (52,2)
 
 alter table rem_empresa add logo varchar(50)
+
+
+
+update rem_app set funcion = 'rrhh/ver_remuneraciones_periodo' where id = 51
+update rem_app set funcion = 'rrhh/liquidacion' where id = 52
+update rem_app set funcion = 'rrhh/detalle' where id = 21

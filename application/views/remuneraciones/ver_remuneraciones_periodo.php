@@ -49,7 +49,7 @@
 												                          <td>$&nbsp;<?php echo number_format($remuneracion->totalhaberes,0,".",".");?></td>
 												                          <td>$&nbsp;<?php echo number_format($remuneracion->totaldescuentos,0,".",".");?></td>
 												                          <td>$&nbsp;<?php echo number_format($remuneracion->sueldoliquido,0,".",".");?></td>
-												                          <td><center><a href="<?php echo base_url(); ?>remuneraciones/liquidacion/<?php echo $remuneracion->id;?>" target="_blank"><span class="glyphicon glyphicon-paperclip"></span></a></center></td>
+												                          <td><center><a href="<?php echo base_url(); ?>rrhh/liquidacion/<?php echo $remuneracion->id;?>" target="_blank"><span class="glyphicon glyphicon-paperclip"></span></a></center></td>
 												                        </tr>
 												                        <?php $i++; } ?>
 																	</tbody> 

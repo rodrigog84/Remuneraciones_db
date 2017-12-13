@@ -61,7 +61,7 @@
 											                              <td>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)){ ?>
-											                              <a href="<?php echo base_url(); ?>remuneraciones/ver_remuneraciones_periodo/<?php echo $periodo->id; ?>" data-toggle="tooltip" title="Ver Remuneraciones Personal"><span class="glyphicon glyphicon-search"></span></a>
+											                              <a href="<?php echo base_url(); ?>rrhh/ver_remuneraciones_periodo/<?php echo $periodo->id; ?>" data-toggle="tooltip" title="Ver Remuneraciones Personal"><span class="glyphicon glyphicon-search"></span></a>
 											                              <?php } ?>
 											                              </center>
 											                              </td>

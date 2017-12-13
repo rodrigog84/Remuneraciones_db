@@ -718,5 +718,128 @@ class Rrhh extends CI_Controller {
 
 
 
+
+	public function detalle($idperiodo = null)
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$datosperiodo = $this->rrhh_model->get_periodos_cerrados($this->session->userdata('empresaid'));
+
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Detalle Remuneraciones');
+
+			
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'remuneraciones/detalle';
+			$vars['datosperiodo'] = $datosperiodo;
+			$vars['idperiodo'] = $idperiodo;
+
+
+			$vars['dataTables'] = true;
+			
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
+
+
+	public function ver_remuneraciones_periodo($idperiodo = '')
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo);
+			$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+
+			$content = array(
+						'menu' => 'Ver',
+						'title' => 'Ver',
+						'subtitle' => 'Propiedades');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'remuneraciones/ver_remuneraciones_periodo';
+			$vars['remuneraciones'] = $remuneraciones;
+			$vars['datosperiodo'] = $datosperiodo;
+
+			$vars['dataTables'] = true;
+			
+			
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
+
+
+	public function liquidacion($idremuneracion = null)
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$remuneracion = $this->rrhh_model->get_remuneraciones_by_id($idremuneracion);
+
+			if(count($remuneracion) == 0){ // SI NO ENCUENTRO NINGUNA REMUNERACION (CORRESPONDE A OTRA COMUNIDAD POR EJEMPLO)
+				redirect('main/dashboard/');
+			}else if(is_null($remuneracion->cierre)){
+				redirect('main/dashboard/'); // SI NO ES UN PERIODO CERRADO, SE ENVÍA AL DASHBOARD
+			}else{
+				$datosdetalle = $this->rrhh_model->liquidacion($remuneracion);
+			}
+
+			exit;
+
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
+
+
+
+
+
 }
 
