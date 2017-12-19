@@ -692,6 +692,21 @@ public function get_bonos($idtrabajador = null){
 
 
 
+	public function get_periodo_by_id($idperiodo){
+
+		$this->db->select('p.id, p.mes, p.anno, pr.anticipo, pr.cierre, pr.aprueba')
+						  ->from('rem_periodo as p')
+						  ->join('rem_periodo_remuneracion as pr','p.id = pr.idperiodo')
+						  ->where('pr.idempresa', $this->session->userdata('empresaid'))
+		                  ->where('p.id', $idperiodo);
+		$query = $this->db->get();
+		$datos = $query->num_rows() == 1 ? $datos = $query->row() : $query->result();
+
+		return $datos;
+
+	}	
+
+
 }
 
 

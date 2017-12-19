@@ -337,6 +337,73 @@ public function add_personal($array_datos,$idtrabajador){
 	}	
 
 
+	public function aprobar_remuneracion($idperiodo){
+
+		$this->db->where('idperiodo', $idperiodo);
+		$this->db->where('idempresa', $this->session->userdata('empresaid'));
+		$this->db->update('rem_periodo_remuneracion',array('aprueba' => date("Ymd H:i:s"))); 
+		return 1;
+	}
+
+
+
+	public function get_remuneraciones_reversa($idperiodo){
+		$periodo_data = $this->db->select('r.id')
+						  ->from('rem_remuneracion as r')
+						  ->join('rem_periodo_remuneracion as pr','r.idperiodo = pr.idperiodo and pr.idempresa = ' . $this->session->userdata('empresaid'))
+		                  ->where('r.idempresa', $this->session->userdata('empresaid'))
+		                  ->where('r.idperiodo', $idperiodo)
+		                  ->where('pr.cierre is not null')
+		                  ->where('pr.aprueba is null')
+		                  ->order_by('r.id asc');
+		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
+		return $query->result();
+
+
+	}
+
+
+	public function rechazar_remuneracion($idperiodo){
+
+
+		$this->db->trans_start();
+		#obtengo remuneraciones del periodo para la comunidad (me aseguro que sea un periodo ya calculado y no aprobado)
+		$remuneraciones = $this->get_remuneraciones_reversa($idperiodo);
+
+		//echo "<pre>";
+		//print_r($remuneraciones); exit;
+		if(count($remuneraciones) > 0){ // SÓLO REALIZA REVERSA EN CASO DE QUE EL PERÍODO CORRESPONDA
+
+			foreach ($remuneraciones as $remuneracion) {
+				#elimino los bonos cargados a la remuneracion
+				$this->db->delete('rem_bonos_remuneracion', array('idremuneracion' => $remuneracion->id)); 
+
+				#devuelvo los valores de las cargas retroactivas
+				$this->db->query("update p
+								  set 
+								  p.asigfamiliar = r.montocargaretroactiva,
+								  p.cargasretroactivas = r.cargasretroactivas
+								  from	rem_personal p
+								  inner join rem_remuneracion r on p.id = r.idpersonal
+								  where r.id = " . $remuneracion->id);		
+
+
+
+			}
+
+			#quitamos la marca de remuneracion calculada (permite volver a calcular)
+			$this->db->where('idperiodo', $idperiodo);
+			$this->db->where('idempresa', $this->session->userdata('empresaid'));
+			$this->db->update('rem_periodo_remuneracion',array('cierre' => null)); 
+		}
+
+
+		$this->db->trans_complete();
+
+		return 1;
+	}	
+
 
 
 	public function calcular_remuneraciones($idperiodo){

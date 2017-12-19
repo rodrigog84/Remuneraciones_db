@@ -509,3 +509,25 @@ alter table rem_empresa add logo varchar(50)
 update rem_app set funcion = 'rrhh/ver_remuneraciones_periodo' where id = 51
 update rem_app set funcion = 'rrhh/liquidacion' where id = 52
 update rem_app set funcion = 'rrhh/detalle' where id = 21
+
+
+	insert into rem_app 
+(funcion,nombre,menuid,visible,valid,orden)
+values
+('rrhh/aprueba_remuneraciones',NULL,5,0,1,NULL)
+
+insert into rem_role
+(appid,levelid)
+values
+(53,2)
+
+
+insert into rem_app 
+(funcion,nombre,menuid,visible,valid,orden)
+values
+('rrhh/rechaza_remuneraciones',NULL,5,0,1,NULL)
+
+insert into rem_role
+(appid,levelid)
+values
+(54,2)

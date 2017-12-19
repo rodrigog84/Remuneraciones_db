@@ -507,18 +507,19 @@ class Rrhh extends CI_Controller {
 
 
 			$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos(); 
-
-			/*$personal = $this->remuneracion->get_personal(); 
+			//echo "<pre>";
+			//print_r($periodos_remuneracion); exit;
+			$personal = $this->rrhh_model->get_personal(); 
 			
 			$array_remuneracion_trabajador = array();
 			$mensajes = array();
 			$mensaje_html = array();
 			foreach ($periodos_remuneracion as $periodos) {
-				$mensajes[$periodos->id] = array();
+				//$mensajes[$periodos->id] = array();
 
 				
 				$estado = "Informaci&oacute;n Completa";
-				if(is_null($periodos->cierre)){
+				/*if(is_null($periodos->cierre)){
 					foreach ($personal as $trabajador) {
 						if(is_null($trabajador->idafp)){
 		                   	   if(!in_array("Informaci&oacute;n Afp", $mensajes[$periodos->id])){
@@ -610,23 +611,28 @@ class Rrhh extends CI_Controller {
 
 					} // end foreach
 
-				}
 
+				}
+						*/
 
 				$periodos->estado = $estado;
 
-				$mensaje_html[$periodos->id] = "";
+				/*$mensaje_html[$periodos->id] = "";
 				if(count($mensajes[$periodos->id]) > 0){
 					$mensaje_html[$periodos->id] .= "<ul>";
 					foreach ($mensajes[$periodos->id] as $mensaje) {
 						$mensaje_html[$periodos->id] .= "<li>" . $mensaje . "</li>";
 					}
 					$mensaje_html[$periodos->id] .= "</ul>";
-				}
+				}*/
+
 			}
 
-	*/
-			$estado = "Informaci&oacute;n Completa";
+	
+
+
+			//$estado = "Informaci&oacute;n Completa";
+			//$periodos->estado = $estado;
 			//$periodos_remuneracion->estado = $estado;
 			$content = array(
 						'menu' => 'Remuneraciones',
@@ -666,7 +672,15 @@ class Rrhh extends CI_Controller {
 
 			#SIGNIFICA QUE AÚN NO SE CARGA, POR TANTO SE CARGARÁN DATOS INICIALES
 			if(count($datos_remuneracion) == 0){
-				$this->rrhh_model->set_datos_iniciales_periodo_rem(12,2017); 
+				$this->load->model('admin');
+				$datos_periodo = $this->admin->get_periodo_by_id($idperiodo);
+				//echo "<pre>";
+				//print_r($datos_periodo); exit;
+				if(count($datos_periodo) == 0){
+						$this->session->set_flashdata('calculo_remuneraciones_result', 2);
+						redirect('rrhh/calculo_remuneraciones');
+				}
+				$this->rrhh_model->set_datos_iniciales_periodo_rem($datos_periodo->mes,$datos_periodo->anno); 
 				$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion_by_periodo($idperiodo); 
 			}
 
@@ -840,6 +854,49 @@ class Rrhh extends CI_Controller {
 
 
 
+	public function aprueba_remuneraciones($idperiodo){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			$publicar = $this->rrhh_model->aprobar_remuneracion($idperiodo);
+
+			$this->session->set_flashdata('calculo_remuneraciones_result', 3);
+			redirect('rrhh/calculo_remuneraciones');	
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+
+	public function rechaza_remuneraciones($idperiodo){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			set_time_limit(0);
+			$publicar = $this->rrhh_model->rechazar_remuneracion($idperiodo);
+
+			$this->session->set_flashdata('calculo_remuneraciones_result', 4);
+			redirect('rrhh/calculo_remuneraciones');	
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
 
 }
 
