@@ -36,6 +36,7 @@
 													                        <th>N&uacute;mero Trabajadores</th>
 													                        <th>Remuneraci&oacute;n Total (L&iacute;quido)</th>
 													                        <th>Detalle Remuneraciones</th>
+													                        <th>Libro Remuneraciones</th>
 													                        <th>Estado</th>
 																		</tr> 
 																	</thead> 
@@ -65,6 +66,13 @@
 											                              <?php } ?>
 											                              </center>
 											                              </td>
+											                              <td>
+											                              <center>
+											                              <?php if(!is_null($periodo->cierre)){ ?>
+											                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id;?>" target="_blank"><span class="glyphicon glyphicon-book"></span></a>  
+											                              <?php } ?>
+											                              </center>
+											                              </td>  
 											                              <td><span class="<?php echo is_null($periodo->aprueba) ? 'text-yellow fa fa-exclamation ' : 'text-green fa fa-check';?>" data-toggle="tooltip" title="<?php echo is_null($periodo->aprueba) ? 'En revisi&oacute;n' : 'Aprobada';?>"/></span></td>                        
 											                          </tr>
 											                          <?php $i++; } ?>

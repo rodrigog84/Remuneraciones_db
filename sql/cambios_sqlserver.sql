@@ -531,3 +531,15 @@ insert into rem_role
 (appid,levelid)
 values
 (54,2)
+
+
+insert into rem_app 
+(funcion,nombre,menuid,visible,valid,orden)
+values
+('rrhh/libro',NULL,5,0,1,NULL)
+
+insert into rem_role
+(appid,levelid)
+values
+(55,2)
+
