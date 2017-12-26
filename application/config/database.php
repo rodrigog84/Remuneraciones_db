@@ -48,10 +48,16 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'LAPTOP-S9V4TM1J';
-$db['default']['port'] = 1433; //'chilefor_admin21'
-$db['default']['username'] = ''; //'chilefor_admin21'
-$db['default']['password'] = ''; //'^o6_5+TGP8JK';
+$db['default']['hostname'] = '200.120.115.27';   // BD Remota
+$db['default']['port'] = 1433; 
+$db['default']['username'] = 'test'; 
+$db['default']['password'] = '1234';
+
+
+//$db['default']['hostname'] = 'DESKTOP-LEUD44H\SQLEXPRESS';
+//$db['default']['port'] = 1433; //'chilefor_admin21'
+//$db['default']['username'] = ''; //'chilefor_admin21'
+//$db['default']['password'] = ''; //'^o6_5+TGP8JK';
 $db['default']['database'] = 'remuneraciones'; // 'chilefor_cf_ctz';
 $db['default']['dbdriver'] = 'sqlsrv';
 $db['default']['dbprefix'] = '';
