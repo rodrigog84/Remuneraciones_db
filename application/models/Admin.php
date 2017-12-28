@@ -628,6 +628,24 @@ public function get_cargos($idcargo = null){
 	}	
 
 
+	/*public function get_permite_periodo($mes,$anno){
+
+		$this->db->trans_start();
+		$datos_empresa = $this->get_empresas($this->session->userdata('empresaid'));
+		$idperiodoinicio = isset($datos_empresa->idperiodoinicio) ? $datos_empresa->idperiodoinicio : 1;
+		$datos_periodo = $this->get_datos_periodo_by_id($idperiodoinicio);
+		$periodo_seleccionado = $anno."-".str_pad($mes,2,"0",STR_PAD_LEFT)."-01";
+		$periodo_inicio = $datos_periodo->anno."-".str_pad($datos_periodo->mes,2,"0",STR_PAD_LEFT)."-01";
+		$fecha_seleccionada = strtotime($periodo_seleccionado);
+		$fecha_inicio = strtotime($periodo_inicio);
+		$this->db->trans_complete();
+		if($fecha_seleccionada < $fecha_inicio){
+			return false;
+		}else{
+			return true;
+		}
+	}	*/
+
 
 public function get_bonos($idtrabajador = null){
 

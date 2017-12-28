@@ -543,3 +543,14 @@ insert into rem_role
 values
 (55,2)
 
+
+insert into rem_app 
+(funcion,nombre,menuid,visible,valid,orden)
+values
+('rrhh/submit_asistencia',NULL,5,0,1,NULL)
+
+
+insert into rem_role
+(appid,levelid)
+values
+(56,2)

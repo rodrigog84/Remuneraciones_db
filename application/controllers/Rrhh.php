@@ -503,8 +503,9 @@ class Rrhh extends CI_Controller {
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';					
 			}
+			$mes = $this->session->flashdata('asistencia_mes') == '' ? date('m') : $this->session->flashdata('asistencia_mes');
+			$anno = $this->session->flashdata('asistencia_anno') == '' ? date('Y') : $this->session->flashdata('asistencia_anno');
 			
-
 
 			$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos(); 
 			//echo "<pre>";
@@ -640,7 +641,10 @@ class Rrhh extends CI_Controller {
 						'subtitle' => 'Calculo Remuneraci&oacute;n');
 
 			$vars['content_menu'] = $content;				
+			$vars['mes'] = $mes;	
+			$vars['anno'] = $anno;	
 			$vars['periodos_remuneracion'] = $periodos_remuneracion;	
+			$vars['formValidation'] = true;
 			//$vars['mensaje_html'] = $mensaje_html;	
 			$vars['content_view'] = 'rrhh/calculo_remuneraciones';
 
@@ -667,11 +671,28 @@ class Rrhh extends CI_Controller {
 
 	public function submit_calculo_remuneraciones($idperiodo){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+			$mes = $this->input->post('mes');
+			$anno = $this->input->post('anno');
+
+			//if($mes == '' || $anno == ''){
+			if(empty($mes) && empty($anno)){
+				$this->session->set_flashdata('calculo_remuneraciones_result', 2);
+				redirect('rrhh/calculo_remuneraciones');	
+			}else{
+				#EN CASO QUE NO EXISTAN DATOS INICIALES, SE CARGAN AHORA
+				$idperiodo = $this->rrhh_model->set_datos_iniciales_periodo_rem($mes,$anno); 
+
+			}
+
+
+
 			set_time_limit(0);
 			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion_by_periodo($idperiodo); 
 
 			#SIGNIFICA QUE AÚN NO SE CARGA, POR TANTO SE CARGARÁN DATOS INICIALES
-			if(count($datos_remuneracion) == 0){
+			/*if(count($datos_remuneracion) == 0){
 				$this->load->model('admin');
 				$datos_periodo = $this->admin->get_periodo_by_id($idperiodo);
 				//echo "<pre>";
@@ -682,7 +703,7 @@ class Rrhh extends CI_Controller {
 				}
 				$this->rrhh_model->set_datos_iniciales_periodo_rem($datos_periodo->mes,$datos_periodo->anno); 
 				$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion_by_periodo($idperiodo); 
-			}
+			}*/
 
 			$periodo_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos($idperiodo); 
 			/*$estado = "Informaci&oacute;n Completa";
@@ -938,6 +959,244 @@ class Rrhh extends CI_Controller {
 		}
 
 	}	
+
+
+
+	public function asistencia($resultid = '')
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+			$resultid = $this->session->flashdata('asistencia_result');
+			if($resultid == 1){
+				$vars['message'] = "Asistencia agregada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al agregar asistencia";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}
+
+			//$this->load->model('admin');
+			//$comunidad = $this->admin->get_comunidades($this->session->userdata('comunidadid')); 
+
+			$mes = $this->session->flashdata('asistencia_mes') == '' ? date('m') : $this->session->flashdata('asistencia_mes');
+			$anno = $this->session->flashdata('asistencia_anno') == '' ? date('Y') : $this->session->flashdata('asistencia_anno');
+
+
+
+			$personal = $this->rrhh_model->get_personal(); 
+			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno); 
+
+			$array_remuneracion_trabajador = array();
+			foreach ($datos_remuneracion as $remuneracion) {
+				$array_remuneracion_trabajador[$remuneracion->idpersonal] = $remuneracion->diastrabajo;
+			}
+
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Asistencia');
+
+			$vars['content_menu'] = $content;				
+			$vars['personal'] = $personal;	
+			$vars['datos_remuneracion'] = $array_remuneracion_trabajador;	
+			$vars['mes'] = $mes;	
+			$vars['anno'] = $anno;	
+			$vars['content_view'] = 'rrhh/asistencia';
+			$vars['formValidation'] = true;
+
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
+
+
+	public function get_status_rem($tipo_status,$mes,$anno){
+
+		$estado_periodo = $this->rrhh_model->get_estado_periodo($mes,$anno);
+
+		//OPCIONES:  ES NUEVO, YA SE CREO, YA ESTÁ CERRADO
+
+		if($estado_periodo == 2){ // NO EXISTE, ES NUEVO
+			if($tipo_status == 'calculo'){
+				$array_result['label_style'] = 'label-primary';
+				$array_result['label_text'] = 'Per&iacute;odo en condiciones de calcular';
+				$array_result['status'] = 'nuevo';	
+			}else{
+				$array_result['label_style'] = 'label-primary';
+				$array_result['label_text'] = 'Per&iacute;odo Nuevo (sin datos)';
+				$array_result['status'] = 'nuevo';				
+			}
+
+		}else if($estado_periodo == 0){ // NO EXISTE, ES NUEVO
+			$array_result['label_style'] = 'label-danger';
+			$array_result['label_text'] = 'Per&iacute;odo Cerrado';			
+			$array_result['status'] = 'cerrado';
+		}else{
+			if($tipo_status == 'calculo'){
+				$array_result['label_style'] = 'label-primary';
+				$array_result['label_text'] = 'Per&iacute;odo en condiciones de calcular';
+				$array_result['status'] = 'nuevo';					
+			}else{
+
+				$datos_pendientes = false;
+				$personal = $this->rrhh_model->get_personal(); 
+				foreach ($personal as $trabajador) {
+					$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno,$trabajador->id); 
+					if(count($datos_remuneracion) == 0){
+	                   $datos_pendientes = true;
+	               	   break;
+					}else{
+						if($tipo_status == 'asistencia'){
+						 if(is_null($datos_remuneracion->diastrabajo)){
+		                   $datos_pendientes = true;
+		               	   break;
+		               	  }
+		               	}else if($tipo_status == 'horas_descuentos'){
+						 if(is_null($datos_remuneracion->horasdescuento) || 
+							   is_null($datos_remuneracion->montodescuento)){
+		                   $datos_pendientes = true;
+		               	   break;
+		               	  }	               		
+		               	}else if($tipo_status == 'horas_extraordinarias'){
+						 if(is_null($datos_remuneracion->horasextras50) || 
+							   is_null($datos_remuneracion->montohorasextras50) || 
+							   is_null($datos_remuneracion->horasextras100) || 
+							   is_null($datos_remuneracion->montohorasextras100)){
+		                   $datos_pendientes = true;
+		               	   break;
+		               	  }	 
+
+		               	}else if($tipo_status == 'anticipos'){
+						 if(is_null($datos_remuneracion->anticipo) || 
+							   is_null($datos_remuneracion->aguinaldo)){
+		                   $datos_pendientes = true;
+		               	   break;
+		               	  }	 
+
+
+		               	}
+					}
+				}
+
+				if($datos_pendientes){
+					$array_result['label_style'] = 'label-warning';
+					$array_result['label_text'] = 'Per&iacute;odo con datos pendientes ';
+					$array_result['status'] = 'pendiente';
+				}else{
+
+					if($tipo_status == 'anticipos'){
+						if($estado_periodo == 1){
+							$array_result['label_style'] = 'label-success';
+							$array_result['label_text'] = 'Datos ingresados (puede editar informaci&oacute;n)';
+							$array_result['status'] = 'ingresado';
+						}else{
+							$array_result['label_style'] = 'label-danger';
+							$array_result['label_text'] = 'Datos de Anticipo ya traspasados';			
+							$array_result['status'] = 'cerrado';
+						}
+
+
+					}else{
+						$array_result['label_style'] = 'label-success';
+						$array_result['label_text'] = 'Datos ingresados (puede editar informaci&oacute;n)';
+						$array_result['status'] = 'ingresado';
+					}
+
+				}
+			}
+
+		}
+
+
+		$array_result['estado'] = $estado_periodo;
+
+		echo json_encode($array_result);
+	}	
+
+	public function estado_periodo($tipo_status = null){
+
+		$this->load->model('admin');
+
+		//NO SE CONSIDERARÁ AÚN EL PERÍODO DE INICIO
+		//$valid = $this->admin->get_permite_periodo($this->input->post('mes'),$this->input->post('anno'));
+		$valid = true;
+		if($valid){
+			$estado_periodo = $this->rrhh_model->get_estado_periodo($this->input->post('mes'),$this->input->post('anno'));
+
+
+			if(is_null($tipo_status)){
+				$valid = $estado_periodo == 1 || $estado_periodo == 2 || $estado_periodo == 3 ? true : false;
+			}else{
+				$valid = $estado_periodo == 1 || $estado_periodo == 2 ? true : false;
+			}
+		}
+
+
+		echo json_encode(array(
+		    'valid' => $valid
+		));
+	}	
+
+
+	public function submit_asistencia(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$mes = $this->input->post('mes');
+			$anno = $this->input->post('anno');
+
+			//if($mes == '' || $anno == ''){
+			if(empty($mes) && empty($anno)){
+				$this->session->set_flashdata('asistencia_result', 2);
+				redirect('rrhh/asistencia');	
+			}
+
+
+			$array_elem = $this->input->post(NULL,true);
+			$array_trabajadores = array();
+			foreach($array_elem as $elem => $value_elem){
+				$arr_el = explode("_",$elem);
+				if($arr_el[0] == 'diastrabajo'){
+					$array_trabajadores[$arr_el[1]] = $value_elem;
+				}
+			}
+
+			$this->rrhh_model->save_asistencia($array_trabajadores,$mes,$anno);
+
+			$this->session->set_flashdata('asistencia_result', 1);
+			$this->session->set_flashdata('asistencia_mes', $mes);
+			$this->session->set_flashdata('asistencia_anno', $anno);
+			redirect('rrhh/asistencia');	
+
+
+		}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}	
+
+
 
 }
 

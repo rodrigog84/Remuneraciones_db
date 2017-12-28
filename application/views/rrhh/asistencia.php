@@ -21,7 +21,8 @@
 									            </div>            
 									          </div>
 									          <?php endif; ?>
-												<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_calculo_remuneraciones" id="basicBootstrapForm" method="post"> 
+
+											<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_asistencia" id="basicBootstrapForm" method="post"> 
 									            <div class="row">
 
 									                <div class="col-md-6">
@@ -62,11 +63,6 @@
 									                                </select>
 									                            </div>
 									                          </div>  
-									                      </div>
-									                      <div class="row">
-									                      	<div class='col-md-3'>
-									                      			<button type="submit" class="btn btn-primary">Calcular</button>&nbsp;&nbsp;
-									                      	</div>
 									                      </div>                    
 									                    </div><!-- /.box-body -->
 									                  </div>
@@ -74,7 +70,16 @@
 
 
 									            </div>
-									            </form>
+
+									            <div class="row">
+
+									                <div class="col-md-12">
+									                  <div class="box box-primary">
+
+									                    <div class="box-header">
+									                      <h3 class="box-title">Ingreso de Asistencia</h3>  
+									                    </div><!-- /.box-header -->
+
 											
 														  <div class="graph">
 
@@ -82,113 +87,55 @@
 															<div class="tables">
 																<table class="table"> 
 																	<thead> 
-																		<tr>
-																			<th>#</th>
-																			<th>Per&iacute;odo</th> 
-																			<th>Estado</th> 
-																			<!--th>Acci&oacute;n</th--> 
-																			<th>Ver Detalle Remunraciones</th> 
-																			<th>Validar</th> 
-																			
-
-																		</tr> 
+										                            <tr>
+										                              <th >#</th>
+										                              <th >Rut</th>
+										                              <th >Nombre Trabajador</th>
+										                              <th >D&iacute;as a Trabajar</th>
+										                              <th >Dias Trabajados</th>
+									                            	</tr>
 																	</thead> 
-																	<tbody> 
-                    												<?php if(count($periodos_remuneracion) > 0){ ?>	
-                    													<?php $i = 1; ?>	
-                      													<?php foreach($periodos_remuneracion as $periodo){ ?>															
-																		<tr class="active" id="variable">
-																			<td><?php echo $i;?></td>
-																			<td><?php echo date2string($periodo->mes,$periodo->anno); ?></td> 
-																			 <td><span class="<?php echo $periodo->estado == 'Informaci&oacute;n Completa' ? 'text-green' : 'text-red';?>" /><?php echo $periodo->estado; ?></span>&nbsp;&nbsp;
-                        													<?php if($periodo->estado == 'Falta Informaci&oacute;n'){ ?><i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="<?php echo $mensaje_html[$periodo->id];?>" title="Datos Pendientes:"></i><?php } ?>
-                        													</td>
-																			<!--td>
-																					<?php if($periodo->estado == 'Informaci&oacute;n Completa' && is_null($periodo->cierre)){ ?>
-																					<a href="<?php echo base_url(); ?>rrhh/submit_calculo_remuneraciones/<?php echo $periodo->id; ?>" data-toggle="tooltip" title="Calculo Remuneraciones" class="btn btn-block btn-xs btn-primary">Calcular</a>
-																					<?php }else{ ?>
-                            																&nbsp;
-                         															<?php } ?>
-																			</td-->
-																			
-																			<td>
-																				<?php if($periodo->estado == 'Informaci&oacute;n Completa' && !is_null($periodo->cierre)){ ?>
-                             														<center><a href="<?php echo base_url(); ?>rrhh/detalle/<?php echo $periodo->id; ?>" data-toggle="tooltip" title="Ver Per&iacute;odo"><span class="glyphicon glyphicon-search"></span></a></center>
-                        														<?php }else{  ?>
-                           															&nbsp;
-                        														<?php } ?>
-																			</td> 
-																			<td>
-																				<?php if($periodo->estado == 'Informaci&oacute;n Completa' && !is_null($periodo->cierre)){ ?>
-                            															<a href="#" data-href="<?php echo base_url(); ?>rrhh/aprueba_remuneraciones/<?php echo $periodo->id; ?>" data-toggle="modal" data-target="#confirm-publish" title="Aprobar" class="btn btn-xs btn-success"><span class="fa fa-check"></span></a>
-                            														<a href="<?php echo base_url(); ?>rrhh/rechaza_remuneraciones/<?php echo $periodo->id; ?>" data-toggle="tooltip" title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>
-                          														<?php }else{ ?>
-                            															&nbsp;
-                          														<?php } ?>																				
+											                          <tbody>
+											                            <?php if(count($personal) > 0 ){ ?>
+											                              <?php $i = 1; ?>
+											                              <?php foreach ($personal as $trabajador) { ?>
 
-																			</td> 
-																		</tr> 
-																			<?php 
-																				$i++;
-																			} ?>
-                    												<?php }else{ ?>
-                    															<tr>
-                      																<td colspan="6">No existen per&iacute;odos para C&aacute;lculo de Remuneraciones</td>
-                    															</tr>
-                    												<?php } ?>
-																	</tbody> 
+											                               <tr >
+											                                <td><?php echo $i ;?></td>
+											                                <td><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></td>
+											                                <td><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></td>
+											                                <td>
+											                                    <b><span id="diasatrabajar_<?php echo $trabajador->id;?>"  class="text-right" ><?php echo $trabajador->diastrabajo;?></span></b>   
+											                                </td>
+											                                <td class="form-group">
+											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id;?>" id="diastrabajo_<?php echo $trabajador->id;?>" class="diastrabajo" value="<?php echo isset($datos_remuneracion[$trabajador->id]) ? $datos_remuneracion[$trabajador->id] : $trabajador->diastrabajo; ?>"  />   
+											                                </td>
+											                              </tr>
+											                              <?php $i++;?>
+											                              <?php } ?>
+											                            <?php }else{ ?>
+											                            <tr>
+											                              <td colspan="4">No existen trabajadores en la comunidad</td>
+											                            </tr>
+											                          <?php } ?>
+											                          </tbody>
 																</table> 
 																
 															</div>
+										                    <?php if(count($personal) > 0 ){ ?>
+										                    <div class="box-footer">
+										                      <button type="submit" class="btn btn-primary">Guardar</button>&nbsp;&nbsp;
+										                    </div>
+										                    <?php } ?>															
 												
 													</div>
-													
+
+												</div>
+												</div>
+												</div>
+												</form>  
 											</div>
 									<!--/charts-inner-->
-
-    <div class="modal fade" id="confirm-publish" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Confirmar Aprobaci&oacute;n</h4>
-                </div>
-            
-                <div class="modal-body">
-                    <p>Se traspasar&aacute; la informaci&oacute;n de remuneraciones.&nbsp;&nbsp;Una vez aprobado, no podr&aacute; reversar la transacci&oacute;n.</p>
-                    <p>Desea continuar?</p>
-                </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-success btn-ok">Aprobar</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-   <script type="text/javascript">
-$(document).ready(function(){
-    $('[data-toggle="popover"]').popover({
-      trigger : 'hover',
-    html: true,});   
-});
-</script>
-<style type="text/css">
-  .bs-example{
-      margin: 300px 50px;
-    }
-</style>
-
-
-    <script>
-        $('#confirm-publish').on('show.bs.modal', function(e) {
-
-            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-            
-        });
-    </script>
 
 
 <script>
@@ -196,7 +143,7 @@ $(document).ready(function(){
 $('.periodo').change(function(){
     $('#basicBootstrapForm').formValidation('revalidateField', 'anno');
       var cerrado = false;
-      $.ajax({url: "<?php echo base_url();?>rrhh/get_status_rem/calculo/"+$('#mes').val()+"/"+$('#anno').val(),
+      $.ajax({url: "<?php echo base_url();?>rrhh/get_status_rem/asistencia/"+$('#mes').val()+"/"+$('#anno').val(),
         type: 'GET',
         async: false,
         success : function(data) {
@@ -212,13 +159,30 @@ $('.periodo').change(function(){
         $('input').attr('readonly',false);
       }
 
+
+      $.get("<?php echo base_url();?>rrhh/get_datos_remuneracion/"+$('#mes').val()+"/"+$('#anno').val(),function(data){
+               // Limpiamos el select
+                    var_json = $.parseJSON(data);
+                    $(".diastrabajo").each(
+                        function(index,value){
+                            var id_text = $(this).attr('id');
+                            var array_field = id_text.split("_");
+                            idtrabajador = array_field[1];  
+
+                            var diastrabajo =  typeof(var_json["diastrabajo_"+idtrabajador]) != 'undefined' && var_json["diastrabajo_"+idtrabajador] != null ? var_json["diastrabajo_"+idtrabajador] : parseInt($('#diasatrabajar_'+idtrabajador).html());
+                            $(this).val(diastrabajo);
+                        }
+                        
+                    );                    
+      });
+      
 });
 
 
 $(document).ready(function() {
 
       var cerrado = false;
-      $.ajax({url: "<?php echo base_url();?>rrhh/get_status_rem/calculo/"+$('#mes').val()+"/"+$('#anno').val(),
+      $.ajax({url: "<?php echo base_url();?>rrhh/get_status_rem/asistencia/"+$('#mes').val()+"/"+$('#anno').val(),
         type: 'GET',
         async: false,
         success : function(data) {
@@ -243,6 +207,41 @@ $(document).ready(function() {
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
+            lectura: {
+                // The children's full name are inputs with class .childFullName
+                selector: '.diastrabajo',
+                // The field is placed inside .col-xs-6 div instead of .form-group
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Informaci&oacute;n de Asistencia es requerida'
+                    },
+                    integer: {
+                        separator: '.',
+                        message: 'Asistencia s&oacute;lo puede contener n&uacute;meros'
+                    },
+                    callback: {
+                        message: 'Asistencia debe ser menor o igual a d&iacute;as a trabajar',
+                        callback: function (value, validator, $field) {
+                            var id_text = $field.attr('id');
+                            var array_field = id_text.split("_");
+                            idtrabajador = array_field[1];
+                            var asistencia_trabajador = $('#diasatrabajar_'+idtrabajador).html() == '' ? 0 : parseInt($('#diasatrabajar_'+idtrabajador).html());
+                            var asistencia_actual = $('#diastrabajo_'+idtrabajador).val() == '' ? 0 : parseInt($('#diastrabajo_'+idtrabajador).val());                            
+                            if(asistencia_actual <= asistencia_trabajador){
+                              return true;
+                            }else{
+                              return  {
+                                    valid: false,
+                                    message: 'Asistencia debe ser menor o igual a d&iacute;as a trabajar'
+                                }
+                            }
+                        }
+                    }                    
+
+                },
+
+            },
             anno: {
                 row: '.form-group',
                 validators: {

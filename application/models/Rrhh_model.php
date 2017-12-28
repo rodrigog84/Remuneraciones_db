@@ -171,6 +171,128 @@ public function add_personal($array_datos,$idtrabajador){
 
 
 
+	public function get_datos_remuneracion($mes,$anno,$idtrabajador = null){
+
+		$personal_data = $this->db->select('r.idpersonal, r.idperiodo, r.diastrabajo, r.horasdescuento, r.montodescuento, r.valorhorasextras50, r.horasextras50, r.montohorasextras50, r.valorhorasextras100, r.horasextras100, r.montohorasextras100, r.anticipo, r.aguinaldo, r.sueldobase, r.gratificacion, r.movilizacion, r.valorhora')
+						  ->from('rem_remuneracion r')
+						  ->join('rem_personal pe','r.idpersonal = pe.id')
+						  ->join('rem_periodo p','r.idperiodo = p.id')
+						  ->where('pe.idempresa',$this->session->userdata('empresaid'))
+						  ->where('pe.active = 1')
+						  ->where('p.mes',$mes)
+						  ->where('p.anno',$anno)
+		                  ->order_by('pe.nombre');
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('r.idpersonal',$idtrabajador);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
+		return $datos;
+	}	
+
+
+
+	public function get_estado_periodo($mes,$anno){
+
+		$this->db->select('pr.anticipo, pr.cierre')
+						  ->from('rem_periodo_remuneracion as pr')
+						  ->join('rem_periodo as p','pr.idperiodo = p.id')
+		                  ->where('p.mes', $mes)
+		                  ->where('p.anno', $anno)
+		                  ->where('pr.idempresa', $this->session->userdata('empresaid'));
+		$query = $this->db->get();
+		$datos_periodo = $query->row();
+		if(count($datos_periodo) == 0){
+			return 2;
+		}else{
+
+			if(is_null($datos_periodo->cierre)){
+				return is_null($datos_periodo->anticipo) ? 1 : 3;  #EL 3 aplica sólo en cálculo de anticipo
+			}else{
+				return 0;
+			}
+		}
+	}
+
+
+public function save_asistencia($array_trabajadores,$mes,$anno){
+
+
+		$this->db->trans_start();
+
+		// evaluar si existe periodo
+		$this->db->select('p.id')
+						  ->from('rem_periodo as p')
+		                  ->where('p.mes', $mes)
+		                  ->where('p.anno', $anno);
+		$query = $this->db->get();
+		$datos_periodo = $query->row();
+		$idperiodo = 0;
+		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+				$data = array(
+			      	'mes' => $mes,
+			      	'anno' =>  $anno
+				);
+				$this->db->insert('rem_periodo', $data);
+				$idperiodo = $this->db->insert_id();
+		}else{
+				$idperiodo = $datos_periodo->id;
+		}
+
+
+		// evaluar si existe periodo remuneraciones
+		$this->db->select('r.idperiodo')
+						  ->from('rem_periodo_remuneracion as r')
+		                  ->where('r.idperiodo', $idperiodo)
+		                  ->where('r.idempresa', $this->session->userdata('empresaid'));
+		$query = $this->db->get();
+		$datos_periodo_remuneracion = $query->row();
+		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
+				$data = array(
+			      	'idperiodo' => $idperiodo,
+			      	'idempresa' => $this->session->userdata('empresaid')
+				);
+				$this->db->insert('rem_periodo_remuneracion', $data);
+		}
+
+
+
+
+		foreach ($array_trabajadores as $idtrabajador => $info_trabajador) {
+
+			$this->db->select('r.idperiodo')
+							  ->from('rem_remuneracion as r')
+			                  ->where('r.idpersonal', $idtrabajador)
+			                  ->where('r.idperiodo', $idperiodo);
+			$query = $this->db->get();
+			$datos_remuneracion = $query->row();
+			if(count($datos_remuneracion) == 0){ // si no existe periodo, se crea
+
+					$data = array(
+				      	'idpersonal' => $idtrabajador,
+				      	'idperiodo' => $idperiodo,
+				      	'diastrabajo' => $info_trabajador,
+				      	'idempresa' => $this->session->userdata('empresaid'),
+				      	'created_at' => date("Ymd H:i:s")
+
+					);
+					$this->db->insert('rem_remuneracion', $data);
+			}else{
+					$data = array(
+				      	'diastrabajo' => $info_trabajador
+					);				
+					$this->db->where('idpersonal', $idtrabajador);
+					$this->db->where('idperiodo', $idperiodo);
+					$this->db->update('rem_remuneracion',$data); 
+
+			}
+		}
+
+		$this->db->trans_complete();
+		return 1;
+	}	
+
+
+
+
 	public function get_personal($idtrabajador = null){
 		$array_campos = array(
 				'id', 
@@ -282,9 +404,9 @@ public function add_personal($array_datos,$idtrabajador){
 
 
 		##CUALQUIER DATO CARGADO LO BORRA
-		$this->db->where('idempresa', $this->session->userdata('empresaid'));
+		/*$this->db->where('idempresa', $this->session->userdata('empresaid'));
 		$this->db->where('idperiodo', $idperiodo);
-		$this->db->delete('rem_remuneracion');
+		$this->db->delete('rem_remuneracion');*/
 
 
 		$personal = $this->get_personal(); 
@@ -319,6 +441,7 @@ public function add_personal($array_datos,$idtrabajador){
 		}
 
 		$this->db->trans_complete();
+		return $idperiodo;
 	}
 
 
@@ -853,7 +976,8 @@ limit 1		*/
 						  ->join('rem_periodo_remuneracion as pr','p.id = pr.idperiodo')
 		                  ->where('pr.idempresa', $empresaid)
 		                  ->where('pr.cierre is not null')
-		                  ->order_by('p.updated_at desc');
+		                  ->order_by('p.anno desc')
+		                  ->order_by('p.mes desc');
 		$comunidades_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.idperiodo',$idperiodo);
 		$query = $this->db->get();
 		$datos = is_null($idperiodo) ? $query->result() : $query->row();				                  

@@ -22,9 +22,8 @@
 }
 
 input {
-    background: #333;
+    background: #ffffff;
     border: 1px solid #292929;
-    color: #fff;
     outline: none;
 }
 #gauge {
