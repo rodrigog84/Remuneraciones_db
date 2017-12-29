@@ -249,7 +249,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							   <!--//down-->
                            <div class="menu">
 									<ul id="menu" >
-										<li><a href="<?php echo base_url();?>main/dashboard"><i class="fa fa-bars"></i>Menu</a></li>
+										
 
 										<?php foreach ($this->session->userdata('menu_list') as $menu): ?>
 										                <?php 
@@ -270,7 +270,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										                  <?php $angle_left = $menu->menuleaf == 0 ? "fa-angle-right" : ""; ?>
 										                  <li class="menu-academico">
 										                    <a href="<?php echo base_url().$menuhref; ?>">
-										                      <i class="fa fa-table  <?php echo $menu->menuimg;?>"></i>
+										                      <i class="fa <?php echo $menu->menuimg;?>"></i>
 										                      <span><?php echo $menu->menuname;?></span>
 										                      <span class="fa <?php echo $angle_left; ?>" style="float: right"></span>
 										                    </a>

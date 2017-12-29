@@ -913,7 +913,8 @@
 										</div>
 										<br>
 										<br>
-										<input type="submit" class="btn btn-info" value="Guardar">
+										<button type="submit" class="btn btn-info">Guardar</button>
+										
 										<a href="<?php echo base_url();?>rrhh/mantencion_personal" class="btn btn-success">Volver</a>	
 									</div>
 								</div>
@@ -1011,4 +1012,14 @@ $(document).ready(function() {
     })
     
 });*/
-</script>								
+</script>
+
+<!--date-piker-->
+<link rel="stylesheet" href="css/jquery-ui.css" />
+<script src="js/jquery-ui.js"></script>
+<script>
+	$(function() {
+		$( "#datepicker,#datepicker2,#datepicker3,#datepicker4,#datepicker5,#datepicker6,#datepicker7,#datepicker8,#datepicker9,#datepicker10,#datepicker11,#datepicker12,#feriados,#fecha_real,#vencimiento_1,#fechanacimiento").datepicker();
+	});
+</script>
+<!--date-piker-->								
