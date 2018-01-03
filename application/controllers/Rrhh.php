@@ -669,6 +669,28 @@ class Rrhh extends CI_Controller {
 	}
 
 
+
+	public function get_datos_remuneracion($mes,$anno){
+		$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno);
+		$array_remuneracion_trabajador = array();
+		foreach ($datos_remuneracion as $remuneracion) {
+			$array_remuneracion_trabajador["valorhora_".$remuneracion->idpersonal] = $remuneracion->valorhora;
+			$array_remuneracion_trabajador["diastrabajo_".$remuneracion->idpersonal] = $remuneracion->diastrabajo;
+			$array_remuneracion_trabajador["horasdescuento_".$remuneracion->idpersonal] = $remuneracion->horasdescuento;
+			$array_remuneracion_trabajador["montodescuento_".$remuneracion->idpersonal] = $remuneracion->montodescuento;
+			$array_remuneracion_trabajador["valorhorasextras50_".$remuneracion->idpersonal] = $remuneracion->valorhorasextras50;
+			$array_remuneracion_trabajador["horasextras50_".$remuneracion->idpersonal] = $remuneracion->horasextras50;
+			$array_remuneracion_trabajador["montohorasextras50_".$remuneracion->idpersonal] = $remuneracion->montohorasextras50;
+			$array_remuneracion_trabajador["valorhorasextras100_".$remuneracion->idpersonal] = $remuneracion->valorhorasextras100;
+			$array_remuneracion_trabajador["horasextras100_".$remuneracion->idpersonal] = $remuneracion->horasextras100;
+			$array_remuneracion_trabajador["montohorasextras100_".$remuneracion->idpersonal] = $remuneracion->montohorasextras100;
+			$array_remuneracion_trabajador["anticipo_".$remuneracion->idpersonal] = $remuneracion->anticipo;
+			$array_remuneracion_trabajador["aguinaldo_".$remuneracion->idpersonal] = $remuneracion->aguinaldo;
+		}		
+		echo json_encode($array_remuneracion_trabajador);
+	}	
+
+
 	public function submit_calculo_remuneraciones($idperiodo){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
@@ -1029,6 +1051,78 @@ class Rrhh extends CI_Controller {
 	}	
 
 
+	public function horas_extraordinarias($resultid = '')
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+			$resultid = $this->session->flashdata('horas_extraordinarias_result');
+			if($resultid == 1){
+				$vars['message'] = "Horas Extraordinarias agregadas correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al agregar Horas Extraordinarias";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}
+
+			//$this->load->model('admin');
+			//$comunidad = $this->admin->get_comunidades($this->session->userdata('comunidadid')); 
+
+			$mes = $this->session->flashdata('horas_extraordinarias_mes') == '' ? date('m') : $this->session->flashdata('horas_extraordinarias_mes');
+			$anno = $this->session->flashdata('horas_extraordinarias_anno') == '' ? date('Y') : $this->session->flashdata('horas_extraordinarias_anno');
+
+
+
+			$personal = $this->rrhh_model->get_personal(); 
+
+			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno); 
+			$array_remuneracion_trabajador = array();
+			foreach ($datos_remuneracion as $remuneracion) {
+				$array_remuneracion_trabajador['horasextras50'][$remuneracion->idpersonal] = $remuneracion->horasextras50;
+				$array_remuneracion_trabajador['montohorasextras50'][$remuneracion->idpersonal] = $remuneracion->montohorasextras50;
+
+				$array_remuneracion_trabajador['horasextras100'][$remuneracion->idpersonal] = $remuneracion->horasextras100;
+				$array_remuneracion_trabajador['montohorasextras100'][$remuneracion->idpersonal] = $remuneracion->montohorasextras100;
+			}
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Horas Extraordinarias');
+
+			$vars['content_menu'] = $content;				
+			$vars['personal'] = $personal;	
+			$vars['datos_remuneracion'] = $array_remuneracion_trabajador;	
+			$vars['mes'] = $mes;	
+			$vars['anno'] = $anno;	
+			$vars['content_view'] = 'rrhh/horas_extraordinarias';
+			$vars['formValidation'] = true;
+			$vars['maleta'] = true;	
+			$vars['mask'] = true;
+
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+
 	public function get_status_rem($tipo_status,$mes,$anno){
 
 		$estado_periodo = $this->rrhh_model->get_estado_periodo($mes,$anno);
@@ -1197,6 +1291,61 @@ class Rrhh extends CI_Controller {
 	}	
 
 
+	public function submit_horas_extraordinarias(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$mes = $this->input->post('mes');
+			$anno = $this->input->post('anno');
+
+			//if($mes == '' || $anno == ''){
+			if(empty($mes) && empty($anno)){	
+				$this->session->set_flashdata('horas_extraordinarias_result', 2);
+				redirect('rrhh/horas_extraordinarias');	
+			}
+
+
+			$array_elem = $this->input->post(NULL,true);
+			$array_trabajadores = array();
+			foreach($array_elem as $elem => $value_elem){
+				$arr_el = explode("_",$elem);
+				if($arr_el[0] == 'horas50'){
+					$array_trabajadores[$arr_el[1]]['horas50'] = $value_elem;
+				}
+
+				if($arr_el[0] == 'monto50'){
+					$array_trabajadores[$arr_el[1]]['monto50'] = $value_elem;
+				}
+
+				if($arr_el[0] == 'horas100'){
+					$array_trabajadores[$arr_el[1]]['horas100'] = $value_elem;
+				}
+
+				if($arr_el[0] == 'monto100'){
+					$array_trabajadores[$arr_el[1]]['monto100'] = $value_elem;
+				}				
+			}
+
+
+			$this->rrhh_model->save_horas_extraordinarias($array_trabajadores,$mes,$anno);
+
+			$this->session->set_flashdata('horas_extraordinarias_result', 1);
+			$this->session->set_flashdata('horas_extraordinarias_mes', $mes);
+			$this->session->set_flashdata('horas_extraordinarias_anno', $anno);
+			redirect('rrhh/horas_extraordinarias');	
+
+
+		}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}	
+
+
+
+	
 
 }
 

@@ -554,3 +554,18 @@ insert into rem_role
 (appid,levelid)
 values
 (56,2)
+
+
+update rem_app set funcion = 'rrhh/horas_extraordinarias' where id = 16
+
+	
+insert into rem_app 
+(funcion,nombre,menuid,visible,valid,orden)
+values
+('rrhh/submit_horas_extraordinarias',NULL,5,0,1,NULL)
+
+
+insert into rem_role
+(appid,levelid)
+values
+(57,2)

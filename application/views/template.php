@@ -73,6 +73,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.Rut/jquery.Rut.js" charset="UTF-8"></script>
       <?php } ?> 
 
+ <?php if(isset($maleta)){ ?>
+            <script src="<?php echo base_url(); ?>js/maleta.js"></script>
+      <?php } ?>      
+
 
 <!--//skycons-icons-->
 </head> 

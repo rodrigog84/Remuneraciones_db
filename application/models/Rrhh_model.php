@@ -292,6 +292,91 @@ public function save_asistencia($array_trabajadores,$mes,$anno){
 
 
 
+public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
+
+		$this->db->trans_start();
+
+		// evaluar si existe periodo
+		$this->db->select('p.id')
+						  ->from('rem_periodo as p')
+		                  ->where('p.mes', $mes)
+		                  ->where('p.anno', $anno);
+		$query = $this->db->get();
+		$datos_periodo = $query->row();
+		$idperiodo = 0;
+		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+				$data = array(
+			      	'mes' => $mes,
+			      	'anno' =>  $anno
+				);
+				$this->db->insert('rem_periodo', $data);
+				$idperiodo = $this->db->insert_id();
+		}else{
+				$idperiodo = $datos_periodo->id;
+		}
+
+
+
+		// evaluar si existe periodo remuneraciones
+		$this->db->select('r.idperiodo')
+						  ->from('rem_periodo_remuneracion as r')
+		                  ->where('r.idperiodo', $idperiodo)
+		                  ->where('r.idempresa', $this->session->userdata('empresaid'));
+		$query = $this->db->get();
+		$datos_periodo_remuneracion = $query->row();
+		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
+				$data = array(
+			      	'idperiodo' => $idperiodo,
+			      	'idempresa' => $this->session->userdata('empresaid')
+				);
+				$this->db->insert('rem_periodo_remuneracion', $data);
+		}
+
+
+
+		foreach ($array_trabajadores as $idtrabajador => $info_trabajador) {
+
+			$this->db->select('r.idperiodo')
+							  ->from('rem_remuneracion as r')
+			                  ->where('r.idpersonal', $idtrabajador)
+			                  ->where('r.idperiodo', $idperiodo);
+			$query = $this->db->get();
+			$datos_remuneracion = $query->row();
+			if(count($datos_remuneracion) == 0){ // si no existe periodo, se crea
+
+					$data = array(
+						'idpersonal' => $idtrabajador,
+				      	'idperiodo' => $idperiodo,
+				      	'horasextras50' => $info_trabajador['horas50'],
+				      	'montohorasextras50' => $info_trabajador['monto50'],
+				      	'horasextras100' => $info_trabajador['horas100'],
+				      	'montohorasextras100' => $info_trabajador['monto100'],				      	
+				      	'idempresa' => $this->session->userdata('empresaid'),
+				      	'created_at' => date("Ymd H:i:s")
+
+					);
+					$this->db->insert('rem_remuneracion', $data);
+			}else{
+					$data = array(
+				      	'horasextras50' => $info_trabajador['horas50'],
+				      	'montohorasextras50' => $info_trabajador['monto50'],
+				      	'horasextras100' => $info_trabajador['horas100'],
+				      	'montohorasextras100' => $info_trabajador['monto100']	
+					);				
+					$this->db->where('idpersonal', $idtrabajador);
+					$this->db->where('idperiodo', $idperiodo);
+					$this->db->update('rem_remuneracion',$data); 
+
+			}			
+
+			
+		}
+
+		$this->db->trans_complete();
+		return 1;
+	}
+
+
 
 	public function get_personal($idtrabajador = null){
 		$array_campos = array(
