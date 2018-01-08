@@ -42,14 +42,14 @@
 																	<tbody> 
 												                      <?php if(count($centrocostos) > 0 ){ ?>
 												                        <?php $i = 1; ?>
-												                        <?php foreach ($$centrocostos as $centrocosto) { ?>																	
+												                        <?php foreach ($centrocostos as $centrocosto) { ?>																	
 																		<tr class="active" id="variable">
 																			<td><?php echo $i ;?></td>
-																			<td><?php echo $centrodecosto->nombre;?></td> 
-																			<td><?php echo $centrodecosto->idempresa;?></td>
-																			<td><?php echo $centrodecosto->codigo;?></td>
+																			<td><?php echo $centrocosto->nombre;?></td> 
+																			<td><?php echo $centrocosto->idempresa;?></td>
+																			<td><?php echo $centrocosto->codigo;?></td>
 																			<td>
-																				<a href="#" data-idcentrodecosto="<?php echo $centrodecosto->id;?>" class="btn btn-info edit-centrocosto" id="opciones" data-toggle="modal" data-target="#myModal_CENTROCOSTO" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+																				<a href="#" data-idcentrocosto="<?php echo $centrocosto->id;?>" class="btn btn-info edit-centrocosto" id="opciones" data-toggle="modal" data-target="#myModal_CENTROCOSTO" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
         																		
         																		<a href="<?php echo base_url();?>centrocosto/delete_centrocosto/<?php echo $centrocosto->id;?>" data-toggle="tooltip"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
 																			</td> 
