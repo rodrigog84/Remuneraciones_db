@@ -219,12 +219,12 @@ class Admin extends CI_Model
 
 
 	public function get_afp($idafp = null){
-		$afp_data = $this->db->select('id, nombre, porc, exregimen, codprevired')
+		$afp_data = $this->db->select('id_afp, nombre, porc, exregimen, codprevired')
 						  ->from('rem_afp a')
 						  ->where('a.active = 1')
 						  ->order_by('a.exregimen')
 		                  ->order_by('a.nombre');
-		$afp_data = is_null($idafp) ? $afp_data : $afp_data->where('a.id',$idafp);  		                  
+		$afp_data = is_null($idafp) ? $afp_data : $afp_data->where('a.id_afp',$idafp);  		                  
 		$query = $this->db->get();
 
 		$datos = is_null($idafp) ? $query->result() : $query->row();
@@ -237,7 +237,7 @@ class Admin extends CI_Model
 	public function add_afp($array_datos){
 
 
-		$this->db->select('a.id')
+		$this->db->select('a.id_afp')
 						  ->from('rem_afp as a')
 		                  ->where('upper(a.nombre)', strtoupper($array_datos['nombre']))
 		                  ->where('a.active = 1');		
@@ -268,7 +268,7 @@ class Admin extends CI_Model
 				);
 
 
-				$this->db->where('id', $array_datos['idafp']);
+				$this->db->where('id_afp', $array_datos['idafp']);
 				$this->db->update('rem_afp',$data); 
 				return 1;
 			}
@@ -282,7 +282,7 @@ class Admin extends CI_Model
 				);
 
 
-				$this->db->where('id', $array_datos['idafp']);
+				$this->db->where('id_afp', $array_datos['idafp']);
 				$this->db->update('rem_afp',$data); 
 				return 1;
 			}else{
@@ -298,7 +298,7 @@ class Admin extends CI_Model
 	public function delete_afp($idafp){
 
 
-		$this->db->where('id', $idafp);
+		$this->db->where('id_afp', $idafp);
 		$this->db->update('rem_afp',array('active' => '0')); 
 
 		return 1;
@@ -336,7 +336,7 @@ class Admin extends CI_Model
 					'rebaja' => str_replace(".","",$impuesto['rebaja']),
 					);
 
-			$this->db->where('id', $key);
+			$this->db->where('id_tabla_impuesto', $key);
 			$this->db->update('rem_tabla_impuesto',$datos); 
 		}
 		
@@ -347,10 +347,10 @@ class Admin extends CI_Model
 
 	public function get_tabla_asig_familiar($idtramo = null){
 
-		$tramo_data = $this->db->select('id, tramo, desde, hasta, monto')
+		$tramo_data = $this->db->select('id_tabla_asig_familiar, tramo, desde, hasta, monto')
 						  ->from('rem_tabla_asig_familiar')
 		                  ->order_by('desde','asc');
-		$tramo_data = is_null($idtramo) ? $tramo_data : $tramo_data->where('id',$idtramo);  		                  
+		$tramo_data = is_null($idtramo) ? $tramo_data : $tramo_data->where('id_tabla_asig_familiar',$idtramo);  		                  
 		$query = $this->db->get();
 		return is_null($idtramo) ? $query->result() : $query->row();
 		//return $query->result();
@@ -367,7 +367,7 @@ class Admin extends CI_Model
 					'monto' => str_replace(".","",$asig_familiar['monto'])
 					);
 
-			$this->db->where('id', $key);
+			$this->db->where('id_tabla_asig_familiar', $key);
 			$this->db->update('rem_tabla_asig_familiar',$datos); 
 		}
 		
@@ -378,11 +378,11 @@ class Admin extends CI_Model
 
 	public function get_feriado($idferiado = null){
 
-		$feriado_data = $this->db->select('id, CONVERT(varchar, fecha, 103) as fecha, fecha as fecha_sformat',false)
+		$feriado_data = $this->db->select('id_feriado, CONVERT(varchar, fecha, 103) as fecha, fecha as fecha_sformat',false)
 						  ->from('rem_feriado f')
 						  ->where('f.active = 1')
 		                  ->order_by('f.fecha','desc');
-		$feriado_data = is_null($idferiado) ? $feriado_data : $feriado_data->where('f.id',$idferiado);  		                  
+		$feriado_data = is_null($idferiado) ? $feriado_data : $feriado_data->where('f.id_feriado',$idferiado);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idferiado) ? $query->result() : $query->row();
 		return $datos;
@@ -394,7 +394,7 @@ class Admin extends CI_Model
 	public function add_feriado($array_datos){
 
 
-		$this->db->select('f.id')
+		$this->db->select('f.id_feriado')
 						  ->from('rem_feriado as f')
 		                  ->where('f.fecha', strtoupper($array_datos['fecha']))
 		                  ->where('f.active = 1');		
@@ -419,7 +419,7 @@ class Admin extends CI_Model
 				);
 
 
-				$this->db->where('id', $array_datos['idferiado']);
+				$this->db->where('id_feriado', $array_datos['idferiado']);
 				$this->db->update('rem_feriado',$data); 
 				return 1;
 			}
@@ -431,7 +431,7 @@ class Admin extends CI_Model
 				);
 
 
-				$this->db->where('id', $array_datos['idferiado']);
+				$this->db->where('id_feriado', $array_datos['idferiado']);
 				$this->db->update('rem_feriado',$data); 
 				return 1;
 			}else{
@@ -447,7 +447,7 @@ class Admin extends CI_Model
 	public function delete_feriado($idferiado){
 
 
-		$this->db->where('id', $idferiado);
+		$this->db->where('id_feriado', $idferiado);
 		$this->db->update('rem_feriado',array('active' => '0')); 
 
 		return 1;
@@ -503,7 +503,7 @@ public function get_personal_total($idtrabajador = null){
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
 						  ->order_by('p.active','desc')
 		                  ->order_by('p.nombre');
-		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id',$idtrabajador);  		                  
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
 		return $datos;
@@ -516,7 +516,7 @@ public function get_personal_total($idtrabajador = null){
 						  ->from('rem_apv a')
 						  ->where('a.active = 1')
 		                  ->order_by('a.nombre');
-		$apv_data = is_null($idapv) ? $apv_data : $apv_data->where('a.id',$idapv);  		                  
+		$apv_data = is_null($idapv) ? $apv_data : $apv_data->where('a.id_apv',$idapv);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idapv) ? $query->result() : $query->row();
 		return $datos;
@@ -525,11 +525,11 @@ public function get_personal_total($idtrabajador = null){
 
 public function get_isapre($idisapre = null){
 
-		$isapre_data = $this->db->select('id, nombre, codprevired')
+		$isapre_data = $this->db->select('id_isapre, nombre, codprevired')
 						  ->from('rem_isapre i')
 						  ->where('i.active = 1')
-		                  ->order_by('i.id');
-		$isapre_data = is_null($idisapre) ? $isapre_data : $isapre_data->where('i.id',$idisapre);  		                  
+		                  ->order_by('i.id_isapre');
+		$isapre_data = is_null($idisapre) ? $isapre_data : $isapre_data->where('i.id_isapre',$idisapre);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idisapre) ? $query->result() : $query->row();
 		return $datos;
@@ -538,11 +538,11 @@ public function get_isapre($idisapre = null){
 
 public function get_cajas_compensacion($idcaja = null){
 
-		$caja_data = $this->db->select('id, nombre, codprevired')
+		$caja_data = $this->db->select('id_cajas_compensacion, nombre, codprevired')
 						  ->from('rem_cajas_compensacion c')
 						  ->where('c.active = 1')
-		                  ->order_by('c.id');
-		$caja_data = is_null($idcaja) ? $caja_data : $caja_data->where('c.id',$idcaja);  		                  
+		                  ->order_by('c.id_cajas_compensacion');
+		$caja_data = is_null($idcaja) ? $caja_data : $caja_data->where('c.id_cajas_compensacion',$idcaja);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idcaja) ? $query->result() : $query->row();
 		return $datos;
@@ -551,11 +551,11 @@ public function get_cajas_compensacion($idcaja = null){
 
 public function get_mutual_seguridad($idmutual = null){
 
-		$mutual_data = $this->db->select('id, nombre, codprevired')
+		$mutual_data = $this->db->select('id_mutual, nombre, codprevired')
 						  ->from('rem_mutual_seguridad m')
 						  ->where('m.active = 1')
-		                  ->order_by('m.id');
-		$mutual_data = is_null($idmutual) ? $mutual_data : $mutual_data->where('m.id',$idmutual);  		                  
+		                  ->order_by('m.id_mutual');
+		$mutual_data = is_null($idmutual) ? $mutual_data : $mutual_data->where('m.id_mutual',$idmutual);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idmutual) ? $query->result() : $query->row();
 		return $datos;
@@ -587,7 +587,7 @@ public function get_parametros_generales(){
 
 public function get_estado_civil(){
 
-		$this->db->select('id , nombre ')
+		$this->db->select('id_estado_civil , nombre ')
 						  ->from('rem_estado_civil')
 						  ->where('activo = 1')
 		                  ->order_by('nombre asc');
@@ -600,13 +600,13 @@ public function get_estado_civil(){
 
 
 public function get_cargos($idcargo = null){
-		$cargos_data = $this->db->select('c.id , c.id_empresa, c.nombre, c.idpadre, c2.nombre as nombrepadre,  (select count(*) from rem_cargos where idpadre = c.id) as hijos ', false)
+		$cargos_data = $this->db->select('c.id_cargos , c.id_empresa, c.nombre, c.idpadre, c2.nombre as nombrepadre,  (select count(*) from rem_cargos where idpadre = c.id) as hijos ', false)
 						  ->from('rem_cargos c')
-						  ->join('rem_cargos c2','c.idpadre = c2.id','left')
+						  ->join('rem_cargos c2','c.idpadre = c2.id_cargos','left')
 						  ->where('(c.id_empresa = '.$this->session->userdata('empresaid') . ' or c.id_empresa is null)')
 						  ->where('c.activo = 1')
-		                  ->order_by('c2.id asc');
-		$cargos_data = is_null($idcargo) ? $cargos_data : $cargos_data->where('c.id',$idcargo);  		                  
+		                  ->order_by('c2.id_cargos asc');
+		$cargos_data = is_null($idcargo) ? $cargos_data : $cargos_data->where('c.id_cargos',$idcargo);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idcargo) ? $query->result() : $query->row();
 		return $datos;
@@ -650,7 +650,7 @@ public function get_cargos($idcargo = null){
 public function get_bonos($idtrabajador = null){
 
 		//$bonos_data = $this->db->select('id, idpersonal, descripcion, monto, date_format(fecha,"%d/%m/%Y") as fecha, proporcional, imponible, fijo')
-			$bonos_data = $this->db->select('id, idpersonal, descripcion, monto, fecha')	
+			$bonos_data = $this->db->select('id_bono, idpersonal, descripcion, monto, fecha')	
 						  ->from('rem_bonos_personal b')
 						  ->where('b.idpersonal',$idtrabajador)
 		                  ->order_by('b.id');
@@ -675,22 +675,22 @@ public function get_bonos($idtrabajador = null){
 
 	public function get_idiomas($ididioma = null){
 
-			$idiomas_data = $this->db->select('id, nombre')	
+			$idiomas_data = $this->db->select('id_idioma, nombre')	
 						  ->from('rem_idioma')
 						  ->where('valido',1)
 		                  ->order_by('nombre');
-		$idiomas_data = is_null($ididioma) ? $idiomas_data : $idiomas_data->where('id',$ididioma);  		                  
+		$idiomas_data = is_null($ididioma) ? $idiomas_data : $idiomas_data->where('id_idioma',$ididioma);  		                  
 		$query = $this->db->get();
 		return $query->result();
 	}
 
 	public function get_licencia_conducir($idlicencia = null){
 
-			$licencia_data = $this->db->select('id, nombre')	
+			$licencia_data = $this->db->select('id_licencia_conducir, nombre')	
 						  ->from('rem_licencia_conducir')
 						  ->where('valido',1)
 		                  ->order_by('nombre');
-		$licencia_data = is_null($idlicencia) ? $licencia_data : $licencia_data->where('id',$idlicencia);  		                  
+		$licencia_data = is_null($idlicencia) ? $licencia_data : $licencia_data->where('id_licencia_conducir',$idlicencia);  		                  
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -702,7 +702,7 @@ public function get_bonos($idtrabajador = null){
 						  ->where('valido',1)
 						  ->where('id_empresa',$this->session->userdata('empresaid'))
 		                  ->order_by('nombre');
-		$centrocosto_data = is_null($idcentrocosto) ? $centrocosto_data : $centrocosto_data->where('id',$idcentrocosto);  		                  
+		$centrocosto_data = is_null($idcentrocosto) ? $centrocosto_data : $centrocosto_data->where('id_centro_costo',$idcentrocosto);  		                  
 		$query = $this->db->get();
 
 		return $query->result();
