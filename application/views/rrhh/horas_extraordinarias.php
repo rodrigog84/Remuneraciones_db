@@ -121,37 +121,37 @@
 											                                <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
 											                                <!--td><small><?php echo number_format($trabajador->sueldobase,0,".",".");?></small></td-->
 											                                <!--td>
-											                                  <span id="spanvalorhora_<?php echo $trabajador->id;?>"  class="text-right input-sm" ><?php echo number_format($valorhora,0,",",".");?></span> 
+											                                  <span id="spanvalorhora_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo number_format($valorhora,0,",",".");?></span> 
 
 											                                </td-->
-											                                  <input type="hidden" name="valorhora_<?php echo $trabajador->id;?>" id="valorhora_<?php echo $trabajador->id;?>" class="form-control" value="<?php echo round($valorhora,0); ?>"  />
-											                                  <input type="hidden" name="montoactual_<?php echo $trabajador->id;?>" id="montoactual_<?php echo $trabajador->id;?>" class="form-control" value="<?php echo $valorhora; ?>"  />                                
+											                                  <input type="hidden" name="valorhora_<?php echo $trabajador->id_personal;?>" id="valorhora_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo round($valorhora,0); ?>"  />
+											                                  <input type="hidden" name="montoactual_<?php echo $trabajador->id_personal;?>" id="montoactual_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $valorhora; ?>"  />                                
 											                                <td>
-											                                  <span id="spanvalorhora50_<?php echo $trabajador->id;?>"  class="text-right input-sm" ><?php echo number_format($valorhora50,0,",",".");?></span> 
-											                                  <input type="hidden" name="montoactual50_<?php echo $trabajador->id;?>" id="montoactual50_<?php echo $trabajador->id;?>" class="form-control" value="<?php echo $valorhora50; ?>"  />
+											                                  <span id="spanvalorhora50_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo number_format($valorhora50,0,",",".");?></span> 
+											                                  <input type="hidden" name="montoactual50_<?php echo $trabajador->id_personal;?>" id="montoactual50_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $valorhora50; ?>"  />
 											                                </td>                                
 											                                <td class="form-group">
-											                                    <input type="text" name="horas50_<?php echo $trabajador->id;?>" id="horas50_<?php echo $trabajador->id;?>" class="horas50 horas miles_decimales numeros input-sm" value="<?php echo isset($datos_remuneracion['horasextras50'][$trabajador->id]) ? $datos_remuneracion['horasextras50'][$trabajador->id] : 0; ?>"  />   
+											                                    <input type="text" name="horas50_<?php echo $trabajador->id_personal;?>" id="horas50_<?php echo $trabajador->id_personal;?>" class="horas50 horas miles_decimales numeros input-sm" value="<?php echo isset($datos_remuneracion['horasextras50'][$trabajador->id_personal]) ? $datos_remuneracion['horasextras50'][$trabajador->id_personal] : 0; ?>"  />   
 											                                </td>
 											                                <td class="form-group">
-											                                  <input type="hidden" name="monto50_<?php echo $trabajador->id;?>" class="monto50" id="monto50_<?php echo $trabajador->id;?>" value="<?php echo isset($datos_remuneracion['horasextras50'][$trabajador->id]) ? $datos_remuneracion['horasextras50'][$trabajador->id]*$valorhora50 : 0; ?>"  />   
-											                                  <b><span id="spanmonto50_<?php echo $trabajador->id;?>"  class="text-right input-sm" ><?php echo isset($datos_remuneracion['horasextras50'][$trabajador->id]) ? number_format($datos_remuneracion['horasextras50'][$trabajador->id]*$valorhora50,0,".",".") : 0;?></span></b>   
+											                                  <input type="hidden" name="monto50_<?php echo $trabajador->id_personal;?>" class="monto50" id="monto50_<?php echo $trabajador->id_personal;?>" value="<?php echo isset($datos_remuneracion['horasextras50'][$trabajador->id_personal]) ? $datos_remuneracion['horasextras50'][$trabajador->id_personal]*$valorhora50 : 0; ?>"  />   
+											                                  <b><span id="spanmonto50_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo isset($datos_remuneracion['horasextras50'][$trabajador->id_personal]) ? number_format($datos_remuneracion['horasextras50'][$trabajador->id_personal]*$valorhora50,0,".",".") : 0;?></span></b>   
 											                                </td>
 											                                <td>
-											                                  <span id="spanvalorhora100_<?php echo $trabajador->id;?>"  class="text-right input-sm" ><?php echo number_format($valorhora100,0,",",".");?></span> 
-											                                  <input type="hidden" name="montoactual100_<?php echo $trabajador->id;?>" id="montoactual100_<?php echo $trabajador->id;?>" class="form-control" value="<?php echo $valorhora100; ?>"  />
+											                                  <span id="spanvalorhora100_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo number_format($valorhora100,0,",",".");?></span> 
+											                                  <input type="hidden" name="montoactual100_<?php echo $trabajador->id_personal;?>" id="montoactual100_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $valorhora100; ?>"  />
 											                                </td>                                                                
 											                                <td class="form-group">
-											                                    <input type="text" name="horas100_<?php echo $trabajador->id;?>" id="horas100_<?php echo $trabajador->id;?>" class="horas100 horas miles_decimales numeros input-sm" value="<?php echo isset($datos_remuneracion['horasextras100'][$trabajador->id]) ? $datos_remuneracion['horasextras100'][$trabajador->id] : 0; ?>"  />   
+											                                    <input type="text" name="horas100_<?php echo $trabajador->id_personal;?>" id="horas100_<?php echo $trabajador->id_personal;?>" class="horas100 horas miles_decimales numeros input-sm" value="<?php echo isset($datos_remuneracion['horasextras100'][$trabajador->id_personal]) ? $datos_remuneracion['horasextras100'][$trabajador->id_personal] : 0; ?>"  />   
 											                                </td>
 											                                <td class="form-group">
-											                                  <input type="hidden" name="monto100_<?php echo $trabajador->id;?>" class="monto100" id="monto100_<?php echo $trabajador->id;?>" value="<?php echo isset($datos_remuneracion['horasextras100'][$trabajador->id]) ? $datos_remuneracion['horasextras100'][$trabajador->id]*$valorhora100 : 0; ?>"  />   
-											                                  <b><span id="spanmonto100_<?php echo $trabajador->id;?>"  class="text-right input-sm" ><?php echo isset($datos_remuneracion['horasextras100'][$trabajador->id]) ? number_format($datos_remuneracion['horasextras100'][$trabajador->id]*$valorhora100,0,".",".") : 0;?></span></b>   
+											                                  <input type="hidden" name="monto100_<?php echo $trabajador->id_personal;?>" class="monto100" id="monto100_<?php echo $trabajador->id_personal;?>" value="<?php echo isset($datos_remuneracion['horasextras100'][$trabajador->id_personal]) ? $datos_remuneracion['horasextras100'][$trabajador->id_personal]*$valorhora100 : 0; ?>"  />   
+											                                  <b><span id="spanmonto100_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo isset($datos_remuneracion['horasextras100'][$trabajador->id_personal]) ? number_format($datos_remuneracion['horasextras100'][$trabajador->id_personal]*$valorhora100,0,".",".") : 0;?></span></b>   
 											                                </td>                                
 											                              </tr>
 											                              <?php $i++;?>
-											                              <?php $total_horas_50 += isset($datos_remuneracion['horasextras50'][$trabajador->id]) ? $datos_remuneracion['horasextras50'][$trabajador->id]*$valorhora50 : 0; ?>
-											                              <?php $total_horas_100 += isset($datos_remuneracion['horasextras100'][$trabajador->id]) ? $datos_remuneracion['horasextras100'][$trabajador->id]*$valorhora100 : 0; ?>
+											                              <?php $total_horas_50 += isset($datos_remuneracion['horasextras50'][$trabajador->id_personal]) ? $datos_remuneracion['horasextras50'][$trabajador->id_personal]*$valorhora50 : 0; ?>
+											                              <?php $total_horas_100 += isset($datos_remuneracion['horasextras100'][$trabajador->id_personal]) ? $datos_remuneracion['horasextras100'][$trabajador->id_personal]*$valorhora100 : 0; ?>
 											                              <?php } ?>
 											                            <?php }else{ ?>
 											                            <tr>

@@ -43,10 +43,10 @@ class Rrhh_model extends CI_Model
 
 
 	public function get_periodos_remuneracion_abiertos($idperiodo = null){
-		$data_periodo = $this->db->select('p.id, p.mes, p.anno, pr.cierre, pr.aprueba, pr.anticipo')
+		$data_periodo = $this->db->select('p.id_periodo, p.mes, p.anno, pr.cierre, pr.aprueba, pr.anticipo')
 						  ->from('rem_periodo as p')
-						  ->join('rem_periodo_remuneracion as pr','p.id = pr.idperiodo')
-						  ->where('pr.idempresa', $this->session->userdata('empresaid'))
+						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
+						  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('pr.aprueba is null')
 		                  ->order_by('p.anno','desc')
 		                  ->order_by('p.mes','desc');
@@ -64,10 +64,10 @@ public function add_personal($array_datos,$idtrabajador){
 
 		$this->db->trans_start();
 
-		$this->db->select('p.id, p.active')
+		$this->db->select('p.id_personal, p.active')
 						  ->from('rem_personal as p')
 		                  ->where('p.rut', $array_datos['rut'])
-		                  ->where('p.idempresa', $this->session->userdata('empresaid'));		
+		                  ->where('p.id_empresa', $this->session->userdata('empresaid'));		
 		$query = $this->db->get();
 		$datos = $query->row();
 		if(count($datos) == 0){ // nuevo trabajador no existe
@@ -155,10 +155,10 @@ public function add_personal($array_datos,$idtrabajador){
 
 	public function get_datos_remuneracion_by_periodo($idperiodo,$idtrabajador = null){
 
-		$personal_data = $this->db->select('r.id, r.idpersonal, r.idperiodo, r.diastrabajo, r.horasdescuento, r.montodescuento, r.horasextras50, r.montohorasextras50, r.horasextras100, r.montohorasextras100, r.anticipo, r.aguinaldo, r.sueldobase, r.gratificacion, r.movilizacion, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos')
+		$personal_data = $this->db->select('r.id_remuneracion, r.idpersonal, r.idperiodo, r.diastrabajo, r.horasdescuento, r.montodescuento, r.horasextras50, r.montohorasextras50, r.horasextras100, r.montohorasextras100, r.anticipo, r.aguinaldo, r.sueldobase, r.gratificacion, r.movilizacion, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos')
 						  ->from('rem_remuneracion r')
-						  ->join('rem_personal pe','r.idpersonal = pe.id')
-						  ->where('pe.idempresa',$this->session->userdata('empresaid'))
+						  ->join('rem_personal pe','r.idpersonal = pe.id_personal')
+						  ->where('pe.id_empresa',$this->session->userdata('empresaid'))
 						  ->where('pe.active = 1')
 						  ->where('r.idperiodo',$idperiodo)						  
 		                  ->order_by('pe.nombre');
@@ -175,9 +175,9 @@ public function add_personal($array_datos,$idtrabajador){
 
 		$personal_data = $this->db->select('r.idpersonal, r.idperiodo, r.diastrabajo, r.horasdescuento, r.montodescuento, r.valorhorasextras50, r.horasextras50, r.montohorasextras50, r.valorhorasextras100, r.horasextras100, r.montohorasextras100, r.anticipo, r.aguinaldo, r.sueldobase, r.gratificacion, r.movilizacion, r.valorhora')
 						  ->from('rem_remuneracion r')
-						  ->join('rem_personal pe','r.idpersonal = pe.id')
-						  ->join('rem_periodo p','r.idperiodo = p.id')
-						  ->where('pe.idempresa',$this->session->userdata('empresaid'))
+						  ->join('rem_personal pe','r.idpersonal = pe.id_personal')
+						  ->join('rem_periodo p','r.idperiodo = p.id_periodo')
+						  ->where('pe.id_empresa',$this->session->userdata('empresaid'))
 						  ->where('pe.active = 1')
 						  ->where('p.mes',$mes)
 						  ->where('p.anno',$anno)
@@ -194,7 +194,7 @@ public function add_personal($array_datos,$idtrabajador){
 
 		$this->db->select('pr.anticipo, pr.cierre')
 						  ->from('rem_periodo_remuneracion as pr')
-						  ->join('rem_periodo as p','pr.idperiodo = p.id')
+						  ->join('rem_periodo as p','pr.id_periodo = p.id_periodo')
 		                  ->where('p.mes', $mes)
 		                  ->where('p.anno', $anno)
 		                  ->where('pr.idempresa', $this->session->userdata('empresaid'));
@@ -219,7 +219,7 @@ public function save_asistencia($array_trabajadores,$mes,$anno){
 		$this->db->trans_start();
 
 		// evaluar si existe periodo
-		$this->db->select('p.id')
+		$this->db->select('p.id_periodo')
 						  ->from('rem_periodo as p')
 		                  ->where('p.mes', $mes)
 		                  ->where('p.anno', $anno);
@@ -241,8 +241,8 @@ public function save_asistencia($array_trabajadores,$mes,$anno){
 		// evaluar si existe periodo remuneraciones
 		$this->db->select('r.idperiodo')
 						  ->from('rem_periodo_remuneracion as r')
-		                  ->where('r.idperiodo', $idperiodo)
-		                  ->where('r.idempresa', $this->session->userdata('empresaid'));
+		                  ->where('r.id_periodo', $idperiodo)
+		                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
 		$query = $this->db->get();
 		$datos_periodo_remuneracion = $query->row();
 		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
@@ -297,7 +297,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$this->db->trans_start();
 
 		// evaluar si existe periodo
-		$this->db->select('p.id')
+		$this->db->select('p.id_periodo')
 						  ->from('rem_periodo as p')
 		                  ->where('p.mes', $mes)
 		                  ->where('p.anno', $anno);
@@ -320,8 +320,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		// evaluar si existe periodo remuneraciones
 		$this->db->select('r.idperiodo')
 						  ->from('rem_periodo_remuneracion as r')
-		                  ->where('r.idperiodo', $idperiodo)
-		                  ->where('r.idempresa', $this->session->userdata('empresaid'));
+		                  ->where('r.id_periodo', $idperiodo)
+		                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
 		$query = $this->db->get();
 		$datos_periodo_remuneracion = $query->row();
 		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
@@ -380,8 +380,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 	public function get_personal($idtrabajador = null){
 		$array_campos = array(
-				'id', 
-				'idempresa', 
+				'id_personal', 
+				'id_empresa', 
 				'rut', 
 				'dv', 
 				'nombre', 
@@ -439,7 +439,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		
 		$personal_data = $this->db->select($array_campos)
 						  ->from('rem_personal p')
-						  ->where('p.idempresa',$this->session->userdata('empresaid'))
+						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
 						  ->where('p.active = 1')
 		                  ->order_by('p.nombre');
 		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id',$idtrabajador);  		                  
@@ -453,7 +453,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 		$this->db->trans_start();
 				// evaluar si existe periodo
-		$this->db->select('p.id')
+		$this->db->select('p.id_periodo')
 						  ->from('rem_periodo as p')
 		                  ->where('p.mes', $mes)
 		                  ->where('p.anno', $anno);
@@ -475,8 +475,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		// evaluar si existe periodo remuneraciones
 		$this->db->select('r.idperiodo')
 						  ->from('rem_periodo_remuneracion as r')
-		                  ->where('r.idperiodo', $idperiodo)
-		                  ->where('r.idempresa', $this->session->userdata('empresaid'));
+		                  ->where('r.id_periodo', $idperiodo)
+		                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
 		$query = $this->db->get();
 		$datos_periodo_remuneracion = $query->row();
 		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
@@ -532,12 +532,12 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 	public function get_periodos($empresaid,$idperiodo = null){
 
-		$periodo_data = $this->db->select('p.id, p.mes, p.anno, pr.anticipo, pr.cierre, pr.aprueba, pr.cierre,  (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id where r.idperiodo = p.id and pe.idempresa = ' . $empresaid . ' and r.active = 1) as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id where r.idperiodo = p.id and pe.idempresa = ' . $empresaid . ' and r.active = 1) as sueldoimponible ', false)
+		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, pr.anticipo, pr.cierre, pr.aprueba, pr.cierre,  (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.idperiodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1) as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.idperiodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1) as sueldoimponible ', false)
 						  ->from('rem_periodo as p')
-						  ->join('rem_periodo_remuneracion as pr','p.id = pr.idperiodo')
-		                  ->where('pr.idempresa', $empresaid)
+						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
+		                  ->where('pr.id_empresa', $empresaid)
 		                  ->order_by('p.updated_at desc');
-		$comunidades_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.idperiodo',$idperiodo);
+		$comunidades_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.id_periodo',$idperiodo);
 		$query = $this->db->get();
 		$datos = is_null($idperiodo) ? $query->result() : $query->row();				                  
 		return $datos;
@@ -547,8 +547,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 	public function aprobar_remuneracion($idperiodo){
 
-		$this->db->where('idperiodo', $idperiodo);
-		$this->db->where('idempresa', $this->session->userdata('empresaid'));
+		$this->db->where('id_periodo', $idperiodo);
+		$this->db->where('id_empresa', $this->session->userdata('empresaid'));
 		$this->db->update('rem_periodo_remuneracion',array('aprueba' => date("Ymd H:i:s"))); 
 		return 1;
 	}
@@ -556,9 +556,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 	public function get_remuneraciones_reversa($idperiodo){
-		$periodo_data = $this->db->select('r.id')
+		$periodo_data = $this->db->select('r.id_remuneracion')
 						  ->from('rem_remuneracion as r')
-						  ->join('rem_periodo_remuneracion as pr','r.idperiodo = pr.idperiodo and pr.idempresa = ' . $this->session->userdata('empresaid'))
+						  ->join('rem_periodo_remuneracion as pr','r.idperiodo = pr.id_periodo and pr.id_empresa = ' . $this->session->userdata('empresaid'))
 		                  ->where('r.idempresa', $this->session->userdata('empresaid'))
 		                  ->where('r.idperiodo', $idperiodo)
 		                  ->where('pr.cierre is not null')
@@ -593,16 +593,16 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 								  p.asigfamiliar = r.montocargaretroactiva,
 								  p.cargasretroactivas = r.cargasretroactivas
 								  from	rem_personal p
-								  inner join rem_remuneracion r on p.id = r.idpersonal
-								  where r.id = " . $remuneracion->id);		
+								  inner join rem_remuneracion r on p.id_personal = r.idpersonal
+								  where r.id_remuneracion = " . $remuneracion->id);		
 
 
 
 			}
 
 			#quitamos la marca de remuneracion calculada (permite volver a calcular)
-			$this->db->where('idperiodo', $idperiodo);
-			$this->db->where('idempresa', $this->session->userdata('empresaid'));
+			$this->db->where('id_periodo', $idperiodo);
+			$this->db->where('id_empresa', $this->session->userdata('empresaid'));
 			$this->db->update('rem_periodo_remuneracion',array('cierre' => null)); 
 		}
 
@@ -646,8 +646,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$this->db->query('update r 
 							set r.active = 0
 							from rem_remuneracion r 
-						    inner join rem_personal p on r.idpersonal = p.id
-                            where p.idempresa = ' . $this->session->userdata('empresaid') . ' and r.idperiodo = ' . $idperiodo );
+						    inner join rem_personal p on r.idpersonal = p.id_personal
+                            where p.id_empresa = ' . $this->session->userdata('empresaid') . ' and r.idperiodo = ' . $idperiodo );
 
 		$personal = $this->get_personal(); 
 		foreach ($personal as $trabajador) { // calculo de sueldos por cada trabajador
@@ -1030,7 +1030,7 @@ limit 1		*/
 			$this->db->update('rem_remuneracion',$data_remuneracion); 	
 
 			// VUELVE A CERO LA ASIGNACION FAMILIAR POR CARGAS RETROACTIVAS
-			$this->db->where('id', $trabajador->id);
+			$this->db->where('id_personal', $trabajador->id);
 			$this->db->update('rem_personal',array('asigfamiliar' => 0,
 												'cargasretroactivas' => 0)); 	
 
@@ -1045,8 +1045,8 @@ limit 1		*/
 		}
 
  		// CERRAR PERIODO
-		$this->db->where('idperiodo', $idperiodo);
-		$this->db->where('idempresa', $this->session->userdata('empresaid'));
+		$this->db->where('id_periodo', $idperiodo);
+		$this->db->where('id_empresa', $this->session->userdata('empresaid'));
 		$this->db->update('rem_periodo_remuneracion',array('cierre' => date("Y-m-d H:i:s"))); 
 
 		$this->db->trans_complete();
@@ -1056,10 +1056,10 @@ limit 1		*/
 
 	public function get_periodos_cerrados($empresaid,$idperiodo = null){
 
-		$periodo_data = $this->db->select('p.id, p.mes, p.anno, pr.cierre, pr.aprueba, pr.cierre as cierre,  (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id where r.idperiodo = p.id and pe.idempresa = ' . $empresaid . ' and r.active = 1) as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id where r.idperiodo = p.id and pe.idempresa = ' . $empresaid . ' and r.active = 1) as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id where r.idperiodo = p.id and pe.idempresa = ' . $empresaid . ' and r.active = 1) as sueldoliquido ', false)
+		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, pr.cierre, pr.aprueba, pr.cierre as cierre,  (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.idperiodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1) as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.idperiodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1) as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.idperiodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1) as sueldoliquido ', false)
 						  ->from('rem_periodo as p')
-						  ->join('rem_periodo_remuneracion as pr','p.id = pr.idperiodo')
-		                  ->where('pr.idempresa', $empresaid)
+						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
+		                  ->where('pr.id_empresa', $empresaid)
 		                  ->where('pr.cierre is not null')
 		                  ->order_by('p.anno desc')
 		                  ->order_by('p.mes desc');
@@ -1075,18 +1075,18 @@ limit 1		*/
 
 	public function get_remuneraciones_by_periodo($idperiodo,$sinsueldo = null){
 		
-		$periodo_data = $this->db->select('r.id, r.idperiodo, pe.id as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.aportesegcesantia, r.sueldoimponibleimposiciones')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.idperiodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.aportesegcesantia, r.sueldoimponibleimposiciones')
 						  ->from('rem_periodo as p')
-						  ->join('rem_remuneracion as r','r.idperiodo = p.id')
-						  ->join('rem_personal as pe','pe.id = r.idpersonal')
-						  ->join('rem_empresa as co','pe.idempresa = co.id')
-						  ->join('rem_periodo_remuneracion as pr','r.idperiodo = pr.idperiodo')
-						  ->join('rem_isapre as i','pe.idisapre = i.id')
-						  ->join('rem_cargos as c','pe.idcargo = c.id')
-						  ->join('rem_afp as a','pe.idafp = a.id')
-						  ->join('rem_apv as ap','pe.instapv = ap.id','left')						  
-		                  ->where('pe.idempresa', $this->session->userdata('empresaid'))
-		                  ->where('pr.idempresa', $this->session->userdata('empresaid'))
+						  ->join('rem_remuneracion as r','r.idperiodo = p.id_periodo')
+						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
+						  ->join('rem_empresa as co','pe.id_empresa = co.id_empresa')
+						  ->join('rem_periodo_remuneracion as pr','r.idperiodo = pr.id_periodo')
+						  ->join('rem_isapre as i','pe.idisapre = i.id_isapre')
+						  ->join('rem_cargos as c','pe.idcargo = c.id_cargos')
+						  ->join('rem_afp as a','pe.idafp = a.id_afp')
+						  ->join('rem_apv as ap','pe.instapv = ap.id_apv','left')						  
+		                  ->where('pe.id_empresa', $this->session->userdata('empresaid'))
+		                  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('r.idperiodo', $idperiodo)
 		                  ->where('r.active = 1')
 		                  //->where('r.sueldoliquido <> 0')  //valida que se haya creado sueldo
@@ -1481,16 +1481,16 @@ limit 1		*/
 
 
 public function get_remuneraciones_by_id($idremuneracion){
-		$periodo_data = $this->db->select('r.id, r.idperiodo, pe.id as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentos, r.prestamos')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.idperiodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentos, r.prestamos')
 						  ->from('rem_periodo as p')
-						  ->join('rem_remuneracion as r','r.idperiodo = p.id')
-						  ->join('rem_personal as pe','pe.id = r.idpersonal')
-						  ->join('rem_periodo_remuneracion as pr','r.idperiodo = pr.idperiodo and pr.idempresa = ' . $this->session->userdata('empresaid'))
-						  ->join('rem_isapre as i','pe.idisapre = i.id')
-						  ->join('rem_cargos as c','pe.idcargo = c.id')
-						  ->join('rem_afp as a','pe.idafp = a.id')
-		                  ->where('pe.idempresa', $this->session->userdata('empresaid'))
-		                  ->where('r.id', $idremuneracion);
+						  ->join('rem_remuneracion as r','r.idperiodo = p.id_periodo')
+						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
+						  ->join('rem_periodo_remuneracion as pr','r.idperiodo = pr.id_periodo and pr.id_empresa = ' . $this->session->userdata('empresaid'))
+						  ->join('rem_isapre as i','pe.idisapre = i.id_isapre')
+						  ->join('rem_cargos as c','pe.idcargo = c.id_cargos')
+						  ->join('rem_afp as a','pe.idafp = a.id_afp')
+		                  ->where('pe.id_empresa', $this->session->userdata('empresaid'))
+		                  ->where('r.id_remuneracion', $idremuneracion);
 		$query = $this->db->get();
 		return $query->row();
 
@@ -1503,7 +1503,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 		$this->db->select('pdf_content ')
 						  ->from('rem_remuneracion ')
-						  ->where('id',$idremuneracion);
+						  ->where('id_remuneracion',$idremuneracion);
 		$query = $this->db->get();
 		return $query->row();
 	}
@@ -1514,11 +1514,11 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 			$this->load->model('admin');
 			$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
-			$content = $this->get_pdf_content($datos_remuneracion->id);
+			$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
 
 			if($content->pdf_content == ''){ // EN CASO QUE POR ALGUN MOTIVO FALLARA LA EJECUCION INICIAL, SE CREA AHORA
 				$this->generar_contenido_comprobante($datos_remuneracion);
-				$content = $this->get_pdf_content($datos_remuneracion->id);
+				$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
 
 			}
 
@@ -2047,7 +2047,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 
 						//echo $html; exit;
 				
-				$this->db->where('id',$datos_remuneracion->id);
+				$this->db->where('id_remuneracion',$datos_remuneracion->id_remuneracion);
 				$this->db->update('rem_remuneracion', array('pdf_content' => $html));			
 
 	}	

@@ -46,7 +46,7 @@
 											                        ?>
 											                        <?php if(count($datosperiodo) > 0){ ?>
 											                          <?php foreach ($datosperiodo as $periodo) { ?>
-											                            <?php if($idperiodo == $periodo->id){ 
+											                            <?php if($idperiodo == $periodo->id_periodo){ 
 											                                $class_color = "class = 'success'";
 											                                $back_button = true;
 											                            }else{
@@ -62,14 +62,14 @@
 											                              <td>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)){ ?>
-											                              <a href="<?php echo base_url(); ?>rrhh/ver_remuneraciones_periodo/<?php echo $periodo->id; ?>" data-toggle="tooltip" title="Ver Remuneraciones Personal"><span class="glyphicon glyphicon-search"></span></a>
+											                              <a href="<?php echo base_url(); ?>rrhh/ver_remuneraciones_periodo/<?php echo $periodo->id_periodo; ?>" data-toggle="tooltip" title="Ver Remuneraciones Personal"><span class="glyphicon glyphicon-search"></span></a>
 											                              <?php } ?>
 											                              </center>
 											                              </td>
 											                              <td>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)){ ?>
-											                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id;?>" target="_blank"><span class="glyphicon glyphicon-book"></span></a>  
+											                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-book"></span></a>  
 											                              <?php } ?>
 											                              </center>
 											                              </td>  

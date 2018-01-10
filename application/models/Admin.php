@@ -465,13 +465,13 @@ class Admin extends CI_Model
 
 	public function empresas_asignadas($userid,$levelid,$empresaid = null){
 
-		$empresa_data = $this->db->select('c.id, c.nombre ')
+		$empresa_data = $this->db->select('c.id_empresa, c.nombre ')
 						  ->from('rem_empresa as c')
-						  ->join('rem_usuario_empresa as uc','c.id = uc.idempresa')
+						  ->join('rem_usuario_empresa as uc','c.id_empresa = uc.idempresa')
 		                  ->where('uc.idusuario', $userid)
 		                  ->where('c.active = 1')
 		                  ->order_by('c.nombre asc');
-		$empresa_data = is_null($empresaid) ? $empresa_data : $empresa_data->where('c.id',$empresaid);  				                 
+		$empresa_data = is_null($empresaid) ? $empresa_data : $empresa_data->where('c.id_empresa',$empresaid);  				                 
 		$query = $this->db->get();
 		$datos = $query->num_rows() == 1 ? $datos = $query->row() : $query->result();
 		return $datos;
@@ -483,12 +483,12 @@ class Admin extends CI_Model
 
 	public function get_empresas($idempresa = null){
 
-		$empresas_data = $this->db->select("c.id , c.nombre, c.rut, c.dv, c.direccion, c.fono, c.fono2, c.idregion, c.idcomuna, c.email, c.saldo, c.caja, c.fondoreserva, c.fondoreservainicial, c.idcaja, c.idmutual, c.porcmutual, c.cajainicial, c.fecinicio, c.fecvencimiento, fecvencimiento as fecvencimiento_sformat, c.fecinicio as fecinicio_sformat ",false)
+		$empresas_data = $this->db->select("c.id_empresa, c.nombre, c.rut, c.dv, c.direccion, c.fono, c.fono2, c.idregion, c.idcomuna, c.email, c.saldo, c.caja, c.fondoreserva, c.fondoreservainicial, c.idcaja, c.idmutual, c.porcmutual, c.cajainicial, c.fecinicio, c.fecvencimiento, fecvencimiento as fecvencimiento_sformat, c.fecinicio as fecinicio_sformat ",false)
 						  ->from('rem_empresa c')
 						  ->where('c.active = 1')
 		                  ->order_by('c.nombre asc');
 
-		$empresas_data = is_null($idempresa) ? $empresas_data : $empresas_data->where('id',$idempresa);  		                  
+		$empresas_data = is_null($idempresa) ? $empresas_data : $empresas_data->where('id_empresa',$idempresa);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idempresa) ? $query->result() : $query->row();		
 		return $datos;
@@ -498,9 +498,9 @@ class Admin extends CI_Model
 
 public function get_personal_total($idtrabajador = null){
 
-		$personal_data = $this->db->select('id, idempresa, rut, dv, nombre, apaterno, amaterno, fecnacimiento, sexo, idecivil, nacionalidad, direccion, idregion, idcomuna, fono, email, fecingreso, idcargo, tipocontrato, parttime, segcesantia, fecafc, diastrabajo, horasdiarias, horassemanales, sueldobase, tipogratificacion, gratificacion, asigfamiliar, cargassimples, cargasinvalidas, cargasmaternales, cargasretroactivas, idasigfamiliar, movilizacion, colacion, pensionado, idafp, adicafp, tipoahorrovol, ahorrovol, instapv, nrocontratoapv, tipocotapv, cotapv, formapagoapv, depconvapv, idisapre, valorpactado, fecinicvacaciones, saldoinicvacaciones, saldoinicvacprog, active')
+		$personal_data = $this->db->select('id_personal, id_empresa, rut, dv, nombre, apaterno, amaterno, fecnacimiento, sexo, idecivil, nacionalidad, direccion, idregion, idcomuna, fono, email, fecingreso, idcargo, tipocontrato, parttime, segcesantia, fecafc, diastrabajo, horasdiarias, horassemanales, sueldobase, tipogratificacion, gratificacion, asigfamiliar, cargassimples, cargasinvalidas, cargasmaternales, cargasretroactivas, idasigfamiliar, movilizacion, colacion, pensionado, idafp, adicafp, tipoahorrovol, ahorrovol, instapv, nrocontratoapv, tipocotapv, cotapv, formapagoapv, depconvapv, idisapre, valorpactado, fecinicvacaciones, saldoinicvacaciones, saldoinicvacprog, active')
 						  ->from('rem_personal p')
-						  ->where('p.idempresa',$this->session->userdata('empresaid'))
+						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
 						  ->order_by('p.active','desc')
 		                  ->order_by('p.nombre');
 		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id',$idtrabajador);  		                  
@@ -616,10 +616,10 @@ public function get_cargos($idcargo = null){
 
 	public function datos_empresa($empresaid){
 
-		$this->db->select('c.id, c.nombre, c.rut, c.dv, c.direccion, co.nombre as comuna, c.maxfolioabono, c.maxfoliopago, c.textoggcc, c.logo ')
+		$this->db->select('c.id_empresa, c.nombre, c.rut, c.dv, c.direccion, co.nombre as comuna, c.maxfolioabono, c.maxfoliopago, c.textoggcc, c.logo ')
 						  ->from('rem_empresa as c')
 						  ->join('rem_comuna as co','c.idcomuna = co.idcomuna','left')
-		                  ->where('c.id', $empresaid)
+		                  ->where('c.id_empresa', $empresaid)
 		                  ->order_by('c.nombre asc');
 		$query = $this->db->get();
 		$datos = $query->row();
@@ -712,11 +712,11 @@ public function get_bonos($idtrabajador = null){
 
 	public function get_periodo_by_id($idperiodo){
 
-		$this->db->select('p.id, p.mes, p.anno, pr.anticipo, pr.cierre, pr.aprueba')
+		$this->db->select('p.id_periodo, p.mes, p.anno, pr.anticipo, pr.cierre, pr.aprueba')
 						  ->from('rem_periodo as p')
-						  ->join('rem_periodo_remuneracion as pr','p.id = pr.idperiodo')
-						  ->where('pr.idempresa', $this->session->userdata('empresaid'))
-		                  ->where('p.id', $idperiodo);
+						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
+						  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
+		                  ->where('p.id_periodo', $idperiodo);
 		$query = $this->db->get();
 		$datos = $query->num_rows() == 1 ? $datos = $query->row() : $query->result();
 
