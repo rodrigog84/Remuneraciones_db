@@ -61,7 +61,7 @@ class Main extends CI_Controller {
 				$template = "template_lock";
 				//$this->load->view('template_lock',$vars);	
 			}else if(count($empresas_asignadas) == 1){ 			
-				$this->session->set_userdata('empresaid',$empresas_asignadas->idempresa);
+				$this->session->set_userdata('empresaid',$empresas_asignadas->id_empresa);
 				$this->session->set_userdata('empresanombre',$empresas_asignadas->nombre);
 
 
