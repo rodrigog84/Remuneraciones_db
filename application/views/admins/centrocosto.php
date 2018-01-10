@@ -5,8 +5,7 @@
 											<li class="active">Ingreso Centro Costo</li>
 											
 										</ol>
-									   </div>
-								  <!--//sub-heard-part-->
+									   </div>								  <!--//sub-heard-part-->
 
 									<div class="graph-visual tables-main">
 											
@@ -46,12 +45,12 @@
 																		<tr class="active" id="variable">
 																			<td><?php echo $i ;?></td>
 																			<td><?php echo $centrocosto->nombre;?></td> 
-																			<td><?php echo $centrocosto->idempresa;?></td>
+																			<td><?php echo $centrocosto->id_empresa;?></td>
 																			<td><?php echo $centrocosto->codigo;?></td>
 																			<td>
-																				<a href="#" data-idcentrocosto="<?php echo $centrocosto->id;?>" class="btn btn-info edit-centrocosto" id="opciones" data-toggle="modal" data-target="#myModal_CENTROCOSTO" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+																				<a href="#" data-idcentrocosto="<?php echo $centrocosto->id_centro_costo;?>" class="btn btn-info edit-centrocosto" id="opciones" data-toggle="modal" data-target="#myModal_CENTROCOSTO" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
         																		
-        																		<a href="<?php echo base_url();?>centrocosto/delete_centrocosto/<?php echo $centrocosto->id;?>" data-toggle="tooltip"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
+        																		<a href="<?php echo base_url();?>centrocosto/delete_centrocosto/<?php echo $centrocosto->id_centro_costo;?>" data-toggle="tooltip"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
 																			</td> 
 																			
 																		</tr> 
@@ -83,7 +82,7 @@
 	      <div class="modal-body">
 	      	<input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre de Centro de Costo:">
 	      	<br>
-	      	<input type="text" name="idempresa" class="form-control" id="idempresa" placeholder="Empresa:">
+	      	<input type="text" name="id_empresa" class="form-control" id="id_empresa" placeholder="Empresa:">
 	      	<br>
 			<input type="text" name="codigo" class="form-control" id="codigo" placeholder="Codigo:">
 			<input type="hidden" name="idcentrodecosto" id="idcentrodecosto" value="0" >
@@ -110,7 +109,7 @@ $('.edit-centrocosto').on('click',function(){
 
         	var_json = $.parseJSON(response);
         	$('#nombre').val(var_json.nombre);
-        	$('#idempresa').val(var_json.idempresa);        	
+        	$('#id_empresa').val(var_json.id_empresa);        	
         	$('#codigo').val(var_json.codigo);  
         	$('#idcentrodecosto').val(idcentrodecosto);
         	

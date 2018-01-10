@@ -41,11 +41,11 @@ class Admin extends CI_Model
 	}
 
 	public function get_estudios($idestudios = null){
-		$estudio_data = $this->db->select('id, idempresa, nombre, codigo, valido, fecha')
+		$estudio_data = $this->db->select('id_estudios, id_empresa, nombre, codigo, valido, fecha')
 						  ->from('rem_estudios a')
 						  ->where('a.valido = 1')
 						  ->order_by('a.nombre');
-		$estudio_data = is_null($idestudios) ? $estudio_data : $estudio_data->where('a.id',$idestudios);  		                  
+		$estudio_data = is_null($idestudios) ? $estudio_data : $estudio_data->where('a.id_estudios',$idestudios);  		                  
 		$query = $this->db->get();
 
 		//echo $this->db->last_query();
@@ -58,7 +58,7 @@ class Admin extends CI_Model
 	public function add_estudios($array_datos){
 
 
-		$this->db->select('a.id')
+		$this->db->select('a.id_estudios')
 						  ->from('rem_estudios as a')
 		                  ->where('upper(a.nombre)', strtoupper($array_datos['nombre']))
 		                  ->where('a.valido = 1');		
@@ -69,7 +69,7 @@ class Admin extends CI_Model
 			if($array_datos['idestudios'] == 0){
 				$data = array(
 			      	'nombre' => $array_datos['nombre'],
-			      	'idempresa' => $array_datos['idempresa'],
+			      	'id_empresa' => $array_datos['id_empresa'],
 			      	'codigo' => $array_datos['codigo'],
 			      	'valido' => 1,
 			      	'fecha' => date('Ymd H:i:s')			      	
@@ -82,12 +82,12 @@ class Admin extends CI_Model
 			}else{
 				$data = array(
 			      	'nombre' => $array_datos['nombre'],
-			      	'idempresa' => $array_datos['idempresa'],
+			      	'id_empresa' => $array_datos['id_empresa'],
 			      	'codigo' => $array_datos['codigo'],
 			      	'valido' => 1,
 				);
 
-				$this->db->where('id', $array_datos['idestudios']);
+				$this->db->where('id_estudios', $array_datos['idestudios']);
 				$this->db->update('rem_estudios',$data); 
 				return 1;
 			}
@@ -96,13 +96,13 @@ class Admin extends CI_Model
 			if($array_datos['idestudios'] != 0){
 				$data = array(
 			      	'nombre' => $array_datos['nombre'],
-			      	'idempresa' => $array_datos['idempresa'],
+			      	'id_empresa' => $array_datos['id_empresa'],
 			      	'codigo' => $array_datos['codigo'],
 			      	'valido' => 1,		      	
 				);
 
 
-				$this->db->where('id', $array_datos['idestudios']);
+				$this->db->where('id_estudios', $array_datos['idestudios']);
 				$this->db->update('rem_estudios',$data); 
 				return 1;
 			}else{
@@ -116,7 +116,7 @@ class Admin extends CI_Model
 	public function delete_estudios($idestudios){
 
 
-		$this->db->where('id', $idestudios);
+		$this->db->where('id_estudios', $idestudios);
 		$this->db->update('rem_estudios',array('valido' => '0')); 
 
 		return 1;
@@ -131,11 +131,11 @@ class Admin extends CI_Model
 	}
 
 	public function get_centrodecosto($idcentrodecosto = null){
-		$centrodecosto_data = $this->db->select('id, idempresa, nombre, codigo, valido, fecha')
+		$centrodecosto_data = $this->db->select('id_centro_costo, id_empresa, nombre, codigo, valido, fecha')
 						  ->from('rem_centro_costo a')
 						  ->where('a.valido = 1')
 						  ->order_by('a.nombre');
-		$centrodecosto_data = is_null($idcentrodecosto) ? $centrodecosto_data : $centrodecosto_data->where('a.id',$idcentrodecosto);  		                  
+		$centrodecosto_data = is_null($idcentrodecosto) ? $centrodecosto_data : $centrodecosto_data->where('a.id_centro_costo',$idcentrodecosto);  		                  
 		$query = $this->db->get();
 
 		$datos = is_null($idcentrodecosto) ? $query->result() : $query->row();
@@ -145,7 +145,7 @@ class Admin extends CI_Model
 	public function add_centrodecosto($array_datos){
 
 
-		$this->db->select('a.id')
+		$this->db->select('a.id_centro_costo')
 						  ->from('rem_centro_costo as a')
 		                  ->where('upper(a.nombre)', strtoupper($array_datos['nombre']))
 		                  ->where('a.valido = 1');		
@@ -156,7 +156,7 @@ class Admin extends CI_Model
 			if($array_datos['idcentrodecosto'] == 0){
 				$data = array(
 			      	'nombre' => $array_datos['nombre'],
-			      	'idempresa' => $array_datos['idempresa'],
+			      	'id_empresa' => $array_datos['id_empresa'],
 			      	'codigo' => $array_datos['codigo'],
 			      	'valido' => 1,
 			      	'fecha' => date('Ymd H:i:s')			      	
@@ -169,12 +169,12 @@ class Admin extends CI_Model
 			}else{
 				$data = array(
 			      	'nombre' => $array_datos['nombre'],
-			      	'idempresa' => $array_datos['idempresa'],
+			      	'id_empresa' => $array_datos['id_empresa'],
 			      	'codigo' => $array_datos['codigo'],
 			      	'valido' => 1,
 				);
 
-				$this->db->where('id', $array_datos['idcentrodecosto']);
+				$this->db->where('id_centro_costo', $array_datos['idcentrodecosto']);
 				$this->db->update('rem_centro_costo',$data); 
 				return 1;
 			}
@@ -183,13 +183,13 @@ class Admin extends CI_Model
 			if($array_datos['idcentrodecosto'] != 0){
 				$data = array(
 			      	'nombre' => $array_datos['nombre'],
-			      	'idempresa' => $array_datos['idempresa'],
+			      	'id_empresa' => $array_datos['id_empresa'],
 			      	'codigo' => $array_datos['codigo'],
 			      	'valido' => 1,		      	
 				);
 
 
-				$this->db->where('id', $array_datos['idcentrodecosto']);
+				$this->db->where('id_centro_costo', $array_datos['idcentrodecosto']);
 				$this->db->update('rem_centro_costo',$data); 
 				return 1;
 			}else{
@@ -203,7 +203,7 @@ class Admin extends CI_Model
 	public function delete_centrodecosto($idcentrodecosto){
 
 
-		$this->db->where('id', $idcentrodecosto);
+		$this->db->where('id_centro_costo', $idcentrodecosto);
 		$this->db->update('rem_centro_costo',array('valido' => '0')); 
 
 		return 1;
@@ -467,7 +467,7 @@ class Admin extends CI_Model
 
 		$empresa_data = $this->db->select('c.id_empresa, c.nombre ')
 						  ->from('rem_empresa as c')
-						  ->join('rem_usuario_empresa as uc','c.id_empresa = uc.idempresa')
+						  ->join('rem_usuario_empresa as uc','c.id_empresa = uc.id_empresa')
 		                  ->where('uc.idusuario', $userid)
 		                  ->where('c.active = 1')
 		                  ->order_by('c.nombre asc');
@@ -481,16 +481,16 @@ class Admin extends CI_Model
 
 
 
-	public function get_empresas($idempresa = null){
+	public function get_empresas($id_empresa = null){
 
 		$empresas_data = $this->db->select("c.id_empresa, c.nombre, c.rut, c.dv, c.direccion, c.fono, c.fono2, c.idregion, c.idcomuna, c.email, c.saldo, c.caja, c.fondoreserva, c.fondoreservainicial, c.idcaja, c.idmutual, c.porcmutual, c.cajainicial, c.fecinicio, c.fecvencimiento, fecvencimiento as fecvencimiento_sformat, c.fecinicio as fecinicio_sformat ",false)
 						  ->from('rem_empresa c')
 						  ->where('c.active = 1')
 		                  ->order_by('c.nombre asc');
 
-		$empresas_data = is_null($idempresa) ? $empresas_data : $empresas_data->where('id_empresa',$idempresa);  		                  
+		$empresas_data = is_null($id_empresa) ? $empresas_data : $empresas_data->where('id_empresa',$id_empresa);  		                  
 		$query = $this->db->get();
-		$datos = is_null($idempresa) ? $query->result() : $query->row();		
+		$datos = is_null($id_empresa) ? $query->result() : $query->row();		
 		return $datos;
 
 	}	
@@ -600,10 +600,10 @@ public function get_estado_civil(){
 
 
 public function get_cargos($idcargo = null){
-		$cargos_data = $this->db->select('c.id , c.idempresa, c.nombre, c.idpadre, c2.nombre as nombrepadre,  (select count(*) from rem_cargos where idpadre = c.id) as hijos ', false)
+		$cargos_data = $this->db->select('c.id , c.id_empresa, c.nombre, c.idpadre, c2.nombre as nombrepadre,  (select count(*) from rem_cargos where idpadre = c.id) as hijos ', false)
 						  ->from('rem_cargos c')
 						  ->join('rem_cargos c2','c.idpadre = c2.id','left')
-						  ->where('(c.idempresa = '.$this->session->userdata('empresaid') . ' or c.idempresa is null)')
+						  ->where('(c.id_empresa = '.$this->session->userdata('empresaid') . ' or c.id_empresa is null)')
 						  ->where('c.activo = 1')
 		                  ->order_by('c2.id asc');
 		$cargos_data = is_null($idcargo) ? $cargos_data : $cargos_data->where('c.id',$idcargo);  		                  
@@ -697,10 +697,10 @@ public function get_bonos($idtrabajador = null){
 
 	public function get_centro_costo($idcentrocosto = null){
 
-			$centrocosto_data = $this->db->select('id, nombre, codigo')	
+			$centrocosto_data = $this->db->select('id_centro_costo, nombre, codigo')	
 						  ->from('rem_centro_costo')
 						  ->where('valido',1)
-						  ->where('idempresa',$this->session->userdata('empresaid'))
+						  ->where('id_empresa',$this->session->userdata('empresaid'))
 		                  ->order_by('nombre');
 		$centrocosto_data = is_null($idcentrocosto) ? $centrocosto_data : $centrocosto_data->where('id',$idcentrocosto);  		                  
 		$query = $this->db->get();

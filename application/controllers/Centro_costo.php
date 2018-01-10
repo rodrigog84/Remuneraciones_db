@@ -112,7 +112,7 @@ class Centro_costo extends CI_Controller {
 			$datos_form = array(
 							'idcentrocosto' => count($centrocosto) == 0 ? 0 : $centrocosto->id,
 							'nombre' => count($centrocosto) == 0 ? '' : $centrocosto->nombre,
-							'idempresa' => count($centrocosto) == 0 ? '' : $centrocosto->idempresa,
+							'id_empresa' => count($centrocosto) == 0 ? '' : $centrocosto->id_empresa,
 							'codigo' => count($centrocosto) == 0 ? 0 : $centrocosto->codigo
 							);
 			
@@ -150,13 +150,13 @@ class Centro_costo extends CI_Controller {
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 			$nombre = $this->input->post('nombre');	
-			$idempresa = $this->input->post('idempresa');	
+			$id_empresa = $this->input->post('id_empresa');	
 			$codigo = $this->input->post('codigo');	
 			$idcentrocosto = $this->input->post('idcentrocosto');
 
 			$array_datos = array(
 								'nombre' => $nombre,
-								'idempresa' => $porc,
+								'id_empresa' => $porc,
 								'codigo' => $exregimen,
 								'idcentrocosto' => $idcentrocosto);
 
