@@ -1041,7 +1041,7 @@ limit 1		*/
 
 
 
-       		//calculamos los montos detinados a afp
+       		//calculamos los montos destinados a afp
 		}
 
  		// CERRAR PERIODO
@@ -1065,6 +1065,7 @@ limit 1		*/
 		                  ->order_by('p.mes desc');
 		$comunidades_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.idperiodo',$idperiodo);
 		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
 		$datos = is_null($idperiodo) ? $query->result() : $query->row();				                  
 		return $datos;
 
@@ -1088,6 +1089,7 @@ limit 1		*/
 		                  ->where('pe.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('r.idperiodo', $idperiodo)
+		                  //->where('pe.idcentrocosto',1)
 		                  ->where('r.active = 1')
 		                  //->where('r.sueldoliquido <> 0')  //valida que se haya creado sueldo
 		                  ->order_by('pe.nombre asc');

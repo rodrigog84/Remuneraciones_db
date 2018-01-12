@@ -1,7 +1,7 @@
 <!--sub-heard-part-->
 									  <div class="sub-heard-part">
 									   <ol class="breadcrumb m-b-0">
-											<li><a href="inicio.html">Inicio</a></li>
+											<li><a href="<?php echo base_url();?>main/dashboard">Inicio</a></li>
 											<li class="active">Calculo Remuneraciones</li>
 											
 										</ol>
@@ -37,6 +37,7 @@
 												                        <th>Descuentos</th>
 												                        <th>Liquido a Pagar</th>
 												                        <th>Liquidaci&oacute;n</th>
+												                        
 																		</tr> 
 																	</thead> 
 																	<tbody> 
@@ -50,6 +51,7 @@
 												                          <td>$&nbsp;<?php echo number_format($remuneracion->totaldescuentos,0,".",".");?></td>
 												                          <td>$&nbsp;<?php echo number_format($remuneracion->sueldoliquido,0,".",".");?></td>
 												                          <td><center><a href="<?php echo base_url(); ?>rrhh/liquidacion/<?php echo $remuneracion->id_remuneracion;?>" target="_blank"><span class="glyphicon glyphicon-paperclip"></span></a></center></td>
+												                          
 												                        </tr>
 												                        <?php $i++; } ?>
 																	</tbody> 

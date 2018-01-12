@@ -1,7 +1,12 @@
+
+
+
+
+
 <!--sub-heard-part-->
 									  <div class="sub-heard-part">
 									   <ol class="breadcrumb m-b-0">
-											<li><a href="inicio.html">Inicio</a></li>
+											<li><a href="<?php echo base_url();?>main/dashboard">Inicio</a></li>
 											<li class="active">Calculo Remuneraciones</li>
 											
 										</ol>
@@ -27,6 +32,13 @@
 
 														  	
 															<div class="tables">
+																<select name="selector1" id="selector1" class="form-control2">
+																	
+																</select>
+																<br>
+																<br>
+																<br>
+																<br>
 																<table class="table"> 
 																	<thead> 
 																		<tr>
