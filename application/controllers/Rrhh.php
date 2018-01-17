@@ -773,6 +773,74 @@ class Rrhh extends CI_Controller {
 	}		
 
 
+	public function get_detalle_rrhh($idcentrocosto = null){
+
+		$idcentrocosto = $idcentrocosto == '0' ? null : $idcentrocosto;
+		$datosperiodo = $this->rrhh_model->get_periodos_cerrados($this->session->userdata('empresaid'),null,$idcentrocosto);
+
+
+		
+		$contenido = '<table class="table"> 
+																	<thead> 
+																		<tr>
+																			<th>#</th>
+																			<th>Mes</th> 
+																			<th>A&ntilde;o</th> 
+													                        <th>N&uacute;mero Trabajadores</th>
+													                        <th>Remuneraci&oacute;n Total (L&iacute;quido)</th>
+													                        <th>Detalle Remuneraciones</th>
+													                        <th>Libro Remuneraciones</th>
+													                        <th>Estado</th>
+																		</tr> 
+																	</thead> 
+																	<tbody>'; 
+																	$i = 1; 
+											                        $back_button = false;
+											                        
+											                        if(count($datosperiodo) > 0){
+											                          foreach ($datosperiodo as $periodo) { 
+
+											                          	$class_aprueba = is_null($periodo->aprueba) ? 'text-yellow fa fa-exclamation ' : 'text-green fa fa-check';
+											                          	$class_texto = is_null($periodo->aprueba) ? 'En revisi&oacute;n' : 'Aprobada';
+											                          	$mes_texto = date2string($periodo->mes,$periodo->anno) == 'Saldo Inicial' ? 'Saldo' : month2string($periodo->mes);
+											                          	$anno_texto = date2string($periodo->mes,$periodo->anno) == 'Saldo Inicial' ? 'Inicial' : $periodo->anno;
+											                          	$class_color = "";
+											                           $contenido .= '<tr ' . $class_color. ' >
+											                            <td>' . $i . '</td>
+											                            <td>' . $mes_texto . '</td>
+											                            <td>' .  $anno_texto  . '</td>
+											                            <td>' . number_format($periodo->numtrabajadores,0,".",".") . '</td>
+											                            <td>$&nbsp;' . number_format($periodo->sueldoliquido,0,".",".") . '</td>
+											                              <td>
+											                              <center>';
+											                              if(!is_null($periodo->cierre)){ 
+											                               $contenido .= '<a href="' . base_url(). 'rrhh/ver_remuneraciones_periodo/' . $periodo->id_periodo  . '/' . $idcentrocosto . '" data-toggle="tooltip" title="Ver Remuneraciones Personal"><span class="glyphicon glyphicon-search"></span></a>';
+											                               }
+											                              $contenido .= '</center>
+											                              </td>
+											                              <td>
+											                              <center>';
+											                              if(!is_null($periodo->cierre)){
+											                              $contenido .= '<a href="' . base_url(). 'rrhh/libro/' . $periodo->id_periodo . '/' . $idcentrocosto . '" target="_blank"><span class="glyphicon glyphicon-book"></span></a>';
+											                              }
+											                              $contenido .= '</center>
+											                              </td>  
+											                              <td><span class="' . $class_aprueba . '" data-toggle="tooltip" title="' . $class_texto . '"/></span></td>                        
+											                          </tr>';
+											                          $i++; } 
+											                        }else{ 
+											                            $contenido .= '<tr>
+											                              <td colspan="9">No existe historial de remuneraciones en la comunidad</td>
+											                            </tr>';
+											                        } 
+																	$contenido .= '</tbody> 
+																</table> ';
+
+		echo $contenido;
+
+
+
+	}
 
 
 
@@ -781,7 +849,8 @@ class Rrhh extends CI_Controller {
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
-			$datosperiodo = $this->rrhh_model->get_periodos_cerrados($this->session->userdata('empresaid'));
+			$datosperiodo = $this->rrhh_model->get_periodos_cerrados($this->session->userdata('empresaid'),null,null);
+			$centros_costo = $this->rrhh_model->get_centro_costo();
 
 
 			$content = array(
@@ -793,6 +862,7 @@ class Rrhh extends CI_Controller {
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'remuneraciones/detalle';
 			$vars['datosperiodo'] = $datosperiodo;
+			$vars['centros_costo'] = $centros_costo;
 			$vars['idperiodo'] = $idperiodo;
 
 
@@ -820,7 +890,7 @@ class Rrhh extends CI_Controller {
 
 
 
-	public function libro($idperiodo = null)
+	public function libro($idperiodo = null,$idcentrocosto = null)
 	{
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
@@ -832,7 +902,7 @@ class Rrhh extends CI_Controller {
 			if(is_null($periodo->cierre)){
 				redirect('main/dashboard/');
 			}else{
-				$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,true);
+				$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,true,$idcentrocosto);
 				if(count($remuneraciones) == 0){ // SI NO ENCUENTRO NINGUNA REMUNERACION (QUIERE DECIR QUE NO EXISTIAN TRABAJADORES EN ESE PERIODO)
 					redirect('main/dashboard/');
 				}else{
@@ -860,12 +930,12 @@ class Rrhh extends CI_Controller {
 
 	}	
 
-	public function ver_remuneraciones_periodo($idperiodo = '')
+	public function ver_remuneraciones_periodo($idperiodo = '',$idcentrocosto = null)
 	{
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
-			$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo);
+			$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,null,$idcentrocosto);
 			$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
 
 			$content = array(

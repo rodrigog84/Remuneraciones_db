@@ -1,4 +1,6 @@
+<?php 
 
+?>
 
 
 
@@ -32,13 +34,19 @@
 
 														  	
 															<div class="tables">
-																<select name="selector1" id="selector1" class="form-control2">
+																<p>Seleccione Centro de Costo:</p>
+																<select name="selector" id="selector" class="form-control2">
+																	<option value="0">Todos</option>
+																	<?php foreach ($centros_costo as $centro_costo) { ?>
+																		<option value="<?php echo $centro_costo->id_centro_costo;?>"><?php echo $centro_costo->nombre;?></option>
+																	<?php } ?>
 																	
 																</select>
 																<br>
 																<br>
 																<br>
 																<br>
+																<div id="remuneraciones">
 																<table class="table"> 
 																	<thead> 
 																		<tr>
@@ -95,6 +103,7 @@
 											                        <?php } ?>
 																	</tbody> 
 																</table> 
+															</div>
 																
 															</div>
 												
@@ -103,3 +112,39 @@
 											</div>
 									<!--/charts-inner-->
 
+<script>
+	$('#selector').change(function(){
+			var baseurl = '<?php echo base_url();?>';
+			var id_centro_costo = $(this).val();
+			$.get("<?php echo base_url();?>rrhh/get_detalle_rrhh/"+id_centro_costo,function(data){			
+			 		console.log(data)
+			 		$('#remuneraciones').html(data)
+
+
+			 });
+
+
+			/*var id = $('#selector').val();
+			   $.post(baseurl+"cpersona/getPersona",
+	        function(data){
+	          //alert(data);
+	          var p = JSON.parse(data);
+	          $.each(p, function(i,item){
+	          	$('#personas').append(
+	          			'<tr>'+
+							'<td>'+item.nombre+'</td>'+
+							'<td>'+item.appaterno+'</td>'+
+							'<td>'+item.apmaterno+'</td>'+
+							'<td>'+item.rut+'</td>'+
+							'<td>'+item.email+'</td>'+
+							'<td>'+item.ciudad+'</td>'+
+						'</tr>'
+	          		);
+	          });
+
+	        });*/
+
+/*});*/
+
+});
+</script>

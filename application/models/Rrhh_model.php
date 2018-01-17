@@ -40,7 +40,15 @@ class Rrhh_model extends CI_Model
 		$this->load->helper('format');
 	}
 
+	public function get_centro_costo(){
+		$this->db->select('id_centro_costo, id_empresa, nombre')
+						  ->from('rem_centro_costo')
+						  ->where('id_empresa', $this->session->userdata('empresaid'))
+		                  ->order_by('nombre','asc');
+		 $query = $this->db->get();
+		 return $query->result();
 
+	}
 
 	public function get_periodos_remuneracion_abiertos($idperiodo = null){
 		$data_periodo = $this->db->select('p.id_periodo, p.mes, p.anno, pr.cierre, pr.aprueba, pr.anticipo')
@@ -553,6 +561,12 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		return 1;
 	}
 
+	public function selector($select){
+
+		$this->db->where('id_empresa', $select);
+		return $select();
+	}
+
 
 
 	public function get_remuneraciones_reversa($idperiodo){
@@ -1054,16 +1068,18 @@ limit 1		*/
 	}	
 
 
-	public function get_periodos_cerrados($empresaid,$idperiodo = null){
+	public function get_periodos_cerrados($empresaid,$idperiodo = null,$idcentrocosto = null){
+		$sql_centro_costo = is_null($idcentrocosto) ? '' : 'and pe.idcentrocosto = ' . $idcentrocosto;
 
-		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, pr.cierre, pr.aprueba, pr.cierre as cierre,  (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.idperiodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1) as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.idperiodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1) as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.idperiodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1) as sueldoliquido ', false)
+
+		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, pr.cierre, pr.aprueba, pr.cierre as cierre,  (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.idperiodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.idperiodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.idperiodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoliquido ', false)
 						  ->from('rem_periodo as p')
 						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
 		                  ->where('pr.id_empresa', $empresaid)
 		                  ->where('pr.cierre is not null')
 		                  ->order_by('p.anno desc')
 		                  ->order_by('p.mes desc');
-		$comunidades_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.idperiodo',$idperiodo);
+		$periodo_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.idperiodo',$idperiodo);
 		$query = $this->db->get();
 		//echo $this->db->last_query(); exit;
 		$datos = is_null($idperiodo) ? $query->result() : $query->row();				                  
@@ -1074,7 +1090,7 @@ limit 1		*/
 
 
 
-	public function get_remuneraciones_by_periodo($idperiodo,$sinsueldo = null){
+	public function get_remuneraciones_by_periodo($idperiodo,$sinsueldo = null,$idcentrocosto = null){
 		
 		$periodo_data = $this->db->select('r.id_remuneracion, r.idperiodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.aportesegcesantia, r.sueldoimponibleimposiciones')
 						  ->from('rem_periodo as p')
@@ -1094,7 +1110,8 @@ limit 1		*/
 		                  //->where('r.sueldoliquido <> 0')  //valida que se haya creado sueldo
 		                  ->order_by('pe.nombre asc');
 
-		$periodo_data = is_null($sinsueldo) ? $periodo_data->where('r.sueldoliquido <> 0') : $periodo_data;		                  
+		$periodo_data = is_null($sinsueldo) ? $periodo_data->where('r.sueldoliquido <> 0') : $periodo_data;	
+		$periodo_data = is_null($idcentrocosto) ? $periodo_data : $periodo_data->where('pe.idcentrocosto',$idcentrocosto);		                  
 		$query = $this->db->get();
 		//echo $this->db->last_query(); exit;
 		return $query->result();
