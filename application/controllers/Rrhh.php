@@ -645,6 +645,7 @@ class Rrhh extends CI_Controller {
 			$vars['anno'] = $anno;	
 			$vars['periodos_remuneracion'] = $periodos_remuneracion;	
 			$vars['formValidation'] = true;
+			$vars['centros_costo'] = $centros_costo;
 			//$vars['mensaje_html'] = $mensaje_html;	
 			$vars['content_view'] = 'rrhh/calculo_remuneraciones';
 
