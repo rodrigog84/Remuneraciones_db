@@ -138,6 +138,7 @@
 							'<td>'+item.rut+'</td>'+
 							'<td>'+item.email+'</td>'+
 							'<td>'+item.ciudad+'</td>'+
+							'<td>'+item.ciudad+'</td>'+
 						'</tr>'
 	          		);
 	          });

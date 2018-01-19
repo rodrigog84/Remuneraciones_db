@@ -1541,6 +1541,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 			}
 
+		
 			$this->load->library("mpdf");
 			$this->mpdf->mPDF(
 				'',    // mode - default ''
@@ -1554,10 +1555,11 @@ public function get_remuneraciones_by_id($idremuneracion){
 				9,     // margin header
 				9,     // margin footer
 				'L'    // L - landscape, P - portrait
-				);  
+				);
+			  
 			//echo $html; exit;
 			$this->mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
-			$this->mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$this->mpdf->SetHeader('BORRADOR'. '-'.'Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
 			$this->mpdf->WriteHTML($content->pdf_content);
 			//$this->mpdf->SetFooter('Para más información visite: http://www.tugastocomun.cl');
 
