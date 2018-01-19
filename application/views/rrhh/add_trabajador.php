@@ -281,7 +281,7 @@
 																	<option>Seleccione Tipo Licencia</option>
 						                                    		<?php foreach ($licencias as $licencia) { ?>
 								                                      <?php $licenciaselected = $licencia->id == $datos_form['idlicencia'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $licencia->id;?>" <?php echo $licenciaselected;?> ><?php echo $licencia->nombre;?></option>
+								                                      <option value="<?php echo $licencia->id_id_licencia;?>" <?php echo $licenciaselected;?> ><?php echo $licencia->nombre;?></option>
 								                                    <?php } ?>
 																</select>
 															</td>
@@ -311,7 +311,7 @@
 																	<option>Seleccione Centro Costo</option>
 						                                    		<?php foreach ($centros_costo as $centro_costo) { ?>
 								                                      <?php $centrocostoselected = $centro_costo->id == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $centro_costo->id;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
+								                                      <option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
 								                                    <?php } ?>
 																</select>
 															</td>
