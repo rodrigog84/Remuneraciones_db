@@ -505,8 +505,8 @@ class Rrhh extends CI_Controller {
 			}
 			$mes = $this->session->flashdata('asistencia_mes') == '' ? date('m') : $this->session->flashdata('asistencia_mes');
 			$anno = $this->session->flashdata('asistencia_anno') == '' ? date('Y') : $this->session->flashdata('asistencia_anno');
-			
-
+			$this->load->model('admin');
+			$centros_costo = $this->admin->get_centro_costo();
 			$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos(); 
 			//echo "<pre>";
 			//print_r($periodos_remuneracion); exit;
