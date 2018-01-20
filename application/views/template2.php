@@ -13,6 +13,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href="<?php echo base_url();?>css/style.css" rel='stylesheet' type='text/css' />
 <link href="<?php echo base_url();?>css/style_grid.css" rel="stylesheet" type="text/css" media="all" />
 
+<
+
 <!-- Graph CSS -->
 <link href="<?php echo base_url();?>css/font-awesome.css" rel="stylesheet"> 
 <!-- jQuery -->
@@ -25,6 +27,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="<?php echo base_url();?>js/serial.js"></script>	
 <script src="<?php echo base_url();?>js/light.js"></script>	
 <script src="<?php echo base_url();?>js/radar.js"></script>	
+
+<!--select-min-->
+
+<!--<link rel="stylesheet" href="<?php echo base_url();?>css/bootstrap-select.min.css">-->
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="<?php echo base_url();?>js/bootstrap-select.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-*.min.js"></script>
+
+
+
+
+
 <link href="<?php echo base_url();?>css/barChart.css" rel='stylesheet' type='text/css' />
 <link href="<?php echo base_url();?>css/fabochart.css" rel='stylesheet' type='text/css' />
 <!--clock init-->
@@ -34,6 +49,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="<?php echo base_url();?>js/skycons.js"></script>
 
 <script src="<?php echo base_url();?>js/jquery.easydropdown.js"></script>
+
+
+
+
+
 
 <!--//skycons-icons-->
 <!--//file-->

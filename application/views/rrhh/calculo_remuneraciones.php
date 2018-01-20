@@ -65,8 +65,8 @@
 									                          <div class='col-md-6'>
 																<div class="form-group">
 																	<label for="centro_costo">Centro de Costo</label>
-																	<select name="centro_costo" id="centro_costo" class="form-control periodo">
-																		<option>Seleccione Centro Costo</option>
+																	<select  name="centro_costo" id="centro_costo" class="form-control periodo selectpicker" multiple="multiple" >
+																	
 																		<?php foreach ($centros_costo as $centro_costo) { ?>
 	       																<?php $centrocostoselected = $centro_costo->id == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
 	        																<option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
@@ -74,7 +74,6 @@
 																	</select>
 																</div>
 															  </div>
-
 									                      </div>
 									                      <div class="row">
 									                      	<div class='col-md-3'>
@@ -280,4 +279,13 @@ $(document).ready(function() {
 
 });
 
+</script>
+
+
+
+<!-- Initialize the plugin: -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#centro_costo').multiselect();
+    });
 </script>
