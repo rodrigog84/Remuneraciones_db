@@ -104,8 +104,8 @@
 																<select name="nacionalidad" id="nacionalidad" class="form-control1">
 																	<option>Seleccione Nacionalidad</option>
 						                                    		<?php foreach ($paises as $pais) { ?>
-								                                      <?php $paisselected = $pais->id == $datos_form['idnacionalidad'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $pais->id;?>" <?php echo $paisselected;?> ><?php echo $pais->nombre;?></option>
+								                                      <?php $paisselected = $pais->id == $datos_form['id_nacionalidad'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $pais->id_paises;?>" <?php echo $paisselected;?> ><?php echo $pais->nombre;?></option>
 								                                    <?php } ?>
 																</select>
 															</td>
@@ -126,7 +126,7 @@
 							                                   <option value="">Seleccione Estado Civil</option>
 								                                    <?php foreach ($estados_civiles as $estado_civil) { ?>
 								                                      <?php $ecivilselected = $estado_civil->id == $datos_form['idecivil'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $estado_civil->id;?>" <?php echo $ecivilselected;?> ><?php echo $estado_civil->nombre;?></option>
+								                                      <option value="<?php echo $estado_civil->id_estado_civil;?>" <?php echo $ecivilselected;?> ><?php echo $estado_civil->nombre;?></option>
 								                                    <?php } ?>
 																</select>
 															</td>
@@ -190,7 +190,7 @@
 							                                      } ?>
 							                                      <?php if(!($cargo->idpadre == '' && $cargo->hijos > 0)){ ?>
 							                                        <?php $cargoselected = $cargo->id == $datos_form['idcargo'] ? "selected" : ""; ?>
-							                                        <option value="<?php echo $cargo->id;?>" <?php echo $cargoselected;?> ><?php echo $cargo->nombre;?></option>
+							                                        <option value="<?php echo $cargo->id_cargos;?>" <?php echo $cargoselected;?> ><?php echo $cargo->nombre;?></option>
 							                                      <?php } ?>
 							                                  <?php } 
 							                                        if($label_cargo != ''){
@@ -217,7 +217,7 @@
 																	<option>Seleccione Nivel Educacional</option>
 						                                    		<?php foreach ($estudios as $estudio) { ?>
 								                                      <?php $estudioselected = $estudio->id == $datos_form['idestudio'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $estudio->id;?>" <?php echo $estudioselected;?> ><?php echo $estudio->nombre;?></option>
+								                                      <option value="<?php echo $estudio->id_estudios;?>" <?php echo $estudioselected;?> ><?php echo $estudio->nombre;?></option>
 								                                    <?php } ?>
 																</select>
 															</td>
@@ -229,7 +229,7 @@
 																	<option>Seleccione Idioma</option>
 						                                    		<?php foreach ($idiomas as $idioma) { ?>
 								                                      <?php $idiomaselected = $idioma->id == $datos_form['ididioma'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $idioma->id;?>" <?php echo $idiomaselected;?> ><?php echo $idioma->nombre;?></option>
+								                                      <option value="<?php echo $idioma->id_idioma;?>" <?php echo $idiomaselected;?> ><?php echo $idioma->nombre;?></option>
 								                                    <?php } ?>
 																</select>
 															</td>
@@ -250,7 +250,7 @@
 																	<option>Seleccione Jefe o Supervisor</option>
 						                                    		<?php foreach ($personal as $trabajador) { ?>
 								                                      <?php $jefeselected = $trabajador->id == $datos_form['idjefe'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $trabajador->id;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
+								                                      <option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
 								                                    <?php } ?>
 																</select>
 															</td>
@@ -259,7 +259,7 @@
 																	<option>Seleccione Reemplazo</option>
 						                                    		<?php foreach ($personal as $trabajador) { ?>
 								                                      <?php $jefeselected = $trabajador->id == $datos_form['idjefe'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $trabajador->id;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
+								                                      <option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
 								                                    <?php } ?>
 																</select>
 															</td>
@@ -281,7 +281,7 @@
 																	<option>Seleccione Tipo Licencia</option>
 						                                    		<?php foreach ($licencias as $licencia) { ?>
 								                                      <?php $licenciaselected = $licencia->id == $datos_form['idlicencia'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $licencia->id_id_licencia;?>" <?php echo $licenciaselected;?> ><?php echo $licencia->nombre;?></option>
+								                                      <option value="<?php echo $licencia->id_licencia_conducir;?>" <?php echo $licenciaselected;?> ><?php echo $licencia->nombre;?></option>
 								                                    <?php } ?>
 																</select>
 															</td>
@@ -549,7 +549,7 @@
 																	<option>Seleccione AFP</option>
 						                                    		<?php foreach ($afps as $afp) { ?>
 								                                      <?php $afpselected = $afp->id == $datos_form['idafp'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $afp->id;?>" <?php echo $afpselected;?> ><?php echo $afp->nombre;?></option>
+								                                      <option value="<?php echo $afp->id_afp;?>" <?php echo $afpselected;?> ><?php echo $afp->nombre;?></option>
 								                                    <?php } ?>
 								                                   </select>
 															</td>
@@ -589,7 +589,7 @@
 																	<option>Seleccione Isapre</option>
 						                                    		<?php foreach ($isapres as $isapre) { ?>
 								                                      <?php $isapreselected = $isapre->id == $datos_form['idisapre'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $isapre->id;?>" <?php echo $isapreselected;?> ><?php echo $isapre->nombre;?></option>
+								                                      <option value="<?php echo $isapre->id_isapre;?>" <?php echo $isapreselected;?> ><?php echo $isapre->nombre;?></option>
 								                                    <?php } ?>
 								                                   </select>
 															</td>

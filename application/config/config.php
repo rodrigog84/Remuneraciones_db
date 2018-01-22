@@ -14,7 +14,8 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost:8080/Remuneraciones_db/';
+//$config['base_url']	= 'http://localhost:8080/Remuneraciones_db/Remuneraciones_db';
+$config['base_url']	= 'http://192.168.10.121/Remuneraciones_db';
 
 /*
 |--------------------------------------------------------------------------
