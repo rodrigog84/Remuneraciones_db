@@ -317,7 +317,7 @@ class Admin extends CI_Model
 
 	public function get_tabla_impuesto(){
 
-		$this->db->select('id, desde, hasta, factor, rebaja, tasa_maxima')
+		$this->db->select('id_tabla_impuesto, desde, hasta, factor, rebaja, tasa_maxima')
 						  ->from('rem_tabla_impuesto')
 		                  ->order_by('desde','asc');
 
