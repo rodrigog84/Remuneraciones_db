@@ -41,7 +41,7 @@ class Admin extends CI_Model
 	}
 
 	public function get_estudios($idestudios = null){
-		$estudio_data = $this->db->select('id_estudios, id_empresa, nombre, codigo, valido, fecha')
+		$estudio_data = $this->db->select('id_estudios, id_empresa, nombre, codigo, valido, created_at')
 						  ->from('rem_estudios a')
 						  ->where('a.valido = 1')
 						  ->order_by('a.nombre');
@@ -317,7 +317,7 @@ class Admin extends CI_Model
 
 	public function get_tabla_impuesto(){
 
-		$this->db->select('id, desde, hasta, factor, rebaja, tasa_maxima')
+		$this->db->select('id_tabla_impuesto, desde, hasta, factor, rebaja, tasa_maxima')
 						  ->from('rem_tabla_impuesto')
 		                  ->order_by('desde','asc');
 
@@ -574,9 +574,9 @@ public function get_parametros_generales(){
 
 	public function get_regiones(){
 
-		$this->db->select('idregion , nombre ')
+		$this->db->select('id_region , nombre ')
 						  ->from('rem_region')
-		                  ->order_by('idregion asc');
+		                  ->order_by('id_region asc');
 		$query = $this->db->get();
 		$datos = $query->result();
 
@@ -600,9 +600,9 @@ public function get_estado_civil(){
 
 
 public function get_cargos($idcargo = null){
-		$cargos_data = $this->db->select('c.id_cargos , c.id_empresa, c.nombre, c.idpadre, c2.nombre as nombrepadre,  (select count(*) from rem_cargos where idpadre = c.id) as hijos ', false)
+		$cargos_data = $this->db->select('c.id_cargos , c.id_empresa, c.nombre, c.id_padre, c2.nombre as nombrepadre,  (select count(*) from rem_cargos where id_padre = c.id_cargos) as hijos ', false)
 						  ->from('rem_cargos c')
-						  ->join('rem_cargos c2','c.idpadre = c2.id_cargos','left')
+						  ->join('rem_cargos c2','c.id_padre = c2.id_cargos','left')
 						  ->where('(c.id_empresa = '.$this->session->userdata('empresaid') . ' or c.id_empresa is null)')
 						  ->where('c.activo = 1')
 		                  ->order_by('c2.id_cargos asc');
@@ -663,10 +663,10 @@ public function get_bonos($idtrabajador = null){
 
 	public function get_paises($idpais = null){
 
-			$paises_data = $this->db->select('id, iso, nombre')	
+			$paises_data = $this->db->select('id_paises, iso, nombre')	
 						  ->from('rem_paises')
 		                  ->order_by('nombre');
-		$paises_data = is_null($idpais) ? $paises_data : $paises_data->where('id',$idpais);  		                  
+		$paises_data = is_null($idpais) ? $paises_data : $paises_data->where('id_paises',$idpais);  		                  
 		$query = $this->db->get();
 		return $query->result();
 	}
