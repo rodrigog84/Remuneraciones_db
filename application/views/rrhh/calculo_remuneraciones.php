@@ -65,7 +65,7 @@
 									                          <div class='col-md-6'>
 																<div class="form-group">
 																	<label for="centro_costo">Centro de Costo</label>
-																	<select  name="centro_costo" id="centro_costo" class="form-control periodo selectpicker" multiple="multiple" >
+																	<select  name="centro_costo[]" id="centro_costo" class="form-control periodo selectpicker" multiple="multiple" >
 																	
 																		<?php foreach ($centros_costo as $centro_costo) { ?>
 	       																<?php $centrocostoselected = $centro_costo->id == $datos_form['idcentrocosto'] ? "selected" : ""; ?>

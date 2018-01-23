@@ -692,12 +692,13 @@ class Rrhh extends CI_Controller {
 	}	
 
 
-	public function submit_calculo_remuneraciones($idperiodo){
+	public function submit_calculo_remuneraciones($idperiodo=null){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 
 			$mes = $this->input->post('mes');
 			$anno = $this->input->post('anno');
+			$centro_costo = $this->input->post('centro_costo');
 
 			//if($mes == '' || $anno == ''){
 			if(empty($mes) && empty($anno)){
@@ -705,7 +706,7 @@ class Rrhh extends CI_Controller {
 				redirect('rrhh/calculo_remuneraciones');	
 			}else{
 				#EN CASO QUE NO EXISTAN DATOS INICIALES, SE CARGAN AHORA
-				$idperiodo = $this->rrhh_model->set_datos_iniciales_periodo_rem($mes,$anno); 
+				$idperiodo = $this->rrhh_model->set_datos_iniciales_periodo_rem($mes,$anno,$centro_costo); 
 
 			}
 
@@ -751,7 +752,7 @@ class Rrhh extends CI_Controller {
 			//	
 
 			//}else{
-				 $this->rrhh_model->calcular_remuneraciones($idperiodo); 
+				 $this->rrhh_model->calcular_remuneraciones($idperiodo,$centro_costo); 
 				 $this->session->set_flashdata('calculo_remuneraciones_result', 1);
 
 			//}
@@ -1413,8 +1414,24 @@ class Rrhh extends CI_Controller {
 	}	
 
 
-
-	
-
+public function prueba(){
+	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			$mes = $this->input->post('mes');
+			$anno = $this->input->post('anno');
+			$centro_costo = $this->input->post('centro_costo');
+			
+			var_dump($this->rrhh_model->get_personal(null,$centro_costo));
+			
+			$data['titulo'] = $centro_costo;
+			$this->load->view('rrhh/prueba',$data);
+	//}else{
+		
+		/*$vars['content_view'] = 'rrhh/prueba';
+		$this->load->view('template',$vars);
+		$data['titulo'] = $centros_costo;
+		$this->load->view('rrhh/prueba',$data);*/
+		/*$data['titulo'] = 'hola';
+		$this->load->view('rrhh/prueba',$data);
+	}*/
 }
-
+}
