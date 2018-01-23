@@ -981,6 +981,7 @@ class Rrhh extends CI_Controller {
 			}else if(is_null($remuneracion->cierre)){
 				redirect('main/dashboard/'); // SI NO ES UN PERIODO CERRADO, SE ENVÍA AL DASHBOARD
 			}else{
+				//$datamensaje['mensaje'] = "BORRADOR";
 				$datosdetalle = $this->rrhh_model->liquidacion($remuneracion);
 			}
 

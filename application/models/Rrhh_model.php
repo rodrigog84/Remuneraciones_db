@@ -1500,7 +1500,7 @@ limit 1		*/
 
 
 public function get_remuneraciones_by_id($idremuneracion){
-		$periodo_data = $this->db->select('r.id_remuneracion, r.idperiodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentos, r.prestamos')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.idperiodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentos, r.prestamos, pr.id_periodo, pr.cierre, pr.aprueba')
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.idperiodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
@@ -1510,6 +1510,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 						  ->join('rem_afp as a','pe.idafp = a.id_afp')
 		                  ->where('pe.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('r.id_remuneracion', $idremuneracion);
+
 		$query = $this->db->get();
 		return $query->row();
 
@@ -1534,11 +1535,19 @@ public function get_remuneraciones_by_id($idremuneracion){
 			$this->load->model('admin');
 			$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
 			$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
+			
+
+
 
 			if($content->pdf_content == ''){ // EN CASO QUE POR ALGUN MOTIVO FALLARA LA EJECUCION INICIAL, SE CREA AHORA
 				$this->generar_contenido_comprobante($datos_remuneracion);
 				$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
+			}
 
+			if($datos_remuneracion){
+				$datamensaje = "BORRADOR";
+			}else{
+				$datamensaje = "APROBADO";
 			}
 
 		
@@ -1559,7 +1568,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 			  
 			//echo $html; exit;
 			$this->mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
-			$this->mpdf->SetHeader('BORRADOR'. '-'.'Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$this->mpdf->SetHeader($datamensaje.' - ' .'Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
 			$this->mpdf->WriteHTML($content->pdf_content);
 			//$this->mpdf->SetFooter('Para más información visite: http://www.tugastocomun.cl');
 
@@ -1719,6 +1728,8 @@ public function generar_contenido_comprobante($datos_remuneracion){
 						</tr>
 						</thead>
 						<tbody>';
+
+						
 
 						if($datos_remuneracion->sueldobase > 0){
 							$html .= '<tr>
