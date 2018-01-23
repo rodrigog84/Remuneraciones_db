@@ -572,12 +572,12 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	public function get_remuneraciones_reversa($idperiodo){
 		$periodo_data = $this->db->select('r.id_remuneracion')
 						  ->from('rem_remuneracion as r')
-						  ->join('rem_periodo_remuneracion as pr','r.idperiodo = pr.id_periodo and pr.id_empresa = ' . $this->session->userdata('empresaid'))
+						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and pr.id_empresa = ' . $this->session->userdata('empresaid'))
 		                  ->where('r.id_empresa', $this->session->userdata('empresaid'))
-		                  ->where('r.idperiodo', $idperiodo)
+		                  ->where('r.id_periodo', $idperiodo)
 		                  ->where('pr.cierre is not null')
 		                  ->where('pr.aprueba is null')
-		                  ->order_by('r.id asc');
+		                  ->order_by('r.id_remuneracion asc');
 		$query = $this->db->get();
 		//echo $this->db->last_query(); exit;
 		return $query->result();
@@ -608,7 +608,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 								  p.cargasretroactivas = r.cargasretroactivas
 								  from	rem_personal p
 								  inner join rem_remuneracion r on p.id_personal = r.idpersonal
-								  where r.id_remuneracion = " . $remuneracion->id);		
+								  where r.id_remuneracion = " . $remuneracion->id_remuneracion);		
 
 
 
