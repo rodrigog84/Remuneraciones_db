@@ -578,7 +578,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		                  ->where('r.id_periodo', $idperiodo)
 		                  ->where('pr.cierre is not null')
 		                  ->where('pr.aprueba is null')
-		                  ->order_by('r.id asc');
+		                  ->order_by('r.id_remuneracion asc');
 		$query = $this->db->get();
 		//echo $this->db->last_query(); exit;
 		return $query->result();
@@ -600,7 +600,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 			foreach ($remuneraciones as $remuneracion) {
 				#elimino los bonos cargados a la remuneracion
-				$this->db->delete('rem_bonos_remuneracion', array('idremuneracion' => $remuneracion->id)); 
+				$this->db->delete('rem_bonos_remuneracion', array('idremuneracion' => $remuneracion->id_remuneracion)); 
 
 				#devuelvo los valores de las cargas retroactivas
 				$this->db->query("update p
@@ -609,7 +609,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 								  p.cargasretroactivas = r.cargasretroactivas
 								  from	rem_personal p
 								  inner join rem_remuneracion r on p.id_personal = r.idpersonal
-								  where r.id_remuneracion = " . $remuneracion->id);		
+								  where r.id_remuneracion = " . $remuneracion->id_remuneracion);		
 
 
 
