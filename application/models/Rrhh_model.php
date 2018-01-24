@@ -1538,6 +1538,9 @@ public function get_remuneraciones_by_id($idremuneracion){
 			$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
 			$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
 			
+			$datos_periodo = $this->admin->get_periodo_by_id($datos_remuneracion->id_periodo);
+
+
 
 
 
@@ -1548,11 +1551,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 			//Variable para PDF 
 
-			if($datos_remuneracion){
-				$datamensaje = "BORRADOR";
-			}else{
-				$datamensaje = "APROBADO";
-			}
+			
 
 		
 			$this->load->library("mpdf");
@@ -1572,8 +1571,18 @@ public function get_remuneraciones_by_id($idremuneracion){
 			  
 			//echo $html; exit;
 			$this->mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
-			$this->mpdf->SetHeader($datamensaje.' - ' .'Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$this->mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
 			$this->mpdf->WriteHTML($content->pdf_content);
+
+			if(is_null($datos_periodo->aprueba)){
+				$this->mpdf->SetWatermarkText('BORRADOR');
+				$this->mpdf->watermark_font = 'DejaVuSansCondensed';
+				$this->mpdf->showWatermarkText = true;
+			}
+
+
+
+
 			//$this->mpdf->SetFooter('Para más información visite: http://www.tugastocomun.cl');
 
 
