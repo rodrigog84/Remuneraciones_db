@@ -387,6 +387,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 	public function get_personal($idtrabajador = null,$centro_costo =array('')){
+
+
 		$array_campos = array(
 				'id_personal', 
 				'id_empresa', 
@@ -442,7 +444,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				diasvactomados,
 				diasprogresivos,
 				diasprogtomados,
-				saldoinicvacprog'
+				saldoinicvacprog,
+				idcentrocosto'
 			);
 		
 		$personal_data = $this->db->select($array_campos)
@@ -451,7 +454,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 						  ->where('p.active = 1')
 						 // ->where_in('idcentrocosto',$centro_costo)
 		                  ->order_by('p.nombre');
-		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id',$idtrabajador);  		                  
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id',$idtrabajador);
+		$personal_data = !$centro_costo ? $personal_data : $personal_data->where_in('idcentrocosto',$centro_costo);
+
 		$query = $this->db->get();
 		//echo $this->db->last_query(); exit;
 		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
@@ -1038,9 +1043,11 @@ limit 1		*/
 					'seginvalidez' => $seginvalidez,
 					'aportesegcesantia' => $aportesegcesantia,
 					'aportepatronal' => $aportepatronal,
+					'idcentrocosto' => $trabajador->idcentrocosto,
 					'pdf_content' => null,				
 					'active' => 1
 				);
+
 			$this->db->where('idpersonal', $datos_remuneracion->idpersonal);
 			$this->db->where('id_periodo', $datos_remuneracion->id_periodo);
 			$this->db->where('id_empresa', $this->session->userdata('empresaid'));
