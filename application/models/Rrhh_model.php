@@ -386,7 +386,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 
-	public function get_personal($idtrabajador = null,$centro_costo =array('')){
+	public function get_personal($idtrabajador = null,$centro_costo =false){
 
 
 		$array_campos = array(
@@ -455,7 +455,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 						 // ->where_in('idcentrocosto',$centro_costo)
 		                  ->order_by('p.nombre');
 		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id',$idtrabajador);
-		$personal_data = !$centro_costo ? $personal_data : $personal_data->where_in('idcentrocosto',$centro_costo);
+		$personal_data = !$centro_costo  ? $personal_data : $personal_data->where_in('idcentrocosto',$centro_costo);
 
 		$query = $this->db->get();
 		//echo $this->db->last_query(); exit;
