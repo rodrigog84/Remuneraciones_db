@@ -49,9 +49,9 @@
 																			<td><?php echo $isapre->codprevired;?></td>
 																			
 																			<td>
-																				<a href="#" data-idisapre="<?php echo $isapre->id;?>" class="btn btn-info edit-isapre" id="opciones" data-toggle="modal" data-target="#myModal_ISAPRE" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+																				<a href="#" data-idisapre="<?php echo $isapre->id_isapre;?>" class="btn btn-info edit-isapre" id="opciones" data-toggle="modal" data-target="#myModal_ISAPRE" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
         																		
-        																		<a href="<?php echo base_url();?>admins/delete_isapre/<?php echo $isapre->id;?>" data-toggle="tooltip"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
+        																		<a href="<?php echo base_url();?>admins/delete_isapre/<?php echo $isapre->id_isapre;?>" data-toggle="tooltip"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
 																			</td> 
 																			
 																		</tr> 

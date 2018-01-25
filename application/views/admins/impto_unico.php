@@ -45,10 +45,10 @@
 												                    <?php foreach ($tabla_impuesto as $impuesto) { ?>														
 																		<tr class="active" id="variable">
 																			<td><?php echo $i;?></td>
-																			<td class="form-group"><input type="text" class="form-control miles desde" name="desde_<?php echo $impuesto->id;?>" id="desde_<?php echo $impuesto->id;?>" placeholder="Ingrese Monto Desde" value="<?php echo $impuesto->desde; ?>"></td>
-                        <td class="form-group"><?php if($impuesto->hasta != 999999999){ ?><input type="text" class="form-control miles hasta" name="hasta_<?php echo $impuesto->id;?>" id="hasta_<?php echo $impuesto->id;?>" placeholder="Ingrese Monto Hasta" value="<?php echo $impuesto->hasta; ?>"><?php }else{ ?>Y m&aacute;s<?php } ?></td>
-                        <td class="form-group"><input type="text" class="form-control miles_decimales factor" name="factor_<?php echo $impuesto->id;?>" id="factor_<?php echo $impuesto->id;?>" placeholder="Ingrese Factor" value="<?php echo number_format($impuesto->factor,3,".",","); ?>"></td>
-                        <td class="form-group"><input type="text" class="form-control miles rebaja" name="rebaja_<?php echo $impuesto->id;?>" id="rebaja_<?php echo $impuesto->id;?>" placeholder="Ingrese Monto Rebaja" value="<?php echo $impuesto->rebaja; ?>"></td>				
+																			<td class="form-group"><input type="text" class="form-control miles desde" name="desde_<?php echo $impuesto->id_tabla_impuesto;?>" id="desde_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Monto Desde" value="<?php echo $impuesto->desde; ?>"></td>
+                        <td class="form-group"><?php if($impuesto->hasta != 999999999){ ?><input type="text" class="form-control miles hasta" name="hasta_<?php echo $impuesto->id_tabla_impuesto;?>" id="hasta_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Monto Hasta" value="<?php echo $impuesto->hasta; ?>"><?php }else{ ?>Y m&aacute;s<?php } ?></td>
+                        <td class="form-group"><input type="text" class="form-control miles_decimales factor" name="factor_<?php echo $impuesto->id_tabla_impuesto;?>" id="factor_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Factor" value="<?php echo number_format($impuesto->factor,3,".",","); ?>"></td>
+                        <td class="form-group"><input type="text" class="form-control miles rebaja" name="rebaja_<?php echo $impuesto->id_tabla_impuesto;?>" id="rebaja_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Monto Rebaja" value="<?php echo $impuesto->rebaja; ?>"></td>				
 																		</tr> 
 												                      <?php $i++; ?>
 												                    <?php } ?>																		

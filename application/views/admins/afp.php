@@ -51,9 +51,9 @@
 																			<td><?php echo $afp->porc." %";?></td>
 																			<td><?php echo $afp->exregimen == 1 ? 'SI': 'NO';?></td>
 																			<td>
-																				<a href="#" data-idafp="<?php echo $afp->id;?>" class="btn btn-info edit-afp" id="opciones" data-toggle="modal" data-target="#myModal_AFP" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+																				<a href="#" data-idafp="<?php echo $afp->id_afp;?>" class="btn btn-info edit-afp" id="opciones" data-toggle="modal" data-target="#myModal_AFP" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
         																		
-        																		<a href="<?php echo base_url();?>admins/delete_afp/<?php echo $afp->id;?>" data-toggle="tooltip"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
+        																		<a href="<?php echo base_url();?>admins/delete_afp/<?php echo $afp->id_afp;?>" data-toggle="tooltip"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
 																			</td> 
 																			
 																		</tr> 

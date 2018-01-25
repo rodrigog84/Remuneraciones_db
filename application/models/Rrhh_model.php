@@ -242,7 +242,7 @@ public function save_asistencia($array_trabajadores,$mes,$anno){
 				$this->db->insert('rem_periodo', $data);
 				$idperiodo = $this->db->insert_id();
 		}else{
-				$idperiodo = $datos_periodo->id;
+				$idperiodo = $datos_periodo->id_periodo;
 		}
 
 
@@ -269,7 +269,7 @@ public function save_asistencia($array_trabajadores,$mes,$anno){
 			$this->db->select('r.id_periodo')
 							  ->from('rem_remuneracion as r')
 			                  ->where('r.idpersonal', $idtrabajador)
-			                  ->where('r.idperiodo', $idperiodo);
+			                  ->where('r.id_periodo', $idperiodo);
 			$query = $this->db->get();
 			$datos_remuneracion = $query->row();
 			if(count($datos_remuneracion) == 0){ // si no existe periodo, se crea
@@ -449,10 +449,11 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 						  ->from('rem_personal p')
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
 						  ->where('p.active = 1')
-						  ->where_in('idcentrocosto',$centro_costo)
+						 // ->where_in('idcentrocosto',$centro_costo)
 		                  ->order_by('p.nombre');
 		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id',$idtrabajador);  		                  
 		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
 		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
 		return $datos;
 	}	

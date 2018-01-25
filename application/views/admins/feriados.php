@@ -41,7 +41,7 @@
 						<td><?php echo $feriado->fecha;?></td>
 																			
 						<td>
-							<a href="#" data-idferiado="<?php echo $feriado->id;?>" class="btn btn-info edit-feriado" id="opciones" data-toggle="modal" data-target="#myModal_feriado" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+							<a href="#" data-idferiado="<?php echo $feriado->id_feriado;?>" class="btn btn-info edit-feriado" id="opciones" data-toggle="modal" data-target="#myModal_feriado" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
         																		
         					<a href="#"  class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModal_Eliminar"><i class="fa fa-times" aria-hidden="true"></i></a>
 						</td>
@@ -69,7 +69,7 @@
       			<div class="modal-body">
       				<h4 class="modal-body">¿Deseas Eliminar?</h4>
       				<br>
-      				<a href="<?php echo base_url();?>admins/delete_feriado/<?php echo $feriado->id;?>" type="button" class="btn btn-info"><span><i class="fa fa-trash-o" aria-hidden="true"></i></span> Eliminar</a>
+      				<a href="<?php echo base_url();?>admins/delete_feriado/<?php echo $feriado->id_feriado;?>" type="button" class="btn btn-info"><span><i class="fa fa-trash-o" aria-hidden="true"></i></span> Eliminar</a>
       				<a href="#" type="button" class="btn btn-danger" data-dismiss="modal"><span><i class="fa fa-times" aria-hidden="true"></i></span> Cancelar</a>		
       			</div>
     		</div>

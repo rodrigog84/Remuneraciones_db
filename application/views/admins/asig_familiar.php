@@ -30,9 +30,9 @@
 											                    <?php $i = 1; ?>
 											                    <?php foreach ($tabla_asig_familiar as $asig_familiar) { ?>			  <tr>
 											                        <td><?php echo $i;?></td>
-											                        <td class="form-group"><input type="text" class="form-control miles desde" name="desde_<?php echo $asig_familiar->id;?>" id="desde_<?php echo $asig_familiar->id;?>" placeholder="Ingrese Monto Desde" value="<?php echo $asig_familiar->desde; ?>"></td>
-											                        <td class="form-group"><?php if($asig_familiar->hasta != 999999999){ ?><input type="text" class="form-control miles hasta" name="hasta_<?php echo $asig_familiar->id;?>" id="hasta_<?php echo $asig_familiar->id;?>" placeholder="Ingrese Monto Hasta" value="<?php echo $asig_familiar->hasta; ?>"><?php }else{ ?>Y m&aacute;s<?php } ?></td>
-											                        <td class="form-group"><input type="text" class="form-control miles monto" name="monto_<?php echo $asig_familiar->id;?>" id="monto_<?php echo $asig_familiar->id;?>" placeholder="Ingrese Monto Asignaci&oacute;n Familiar" value="<?php echo $asig_familiar->monto; ?>"></td>
+											                        <td class="form-group"><input type="text" class="form-control miles desde" name="desde_<?php echo $asig_familiar->id_tabla_asig_familiar;?>" id="desde_<?php echo $asig_familiar->id_tabla_asig_familiar;?>" placeholder="Ingrese Monto Desde" value="<?php echo $asig_familiar->desde; ?>"></td>
+											                        <td class="form-group"><?php if($asig_familiar->hasta != 999999999){ ?><input type="text" class="form-control miles hasta" name="hasta_<?php echo $asig_familiar->id_tabla_asig_familiar;?>" id="hasta_<?php echo $asig_familiar->id_tabla_asig_familiar;?>" placeholder="Ingrese Monto Hasta" value="<?php echo $asig_familiar->hasta; ?>"><?php }else{ ?>Y m&aacute;s<?php } ?></td>
+											                        <td class="form-group"><input type="text" class="form-control miles monto" name="monto_<?php echo $asig_familiar->id_tabla_asig_familiar;?>" id="monto_<?php echo $asig_familiar->id_tabla_asig_familiar;?>" placeholder="Ingrese Monto Asignaci&oacute;n Familiar" value="<?php echo $asig_familiar->monto; ?>"></td>
 											                      </tr>
 											                      <?php $i++; ?>
 											                    <?php } ?>																		
