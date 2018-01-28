@@ -91,41 +91,72 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     return texto;
   }
 
-
-
-function numberFormatNegative(numero){
-        // Variable que contendra el resultado final
-        var resultado = "";
- 
-        // Si el numero empieza por el valor "-" (numero negativo)
-        if(numero[0]=="-")
-        {
-            // Cogemos el numero eliminando los posibles puntos que tenga, y sin
-            // el signo negativo
-            nuevoNumero=numero.replace(/\./g,'').substring(1);
-        }else{
-            // Cogemos el numero eliminando los posibles puntos que tenga
-            nuevoNumero=numero.replace(/\./g,'');
+  function VerificaRut(rut) {
+    if (rut.toString().trim() != '') {
+      
+        var caracteres = new Array();
+        var serie = new Array(2, 3, 4, 5, 6, 7);
+        var dig = rut.toString().substr(rut.toString().length - 1, 1);
+        rut = rut.toString().substr(0, rut.toString().length - 1);
+        for (var i = 0; i < rut.length; i++) {
+            caracteres[i] = parseInt(rut.charAt((rut.length - (i + 1))));
         }
  
-        // Si tiene decimales, se los quitamos al numero
-        if(numero.indexOf(",")>=0)
-            nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf(","));
+        var sumatoria = 0;
+        var k = 0;
+        var resto = 0;
  
-        // Ponemos un punto cada 3 caracteres
-        for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
-            resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ".": "") + resultado;
- 
-        // Si tiene decimales, se lo añadimos al numero una vez forateado con 
-        // los separadores de miles
-        if(numero.indexOf(",")>=0)
-            resultado+=numero.substring(numero.indexOf(","));
- 
-        if(numero[0]=="-")
-        {
-            // Devolvemos el valor añadiendo al inicio el signo negativo
-            return "-"+resultado;
-        }else{
-            return resultado;
+        for (var j = 0; j < caracteres.length; j++) {
+            if (k == 6) {
+                k = 0;
+            }
+            sumatoria += parseInt(caracteres[j]) * parseInt(serie[k]);
+            k++;
         }
-    }  
+ 
+        resto = sumatoria % 11;
+        dv = 11 - resto;
+ 
+        if (dv == 10) {
+            dv = "K";
+        }
+        else if (dv == 11) {
+            dv = 0;
+        }
+
+        if (dv.toString().trim().toUpperCase() == dig.toString().trim().toUpperCase())
+            return true;
+        else
+            return false;
+    }
+    else {
+        return false;
+    }
+  }  
+
+  function isValidDate(day,month,year)
+{
+    var dteDate;
+ 
+    // En javascript, el mes empieza en la posicion 0 y termina en la 11 
+    //   siendo 0 el mes de enero
+    // Por esta razon, tenemos que restar 1 al mes
+    month=month-1;
+    // Establecemos un objeto Data con los valore recibidos
+    // Los parametros son: año, mes, dia, hora, minuto y segundos
+    // getDate(); devuelve el dia como un entero entre 1 y 31
+    // getDay(); devuelve un num del 0 al 6 indicando siel dia es lunes,
+    //   martes, miercoles ...
+    // getHours(); Devuelve la hora
+    // getMinutes(); Devuelve los minutos
+    // getMonth(); devuelve el mes como un numero de 0 a 11
+    // getTime(); Devuelve el tiempo transcurrido en milisegundos desde el 1
+    //   de enero de 1970 hasta el momento definido en el objeto date
+    // setTime(); Establece una fecha pasandole en milisegundos el valor de esta.
+    // getYear(); devuelve el año
+    // getFullYear(); devuelve el año
+    dteDate=new Date(year,month,day);
+ 
+    //Devuelva true o false...
+    return ((day==dteDate.getDate()) && (month==dteDate.getMonth()) && (year==dteDate.getFullYear()));
+}

@@ -1751,8 +1751,8 @@ class Ion_auth_model extends CI_Model
 
 		//print_r($level_data); 	
 		// si no existe foto de perfil, se deja foto genérica
-		$arrayResponse = @get_headers(base_url().'dist/img/'.$user->photo); 
-		$photo = strpos($arrayResponse[0], '200') ? $user->photo : 'user9-128x128.jpg';
+		//$arrayResponse = @get_headers(base_url().'dist/img/'.$user->photo); 
+		//$photo = strpos($arrayResponse[0], '200') ? $user->photo : 'user9-128x128.jpg';
 		$session_data = array(
 		    'identity'             => $user->{$this->identity_column},
 		    'username'             => $user->username,
@@ -1763,7 +1763,7 @@ class Ion_auth_model extends CI_Model
 		    'level_name'		   => $level_data->description,
 		    'name'			   	   => $user->first_name." ".$user->last_name,
 		    'created_on'		   => $user->created_on,
-		    'photo'		   		   => $photo
+		 //   'photo'		   		   => $photo
 		);
 		//exit;
 
@@ -2231,14 +2231,15 @@ class Ion_auth_model extends CI_Model
 
 	public function get_menu($identity){
 
-		$this->db->select('a.menuid, m.nombre as menuname, m.img as menuimg, a.id as appid, a.nombre as appname, a.funcion as appfunction, a.leaf as menuleaf, a.visible')
-						  ->from($this->tables['role']. ' as r')
-						  ->join($this->tables['app']. ' as a','r.appid = a.id')
-						  ->join($this->tables['menu']. ' as m','a.menuid = m.id')
-						  ->join($this->tables['users']. ' as u','r.levelid = u.level')
-		                  ->where('u.id', $identity)
-		                  ->where('m.valid', 1)
-		                  ->order_by('m.orden asc, a.orden asc');
+        $this->db->select('a.menuid, m.nombre as menuname, m.img as menuimg, a.id as appid, a.nombre as appname, a.funcion as appfunction, a.leaf as menuleaf, a.visible, m.tipo, m.nodoPadre, m.submenu, a.submenu as submen, a.sub as sub ')
+            ->from($this->tables['role']. ' as r')
+            ->join($this->tables['app']. ' as a','r.appid = a.id')
+            ->join($this->tables['menu']. ' as m','a.menuid = m.id')
+            ->join($this->tables['users']. ' as u','r.levelid = u.level')
+            ->where('u.id', $identity)
+            ->order_by('a.menuid asc, a.id asc');
+
+		                              
 		$query = $this->db->get();
 		//echo $query->num_rows();		                  
 		$datos = $query->result();
@@ -2255,7 +2256,12 @@ class Ion_auth_model extends CI_Model
 							'appid' => $dato->appid,
 							'appname' => $dato->appname,
 							'appfunction' => $dato->appfunction,
-							'appvisible' => $dato->visible  
+							'appvisible' => $dato->visible, 
+		                    'tipo'      =>  $dato->tipo,
+		                    'nodoPadre' =>  $dato->nodoPadre,
+		                    'submenu'   =>  $dato->submenu,
+		                    'submen'   => $dato->submen,
+		                    'sub'       =>  $dato->sub							
 							));
 
 			}else{
@@ -2265,7 +2271,11 @@ class Ion_auth_model extends CI_Model
 							'appid' => $dato->appid,
 							'appname' => $dato->appname,
 							'appfunction' => $dato->appfunction,
-							'appvisible' => $dato->visible
+							'appvisible' => $dato->visible,
+		                    'tipo'      =>  $dato->tipo,
+		                    'nodoPadre' =>  $dato->nodoPadre,
+		                    'submenu'   => $dato->submenu,
+		                    'sub'       =>  $dato->sub							
 							));
 			}
 
@@ -2283,6 +2293,7 @@ class Ion_auth_model extends CI_Model
 						'menuimg' => $dato->menuimg,
 						'menuleaf' => $dato->menuleaf,
 						'cant_visible' => $array_visible[$dato->menuid],
+						'submenu'   =>$dato->submenu,
 						'app' => $app_array[$dato->menuid]
 					));
 			}
