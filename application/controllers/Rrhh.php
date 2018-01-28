@@ -920,7 +920,7 @@ class Rrhh extends CI_Controller {
 						'title' => 'Error 403',
 						'subtitle' => '403 error');
 
-
+			
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'forbidden';
 			$this->load->view('template',$vars);
@@ -928,6 +928,49 @@ class Rrhh extends CI_Controller {
 		}
 
 	}	
+
+
+public function previred($idperiodo = null)
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			set_time_limit(0);
+
+			$periodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+			
+			if(is_null($periodo->cierre)){
+				redirect('main/dashboard/');
+			}else{
+				$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,true);
+				if(count($remuneraciones) == 0){ // SI NO ENCUENTRO NINGUNA REMUNERACION (QUIERE DECIR QUE NO EXISTIAN TRABAJADORES EN ESE PERIODO)
+					redirect('main/dashboard/');
+				}else{
+					$datosdetalle = $this->rrhh_model->previred($remuneraciones);
+				}
+
+			}
+
+
+			exit;
+
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+			
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}		
+
+
 
 	public function ver_remuneraciones_periodo($idperiodo = '',$idcentrocosto = null)
 	{

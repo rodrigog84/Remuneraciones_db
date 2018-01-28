@@ -551,11 +551,11 @@ public function get_cajas_compensacion($idcaja = null){
 
 public function get_mutual_seguridad($idmutual = null){
 
-		$mutual_data = $this->db->select('id_mutual, nombre, codprevired')
+		$mutual_data = $this->db->select('id_mutual_seguridad, nombre, codprevired')
 						  ->from('rem_mutual_seguridad m')
 						  ->where('m.active = 1')
-		                  ->order_by('m.id_mutual');
-		$mutual_data = is_null($idmutual) ? $mutual_data : $mutual_data->where('m.id_mutual',$idmutual);  		                  
+		                  ->order_by('m.id_mutual_seguridad');
+		$mutual_data = is_null($idmutual) ? $mutual_data : $mutual_data->where('m.id_mutual_seguridad',$idmutual);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idmutual) ? $query->result() : $query->row();
 		return $datos;

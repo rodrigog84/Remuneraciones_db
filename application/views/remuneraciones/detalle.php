@@ -56,6 +56,7 @@
 													                        <th>N&uacute;mero Trabajadores</th>
 													                        <th>Remuneraci&oacute;n Total (L&iacute;quido)</th>
 													                        <th>Detalle Remuneraciones</th>
+													                        <th>Previred</th>
 													                        <th>Libro Remuneraciones</th>
 													                        <th>Estado</th>
 																		</tr> 
@@ -83,6 +84,13 @@
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/ver_remuneraciones_periodo/<?php echo $periodo->id_periodo; ?>" data-toggle="tooltip" title="Ver Remuneraciones Personal"><span class="glyphicon glyphicon-search"></span></a>
+											                              <?php } ?>
+											                              </center>
+											                              </td>
+											                              <td>
+											                              <center>
+											                              <?php if(!is_null($periodo->cierre)){ ?>
+											                              <a href="<?php echo base_url(); ?>rrhh/previred/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
 											                              <?php } ?>
 											                              </center>
 											                              </td>
