@@ -327,13 +327,12 @@ class Admin extends CI_Model
 
 
 	public function edit_tabla_impuesto($array_impuesto){
-
 		foreach ($array_impuesto as $key => $impuesto) {
 			$datos = array(
-					'desde' => str_replace(".","",$impuesto['desde']),
-					'hasta' => isset($impuesto['hasta']) ? str_replace(".","",$impuesto['hasta']) : 999999999,
+					'desde' => str_replace(",",".",str_replace(".","",$impuesto['desde'])),
+					'hasta' => isset($impuesto['hasta']) ? str_replace(",",".",str_replace(".","",$impuesto['hasta'])) : 999999999,
 					'factor' => str_replace(",",".",$impuesto['factor']),
-					'rebaja' => str_replace(".","",$impuesto['rebaja']),
+					'rebaja' => str_replace(",",".",str_replace(".","",$impuesto['rebaja'])),
 					);
 
 			$this->db->where('id_tabla_impuesto', $key);

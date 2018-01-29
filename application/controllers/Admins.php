@@ -376,16 +376,17 @@ class Admins extends CI_Controller {
 
 			$tabla_impuesto = $this->admin->get_tabla_impuesto(); 
 
-			/*$content = array(
+			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',
-						'subtitle' => 'Impuesto &Uacute;nico');*/
+						'subtitle' => 'Impuesto &Uacute;nico');
 
 			$vars['formValidation'] = true;
 			$vars['mask'] = true;			
-			//$vars['content_menu'] = $content;				
+			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'admins/impto_unico';
 			$vars['tabla_impuesto'] = $tabla_impuesto;
+			$vars['gritter'] = true;
 			
 			$template = "template";
 			

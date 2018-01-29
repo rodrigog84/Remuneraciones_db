@@ -653,6 +653,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$tope_legal_gratificacion = ($parametros->sueldominimo*4.75)/12;
 
 
+
 		$array_pago_afp = array();
 		$array_pago_isapre = array();
 		$array_descuentos = array();
@@ -882,9 +883,14 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$impuesto = 0;
 			foreach ($tabla_impuesto as $rango) {
 				//echo $base_tributaria." - ".$rango->desde." - ".$rango->hasta." - ".$rebaja."<br>";
-				$rango_desde = round(($rango->desde/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
-				$rango_hasta = round(($rango->hasta/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
-				$rango_rebaja = round(($rango->rebaja/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
+				$desde = $rango->desde*$parametros->utm;
+				$hasta = $rango->hasta*$parametros->utm;
+				$rebaja = $rango->rebaja*$parametros->utm;
+
+
+				$rango_desde = round(($desde/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
+				$rango_hasta = round(($hasta/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
+				$rango_rebaja = round(($rebaja/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
 				//if($base_tributaria >= $rango->desde && $base_tributaria <= $rango->hasta){
 				if($base_tributaria >= $rango_desde && $base_tributaria <= $rango_hasta){
 					
