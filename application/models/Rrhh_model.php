@@ -633,6 +633,15 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		return 1;
 	}	
 
+	public function update_caja_mutual($array_datos){
+
+
+		$this->db->where('id_empresa', $this->session->userdata('empresaid'));
+		$this->db->update('rem_empresa',$array_datos); 
+		return 1;
+	}	
+
+
 
 
 	public function calcular_remuneraciones($idperiodo,$centro_costo){

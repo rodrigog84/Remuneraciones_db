@@ -478,6 +478,77 @@ class Rrhh extends CI_Controller {
 	}	
 
 
+	public function mut_caja()
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			$resultid = $this->session->flashdata('mut_caja_result');
+			if($resultid == 1){
+				$vars['message'] = "Mutual/Caja actualizada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}
+			$this->load->model('admin');
+			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
+			$cajas = $this->admin->get_cajas_compensacion(); 
+			$mutuales = $this->admin->get_mutual_seguridad(); 
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Asignaci&oacute;n Familiar');
+
+
+			$vars['formValidation'] = true;
+			$vars['mask'] = true;			
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'admins/mut_caja';
+			$vars['gritter'] = true;
+			$vars['cajas'] = $cajas;
+			$vars['mutuales'] = $mutuales;			
+			$vars['empresa'] = $empresa;	
+			
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}		
+
+
+	public function submit_mut_caja(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$array_datos = array(
+							'idcaja' => $this->input->post('caja') == '' ? null :  $this->input->post('caja'),
+							'idmutual' => $this->input->post('mutual') == '' ? null :  $this->input->post('mutual'),
+							'porcmutual' => $this->input->post('porcmutual') == '' ? null :  $this->input->post('porcmutual')
+							);
+			$this->rrhh_model->update_caja_mutual($array_datos);
+
+			$this->session->set_flashdata('mut_caja_result', 1);
+			redirect('rrhh/mut_caja');	
+
+
+		}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}				
 
 
 	public function calculo_remuneraciones($resultid = '')
