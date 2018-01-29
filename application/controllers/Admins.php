@@ -670,4 +670,85 @@ class Admins extends CI_Controller {
 	}
 
 
+	public function parametros($resultid = '')
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			$resultid = $this->session->flashdata('parametros_result');
+			if($resultid == 1){
+				$vars['message'] = "Parametros Generales actualizados correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';				
+			}
+
+			$parametros_generales = $this->admin->get_parametros_generales(); 
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Par&aacutemetros Generales');
+
+			
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'admins/parametros';
+			$vars['formValidation'] = true;
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+			
+			$vars['parametros_generales'] = $parametros_generales;
+			
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
+
+
+
+public function submit_parametros_generales()
+	{
+
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+       		$parametros = array(
+       						'uf' => str_replace(",",".",str_replace(".","",$this->input->post('uf'))),
+       						'utm' => str_replace(",",".",str_replace(".","",$this->input->post('utm'))),
+       						'sueldominimo' => str_replace(".","",$this->input->post('sueldominimo')),
+       						'tasasis' => $this->input->post('tasasis'),
+       						'topeimponible' => str_replace(",",".",str_replace(".","",$this->input->post('topeimponible')))
+			       			);
+			$this->admin->edit_parametros_generales($parametros);
+			
+			$this->session->set_flashdata('parametros_result',1);
+			redirect('admins/parametros');				
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;	
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
+
+
 }

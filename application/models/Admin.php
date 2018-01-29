@@ -564,13 +564,25 @@ public function get_mutual_seguridad($idmutual = null){
 
 public function get_parametros_generales(){
 
-		$comunidades_data = $this->db->select('uf , sueldominimo, csimples, cinvalidas, cmaternales, tasasis, topeimponible')
+		$comunidades_data = $this->db->select('uf , sueldominimo, tasasis, topeimponible, utm')
 						  ->from('rem_parametros_generales');
 		$query = $this->db->get();						  
 		return $query->row();
 
 	}	
 
+
+	public function edit_parametros_generales($parametros){
+
+
+		$this->db->update('rem_parametros_generales',$parametros); 
+		if($this->db->affected_rows() > 0){ 
+			return 1;
+		}else{ 
+			return -1;
+		}
+
+	}	
 
 	public function get_regiones(){
 

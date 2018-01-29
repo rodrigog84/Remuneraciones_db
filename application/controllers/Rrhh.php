@@ -848,7 +848,13 @@ class Rrhh extends CI_Controller {
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
-			$datosperiodo = $this->rrhh_model->get_periodos_cerrados($this->session->userdata('empresaid'),null,null);
+
+
+			$idcentrocosto = $this->input->post('centrocosto');
+
+
+
+			$datosperiodo = $this->rrhh_model->get_periodos_cerrados($this->session->userdata('empresaid'),null,$idcentrocosto);
 			$centros_costo = $this->rrhh_model->get_centro_costo();
 
 
@@ -863,9 +869,10 @@ class Rrhh extends CI_Controller {
 			$vars['datosperiodo'] = $datosperiodo;
 			$vars['centros_costo'] = $centros_costo;
 			$vars['idperiodo'] = $idperiodo;
+			$vars['idcentrocosto'] = $idcentrocosto;
 
-
-			$vars['dataTables'] = true;
+			$vars['datatable'] = true;
+			//$vars['dataTables'] = true;
 			
 			$template = "template";
 			
@@ -920,7 +927,7 @@ class Rrhh extends CI_Controller {
 						'title' => 'Error 403',
 						'subtitle' => '403 error');
 
-			
+
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'forbidden';
 			$this->load->view('template',$vars);
@@ -961,7 +968,7 @@ public function previred($idperiodo = null)
 						'title' => 'Error 403',
 						'subtitle' => '403 error');
 
-			
+
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'forbidden';
 			$this->load->view('template',$vars);
@@ -990,7 +997,7 @@ public function previred($idperiodo = null)
 			$vars['remuneraciones'] = $remuneraciones;
 			$vars['datosperiodo'] = $datosperiodo;
 
-			$vars['dataTables'] = true;
+			$vars['datatable'] = true;
 			
 			
 			$template = "template";
@@ -1267,7 +1274,7 @@ public function previred($idperiodo = null)
 				$datos_pendientes = false;
 				$personal = $this->rrhh_model->get_personal(); 
 				foreach ($personal as $trabajador) {
-					$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno,$trabajador->id); 
+					$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno,$trabajador->id_personal); 
 					if(count($datos_remuneracion) == 0){
 	                   $datos_pendientes = true;
 	               	   break;

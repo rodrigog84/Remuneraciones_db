@@ -135,7 +135,7 @@
 
       <?php } ?>
 
-    <?php if(isset($mask)){?>
+    <?php if(isset($mask2)){?>
         <script src="<?php echo base_url(); ?>assets/plugins/masked-input/masked-input.min.js"></script>
     <?php } ?>
 
@@ -145,7 +145,6 @@
     <script src="<?php echo base_url(); ?>assets/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
 
   <?php } ?>  
-
 
 
   <?php if(isset($datatable)){ ?>
@@ -253,7 +252,11 @@
     <script src="<?php echo base_url(); ?>js/maleta.js"></script>
     <?php } ?>    
 
+      <?php if(isset($mask)){ ?>
+            <script src="<?php echo base_url(); ?>plugins/jquery.mask.min.js"></script>
+      <?php } ?>    
 
+      
     <?php if(isset($switchery)){ ?>  
     	<link href="<?php echo base_url(); ?>assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
 		<link href="<?php echo base_url(); ?>assets/plugins/powerange/powerange.min.css" rel="stylesheet" />   
