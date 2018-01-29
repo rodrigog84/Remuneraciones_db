@@ -1,20 +1,3 @@
-<?php 
-
-?>
-
-
-
-
-<!--sub-heard-part-->
-									  <div class="sub-heard-part">
-									   <ol class="breadcrumb m-b-0">
-											<li><a href="<?php echo base_url();?>main/dashboard">Inicio</a></li>
-											<li class="active">Calculo Remuneraciones</li>
-											
-										</ol>
-									   </div>
-								  <!--//sub-heard-part-->
-
 									<div class="graph-visual tables-main">
 											
 									        <?php if(isset($message)): ?>
@@ -32,22 +15,45 @@
 											
 														  <div class="graph">
 
-														  	
-															<div class="tables">
-																<p>Seleccione Centro de Costo:</p>
-																<select name="selector" id="selector" class="form-control2">
+									            <div class="row">
+
+									                <div class="col-md-6">
+									                  <div class="panel panel-primary">
+									                  	<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/detalle" id="basicBootstrapForm" method="post"> 
+									                    <div class="panel-body" >
+
+									                      <div class='row'>
+									                          <div class='col-md-6'>
+									                            <div class="form-group">
+									                                <label for="mes">Centro de Costo</label>
+																<select name="centrocosto" id="centrocosto" class="form-control">
 																	<option value="0">Todos</option>
 																	<?php foreach ($centros_costo as $centro_costo) { ?>
-																		<option value="<?php echo $centro_costo->id_centro_costo;?>"><?php echo $centro_costo->nombre;?></option>
+																		<?php $centrocosto_selected = $centro_costo->id_centro_costo == $idcentrocosto ? 'selected' : '';?>
+																		<option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocosto_selected; ?>><?php echo $centro_costo->nombre;?></option>
 																	<?php } ?>
 																	
 																</select>
-																<br>
-																<br>
-																<br>
-																<br>
+									                            </div> 
+									                          </div>
+									                         
+									                      </div>
+									                      <div class="row">
+									                      	<div class='col-md-3'>
+									                      			<button type="submit" class="btn btn-primary">Buscar</button>&nbsp;&nbsp;
+									                      	</div>
+									                      </div>  
+                
+									                    </div><!-- /.box-body -->
+									                    </form>
+									                  </div>
+									                </div>
+
+
+									            </div>
+
 																<div id="remuneraciones">
-																<table class="table"> 
+																<table class="table" id="detalle_remuneracion"> 
 																	<thead> 
 																		<tr>
 																			<th>#</th>
@@ -56,6 +62,7 @@
 													                        <th>N&uacute;mero Trabajadores</th>
 													                        <th>Remuneraci&oacute;n Total (L&iacute;quido)</th>
 													                        <th>Detalle Remuneraciones</th>
+													                        <th>Previred</th>
 													                        <th>Libro Remuneraciones</th>
 													                        <th>Estado</th>
 																		</tr> 
@@ -89,6 +96,13 @@
 											                              <td>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)){ ?>
+											                              <a href="<?php echo base_url(); ?>rrhh/previred/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
+											                              <?php } ?>
+											                              </center>
+											                              </td>
+											                              <td>
+											                              <center>
+											                              <?php if(!is_null($periodo->cierre)){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-book"></span></a>  
 											                              <?php } ?>
 											                              </center>
@@ -104,8 +118,6 @@
 																	</tbody> 
 																</table> 
 															</div>
-																
-															</div>
 												
 													</div>
 													
@@ -113,7 +125,7 @@
 									<!--/charts-inner-->
 
 <script>
-	$('#selector').change(function(){
+/*	$('#selector').change(function(){
 			var baseurl = '<?php echo base_url();?>';
 			var id_centro_costo = $(this).val();
 			$.get("<?php echo base_url();?>rrhh/get_detalle_rrhh/"+id_centro_costo,function(data){			
@@ -124,28 +136,37 @@
 			 });
 
 
-			/*var id = $('#selector').val();
-			   $.post(baseurl+"cpersona/getPersona",
-	        function(data){
-	          //alert(data);
-	          var p = JSON.parse(data);
-	          $.each(p, function(i,item){
-	          	$('#personas').append(
-	          			'<tr>'+
-							'<td>'+item.nombre+'</td>'+
-							'<td>'+item.appaterno+'</td>'+
-							'<td>'+item.apmaterno+'</td>'+
-							'<td>'+item.rut+'</td>'+
-							'<td>'+item.email+'</td>'+
-							'<td>'+item.ciudad+'</td>'+
-							'<td>'+item.ciudad+'</td>'+
-						'</tr>'
-	          		);
-	          });
 
-	        });*/
 
-/*});*/
-
-});
+});*/
 </script>
+
+
+<script>
+        $('#detalle_remuneracion').dataTable({
+            responsive: true,
+            //dom: 'Bfrtip',
+            //buttons: [{ extend: 'excelHtml5', className: 'btn-sm', text: 'Exportar a Excel'}],
+            "bLengthChange": true,
+            "bFilter": true,
+            "bInfo": true,
+            "bSort": false,
+            "bAutoWidth": false,
+            "iDisplayLength": 10,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            }
+        });
+
+</script>   

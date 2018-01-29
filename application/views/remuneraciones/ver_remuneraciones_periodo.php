@@ -27,7 +27,7 @@
 
 														  	
 															<div class="tables">
-																<table class="table"> 
+																<table class="table" id="detalle_remuneracion"> 
 																	<thead> 
 																		<tr>
 												                        <th>#</th>
@@ -64,3 +64,32 @@
 											</div>
 									<!--/charts-inner-->
 
+
+<script>
+        $('#detalle_remuneracion').dataTable({
+            responsive: true,
+            //dom: 'Bfrtip',
+            //buttons: [{ extend: 'excelHtml5', className: 'btn-sm', text: 'Exportar a Excel'}],
+            "bLengthChange": true,
+            "bFilter": true,
+            "bInfo": true,
+            "bSort": false,
+            "bAutoWidth": false,
+            "iDisplayLength": 10,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            }
+        });
+
+</script>        

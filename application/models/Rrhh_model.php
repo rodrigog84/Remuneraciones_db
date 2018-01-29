@@ -639,6 +639,15 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		return 1;
 	}	
 
+	public function update_caja_mutual($array_datos){
+
+
+		$this->db->where('id_empresa', $this->session->userdata('empresaid'));
+		$this->db->update('rem_empresa',$array_datos); 
+		return 1;
+	}	
+
+
 
 
 	public function calcular_remuneraciones($idperiodo,$centro_costo){
@@ -657,6 +666,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$parametros = $this->admin->get_parametros_generales();
 		$monto_total_sueldos = 0;
 		$tope_legal_gratificacion = ($parametros->sueldominimo*4.75)/12;
+
 
 
 		$array_pago_afp = array();
@@ -888,9 +898,14 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$impuesto = 0;
 			foreach ($tabla_impuesto as $rango) {
 				//echo $base_tributaria." - ".$rango->desde." - ".$rango->hasta." - ".$rebaja."<br>";
-				$rango_desde = round(($rango->desde/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
-				$rango_hasta = round(($rango->hasta/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
-				$rango_rebaja = round(($rango->rebaja/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
+				$desde = $rango->desde*$parametros->utm;
+				$hasta = $rango->hasta*$parametros->utm;
+				$rebaja = $rango->rebaja*$parametros->utm;
+
+
+				$rango_desde = round(($desde/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
+				$rango_hasta = round(($hasta/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
+				$rango_rebaja = round(($rebaja/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
 				//if($base_tributaria >= $rango->desde && $base_tributaria <= $rango->hasta){
 				if($base_tributaria >= $rango_desde && $base_tributaria <= $rango_hasta){
 					
@@ -1087,9 +1102,10 @@ limit 1		*/
 
 	public function get_periodos_cerrados($empresaid,$idperiodo = null,$idcentrocosto = null){
 		$sql_centro_costo = is_null($idcentrocosto) ? '' : 'and pe.idcentrocosto = ' . $idcentrocosto;
+		$sql_centro_costo_rem = is_null($idcentrocosto) ? '' : 'and r.idcentrocosto = ' . $idcentrocosto;
 
 
-		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, pr.cierre, pr.aprueba, pr.cierre as cierre,  (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoliquido ', false)
+		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, pr.cierre, pr.aprueba, pr.cierre as cierre,  (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo_rem . ') as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoliquido ', false)
 						  ->from('rem_periodo as p')
 						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
 		                  ->where('pr.id_empresa', $empresaid)
@@ -2113,4 +2129,352 @@ public function generar_contenido_comprobante($datos_remuneracion){
 
 	}	
 
+
+
+public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$idperiodo = null,$tipomovimiento = null){
+
+
+		#SI BUSCO POR PERIODO
+		if(!is_null($idperiodo)){
+			$datos_periodo = $this->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+			$mes = $datos_periodo->mes;
+			$anno = $datos_periodo->anno;
+		}
+
+		$movimiento_data = $this->db->select('lm.id, lm.idmovimiento, mp.nombre as movimiento, lm.fecmovimiento, lm.fechastamovimiento, lm.comentario, mp.rango, mp.codprevired')
+						  ->from('rem_lista_movimiento_personal lm')
+						  ->join('rem_movimientos_personal mp','lm.idmovimiento = mp.id')
+						  ->join('rem_personal p','lm.idpersonal = p.id_personal')
+						  ->where('lm.idpersonal',$idpersonal)
+						  ->where('lm.active',1)
+						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
+		                  ->order_by('lm.fecmovimiento','asc');
+
+		$movimiento_data = is_null($idmovimiento) ? $movimiento_data : $movimiento_data->where('lm.id',$idmovimiento);  
+		$movimiento_data = is_null($tipomovimiento) ? $movimiento_data : $movimiento_data->where('mp.id',$tipomovimiento);  
+
+		
+		#SI BUSCO POR PERIODO
+		if(!is_null($idperiodo)){
+			$movimiento_data = $movimiento_data->where('month(lm.fecmovimiento)',$mes);
+			$movimiento_data = $movimiento_data->where('year(lm.fecmovimiento)',$anno);
+		}
+
+
+		$query = $this->db->get();
+		return is_null($idmovimiento) ? $query->result() : $query->row();
+	}
+
+
+
+public function previred($datos_remuneracion){
+
+			$nombre_archivo = $this->session->userdata('empresaid')."_previred_".date("Ymd").".txt";
+			$path_archivo = "./uploads/tmp/";
+			$file = fopen($path_archivo.$nombre_archivo, "w");
+			$this->load->model('admin');
+
+			foreach ($datos_remuneracion as $remuneracion) {
+
+
+
+				$idperiodo = $remuneracion->id_periodo;
+				$idtrabajador = $remuneracion->idtrabajador;
+
+
+				$movimientos_personal = $this->get_lista_movimientos($idtrabajador,null,$idperiodo); 
+				$cod_mov_personal = "00";
+				$array_lineas_trabajador = array();
+				$i = 0;
+				foreach ($movimientos_personal as $movimiento_personal) {
+					if(count($array_lineas_trabajador) == 0){
+						$array_lineas_trabajador[$i]['tipo_linea'] = "00";
+						$array_lineas_trabajador[$i]['codprevired'] = str_pad($movimiento_personal->codprevired,2,"0",STR_PAD_LEFT);
+						$array_lineas_trabajador[$i]['fechadesde'] = formato_fecha($movimiento_personal->fecmovimiento,'Y-m-d','d-m-Y');
+						$array_lineas_trabajador[$i]['fechahasta'] = formato_fecha($movimiento_personal->fechastamovimiento,'Y-m-d','d-m-Y');
+					}else{
+						$array_lineas_trabajador[$i]['tipo_linea'] = "01";
+						$array_lineas_trabajador[$i]['codprevired'] = str_pad($movimiento_personal->codprevired,2,"0",STR_PAD_LEFT);
+						$array_lineas_trabajador[$i]['fechadesde'] = formato_fecha($movimiento_personal->fecmovimiento,'Y-m-d','d-m-Y');
+						$array_lineas_trabajador[$i]['fechahasta'] = formato_fecha($movimiento_personal->fechastamovimiento,'Y-m-d','d-m-Y');			
+					}
+
+					$i++;
+				}
+
+				if(count($array_lineas_trabajador) == 0){
+						$array_lineas_trabajador[0]['tipo_linea'] = "00";
+						$array_lineas_trabajador[0]['codprevired'] = "00";
+						$array_lineas_trabajador[$i]['fechadesde'] = "00-00-0000";
+						$array_lineas_trabajador[$i]['fechahasta'] = "00-00-0000";						
+				}
+
+				/*$rut = str_pad($remuneracion->rut,11,"0",STR_PAD_LEFT);
+				$dv = $remuneracion->dv;
+				$apaterno = str_pad(substr($remuneracion->apaterno,0,30),30," ",STR_PAD_RIGHT);
+				$amaterno = str_pad(substr($remuneracion->amaterno,0,30),30," ",STR_PAD_RIGHT);
+				$nombres = str_pad(substr($remuneracion->nombre,0,30),30," ",STR_PAD_RIGHT);*/
+				$asigfamiliar = $remuneracion->asigfamiliar - $remuneracion->montocargaretroactiva;
+
+				$dato_afp = $this->admin->get_afp($remuneracion->idafp);
+
+				$codprev_apv = is_null($remuneracion->idapv) ? 0 : $this->get_apv($remuneracion->idapv)->codprevired;
+				$codprev_mutual = is_null($remuneracion->idmutual) ? 0 : $this->admin->get_mutual_seguridad($remuneracion->idmutual)->codprevired;
+				$codprev_ccaf = is_null($remuneracion->idcaja) ? 0 : $this->admin->get_cajas_compensacion($remuneracion->idcaja)->codprevired;
+
+				if($dato_afp->exregimen == 0){
+					$reg_previsional = "AFP";
+					$tipo_trabajador = 0;
+				}else if($dato_afp->exregimen == 1){
+					$reg_previsional = "INP";
+					$tipo_trabajador = 0;
+				}else if($dato_afp->exregimen == 2){
+					$reg_previsional = "SIP";
+					$tipo_trabajador = 2;
+				}else{
+					$reg_previsional = "   ";
+					$tipo_trabajador = 0;
+				}
+
+
+				$dato_isapre = $this->admin->get_isapre($remuneracion->idisapre);
+
+
+
+				$tramo_asig_familiar = is_null($remuneracion->idasigfamiliar) ? "D" : $this->get_tabla_asig_familiar($remuneracion->idasigfamiliar)->tramo;
+				$formapagoapv = is_null($remuneracion->formapagoapv) ? "0" : $remuneracion->formapagoapv;
+				$sueldoimponible_afp = ($remuneracion->cotizacionobligatoria+$remuneracion->comisionafp+$remuneracion->seginvalidez) > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
+				$sueldoimponible_fonasa = ($remuneracion->fonasa+$remuneracion->inp) > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
+				$sueldoimponible_isapre = $remuneracion->cotizacionsalud > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
+				$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponible : 0;
+				$sueldoimponible_ccaf = $codprev_ccaf != 0 ? $remuneracion->sueldoimponible : 0;
+				$sueldoimponible_segcesantia = $remuneracion->afilsegcesantia == 1 ? $remuneracion->sueldoimponible : 0;
+				$cotccaffon = $codprev_ccaf == 0 ? 0 : $remuneracion->inp;
+				$aportepatronal = $codprev_mutual == 0 ? 0 : $remuneracion->aportepatronal;
+				$asigfamiliar_ccaf = $codprev_ccaf != 0 ? $asigfamiliar : 0;
+
+
+
+				$cotizacion_fonasa = $codprev_ccaf == 0 ? $remuneracion->fonasa+$remuneracion->inp : $remuneracion->fonasa;
+
+				$monto_prestamos = 0;
+				/*$prestamos = $this->get_descuento($remuneracion->idperiodo,'P',$remuneracion->idtrabajador);
+				foreach ($prestamos as $prestamo) {
+					$monto_prestamos += $prestamo->tipodescuento == 2 ? $prestamo->monto : 0;
+				}*/
+
+
+				foreach ($array_lineas_trabajador as $linea_trabajador) {
+
+
+					$diastrabajo = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->diastrabajo : 0;
+					$tramo_asig_familiar = $linea_trabajador['tipo_linea'] == "00" ? $tramo_asig_familiar : " ";
+					$cargassimples = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cargassimples : 0;
+					$cargasmaternales = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cargasmaternales : 0;
+					$cargasinvalidas = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cargasinvalidas : 0;
+					$$asigfamiliar  = $linea_trabajador['tipo_linea'] == "00" ? $asigfamiliar : 0;
+					$montocargaretroactiva = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->montocargaretroactiva : 0;
+					$solicitud_trabajador_joven = $linea_trabajador['tipo_linea'] == "00" ? "N" : " ";
+
+					$sueldoimponible_afp  = $linea_trabajador['tipo_linea'] == "00" ? $sueldoimponible_afp : 0;
+					$cot_obligatoria_afp  = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cotizacionobligatoria+$remuneracion->comisionafp : 0;
+					$seginvalidez = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->seginvalidez : 0;
+					$montoahorrovol = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->montoahorrovol : 0;
+					$fecdesdeafp = $linea_trabajador['tipo_linea'] == "00" ? "00-00-0000" : "          ";
+					$fechastaafp = $linea_trabajador['tipo_linea'] == "00" ? "00-00-0000" : "          ";
+
+
+					$dv_afiliado_voluntario = $linea_trabajador['tipo_linea'] == "00" ? "0" : " ";
+					$fecdesdeafilvol = $linea_trabajador['tipo_linea'] == "00" ? "00-00-0000" : "          ";
+					$fechastaafilvol = $linea_trabajador['tipo_linea'] == "00" ? "00-00-0000" : "          ";
+					$cotizacion_fonasa = $linea_trabajador['tipo_linea'] == "00" ? $cotizacion_fonasa : 0;
+
+					$moneda_plan_pactado = $linea_trabajador['tipo_linea'] == "00" ? "2" : "0";
+					$valorpactadoperiodo = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->valorpactadoperiodo : 0;
+					$cotizacionsalud = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cotizacionsalud : 0;
+					$adicisapre = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->adicisapre : 0;
+
+					$monto_prestamos = $linea_trabajador['tipo_linea'] == "00" ? $monto_prestamos : 0;
+					$cotccaffon = $linea_trabajador['tipo_linea'] == "00" ? $cotccaffon : 0;
+					$asigfamiliar_ccaf = $linea_trabajador['tipo_linea'] == "00" ? $asigfamiliar_ccaf : 0;
+
+					$aportepatronal = $linea_trabajador['tipo_linea'] == "00" ? $aportepatronal : 0;
+
+					$sueldoimponible_segcesantia = $linea_trabajador['tipo_linea'] == "00" ? $sueldoimponible_segcesantia : 0;
+					$segcesantia = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->segcesantia : 0;
+					$aportesegcesantia = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->aportesegcesantia : 0;
+
+					
+
+					
+
+					// DATOS DEL TRABAJADOR
+					$linea  = str_pad($remuneracion->rut,11,"0",STR_PAD_LEFT); // rut
+					$linea .= $remuneracion->dv; // dv
+					$linea .= str_pad(substr(sanear_string($remuneracion->apaterno),0,30),30," ",STR_PAD_RIGHT); //apaterno
+					$linea .= str_pad(substr(sanear_string($remuneracion->amaterno),0,30),30," ",STR_PAD_RIGHT); //amaterno
+					$linea .= str_pad(substr(sanear_string($remuneracion->nombre),0,30),30," ",STR_PAD_RIGHT); //nombre
+					$linea .= $remuneracion->sexo; //sexo
+					$linea .= $remuneracion->nacionalidad == "C" ? 0 : 1; //nacionalidad
+					$linea .= "01"; //tipo pago
+					$linea .= str_pad($remuneracion->mes,2,"0",STR_PAD_LEFT).$remuneracion->anno; //periodo desde
+					$linea .= str_pad($remuneracion->mes,2,"0",STR_PAD_LEFT).$remuneracion->anno; //periodo hasta
+					$linea .= $reg_previsional; //regimen previsional 
+					$linea .= $tipo_trabajador; //tipo trabajador (ver que pasa con pensionados activos y pensionados y cotiza)
+					$linea .= str_pad($diastrabajo,2,"0",STR_PAD_LEFT); //dias trabajados
+					$linea .= $linea_trabajador['tipo_linea']; //tipo de linea ***** VER PARA MOVIMIENTOS DEL PERSONAL
+					$linea .= $linea_trabajador['codprevired']; //Código Movimiento de Personal
+					$linea .= $linea_trabajador['fechadesde']; //Fecha Desde Código Movimiento de Personal 
+					$linea .= $linea_trabajador['fechahasta']; //Fecha Hasta Código Movimiento de Personal 
+					$linea .= $tramo_asig_familiar; //Tramo asignacion familiar 
+					$linea .= str_pad($cargassimples,2,"0",STR_PAD_LEFT); //cargas simples
+					$linea .= substr($cargasmaternales,-1); //cargas maternales
+					$linea .= substr($cargasinvalidas,-1); //cargas inválidas
+					$linea .= str_pad(substr($asigfamiliar,-6),6,"0",STR_PAD_LEFT); //monto asignacion familiar
+					$linea .= str_pad(substr($montocargaretroactiva,-6),6,"0",STR_PAD_LEFT); //monto asignacion retroactiva
+					$linea .= "000000"; //monto reintegro de cargas familiares 
+					$linea .= $solicitud_trabajador_joven; //Solicitud Trabajador Joven 
+
+
+					// DATOS AFP
+					$linea .= str_pad($dato_afp->codprevired,2,"0",STR_PAD_LEFT); //cod afp
+					$linea .= str_pad($sueldoimponible_afp,8,"0",STR_PAD_LEFT); //sueldo imponible
+					$linea .= str_pad($cot_obligatoria_afp,8,"0",STR_PAD_LEFT); //cotizacion
+					$linea .= str_pad($seginvalidez,8,"0",STR_PAD_LEFT); //seguro invalidez
+					$linea .= str_pad($montoahorrovol,8,"0",STR_PAD_LEFT); //monto ahorro voluntario
+					$linea .= "00000000"; //Renta imponible sustituta 
+					$linea .= "00,00"; //tasa pactada  
+					$linea .= "000000000"; //aporte indemnizacion  
+					$linea .= "00"; //nro. periodos  
+					$linea .= $fecdesdeafp; //periodo desde   
+					$linea .= $fechastaafp; //periodo hasta  
+					$linea .= "                                        "; //puesto de trabajo pesado  
+					$linea .= "00,00"; //cotizacion trabajo pesado  
+					$linea .= "000000"; //monto cotizacion trabajo pesado  
+
+
+					//Datos Ahorro Previsional Voluntario Individual (PENDIENTE HASTA IMPLEMENTAR OPCIONES DE APV)
+					//$linea .= str_pad($dato_afp->codprevired,3,"0",STR_PAD_LEFT); //cod institucion APVI (se asume que es la misma de la APV??)
+					$linea .= str_pad($codprev_apv,3,"0",STR_PAD_LEFT); //cod institucion APVI 
+					$linea .= str_pad(substr($remuneracion->nrocontratoapv,-20),20,"0",STR_PAD_LEFT); //nro contrato apvi  
+					$linea .= $formapagoapv; //forma de pago apv 
+					$linea .= str_pad(substr($remuneracion->montocotapv,-8),8,"0",STR_PAD_LEFT); //monto cotizacion apvi
+					//$linea .= "00000000"; //monto cotizacion apvi
+					$linea .= str_pad(substr($remuneracion->depconvapv,-8),8,"0",STR_PAD_LEFT);; //Cotización Depósitos Convenidos  *****************
+
+
+					//Datos Ahorro Previsional Voluntario Colectivo
+					$linea .= "000"; //Código Institución Autorizada APVC  
+					$linea .= "                    "; //nro contrato APVC  
+					$linea .= "0"; //forma de pago apvc  
+					$linea .= "00000000"; //Cotización Trabajador APVC  
+					$linea .= "00000000"; //Cotización Empleador APVC  
+
+
+					//Datos Afiliado Voluntario
+					$linea .= "00000000000"; // RUT Afiliado Voluntario 
+					$linea .= $dv_afiliado_voluntario; // DV Afiliado Voluntario 
+					$linea .= "                              "; //Apellido Paterno 
+					$linea .= "                              "; //Apellido Materno 
+					$linea .= "                              "; //Nombres 
+					$linea .= "00"; // Código Movimiento de Personal 
+					$linea .= $fecdesdeafilvol; //Fecha desde   
+					$linea .= $fechastaafilvol; //Fecha hasta 
+					$linea .= "00"; // Código de la AFP 
+					$linea .= "00000000"; //Monto Capitalización Voluntaria  
+					$linea .= "00000000"; //Monto Ahorro Voluntario 
+					$linea .= "00"; // Número de periodos de cotización 
+
+
+					//Datos IPS - ISL - FONASA  (FALTA ANALIZAR DE AQUI HACIA ABAJO)
+					$linea .= "0000"; // Código EX-Caja Régimen 
+					$linea .= "00,00"; //Tasa Cotización Ex-Caja Previsión  
+					$linea .= str_pad($sueldoimponible_fonasa,8,"0",STR_PAD_LEFT); //Renta Imponible IPS ******REVISAR, al parecer hay un tope
+					$linea .= "00000000"; //Cotización Obligatoria IPS 
+					$linea .= "00000000"; //Renta Imponible Desahucio 
+					$linea .= "0000"; // Código Ex-Caja Régimen Desahucio 
+					$linea .= "00,00"; //Tasa Cotización Desahucio Ex-Cajas de Previsión 
+					$linea .= "00000000"; //Cotización Desahucio 
+					$linea .= str_pad($cotizacion_fonasa,8,"0",STR_PAD_LEFT); //Cotización Fonasa 
+					//$linea .= str_pad($remuneracion->fonasa,8,"0",STR_PAD_LEFT); //Cotización Fonasa 
+					$linea .= "00000000"; //Cotización Acc. Trabajo (ISL) *****************
+					$linea .= "00000000"; //Bonificación Ley 15.386 
+					$linea .= "00000000"; //Descuento por cargas familiares de ISL 
+					$linea .= "00000000"; //Bonos Gobierno 
+
+
+					//Datos Salud
+					$linea .= str_pad($dato_isapre->codprevired,2,"0",STR_PAD_LEFT); // Código Institución de Salud 
+					$linea .= "                "; // Número del FUN (REVISAR SI SON BLANCOS O VACÍOS)
+					$linea .= str_pad($sueldoimponible_isapre,8,"0",STR_PAD_LEFT); //Renta Imponible Isapre 
+					$linea .= $moneda_plan_pactado; //Moneda del plan pactado Isapre 
+					$linea .= str_pad(str_replace(".",",",$valorpactadoperiodo),8,"0",STR_PAD_LEFT); //Cotización Pactada 
+					$linea .= str_pad($cotizacionsalud,8,"0",STR_PAD_LEFT); //Cotización Obligatoria Isapre 
+					$linea .= str_pad($adicisapre,8,"0",STR_PAD_LEFT); //Cotización Adicional Voluntaria 
+					$linea .= "00000000"; //Monto Garantía Explícita de Salud GES (Uso Futuro) 
+
+
+
+					//Datos Caja de Compensación (AQUI VOY)
+
+
+					$linea .= str_pad($codprev_ccaf,2,"0",STR_PAD_LEFT);; // Código CCAF 
+					$linea .= str_pad($sueldoimponible_ccaf,8,"0",STR_PAD_LEFT); //Renta Imponible CCAF 
+					$linea .= str_pad($monto_prestamos,8,"0",STR_PAD_LEFT); //Créditos Personales CCAF 
+					$linea .= "00000000"; //Descuento Dental CCAF *****************
+					$linea .= "00000000"; //Descuentos por Leasing (Programa Ahorro) *****************
+					$linea .= "00000000"; //Descuentos por seguro de vida CCAF*****************
+					$linea .= "00000000"; //Otros descuentos CCAF *****************
+					$linea .= str_pad($cotccaffon,8,"0",STR_PAD_LEFT); //Cotización a CCAF de no afiliados a Isapres
+					$linea .= str_pad($asigfamiliar_ccaf,8,"0",STR_PAD_LEFT); //Descuento Cargas Familiares CCAF 
+					$linea .= "00000000"; //Otros descuentos CCAF 1 (Uso Futuro) *****************
+					$linea .= "00000000"; //Otros descuentos CCAF 2 (Uso Futuro) *****************
+					$linea .= "00000000"; //Bonos Gobierno (Uso Futuro) *****************
+					$linea .= "                    "; //Código de Sucursal (Uso Futuro) (VER SI ES BLANCO O CEROS) *****************
+
+
+
+					//Datos Mutualidad
+					$linea .= str_pad($codprev_mutual,2,"0",STR_PAD_LEFT);; // Código Mutualidad
+					$linea .= str_pad($sueldoimponible_mutual,8,"0",STR_PAD_LEFT); //Renta Imponible Mutual 
+					$linea .= str_pad($aportepatronal,8,"0",STR_PAD_LEFT);; //Cotización Accidente del Trabajo (MUTUAL) 
+					$linea .= "000"; // Código Mutualidad (VER QUE PASA EN LINEAS ADICIONALES POR MOV PERSONAL) *****************
+
+					//Datos Administradora de Seguro de Cesantía
+
+					$linea .= str_pad($sueldoimponible_segcesantia,8,"0",STR_PAD_LEFT); //Renta Imponible Seguro Cesantía (Informar Renta Total Imponible) 
+					$linea .= str_pad($segcesantia,8,"0",STR_PAD_LEFT); //Aporte Trabajador Seguro Cesantía 
+					$linea .= str_pad($aportesegcesantia,8,"0",STR_PAD_LEFT); //Aporte Empleador Seguro Cesantía 
+
+					//Datos Pagador de Subsidios
+					$linea .= "00000000000"; //Rut Pagadora Subsidio
+					$linea .= " "; //Rut Pagadora Subsidio 
+
+
+					//Otros Datos de la Empresa
+					$linea .= "                    "; //Centro de Costos, Sucursal, Agencia, Obra, Región 
+
+
+
+
+					$linea .= "\r\n";
+					//$linea = $rut.$dv.$apaterno.$amaterno.$nombres."\r\n";
+					fputs($file,$linea);
+
+				}
+
+			}
+
+			
+			fclose($file);
+
+			$data_archivo = basename($path_archivo.$nombre_archivo);
+			header('Content-Type: text/plain');
+			header('Content-Disposition: attachment; filename=' . $data_archivo);
+			header('Content-Length: ' . filesize($path_archivo.$nombre_archivo));
+			readfile($path_archivo.$nombre_archivo);		
+
+
+			unlink($path_archivo.$nombre_archivo);
+	}		
 }

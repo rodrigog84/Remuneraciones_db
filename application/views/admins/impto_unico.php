@@ -1,33 +1,15 @@
-									<!--sub-heard-part-->
-									  <div class="sub-heard-part">
-									   <ol class="breadcrumb m-b-0">
-											<li><a href="inicio.html">Inicio</a></li>
-											<li class="active">Impuesto Único</li>
-											
-										</ol>
-									   </div>
-								  <!--//sub-heard-part-->
+
 									
 									<div class="graph-visual tables-main">
-											
-											         <?php if(isset($message)): ?>
-											         <div class="row">
-											         		<div class="col-md-12">
-											                    <div class="alert alert-<?php echo $classmessage; ?> alert-dismissable">
-											                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-											                      <h4><i class="icon fa <?php echo $icon;?>"></i> Alerta!</h4>
-											                      <?php echo $message;?>
-											                    </div>
-											            	</div>
-											          </div>  
-											          <?php endif; ?>  											
-													<h3 class="inner-tittle two">Tabla de Impuesto Único</h3>
+
+											          <div class="panel panel-inverse"> 											
+										            <div class="panel-heading">
+											                <h4 class="panel-title">Impuesto &Uacute;nico</h4>
+											            </div>
 													<form id="basicBootstrapForm" action="<?php echo base_url();?>admins/submit_impuesto_unico" id="basicBootstrapForm" method="post"> 
 													
-														  <div class="graph">
-
-														  	
-															<div class="tables">
+													  	
+															<div class="panel-body">
 																<table class="table"> 
 																	<thead> 
 																		<tr>
@@ -45,10 +27,10 @@
 												                    <?php foreach ($tabla_impuesto as $impuesto) { ?>														
 																		<tr class="active" id="variable">
 																			<td><?php echo $i;?></td>
-																			<td class="form-group"><input type="text" class="form-control miles desde" name="desde_<?php echo $impuesto->id_tabla_impuesto;?>" id="desde_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Monto Desde" value="<?php echo $impuesto->desde; ?>"></td>
-                        <td class="form-group"><?php if($impuesto->hasta != 999999999){ ?><input type="text" class="form-control miles hasta" name="hasta_<?php echo $impuesto->id_tabla_impuesto;?>" id="hasta_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Monto Hasta" value="<?php echo $impuesto->hasta; ?>"><?php }else{ ?>Y m&aacute;s<?php } ?></td>
+																			<td class="form-group"><input type="text" class="form-control miles_decimales2 desde" name="desde_<?php echo $impuesto->id_tabla_impuesto;?>" id="desde_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Monto Desde" value="<?php echo number_format($impuesto->desde,2,",","."); ?>"></td>
+                        <td class="form-group"><?php if($impuesto->hasta != 999999999){ ?><input type="text" class="form-control miles_decimales2 hasta" name="hasta_<?php echo $impuesto->id_tabla_impuesto;?>" id="hasta_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Monto Hasta" value="<?php echo number_format($impuesto->hasta,2,",","."); ?>"><?php }else{ ?>Y m&aacute;s<?php } ?></td>
                         <td class="form-group"><input type="text" class="form-control miles_decimales factor" name="factor_<?php echo $impuesto->id_tabla_impuesto;?>" id="factor_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Factor" value="<?php echo number_format($impuesto->factor,3,".",","); ?>"></td>
-                        <td class="form-group"><input type="text" class="form-control miles rebaja" name="rebaja_<?php echo $impuesto->id_tabla_impuesto;?>" id="rebaja_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Monto Rebaja" value="<?php echo $impuesto->rebaja; ?>"></td>				
+                        <td class="form-group"><input type="text" class="form-control miles_decimales2 rebaja" name="rebaja_<?php echo $impuesto->id_tabla_impuesto;?>" id="rebaja_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Monto Rebaja" value="<?php echo number_format($impuesto->rebaja,2,",","."); ?>"></td>				
 																		</tr> 
 												                      <?php $i++; ?>
 												                    <?php } ?>																		
@@ -57,8 +39,6 @@
 																<br>
 																 <button type="submit" class="btn btn-info">Guardar</button>&nbsp;&nbsp;
 															</div>
-												
-													</div>
 													</form>
 											</div>
 								
@@ -108,4 +88,35 @@ $(document).ready(function(){
  $('.miles_decimales').mask('#.###0,000', {reverse: true})        
 
 });
+
+
+$(document).ready(function(){
+ $('.miles_decimales2').mask('#.##0,00', {reverse: true})        
+
+});
 </script>          									
+
+
+
+<script>
+
+    $(document).ready(function() {
+        <?php if(isset($message)){ ?>
+
+        $.gritter.add({
+            title: 'Atención',
+            text: '<?php echo $message;?>',
+            sticky: false,
+            image: '<?php echo base_url();?>images/logos/alert-icon.png',
+            time: 5000,
+            class_name: 'my-sticky-class'
+        });
+        /*setTimeout(redirige, 1500);
+        function redirige(){
+            location.href = '<?php //echo base_url();?>welcome/dashboard';
+        }*/
+        <?php } ?>
+
+
+    });
+</script>

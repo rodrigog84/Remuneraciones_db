@@ -40,6 +40,17 @@ class Main extends CI_Controller {
 		$this->load->model('ion_auth_model');	
 		$this->load->model('admin');
 
+
+		$content = array(
+					'menu' => 'Dashboard',
+					'title' => 'Dashboard',
+					'subtitle' => 'Panel de Control');
+
+
+		
+
+
+
 		if($this->session->userdata('level') == 2){
 			// SI YA SELECCIONO COMUNIDAD, NO ES NECESARIO ELEGIR NUEVAMENTE
 			$unidad_id = $unidad_id == '' && $this->session->userdata('empresaid') ? $this->session->userdata('empresaid') : $unidad_id;
@@ -69,6 +80,8 @@ class Main extends CI_Controller {
 
 		}
 
+		$vars['content_menu'] = $content;				
+		
 
 		$vars['content_view'] = 'dashboard';
 		$template = "template";

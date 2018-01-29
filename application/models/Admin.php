@@ -327,13 +327,12 @@ class Admin extends CI_Model
 
 
 	public function edit_tabla_impuesto($array_impuesto){
-
 		foreach ($array_impuesto as $key => $impuesto) {
 			$datos = array(
-					'desde' => str_replace(".","",$impuesto['desde']),
-					'hasta' => isset($impuesto['hasta']) ? str_replace(".","",$impuesto['hasta']) : 999999999,
+					'desde' => str_replace(",",".",str_replace(".","",$impuesto['desde'])),
+					'hasta' => isset($impuesto['hasta']) ? str_replace(",",".",str_replace(".","",$impuesto['hasta'])) : 999999999,
 					'factor' => str_replace(",",".",$impuesto['factor']),
-					'rebaja' => str_replace(".","",$impuesto['rebaja']),
+					'rebaja' => str_replace(",",".",str_replace(".","",$impuesto['rebaja'])),
 					);
 
 			$this->db->where('id_tabla_impuesto', $key);
@@ -551,11 +550,11 @@ public function get_cajas_compensacion($idcaja = null){
 
 public function get_mutual_seguridad($idmutual = null){
 
-		$mutual_data = $this->db->select('id_mutual, nombre, codprevired')
+		$mutual_data = $this->db->select('id_mutual_seguridad, nombre, codprevired')
 						  ->from('rem_mutual_seguridad m')
 						  ->where('m.active = 1')
-		                  ->order_by('m.id_mutual');
-		$mutual_data = is_null($idmutual) ? $mutual_data : $mutual_data->where('m.id_mutual',$idmutual);  		                  
+		                  ->order_by('m.id_mutual_seguridad');
+		$mutual_data = is_null($idmutual) ? $mutual_data : $mutual_data->where('m.id_mutual_seguridad',$idmutual);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idmutual) ? $query->result() : $query->row();
 		return $datos;
@@ -564,13 +563,25 @@ public function get_mutual_seguridad($idmutual = null){
 
 public function get_parametros_generales(){
 
-		$comunidades_data = $this->db->select('uf , sueldominimo, csimples, cinvalidas, cmaternales, tasasis, topeimponible')
+		$comunidades_data = $this->db->select('uf , sueldominimo, tasasis, topeimponible, utm')
 						  ->from('rem_parametros_generales');
 		$query = $this->db->get();						  
 		return $query->row();
 
 	}	
 
+
+	public function edit_parametros_generales($parametros){
+
+
+		$this->db->update('rem_parametros_generales',$parametros); 
+		if($this->db->affected_rows() > 0){ 
+			return 1;
+		}else{ 
+			return -1;
+		}
+
+	}	
 
 	public function get_regiones(){
 

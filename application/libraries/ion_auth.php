@@ -2,8 +2,6 @@
 /**
 * Name:  Ion Auth
 *
-* Version: 2.5.2
-*
 * Author: Ben Edmunds
 *		  ben.edmunds@gmail.com
 *         @benedmunds
@@ -54,9 +52,8 @@ class Ion_auth
 	/**
 	 * __construct
 	 *
-	 * @return void
 	 * @author Ben
-	 **/
+	 */
 	public function __construct()
 	{
 		$this->load->config('ion_auth', TRUE);
@@ -91,7 +88,11 @@ class Ion_auth
 	 *
 	 * Acts as a simple way to call model methods without loads of stupid alias'
 	 *
-	 **/
+	 * @param $method
+	 * @param $arguments
+	 * @return mixed
+	 * @throws Exception
+	 */
 	public function __call($method, $arguments)
 	{
 		if (!method_exists( $this->ion_auth_model, $method) )
@@ -126,65 +127,21 @@ class Ion_auth
 	}
 
 
-
-	public function ruta_turbosmtp(){
-		$base_path = __DIR__;
-		$base_path = str_replace("\\", "/", $base_path);
-		$path = $base_path . "/../libraries/TurboApiClient.php";		
-		return $path;
-	}
-
-
-
-
- 	public function envia_mail($from,$toList,$subject,$content,$type){
-    	if(ENVIO_MAIL){
-	        include_once $this->ruta_turbosmtp();
-	        $email = new Email();
-	        $email->setFrom("Tu Gasto Común <" . $from . ">");
-	        $email->setToList($toList);
-	        //$email->setCcList("dd@domain.com,ee@domain.com");
-	        //$email->setBccList("ffi@domain.com,rr@domain.com");   
-	        $email->setSubject($subject);
-	        //$email->setContent("content");
-
-	        if($type == 'html'){
-	        	$email->setHtmlContent($content);	
-	        }else{
-	        	$email->setContent($content);	
-	        }
-	        
-	        $email->addCustomHeader('X-FirstHeader', "value");
-	        $email->addCustomHeader('X-SecondHeader', "value");
-	        $email->addCustomHeader('X-Header-da-rimuovere', 'value');
-	        $email->removeCustomHeader('X-Header-da-rimuovere');
-
-	        $turboApiClient = new TurboApiClient(TURBOSMTP_USER,TURBOSMTP_PASS);
-
-	        $response = $turboApiClient->sendEmail($email);
-			try {
-			    $response = $turboApiClient->sendEmail($email);
-			} catch (Exception $e) {
-			    echo "";
-			}	        
-	    }
-    }	
-
-
 	/**
 	 * forgotten password feature
 	 *
-	 * @return mixed  boolian / array
+	 * @param $identity
+	 * @return mixed boolean / array
 	 * @author Mathew
-	 **/
+	 */
 	public function forgotten_password($identity)    //changed $email to $identity
 	{
 		if ( $this->ion_auth_model->forgotten_password($identity) )   //changed
 		{
 			// Get user information
       $identifier = $this->ion_auth_model->identity_column; // use model identity column, so it can be overridden in a controller
-      //$user = $this->where($identifier, 'ion_auth'), $identity)->where('active', 1)->users()->row();  //changed to get_user_by_identity from email
-	  $user = $this->where($this->config->item('identity', 'ion_auth'), $identity)->users()->row();  //changed to get_user_by_identity from email
+      $user = $this->where($identifier, $identity)->where('active', 1)->users()->row();  // changed to get_user_by_identity from email
+
 			if ($user)
 			{
 				$data = array(
@@ -199,17 +156,8 @@ class Ion_auth
 				}
 				else
 				{
-
-
 					$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_forgot_password', 'ion_auth'), $data, true);
-
-					$this->envia_mail('robot@tugastocomun.cl',$user->email,$this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_forgotten_password_subject'),$message,'html');
-
-					$this->set_message('forgot_password_successful');
-					return TRUE;
-
-
-					/*$this->email->clear();
+					$this->email->clear();
 					$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
 					$this->email->to($user->email);
 					$this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_forgotten_password_subject'));
@@ -224,7 +172,7 @@ class Ion_auth
 					{
 						$this->set_error('forgot_password_unsuccessful');
 						return FALSE;
-					}*/
+					}
 				}
 			}
 			else
@@ -243,9 +191,10 @@ class Ion_auth
 	/**
 	 * forgotten_password_complete
 	 *
-	 * @return void
+	 * @param $code
 	 * @author Mathew
-	 **/
+	 * @return bool
+	 */
 	public function forgotten_password_complete($code)
 	{
 		$this->ion_auth_model->trigger_events('pre_password_change');
@@ -278,17 +227,7 @@ class Ion_auth
 			{
 				$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_forgot_password_complete', 'ion_auth'), $data, true);
 
-
-				$message = $this->load->view($this->config->item('email_templates', 'ion_auth').$this->config->item('email_forgot_password', 'ion_auth'), $data, true);
-
-				$this->envia_mail('robot@tugastocomun.cl',$profile->email,$this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_new_password_subject'),$message,'html');
-
-				$this->set_message('password_change_successful');
-				$this->ion_auth_model->trigger_events(array('post_password_change', 'password_change_successful'));
-				return TRUE;
-
-
-				/*$this->email->clear();
+				$this->email->clear();
 				$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
 				$this->email->to($profile->email);
 				$this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_new_password_subject'));
@@ -305,7 +244,7 @@ class Ion_auth
 					$this->set_error('password_change_unsuccessful');
 					$this->ion_auth_model->trigger_events(array('post_password_change', 'password_change_unsuccessful'));
 					return FALSE;
-				}*/
+				}
 
 			}
 		}
@@ -317,9 +256,10 @@ class Ion_auth
 	/**
 	 * forgotten_password_check
 	 *
-	 * @return void
+	 * @param $code
 	 * @author Michael
-	 **/
+	 * @return bool
+	 */
 	public function forgotten_password_check($code)
 	{
 		$profile = $this->where('forgotten_password_code', $code)->users()->row(); //pass the code to profile
@@ -348,18 +288,24 @@ class Ion_auth
 	/**
 	 * register
 	 *
-	 * @return void
+	 * @param $identity
+	 * @param $password
+	 * @param $email
+	 * @param array $additional_data
+	 * @param array $group_ids
 	 * @author Mathew
-	 **/
-	public function register($username, $password, $email, $additional_data = array(), $group_ids = array()) //need to test email activation
+	 * @return bool
+	 */
+	public function register($identity, $password, $email, $additional_data = array(), $group_ids = array()) //need to test email activation
 	{
 		$this->ion_auth_model->trigger_events('pre_account_creation');
 
 		$email_activation = $this->config->item('email_activation', 'ion_auth');
 
+		$id = $this->ion_auth_model->register($identity, $password, $email, $additional_data, $group_ids);
+
 		if (!$email_activation)
 		{
-			$id = $this->ion_auth_model->register($username, $password, $email, $additional_data, $group_ids);
 			if ($id !== FALSE)
 			{
 				$this->set_message('account_creation_successful');
@@ -375,15 +321,18 @@ class Ion_auth
 		}
 		else
 		{
-			$id = $this->ion_auth_model->register($username, $password, $email, $additional_data, $group_ids);
-
 			if (!$id)
 			{
 				$this->set_error('account_creation_unsuccessful');
 				return FALSE;
 			}
 
+			// deactivate so the user much follow the activation flow
 			$deactivate = $this->ion_auth_model->deactivate($id);
+
+			// the deactivate method call adds a message, here we need to clear that
+			$this->ion_auth_model->clear_messages();
+
 
 			if (!$deactivate)
 			{
@@ -406,7 +355,7 @@ class Ion_auth
 			{
 				$this->ion_auth_model->trigger_events(array('post_account_creation', 'post_account_creation_successful', 'activation_email_successful'));
 				$this->set_message('activation_email_successful');
-					return $data;
+				return $data;
 			}
 			else
 			{
@@ -424,7 +373,7 @@ class Ion_auth
 					$this->set_message('activation_email_successful');
 					return $id;
 				}
-			
+
 			}
 
 			$this->ion_auth_model->trigger_events(array('post_account_creation', 'post_account_creation_unsuccessful', 'activation_email_unsuccessful'));
@@ -444,9 +393,17 @@ class Ion_auth
 		$this->ion_auth_model->trigger_events('logout');
 
 		$identity = $this->config->item('identity', 'ion_auth');
-                $this->session->unset_userdata( array($identity => '', 'id' => '', 'user_id' => '') );
 
-		//delete the remember me cookies if they exist
+                if (substr(CI_VERSION, 0, 1) == '2')
+		{
+			$this->session->unset_userdata( array($identity => '', 'id' => '', 'user_id' => '') );
+                }
+                else
+                {
+                	$this->session->unset_userdata( array($identity, 'id', 'user_id') );
+                }
+
+		// delete the remember me cookies if they exist
 		if (get_cookie($this->config->item('identity_cookie_name', 'ion_auth')))
 		{
 			delete_cookie($this->config->item('identity_cookie_name', 'ion_auth'));
@@ -456,16 +413,21 @@ class Ion_auth
 			delete_cookie($this->config->item('remember_cookie_name', 'ion_auth'));
 		}
 
-		//Destroy the session
+		// Destroy the session
 		$this->session->sess_destroy();
 
 		//Recreate the session
+
 		if (substr(CI_VERSION, 0, 1) == '2')
 		{
 			$this->session->sess_create();
 		}
 		else
 		{
+			if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
+				session_start();
+			}
+			//$this->session->sess_create();
 			$this->session->sess_regenerate(TRUE);
 		}
 
@@ -578,23 +540,18 @@ class Ion_auth
 		return $check_all;
 	}
 
-
-
-	public function is_allowed($class,$method)
-	{
-		$path = $class."/".$method;
-		$this->session->userdata('menu_list');
-		$allowed = false;
-		foreach ($this->session->userdata('menu_list') as $menu){
-			foreach ($menu->app as $app){
-				if($app->appfunction == $path){ // SI ENCUENTRA LA FUNCION
-					$allowed = true;
-				}
-			}
-		}
-
-		return $allowed;
-	}	
-
-
+    public function is_allowed($class,$method)
+    {
+        $path = $class."/".$method;
+        $this->session->userdata('menu_list');
+        $allowed = false;
+        foreach ($this->session->userdata('menu_list') as $menu){
+            foreach ($menu->app as $app){
+                if($app->appfunction == $path){ // SI ENCUENTRA LA FUNCION
+                    $allowed = true;
+                }
+            }
+        }
+        return $allowed;
+    }
 }
