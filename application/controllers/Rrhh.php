@@ -777,7 +777,11 @@ class Rrhh extends CI_Controller {
 				redirect('rrhh/calculo_remuneraciones');	
 			}else{
 				#EN CASO QUE NO EXISTAN DATOS INICIALES, SE CARGAN AHORA
-				$idperiodo = $this->rrhh_model->set_datos_iniciales_periodo_rem($mes,$anno,$centro_costo); 
+				foreach ($centro_costo as $centros_costo) {
+					# code...
+					$idperiodo = $this->rrhh_model->set_datos_iniciales_periodo_rem($mes,$anno,$centros_costo); 
+				}
+				
 
 			}
 
@@ -1129,9 +1133,9 @@ public function previred($idperiodo = null)
 
 
 
-	public function aprueba_remuneraciones($idperiodo){
+	public function aprueba_remuneraciones($idperiodo,$centro_costo){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-			$publicar = $this->rrhh_model->aprobar_remuneracion($idperiodo);
+			$publicar = $this->rrhh_model->aprobar_remuneracion($idperiodo,$centro_costo);
 
 			$this->session->set_flashdata('calculo_remuneraciones_result', 3);
 			redirect('rrhh/calculo_remuneraciones');	

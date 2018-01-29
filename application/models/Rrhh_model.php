@@ -56,6 +56,8 @@ class Rrhh_model extends CI_Model
 						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
 						  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('pr.aprueba is null')
+		                  ->where('pr.cierre is not null')
+		                  ->group_by('p.id_periodo, p.mes,p.anno, pr.cierre, pr.aprueba, pr.anticipo')
 		                  ->order_by('p.anno','desc')
 		                  ->order_by('p.mes','desc');
 
@@ -491,13 +493,15 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$this->db->select('r.id_periodo')
 						  ->from('rem_periodo_remuneracion as r')
 		                  ->where('r.id_periodo', $idperiodo)
+		                  ->where('id_centro_costo',$centro_costo)
 		                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
 		$query = $this->db->get();
 		$datos_periodo_remuneracion = $query->row();
 		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'id_periodo' => $idperiodo,
-			      	'id_empresa' => $this->session->userdata('empresaid')
+			      	'id_empresa' => $this->session->userdata('empresaid'),
+			      	'id_centro_costo' => $centro_costo
 				);
 				$this->db->insert('rem_periodo_remuneracion', $data);
 		}
@@ -525,6 +529,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				      	'idpersonal' => $trabajador->id_personal,
 				      	'id_periodo' => $idperiodo,
 				      	'id_empresa' => $this->session->userdata('empresaid'),
+				      	'idcentrocosto' => $trabajador->idcentrocosto,
 				      	'created_at' => date("Y-m-d H:i:s")
 
 					);
@@ -560,9 +565,10 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	}	
 
 
-	public function aprobar_remuneracion($idperiodo){
+	public function aprobar_remuneracion($idperiodo,$centro_costo){
 
 		$this->db->where('id_periodo', $idperiodo);
+		$this->db->where('id_centro_costo', $centro_costo);
 		$this->db->where('id_empresa', $this->session->userdata('empresaid'));
 		$this->db->update('rem_periodo_remuneracion',array('aprueba' => date("Ymd H:i:s"))); 
 		return 1;
@@ -1069,7 +1075,7 @@ limit 1		*/
 			$this->db->update('rem_remuneracion',$data_remuneracion); 	
 
 			// VUELVE A CERO LA ASIGNACION FAMILIAR POR CARGAS RETROACTIVAS
-			$this->db->where('id_personal', $trabajador->id);
+			$this->db->where('id_personal', $trabajador->id_personal);
 			$this->db->update('rem_personal',array('asigfamiliar' => 0,
 												'cargasretroactivas' => 0)); 	
 
@@ -1086,6 +1092,7 @@ limit 1		*/
  		// CERRAR PERIODO
 		$this->db->where('id_periodo', $idperiodo);
 		$this->db->where('id_empresa', $this->session->userdata('empresaid'));
+		$this->db->where_in('id_centro_costo', $centro_costo);
 		$this->db->update('rem_periodo_remuneracion',array('cierre' => date("Y-m-d H:i:s"))); 
 
 		$this->db->trans_complete();
@@ -1103,6 +1110,7 @@ limit 1		*/
 						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
 		                  ->where('pr.id_empresa', $empresaid)
 		                  ->where('pr.cierre is not null')
+		                  ->group_by('p.id_periodo, p.mes, p.anno, pr.cierre, pr.aprueba, pr.cierre')
 		                  ->order_by('p.anno desc')
 		                  ->order_by('p.mes desc');
 		$periodo_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.id_periodo',$idperiodo);
