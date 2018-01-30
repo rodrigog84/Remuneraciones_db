@@ -9,7 +9,10 @@
 								
 									<div class="graph-visual tables-main">
 											
-													<h3 class="inner-tittle two">Ficha Colaborador <a href="<?php echo base_url();?>rrhh/add_trabajador" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Colaborador</a></h3>
+													<h3 class="inner-tittle two">Ficha Colaborador <a href="<?php echo base_url();?>rrhh/add_trabajador" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Colaborador</a>
+														&nbsp;&nbsp;
+														<a href="<?php echo base_url();?>rrhh/carga_masiva_personal" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a>
+													</h3>
 
 													<h3 class="inner-tittle two">Descripción</h3>
 														  <div class="graph">

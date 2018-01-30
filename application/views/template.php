@@ -256,7 +256,7 @@
             <script src="<?php echo base_url(); ?>plugins/jquery.mask.min.js"></script>
       <?php } ?>    
 
-      
+
     <?php if(isset($switchery)){ ?>  
     	<link href="<?php echo base_url(); ?>assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
 		<link href="<?php echo base_url(); ?>assets/plugins/powerange/powerange.min.css" rel="stylesheet" />   
@@ -503,7 +503,7 @@
         <!-- begin #footer -->
         <?php if(!isset($footer)){ ?>
         <div id="footer" class="footer">
-            &copy; 2018 Consisa - Todos los derechos reservados
+            &copy; 2018 Infosys - Consisa - Todos los derechos reservados
         </div>        
         <?php } ?>
 

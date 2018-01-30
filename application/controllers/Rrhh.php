@@ -168,6 +168,66 @@ class Rrhh extends CI_Controller {
 	}	
 
 
+
+	public function carga_masiva_personal()
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+			$content = array(
+						'menu' => 'Administraci&oacute;n',
+						'title' => 'Administraci&oacute;n',
+						'subtitle' => 'Carga Masiva de Colaboradores');
+
+
+					//LUEGO DE SUBIR EL ARCHIVO	
+					$config['upload_path'] = "./uploads/cargas/";
+
+					if(!file_exists($config['upload_path'])){
+						mkdir($config['upload_path'],0777,true);
+					}
+
+			        $config['file_name'] = date("Ymd")."_".date("His")."_".randomstring(5)."_".$this->input->post('comunidad');
+			        $config['allowed_types'] = "*";
+			        $config['max_size'] = "10240";
+
+			        $this->load->library('upload', $config);
+			        $this->upload->do_upload("userfile");
+		       		$dataupload = $this->upload->data();
+		       		
+		       		$extension = $dataupload['file_ext'];
+
+
+       
+		
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'rrhh/carga_masiva_personal';
+			$vars['formValidation'] = true;
+			$vars['dataTables'] = true;
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+
+
+
 	public function add_trabajador($idtrabajador = null)
 	{
 
