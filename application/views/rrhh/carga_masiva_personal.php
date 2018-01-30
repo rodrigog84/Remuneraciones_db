@@ -8,7 +8,7 @@
 
               <div class="panel panel-inverse">
                 <div class="panel-heading">
-                  <h4 class="panel-title">Carga Masiva de Propiedades</h4>
+                  <h4 class="panel-title">Carga Masiva de Colaboradores</h4>
                   <div class="pull-right box-tools">
 
                     <h4><a href="<?php echo base_url(); ?>uploads/ejemploCarga.xls" data-toggle="tooltip" title="Ejemplo"><i class="fa fa-file-excel-o"></i></a></h4>
