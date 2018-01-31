@@ -1218,7 +1218,15 @@ public function previred($idperiodo = null)
 	public function rechaza_remuneraciones($idperiodo){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 			set_time_limit(0);
-			$publicar = $this->rrhh_model->rechazar_remuneracion($idperiodo);
+
+			$centro_costo = $this->input->post('centro_costo2');
+			$id_periodo = $this->input->post('id_periodo2');
+
+			foreach ($centro_costo as $centros_costo) {
+				# code...
+				$publicar = $this->rrhh_model->rechazar_remuneracion($id_periodo,$centros_costo);
+			}
+			
 
 			$this->session->set_flashdata('calculo_remuneraciones_result', 4);
 			redirect('rrhh/calculo_remuneraciones');	
@@ -1601,12 +1609,14 @@ public function previred($idperiodo = null)
 
 public function prueba(){
 	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-			$mes = $this->input->post('mes');
-			$anno = $this->input->post('anno');
-			$centro_costo = $this->input->post('centro_costo');
+			//$mes = $this->input->post('mes');
+			//$anno = $this->input->post('anno');
+			$centro_costo = $this->input->post('centro_costo2');
+			$id_periodo = $this->input->post('id_periodo2');
 			
-			var_dump($this->rrhh_model->get_personal(null,$centro_costo));
-			
+			//var_dump($centro_costo);
+			//var_dump($this->rrhh_model->get_personal(null,$centro_costo));
+			echo $id_periodo;
 			$data['titulo'] = $centro_costo;
 			$this->load->view('rrhh/prueba',$data);
 	//}else{

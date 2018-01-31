@@ -582,12 +582,13 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 
-	public function get_remuneraciones_reversa($idperiodo){
+	public function get_remuneraciones_reversa($idperiodo,$centro_costo){
 		$periodo_data = $this->db->select('r.id_remuneracion')
 						  ->from('rem_remuneracion as r')
 						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and pr.id_empresa = ' . $this->session->userdata('empresaid'))
 		                  ->where('r.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('r.id_periodo', $idperiodo)
+		                  ->where('r.idcentrocosto',$centro_costo)
 		                  ->where('pr.cierre is not null')
 		                  ->where('pr.aprueba is null')
 		                  ->order_by('r.id_remuneracion asc');
@@ -599,12 +600,12 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	}
 
 
-	public function rechazar_remuneracion($idperiodo){
+	public function rechazar_remuneracion($idperiodo,$centro_costo){
 
 
 		$this->db->trans_start();
 		#obtengo remuneraciones del periodo para la comunidad (me aseguro que sea un periodo ya calculado y no aprobado)
-		$remuneraciones = $this->get_remuneraciones_reversa($idperiodo);
+		$remuneraciones = $this->get_remuneraciones_reversa($idperiodo,$centro_costo);
 
 		//echo "<pre>";
 		//print_r($remuneraciones); exit;
@@ -630,6 +631,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			#quitamos la marca de remuneracion calculada (permite volver a calcular)
 			$this->db->where('id_periodo', $idperiodo);
 			$this->db->where('id_empresa', $this->session->userdata('empresaid'));
+
 			$this->db->update('rem_periodo_remuneracion',array('cierre' => null)); 
 		}
 

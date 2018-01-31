@@ -133,7 +133,8 @@
 																			<td>
 																				<?php if($periodo->estado == 'Informaci&oacute;n Completa' && !is_null($periodo->cierre)){ ?>
                             															<a href="#" data-href="<?php echo base_url(); ?>rrhh/aprueba_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="modal" data-target="#confirm-publish" title="Aprobar" class="btn btn-xs btn-success"><span class="fa fa-check"></span></a>
-                            														<a href="<?php echo base_url(); ?>rrhh/rechaza_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="tooltip" title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>
+                            														<!--<a href="<?php echo base_url(); ?>rrhh/rechaza_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="tooltip" title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>-->
+                            														<a href="#" data-href="<?php echo base_url(); ?>rrhh/prueba/<?php echo $periodo->id_periodo;?>" data-toggle="modal" data-target="#refuse-publish" title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-check"></span></a>
                           														<?php }else{ ?>
                             															&nbsp;
                           														<?php } ?>																				
@@ -180,6 +181,44 @@
         </div>
     </div>
 
+    <div class="modal fade" id="refuse-publish" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Rechazar Remuneraci&oacute;n</h4>
+                </div>
+            
+                <div class="modal-body">
+                    <p>Seleccione Centro de Costo que desea rechazar</p>
+                 				<form name="f1" action="<?php echo base_url();?>rrhh/rechaza_remuneraciones" id="f1" method="post">
+								<input type="hidden" name="id_periodo2" value="<?php echo $periodo->id_periodo; ?>">
+								<!--<input type="text" name="id_periodo" value="fdfdffdsgtrsfdghtryh"> -->
+								<select  name="centro_costo2[]" id="get_centro_costo" class="form-control selectpicker" multiple="multiple" style="width: 100px;" >
+									<?php foreach ($centros_costo as $centro_costo) { ?>
+	       							<?php $centrocostoselected = $centro_costo->id == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
+	        						<option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
+	        						<?php } ?>
+								</select><br><br>
+								</form>
+						
+					
+                <p>Desea continuar?</p>    
+                </div>
+                
+                <div class="modal-footer">
+                    
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <a id="b1" class="btn btn-danger">Rechazar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
    <script type="text/javascript">
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover({
@@ -201,6 +240,20 @@ $(document).ready(function(){
             
         });
     </script>
+
+
+
+    <script>
+        $('#b1').click(function(){  
+
+        	
+           //$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
+           document.forms.f1.submit();
+           
+            
+        });
+    </script>
+
 
 
 <script>
@@ -287,5 +340,12 @@ $(document).ready(function() {
 <script type="text/javascript">
     $(document).ready(function() {
         $('#centro_costo').multiselect();
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#get_centro_costo').multiselect();
     });
 </script>
