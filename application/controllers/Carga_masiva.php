@@ -5,145 +5,164 @@ if (!defined('BASEPATH'))
 
 class Carga_masiva extends CI_Controller {
 
-	 function cargar_archivo() {
+	  public function insertar(){
 
-        $mi_archivo = 'mi_archivo';
-        $config['upload_path'] = "uploads/";
-        $config['file_name'] = "nombre_archivo";
-        $config['allowed_types'] = "*";
-        $config['max_size'] = "0";
-        $config['max_width'] = "0";
-        $config['max_height'] = "0";
+		//LUEGO DE SUBIR EL ARCHIVO	
+		$config['upload_path'] = "./uploads/cargas/";
 
-        $this->load->library('upload', $config);
-        
-        if (!$this->upload->do_upload($mi_archivo)) {
-            //*** ocurrio un error
-            $data['uploadError'] = $this->upload->display_errors();
-            echo $this->upload->display_errors();
-            return;
-        }
+		//VALIDA QUE CARPETA EXISTA
+		if(!file_exists($config['upload_path'])){
+			mkdir($config['upload_path'],0777,true);
+		}
 
-        $data['uploadSuccess'] = $this->upload->data();
-    }
-
-    public function rescatar(){
-
-		$resp = array();
-
-        $config['upload_path'] = "./cargas/"	;
-        $config['file_name'] = 'archivo_precios';
+        $config['file_name'] = date("Ymd")."_".date("His")."_";
         $config['allowed_types'] = "*";
         $config['max_size'] = "10240";
-        $config['overwrite'] = TRUE;
 
-        $fecha = $this->input->post('fecha_subida');
-        $numero = $this->input->post('numero');
+        //carga libreria para cargar archivos
         $this->load->library('upload', $config);
 
-        if (!$this->upload->do_upload("archivo")) {
-            print_r($this->upload->data()); 
-            print_r($this->upload->display_errors());
-            $error = true;
-            $message = "Error en subir archivo.  Intente nuevamente";
-        };
+        //Campo a leer
+        $this->upload->do_upload("userfile");
+   		$dataupload = $this->upload->data();
 
-        $data_file_upload = $this->upload->data();
+  		
+		//cargamos el archivo
+   		$archivotmp = $dataupload['file_ext'];	  	
+		//obtenemos el archivo .csv
 
-		$nombre_archivo = $config['upload_path'].$config['file_name'].$data_file_upload['file_ext'];
 
-		$this->load->library('PHPExcel');	       		
-				//read file from path
-		$objPHPExcel = PHPExcel_IOFactory::load($nombre_archivo);
-		 //get only the Cell Collection
-		$cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();
+    	$gestor = fopen("./uploads/cargas/" . $dataupload['file_name'], "r");
+    	$i = 0;
 
-		//extract to a PHP readable array format
-		foreach ($cell_collection as $cell) {
-			    $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();
-			    $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();
 
-			    $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();
-			   //header will/should be in row 1 only. of course this can be modified to suit your need.
-			    if ($row < 4) {
-				$header[$row][$column] = $data_value;
-			    } else {
-				$arr_data[$row][$column] = $data_value;
-			    };
-		};
+	    while (($datos = fgetcsv($gestor, 10000, ";")) !== FALSE) {
 
-	foreach ($arr_data as $precio) {
-		
-		$id = $precio['A'];
-		$codigo = $precio['B'];
-		$nombre = $precio['C'];
-		$precio_venta = $precio['D'];
-		$precio_lista = $precio['E'];
-		$stock = $precio['F'];
-		
-		if ($id > 0){
-		
-		$precios = array(
-			'numero' => $numero,
-	        'fecha' => date('Y-m-d'),
-	        'id_producto' => $id,
-	        'valor_original' => $p_venta,
-	        'valor_originallista' => $p_lista,
-	        'nuevalor' => $precio_venta,
-	        'nuevovalor_lista' => $precio_lista,
-	        'stock' => $stock
-		);
 
-		$this->db->insert('precios', $precios);
+			if($i != 0){ 
+	       
+			       //$datos = explode(";",$linea); 
+			       //print_r($datos);
+			       $rut = $datos[0];
+			       $dv = utf8_encode($datos[1]);
+			       $ficha = $datos[2];
+			       $apellidop = utf8_encode($datos[3]);
+			       $apellidom = utf8_encode($datos[4]);
+			       $nombres = utf8_encode($datos[5]);
+			       $sexo = utf8_encode($datos[6]);
+			       $estadocivil = utf8_encode($datos[7]);
+			       $nacionalidad = utf8_encode($datos[8]);
+			       $fechanacimiento = $datos[9];
+			       $direccion = utf8_encode($datos[10]);
+			       $region = utf8_encode($datos[11]);
+			       $comuna = utf8_encode($datos[12]);
+			       $email = utf8_encode($datos[13]);
+			       $fono = utf8_encode($datos[14]);
+			       $fechaingreso = $datos[15];
+			       $tipocontrato = utf8_encode($datos[16]);
+			       $diastrabajo = utf8_encode($datos[17]);
+			       $sueldobase = utf8_encode($datos[18]);
+			       $tipoGrat = utf8_encode($datos[19]);
+			       $MontoMov= $datos[20];
+			       $Montocol= $datos[21];
+			       $CentrodeCosto= $datos[22];
+			       $AFP= $datos[23];
+			       $MontoCotizad= $datos[24];
+			       $MontoAhVoluntario= $datos[25];
+			       $TramoAsigFam= utf8_encode($datos[26]);
+			       $NroCargasSimples= $datos[27];
+			       $NroCargasMat= $datos[28];
+			       $NroCargasIn= $datos[29];
+			       $NroCargasRet= $datos[30];
+			       $APV= utf8_encode($datos[31]);
+			       $NroContratoAPV= $datos[32];
+			       $TipoCotizAPV= utf8_encode($datos[33]);
+			       $MontoCotizAPV= $datos[34];
+			       $FormadePagoAPV= utf8_encode($datos[35]);
+			       $DepConvAPV= $datos[36];
+			       $InstituSalud= utf8_encode($datos[37]);
+			       $MontopactadoUF= $datos[38];
+			       $AfiliadoSeguroCesantía= utf8_encode($datos[39]);
+			       $BancoPagoSueldo= utf8_encode($datos[40]);
+			       $NroCuentaBanco= $datos[41];
+			       //$idempresa= utf8_encode($datos[42]);
+			       $idempresa = $this->session->userdata('empresaid');
 
-	    };
-		};
+			       $array_datos = array(
+						'idempresa' => $idempresa,
+			       		'rut' => $rut,
+			       		'dv' => $dv,
+			       		'numficha' => $ficha,
+						'nombre' => $nombres,
+						'apaterno' => $apellidop,
+						'amaterno' => $apellidom,
+						'fecnacimiento' => substr($fechanacimiento,6,4)."-".substr($fechanacimiento,3,2)."-".substr($fechanacimiento,0,2),
+						'idnacionalidad' => $nacionalidad,
+						'nacionalidad' => 'C', //ELIMINAR DESPUES
+						'idecivil' => $estadocivil,
+						'sexo' => $sexo,
+						'direccion' => $direccion,
+						'email' => $email,
+						'tiporenta' => '1',
+						'idcargo' => '1',
+						'idestudio' => '1',
+						'titulo' => 'universitario',
+						'ididioma' => 'espanol',
+						'idjefe' => '1',
+						'idreemplazo' => '1',
+						'idlicencia' => '1',
+						'tallapolera' => 'L',
+						'tallapantalon' => '48',
+						'tipodocumento' => 'F',
+						'idcentrocosto' => '1',
+						'cbeneficio' => '1',
+						'fono' => $fono,
+						'idafp' => $AFP,
+						'idisapre' => '1',
+						'sueldobase' => $sueldobase,
+										
+										//DATOS POR DEFECTO
+						'idregion' => 1,
+						'idcomuna' => 1,
+						'fecingreso' => substr($fechaingreso,6,4)."-".substr($fechaingreso,3,2)."-".substr($fechaingreso,0,2),
+						'fecinicvacaciones' => '2017-09-05',
+						'saldoinicvacaciones' => 0,
+						'saldoinicvacprog' => 0,
+						'diasprogresivos' => 0,
+						'diasvactomados' => 0,
+						'diasprogtomados' => 0,
+						'tipocontrato' => 'I',
+						'parttime' => 0,
+						'segcesantia' => 0,
+						'pensionado' => 0,
+						'diastrabajo' => 30,
+						'horasdiarias' => 8,
+						'horassemanales' => 45,
+						'tipogratificacion' => 'SG',
+						'gratificacion' => 0,
+						'cargassimples' => 0,
+						'cargasinvalidas' => 0,
+						'cargasmaternales' => 0,
+						'cargasretroactivas' => 0,
+						'idasigfamiliar' => NULL,
+						'asigfamiliar' => 0,
+						'movilizacion' => 0,
+						'colacion' => 0,
+						'active' => 1,
 
-		 $resp['success'] = true;
-         echo json_encode($resp);
+						'adicafp' => 0,
+					);
+		       	   //guardamos en base de datos la línea leida
+			      //$this->db->insert('rem_personal', $array_datos); 
+	        	
+	   		 }
+	   		 $i++;
+		}
+
+		$this->session->set_flashdata('personal_result',8);
+		redirect('rrhh/carga_masiva_paso');
 
 	}
-
-	  public function insertar(){{
-		//obtenemos el archivo .csv
-		$tipo = $_FILES['archivo']['type'];		 
-		$tamanio = $_FILES['archivo']['size'];		 
-		$archivotmp = $_FILES['archivo']['tmp_name'];
-		 
-		//cargamos el archivo
-		$lineas = file($archivotmp);
-		 
-		//inicializamos variable a 0, esto nos ayudará a indicarle que no lea la primera línea
-		$i=0;
-		 
-		//Recorremos el bucle para leer línea por línea
-		foreach ($lineas as $linea_num => $linea)
-		{ 
-		   //abrimos bucle
-		   /*si es diferente a 0 significa que no se encuentra en la primera línea 
-		   (con los títulos de las columnas) y por lo tanto puede leerla*/
-		   if($i != 0){ 
-	       //abrimos condición, solo entrará en la condición a partir de la segunda pasada del bucle.
-	       /* La funcion explode nos ayuda a delimitar los campos, por lo tanto irá 
-	       leyendo hasta que encuentre un ; */
-	       $datos = explode(";",$linea); 
-	       //Almacenamos los datos que vamos leyendo en una variable
-	       //usamos la función utf8_encode para leer correctamente los caracteres especiales
-	       $nombre = utf8_encode($datos[0]);
-	       $edad = $datos[1];
-	       $profesion = utf8_encode($datos[2]);
- 
-       	   //guardamos en base de datos la línea leida
-	       mysql_query("INSERT INTO datos(nombre,edad,profesion) VALUES('$nombre','$edad','$profesion')");
-	 
-       //cerramos condición
-   			};
- 
-   /*Cuando pase la primera pasada se incrementará nuestro valor y a la siguiente pasada ya 
-   entraremos en la condición, de esta manera conseguimos que no lea la primera línea.*/
-   			$i++;
-   //cerramos bucle
-}
-}
+	
 
 }
