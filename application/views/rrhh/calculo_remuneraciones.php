@@ -134,7 +134,7 @@
 																				<?php if($periodo->estado == 'Informaci&oacute;n Completa' && !is_null($periodo->cierre)){ ?>
                             															<a href="#" data-href="<?php echo base_url(); ?>rrhh/aprueba_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="modal" data-target="#confirm-publish" title="Aprobar" class="btn btn-xs btn-success"><span class="fa fa-check"></span></a>
                             														<!--<a href="<?php echo base_url(); ?>rrhh/rechaza_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="tooltip" title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>-->
-                            														<a href="#" data-href="<?php echo base_url(); ?>rrhh/prueba/<?php echo $periodo->id_periodo;?>" data-toggle="modal" data-target="#refuse-publish" title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-check"></span></a>
+                            														<a href="#" onclick="mostrar_modal(<?php echo $periodo->id_periodo;?>)"  title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-check"></span></a>
                           														<?php }else{ ?>
                             															&nbsp;
                           														<?php } ?>																				
@@ -249,11 +249,22 @@ $(document).ready(function(){
         	
            //$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
            document.forms.f1.submit();
-           
+            
             
         });
     </script>
+    <script>
+    	function mostrar_modal(id_periodo_js){
+         
+        	document.forms.f1.id_periodo2.value=id_periodo_js;
+        	$("#refuse-publish").modal();
 
+                	
+         
+          } 
+            
+        ;
+    </script>
 
 
 <script>
