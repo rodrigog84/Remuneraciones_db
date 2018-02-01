@@ -5,6 +5,17 @@ if (!defined('BASEPATH'))
 
 class Carga_masiva extends CI_Controller {
 
+	  public function __construct()
+		{
+			parent::__construct();
+			$this->load->database();
+			$this->load->config('ion_auth', TRUE);
+			$this->load->helper('cookie');
+			$this->load->helper('date');
+			$this->lang->load('ion_auth');
+			$this->load->helper('format');
+		}
+
 	  public function insertar(){
 
 		//LUEGO DE SUBIR EL ARCHIVO	
@@ -26,7 +37,7 @@ class Carga_masiva extends CI_Controller {
         $this->upload->do_upload("userfile");
    		$dataupload = $this->upload->data();
 
-  		
+   		
 		//cargamos el archivo
    		$archivotmp = $dataupload['file_ext'];	  	
 		//obtenemos el archivo .csv
@@ -50,7 +61,7 @@ class Carga_masiva extends CI_Controller {
 			       $apellidom = utf8_encode($datos[4]);
 			       $nombres = utf8_encode($datos[5]);
 			       $sexo = utf8_encode($datos[6]);
-			       $estadocivil = utf8_encode($datos[7]);
+			       $estadocivil = ($datos[7]);
 			       $nacionalidad = utf8_encode($datos[8]);
 			       $fechanacimiento = $datos[9];
 			       $direccion = utf8_encode($datos[10]);
@@ -89,42 +100,23 @@ class Carga_masiva extends CI_Controller {
 			       $idempresa = $this->session->userdata('empresaid');
 
 			       $array_datos = array(
-						'idempresa' => $idempresa,
+						'id_empresa' => $idempresa,
 			       		'rut' => $rut,
-			       		'dv' => $dv,
-			       		'numficha' => $ficha,
+			       		'dv' => $dv,			       		
 						'nombre' => $nombres,
 						'apaterno' => $apellidop,
 						'amaterno' => $apellidom,
 						'fecnacimiento' => substr($fechanacimiento,6,4)."-".substr($fechanacimiento,3,2)."-".substr($fechanacimiento,0,2),
-						'idnacionalidad' => $nacionalidad,
-						'nacionalidad' => 'C', //ELIMINAR DESPUES
-						'idecivil' => $estadocivil,
 						'sexo' => $sexo,
+						'idecivil' => 1,
+						'nacionalidad' => 'C', //ELIMINAR DESPUES
 						'direccion' => $direccion,
-						'email' => $email,
-						'tiporenta' => '1',
-						'idcargo' => '1',
-						'idestudio' => '1',
-						'titulo' => 'universitario',
-						'ididioma' => 'espanol',
-						'idjefe' => '1',
-						'idreemplazo' => '1',
-						'idlicencia' => '1',
-						'tallapolera' => 'L',
-						'tallapantalon' => '48',
-						'tipodocumento' => 'F',
-						'idcentrocosto' => '1',
-						'cbeneficio' => '1',
-						'fono' => $fono,
-						'idafp' => $AFP,
-						'idisapre' => '1',
-						'sueldobase' => $sueldobase,
-										
-										//DATOS POR DEFECTO
 						'idregion' => 1,
-						'idcomuna' => 1,
+						'idcomuna' => 1, 
+						'fono' => $fono,
+						'email' => $email,
 						'fecingreso' => substr($fechaingreso,6,4)."-".substr($fechaingreso,3,2)."-".substr($fechaingreso,0,2),
+						'idcargo' => 1,
 						'fecinicvacaciones' => '2017-09-05',
 						'saldoinicvacaciones' => 0,
 						'saldoinicvacprog' => 0,
@@ -134,27 +126,56 @@ class Carga_masiva extends CI_Controller {
 						'tipocontrato' => 'I',
 						'parttime' => 0,
 						'segcesantia' => 0,
-						'pensionado' => 0,
+						'fecafc' => '2018-02-01',
 						'diastrabajo' => 30,
 						'horasdiarias' => 8,
 						'horassemanales' => 45,
+						'sueldobase' => $sueldobase,
 						'tipogratificacion' => 'SG',
 						'gratificacion' => 0,
+						'asigfamiliar' => 0,
 						'cargassimples' => 0,
 						'cargasinvalidas' => 0,
 						'cargasmaternales' => 0,
 						'cargasretroactivas' => 0,
 						'idasigfamiliar' => NULL,
-						'asigfamiliar' => 0,
 						'movilizacion' => 0,
 						'colacion' => 0,
-						'active' => 1,
-
+						'pensionado' => 0,
+						'idafp' => 1,
 						'adicafp' => 0,
+						'tipoahorrovol' => 0,
+						'ahorrovol' => 0,
+						'instapv' => 0,
+						'nrocontratoapv' => 0,
+						'tipocotapv' => 0,
+						'cotapv' => 0,
+						'formapagoapv' => 0,
+						'depconvapv' => 0,
+						'idisapre' => 0,
+						'valorpactado' => 0,
+						'active' => 1,
+						'numficha' => $ficha,
+						'idnacionalidad' => 1,
+						'tiporenta' => 0,
+						'idestudio' => 1,
+						'titulo' => 'universitario',
+						'ididioma' => 1,
+						'idjefe' => 1,						
+						'idlicencia' => 1,
+						'tipodocumento' => 'F',
+						'tallapolera' => 'L',
+						'tallapantalon' => '48',						
+						'idcentrocosto' => 1,
+						'cbeneficio' => 1,
+						'idreemplazo' => 1,						
 					);
 		       	   //guardamos en base de datos la línea leida
-			      //$this->db->insert('rem_personal', $array_datos); 
-	        	
+		       	 //print_r($array_datos);
+		       	  $array_datos['updated_at'] = date('Y-m-d H:i:s');
+				  $array_datos['created_at'] = date('Y-m-d H:i:s');
+				  $this->db->insert('rem_personal_paso', $array_datos);
+			     
 	   		 }
 	   		 $i++;
 		}
@@ -163,6 +184,5 @@ class Carga_masiva extends CI_Controller {
 		redirect('rrhh/carga_masiva_paso');
 
 	}
-	
 
 }

@@ -9,10 +9,8 @@
 								
 									<div class="graph-visual tables-main">
 											
-													<h3 class="inner-tittle two">Ficha Colaborador <a href="<?php echo base_url();?>rrhh/add_trabajador" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Colaborador</a>
-														&nbsp;&nbsp;
-														<a href="<?php echo base_url();?>rrhh/carga_masiva_personal" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a>
-													</h3>
+											<h3 class="inner-tittle two">Ficha Carga Masiva <a href="<?php echo base_url();?>rrhh/carga_masiva_personal_paso" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Ficha Personal</a>
+											</h3>
 
 													<h3 class="inner-tittle two">Descripción</h3>
 														  <div class="graph">
@@ -41,10 +39,10 @@
 	                                									  <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
 	                              										  <td><small><?php echo $trabajador->direccion;?></small></td>
 	                              										  <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo";?></small></td>
-																			<td>
-																				<button type="button" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-        																		
-        																		<button type="button" class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModalElim"><i class="fa fa-times" aria-hidden="true"></i></button>
+								<td>
+								<button type="button" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+									
+        						<button type="button" class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModalElim"><i class="fa fa-times" aria-hidden="true"></i></button>
 																			</td>
 																		</tr> 
 

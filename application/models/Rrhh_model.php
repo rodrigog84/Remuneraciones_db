@@ -463,6 +463,83 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		//echo $this->db->last_query(); exit;
 		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
 		return $datos;
+	}
+	
+	public function get_personal_paso($idtrabajador = null,$centro_costo =false){
+
+
+		$array_campos = array(
+				'id_personal', 
+				'id_empresa', 
+				'rut', 
+				'dv', 
+				'nombre', 
+				'apaterno', 
+				'amaterno', 
+				'fecnacimiento', 
+				'sexo', 
+				'idecivil', 
+				'nacionalidad', 
+				'direccion', 
+				'idregion', 
+				'idcomuna', 
+				'fono', 
+				'email', 
+				'fecingreso', 
+				'fecingreso as fecingreso_sformat',
+				'idcargo', 
+				'tipocontrato', 
+				'parttime', 
+				'segcesantia', 
+				'pensionado', 
+				'diastrabajo', 
+				'horasdiarias', 
+				'horassemanales', 
+				'sueldobase', 
+				'tipogratificacion', 
+				'gratificacion', 
+				'asigfamiliar', 
+				'cargassimples', 
+				'cargasinvalidas', 
+				'cargasmaternales', 
+				'cargasretroactivas', 
+				'idasigfamiliar',
+				'movilizacion', 
+				'colacion', 
+				'idafp', 
+				'adicafp', 
+				'tipoahorrovol', 
+				'ahorrovol', 
+				'tipocotapv', 
+				'cotapv', 
+				'idisapre', 
+				'valorpactado',
+				/*'COALESCE((select sum(monto) as monto from rem_bonos_personal where idpersonal = p.id and fijo = 1 and imponible = 1),0) as bonos_fijos',*/
+				'0 as bonos_fijos',
+				'DATEDIFF(YY,fecafc,getdate()) as annos_afc,
+				DATEDIFF(MM,fecinicvacaciones,getdate()) as meses_vac,
+				fecinicvacaciones,
+				saldoinicvacaciones,
+				diasvactomados,
+				diasprogresivos,
+				diasprogtomados,
+				saldoinicvacprog,
+				idcentrocosto'
+			);
+		
+		$personal_data = $this->db->select($array_campos)
+						  ->from('rem_personal p')
+						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
+						  ->where('p.active = 1')
+						 // ->where_in('idcentrocosto',$centro_costo)
+		                  ->order_by('p.nombre');
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id',$idtrabajador);
+		$personal_data = !$centro_costo  ? $personal_data : $personal_data->where_in('idcentrocosto',$centro_costo);
+
+		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
+		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
+		return $datos;
 	}	
 
 
