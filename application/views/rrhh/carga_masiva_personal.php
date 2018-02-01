@@ -1,7 +1,7 @@
         <!-- Main content -->
       
        
-        <form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/carga_masiva_personal" id="basicBootstrapForm" method="post"   enctype="multipart/form-data">
+        <form id="basicBootstrapForm" action="<?php echo base_url();?>Carga_masiva/insertar" id="basicBootstrapForm" method="post"   enctype="multipart/form-data">
          <div class="row">
 
             <div class="col-md-6">

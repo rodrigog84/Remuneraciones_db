@@ -108,6 +108,10 @@ class Rrhh extends CI_Controller {
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = '';	
 				$vars['otros'] = '';							
+			}elseif($resultid == 8){
+				$vars['message'] = "Colaboradores Cargados correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
 			}
 
 			$this->load->model('admin');
@@ -132,9 +136,11 @@ class Rrhh extends CI_Controller {
 
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'rrhh/mantencion_personal';
-			$vars['dataTables'] = true;
+			$vars['datatable'] = true;
 			$vars['mask'] = true;
 			$vars['formValidation'] = true;
+			$vars['gritter'] = true;
+
 			$vars['empresa'] = $empresa;
 			$vars['personal'] = $personal;
 			//$vars['afps'] = $afps;
@@ -165,6 +171,143 @@ class Rrhh extends CI_Controller {
 		}	
 
 
+	}
+	
+	public function carga_masiva_paso(){
+		//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$vars['mantencion_personal'] = 'active';				
+			$vars['leyes_sociales'] = '';		
+			$vars['salud'] = '';	
+			$vars['otros'] = '';	
+			$vars['apv'] = '';
+			$resultid = $this->session->flashdata('personal_result');
+			if($resultid == 1){
+				$vars['message'] = "Trabajador Agregado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+				$vars['mantencion_personal'] = 'active';				
+				$vars['leyes_sociales'] = '';		
+				$vars['apv'] = '';		
+				$vars['salud'] = '';		
+				$vars['otros'] = '';	
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al agregar Trabajador. Trabajador ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+				$vars['mantencion_personal'] = 'active';				
+				$vars['leyes_sociales'] = '';		
+				$vars['apv'] = '';		
+				$vars['salud'] = '';
+				$vars['otros'] = '';							
+			}elseif($resultid == 3){
+				$vars['message'] = "Leyes sociales actualizadas correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';
+				$vars['mantencion_personal'] = '';				
+				$vars['apv'] = '';		
+				$vars['leyes_sociales'] = 'active';		
+				$vars['salud'] = '';	
+				$vars['otros'] = '';						
+			}elseif($resultid == 4){
+				$vars['message'] = "Datos de Cotizaciones de Salud actualizados correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';	
+				$vars['mantencion_personal'] = '';				
+				$vars['apv'] = '';		
+				$vars['leyes_sociales'] = '';		
+				$vars['salud'] = 'active';							
+				$vars['otros'] = '';	
+			}elseif($resultid == 5){
+				$vars['message'] = "Mutual de Seguridad/Caja de Compensaci&oacute;n actualizados correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+				$vars['mantencion_personal'] = '';				
+				$vars['apv'] = '';		
+				$vars['leyes_sociales'] = '';		
+				$vars['salud'] = '';							
+				$vars['otros'] = 'active';											
+			}elseif($resultid == 6){
+				$vars['message'] = "Trabajador Editado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+				$vars['mantencion_personal'] = 'active';				
+				$vars['apv'] = '';		
+				$vars['leyes_sociales'] = '';		
+				$vars['salud'] = '';	
+				$vars['otros'] = '';							
+			}elseif($resultid == 7){
+				$vars['message'] = "A.P.V. Editado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+				$vars['mantencion_personal'] = '';				
+				$vars['apv'] = 'active';		
+				$vars['leyes_sociales'] = '';		
+				$vars['salud'] = '';	
+				$vars['otros'] = '';							
+			}elseif($resultid == 8){
+				$vars['message'] = "Colaboradores Cargados correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}
+
+			$this->load->model('admin');
+			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
+
+
+			$this->load->model('admin');
+			$personal = $this->admin->get_personal_total(); 
+			//$afps = $this->admin->get_afp(); 
+			//$apvs = $this->admin->get_apv(); 
+			//$isapres = $this->admin->get_isapre(); 
+			//$cajas = $this->admin->get_cajas_compensacion(); 
+			//$mutuales = $this->admin->get_mutual_seguridad(); 
+
+			//$parametros_generales = $this->admin->get_parametros_generales(); 
+
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Personal');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'rrhh/carga_masiva_paso';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['formValidation'] = true;
+			$vars['gritter'] = true;
+
+			$vars['empresa'] = $empresa;
+			$vars['personal'] = $personal;
+			//$vars['afps'] = $afps;
+			//$vars['apvs'] = $apvs;
+			//$vars['isapres'] = $isapres;
+			//$vars['cajas'] = $cajas;
+			//$vars['mutuales'] = $mutuales;
+			//$vars['parametros_generales'] = $parametros_generales;
+			
+			$template = "template";
+			
+
+			
+
+			$this->load->view($template,$vars);	
+
+		/*}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}*/	
+
+
 	}	
 
 
@@ -181,22 +324,7 @@ class Rrhh extends CI_Controller {
 						'subtitle' => 'Carga Masiva de Colaboradores');
 
 
-					//LUEGO DE SUBIR EL ARCHIVO	
-					$config['upload_path'] = "./uploads/cargas/";
 
-					if(!file_exists($config['upload_path'])){
-						mkdir($config['upload_path'],0777,true);
-					}
-
-			        $config['file_name'] = date("Ymd")."_".date("His")."_".randomstring(5)."_".$this->input->post('comunidad');
-			        $config['allowed_types'] = "*";
-			        $config['max_size'] = "10240";
-
-			        $this->load->library('upload', $config);
-			        $this->upload->do_upload("userfile");
-		       		$dataupload = $this->upload->data();
-		       		
-		       		$extension = $dataupload['file_ext'];
 
 
        
