@@ -256,7 +256,7 @@ class Rrhh extends CI_Controller {
 
 
 			$this->load->model('admin');
-			$personal = $this->admin->get_personal_total(); 
+			$personal = $this->admin->get_personal_total_paso(); 
 			//$afps = $this->admin->get_afp(); 
 			//$apvs = $this->admin->get_apv(); 
 			//$isapres = $this->admin->get_isapre(); 

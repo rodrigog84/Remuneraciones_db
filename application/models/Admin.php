@@ -506,6 +506,19 @@ public function get_personal_total($idtrabajador = null){
 		$query = $this->db->get();
 		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
 		return $datos;
+	}
+	
+	public function get_personal_total_paso($idtrabajador = null){
+
+		$personal_data = $this->db->select('id_personal, id_empresa, rut, dv, nombre, apaterno, amaterno, fecnacimiento, sexo, idecivil, nacionalidad, direccion, idregion, idcomuna, fono, email, fecingreso, idcargo, tipocontrato, parttime, segcesantia, fecafc, diastrabajo, horasdiarias, horassemanales, sueldobase, tipogratificacion, gratificacion, asigfamiliar, cargassimples, cargasinvalidas, cargasmaternales, cargasretroactivas, idasigfamiliar, movilizacion, colacion, pensionado, idafp, adicafp, tipoahorrovol, ahorrovol, instapv, nrocontratoapv, tipocotapv, cotapv, formapagoapv, depconvapv, idisapre, valorpactado, fecinicvacaciones, saldoinicvacaciones, saldoinicvacprog, active')
+						  ->from('rem_personal_paso p')
+						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
+						  ->order_by('p.active','desc')
+		                  ->order_by('p.nombre');
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
+		return $datos;
 	}	
 
 
@@ -705,6 +718,8 @@ public function get_bonos($idtrabajador = null){
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+
 
 	public function get_centro_costo($idcentrocosto = null){
 
