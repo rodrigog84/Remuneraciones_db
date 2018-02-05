@@ -319,14 +319,14 @@
     </script>
     
 </head>
-<body>
+<body class="boxed-layout">
 <?php //debug($this->session->userdata('menu_list'));exit;?>
     <!-- begin #page-loader -->
     <div id="page-loader" class="fade in"><span class="spinner"></span></div>
     <!-- end #page-loader -->
     
     <!-- begin #page-container -->
-    <div id="page-container" class="page-container fade page-sidebar-fixed page-header-fixed">
+    <div id="page-container" class="page-container fade page-without-sidebar page-header-fixed page-with-top-menu">
         <!-- begin #header -->
         <div id="header" class="header navbar navbar-default navbar-fixed-top navbar-inverse" style="height: 50px;">
             <!-- begin container-fluid -->
@@ -370,7 +370,6 @@
                             <!--li><a href="javascript:;">Editar Perfil</a></li-->
                             <li><a href="<?=base_url();?>admins/cambio_clave"><i class="fa fa-key fa-rotate-90"></i>&nbsp;&nbsp;Cambio de Password</a></li>
                             <li><a href="<?php echo base_url();?>archivos/manualusuario.pdf" target="_blank"><i class="fa fa-wrench"></i>&nbsp;&nbsp;Ayuda</a></li>
-                            <li><a href="<?php echo base_url();?>main/destroy_data_session" ><i class="fa fa-repeat"></i>&nbsp;&nbsp;Cambiar Empresa</a></li>
                             <li class="divider"></li>
                             <li><a href="<?php echo base_url();?>auth/logout">Salir</a></li>
                         </ul>
@@ -382,90 +381,7 @@
         </div>
         <!-- end #header -->
         
-        <!-- begin #sidebar -->
-        <div id="sidebar" class="sidebar sidebar-transparent">
-            <!-- begin sidebar scrollbar -->
-            <div data-scrollbar="true" data-height="100%">
-                <!-- begin sidebar user -->
-                <ul class="nav">
-                    <li class="nav-profile">
-                        <div class="image">
-                            <a href="javascript:;"><img src="<?php echo base_url(); ?>assets/img/user-13.jpg" alt="" /></a>
-                        </div>
-                        <div class="info">
-                            <?php echo $this->session->userdata('name'); ?>
-                            <small><?php echo $this->session->userdata('level_name'); ?></small>
-                        </div>
-                    </li>
-                </ul>
-                <!-- end sidebar user -->
-                <!-- begin sidebar nav -->
-                <?php //print_r($this->session->userdata('menu_list')); exit; ?>
-                <ul class="nav">
-                    <li class="nav-header">Men&uacute; Principal</li>
-                    <?php //if($this->session->userdata('level') == 7 || $this->session->userdata('level') == 8){ ?>
-                        <li><a href="<?php echo base_url();?>welcome/bienvenida"><i class="fa fa-laptop"></i> <span>Inicio</span></a></li>
-                    <?php //}else{ ?>
-                        <!--li><a href="<?php echo base_url();?>welcome/dashboard"><i class="fa fa-bar-chart-o"></i> <span>Dashboard</span></a></li-->
-                    <?php //} ?>
-                    <?php $aux = $this->session->userdata('menu_list');?>
-                    <?php foreach ($this->session->userdata('menu_list') as $menu): ?>
-                        <?php //debug($menu); ?>
-                        <?php $menuhref = $menu->menuleaf == 0 ? "javascript:;" : base_url().$menu->app[0]->appfunction; ?>
-                        <li class="has-sub">
-                          <a href="<?php echo $menuhref; ?>">
-                            <?php if($menu->menuleaf == 0): ?>
-                            <b class="caret pull-right"></b>
-                            <?php endif; ?>
-                            <i class="fa <?php echo $menu->menuimg;?>"></i>
-                            <span><?php echo $menu->menuname;?></span>
-                          </a>
-                          <?php if($menu->submenu == 0){?>
-                              <?php if($menu->menuleaf == 0): ?>
-                                <ul class="sub-menu">
-                                  <?php foreach ($menu->app as $app): ?>
-                                      <?php if($app->appvisible == 1): ?>
-                                   <li><a href="<?php echo base_url().$app->appfunction; ?>"><?php echo $app->appname; ?></a></li>
-                                      <?php endif; ?>
-                                  <?php endforeach; ?>
-                                </ul>
-                              <?php endif; ?>
-                          <?php }else{ ?>
-                                <ul class="sub-menu">
-                                    <?php $aux = $menu->app;?>
-                                    <?php foreach ($menu->app as $m) {
-                                        if($m->sub==0){ ?>
-                                            <li class="has-sub">
-                                                <a href="javascript:;">
-                                                    <b class="caret pull-right"></b>
-                                                    <?=$m->appname;?>
-                                                </a>
-                                                <ul class="sub-menu">
-                                                    <?php foreach ($aux as $ax){
-                                                        if($m->appid==$ax->sub){ ?>
-                                                            <li><a href="<?php echo base_url().$ax->appfunction; ?>"><?=$ax->appname;?></a></li>
-                                                       <?php }
-                                                    }?>
-                                                </ul>
-                                            </li>
-                                            
-                                        <?php }
-                                    }?>
-                                </ul>
-                          <?php } ?>
-                        </li>
-                    <?php endforeach; ?> 
-                  
-                    <!-- begin sidebar minify button -->
-                    <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
-                    <!-- end sidebar minify button -->
-                </ul>
-                <!-- end sidebar nav -->
-            </div>
-            <!-- end sidebar scrollbar -->
-        </div>
-        <div class="sidebar-bg"></div>
-        <!-- end #sidebar -->
+              <!-- end #sidebar -->
         
         <!-- begin #content -->
         <div id="content" class="content">
@@ -477,26 +393,6 @@
             <!-- end breadcrumb -->
             <!-- begin page-header -->
             <h1 class="page-header"><?php echo $content_menu['title'];?>&nbsp;<small><?php echo $content_menu['subtitle'];?></small></h1>
-            <!-- end page-header -->
-            
-            <!--div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-inverse">
-                        <div class="panel-heading">
-                            <div class="panel-heading-btn">
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
-                            </div>
-                            <h4 class="panel-title">Panel Title here</h4>
-                        </div>
-                        <div class="panel-body">
-                            Panel Content Here
-                        </div>
-                    </div>
-                </div>
-            </div-->
             <?php $this->load->view($content_view); ?>
         </div>
         <!-- end #content -->
