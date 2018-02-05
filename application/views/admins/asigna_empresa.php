@@ -12,7 +12,7 @@
                                 <div class="box-body no-padding">
                                   <ul class="nav nav-pills nav-stacked">
                                     <?php foreach($empresas as $empresa): ?>
-                                      <li><a href="<?php echo base_url(); ?>main/dashboard/<?php echo $empresa->id_empresa;?>"><i class="fa fa-circle-o text-light-blue"></i>&nbsp;&nbsp;<?php echo $empresa->nombre;?></a></li>
+                                      <li><a href="<?php echo base_url(); ?>main/dashboard/<?php echo $empresa->id_empresa;?>"><i class="fa fa-circle-o text-light-blue"></i>&nbsp;&nbsp;  <?php echo $empresa->nombre;?></a></li>
                                     <?php endforeach; ?>
                                   </ul>
                                 </div><!-- /.box-body -->
@@ -21,7 +21,7 @@
                           </div>
 
 
-                      </div><!-- /.box-body -->
+                      </div><!-- /.box-body  PUEBA -->
 
                  
                   </div> 
