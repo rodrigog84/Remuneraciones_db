@@ -1492,6 +1492,7 @@ public function previred($idperiodo = null)
 			$vars['formValidation'] = true;
 			$vars['maleta'] = true;	
 			$vars['mask'] = true;
+			$vars['gritter'] = true;
 
 			$template = "template";
 			
@@ -1512,6 +1513,103 @@ public function previred($idperiodo = null)
 		}
 
 	}
+
+
+
+	public function anticipos($resultid = '')
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+			$resultid = $this->session->flashdata('anticipos_result');
+			if($resultid == 1){
+				$vars['message'] = "Anticipos agregados correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al agregar Anticipos";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 3){
+				$vars['message'] = "Error al traspasar datos anticipos";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 4){
+				$vars['message'] = "Datos de Anticipos traspasados correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}elseif($resultid == 5){
+				$vars['message'] = "Error al reversar traspaso de anticipos";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';	
+			}elseif($resultid == 6){
+				$vars['message'] = "Traspaso de Anticipos reversados correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}elseif($resultid == 7){
+				$vars['message'] = "Error al reversar traspaso de anticipos.  Ya existen pagos asociados";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';	
+			}elseif($resultid == 8){
+				$vars['message'] = "Error al reversar traspaso de anticipos.  Cuentas ya autorizadas en gasto com&uacute;n";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';	
+			}
+
+			//$this->load->model('admin');
+			//$comunidad = $this->admin->get_comunidades($this->session->userdata('comunidadid')); 
+
+			$mes = $this->session->flashdata('anticipos_mes') == '' ? date('m') : $this->session->flashdata('anticipos_mes');
+			$anno = $this->session->flashdata('anticipos_anno') == '' ? date('Y') : $this->session->flashdata('anticipos_anno');
+
+
+
+			$personal = $this->rrhh_model->get_personal(); 
+			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno); 
+			$array_remuneracion_trabajador = array();
+			foreach ($datos_remuneracion as $remuneracion) {
+				$array_remuneracion_trabajador['anticipo'][$remuneracion->idpersonal] = $remuneracion->anticipo;
+				$array_remuneracion_trabajador['aguinaldo'][$remuneracion->idpersonal] = $remuneracion->aguinaldo;
+			}
+
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Anticipos');
+
+			$vars['content_menu'] = $content;				
+			$vars['personal'] = $personal;	
+			$vars['datos_remuneracion'] = $array_remuneracion_trabajador;	
+			$vars['mes'] = $mes;	
+			$vars['anno'] = $anno;	
+			$vars['content_view'] = 'rrhh/anticipos';
+			$vars['formValidation'] = true;
+			$vars['maleta'] = true;	
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+
+
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
 
 
 	public function get_status_rem($tipo_status,$mes,$anno){
@@ -1723,6 +1821,54 @@ public function previred($idperiodo = null)
 			$this->session->set_flashdata('horas_extraordinarias_mes', $mes);
 			$this->session->set_flashdata('horas_extraordinarias_anno', $anno);
 			redirect('rrhh/horas_extraordinarias');	
+
+
+		}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}	
+
+
+
+
+public function submit_anticipos(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$mes = $this->input->post('mes');
+			$anno = $this->input->post('anno');
+
+			//if($mes == '' || $anno == ''){
+			if(empty($mes) && empty($anno)){	
+				$this->session->set_flashdata('anticipos_result', 2);
+				redirect('rrhh/anticipos');	
+			}
+
+
+			$array_elem = $this->input->post(NULL,true);
+			$array_trabajadores = array();
+			foreach($array_elem as $elem => $value_elem){
+				$arr_el = explode("_",$elem);
+				if($arr_el[0] == 'anticipo'){
+					$array_trabajadores[$arr_el[1]]['anticipo'] = str_replace(".","",$value_elem);
+				}
+
+				if($arr_el[0] == 'aguinaldo'){
+					$array_trabajadores[$arr_el[1]]['aguinaldo'] = str_replace(".","",$value_elem);
+				}
+
+			}
+
+
+			$this->rrhh_model->save_anticipo($array_trabajadores,$mes,$anno);
+
+			$this->session->set_flashdata('anticipos_result', 1);
+			$this->session->set_flashdata('anticipos_mes', $mes);
+			$this->session->set_flashdata('anticipos_anno', $anno);
+			redirect('rrhh/anticipos');	
 
 
 		}else{

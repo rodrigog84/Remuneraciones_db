@@ -322,13 +322,13 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				$this->db->insert('rem_periodo', $data);
 				$idperiodo = $this->db->insert_id();
 		}else{
-				$idperiodo = $datos_periodo->id;
+				$idperiodo = $datos_periodo->id_periodo;
 		}
 
 
 
 		// evaluar si existe periodo remuneraciones
-		$this->db->select('r.idperiodo')
+		$this->db->select('r.id_periodo')
 						  ->from('rem_periodo_remuneracion as r')
 		                  ->where('r.id_periodo', $idperiodo)
 		                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
@@ -336,7 +336,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$datos_periodo_remuneracion = $query->row();
 		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
 				$data = array(
-			      	'idperiodo' => $idperiodo,
+			      	'id_periodo' => $idperiodo,
 			      	'id_empresa' => $this->session->userdata('empresaid')
 				);
 				$this->db->insert('rem_periodo_remuneracion', $data);
@@ -346,17 +346,17 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 		foreach ($array_trabajadores as $idtrabajador => $info_trabajador) {
 
-			$this->db->select('r.idperiodo')
+			$this->db->select('r.id_periodo')
 							  ->from('rem_remuneracion as r')
 			                  ->where('r.idpersonal', $idtrabajador)
-			                  ->where('r.idperiodo', $idperiodo);
+			                  ->where('r.id_periodo', $idperiodo);
 			$query = $this->db->get();
 			$datos_remuneracion = $query->row();
 			if(count($datos_remuneracion) == 0){ // si no existe periodo, se crea
 
 					$data = array(
 						'idpersonal' => $idtrabajador,
-				      	'idperiodo' => $idperiodo,
+				      	'id_periodo' => $idperiodo,
 				      	'horasextras50' => $info_trabajador['horas50'],
 				      	'montohorasextras50' => $info_trabajador['monto50'],
 				      	'horasextras100' => $info_trabajador['horas100'],
@@ -380,6 +380,85 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			}			
 
 			
+		}
+
+		$this->db->trans_complete();
+		return 1;
+	}
+
+
+
+	public function save_anticipo($array_trabajadores,$mes,$anno){
+
+		$this->db->trans_start();
+
+		// evaluar si existe periodo
+		$this->db->select('p.id_periodo')
+						  ->from('rem_periodo as p')
+		                  ->where('p.mes', $mes)
+		                  ->where('p.anno', $anno);
+		$query = $this->db->get();
+		$datos_periodo = $query->row();
+		$idperiodo = 0;
+		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+				$data = array(
+			      	'mes' => $mes,
+			      	'anno' =>  $anno
+				);
+				$this->db->insert('rem_periodo', $data);
+				$idperiodo = $this->db->insert_id();
+		}else{
+				$idperiodo = $datos_periodo->id_periodo;
+		}
+
+
+		// evaluar si existe periodo remuneraciones
+		$this->db->select('r.id_periodo')
+						  ->from('rem_periodo_remuneracion as r')
+		                  ->where('r.id_periodo', $idperiodo)
+		                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
+		$query = $this->db->get();
+		$datos_periodo_remuneracion = $query->row();
+		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
+				$data = array(
+			      	'id_periodo' => $idperiodo,
+			      	'id_empresa' => $this->session->userdata('empresaid')
+				);
+				$this->db->insert('rem_periodo_remuneracion', $data);
+		}
+
+
+
+
+		foreach ($array_trabajadores as $idtrabajador => $info_trabajador) {
+
+			$this->db->select('r.id_periodo')
+							  ->from('rem_remuneracion as r')
+			                  ->where('r.idpersonal', $idtrabajador)
+			                  ->where('r.id_periodo', $idperiodo);
+			$query = $this->db->get();
+			$datos_remuneracion = $query->row();
+			if(count($datos_remuneracion) == 0){ // si no existe periodo, se crea
+					$data = array(
+				      	'idpersonal' => $idtrabajador,
+				      	'id_periodo' => $idperiodo,
+				      	'anticipo' => $info_trabajador['anticipo'],
+				      	'aguinaldo' => $info_trabajador['aguinaldo'],
+				      	'id_empresa' => $this->session->userdata('empresaid'),
+				      	'created_at' => date("Ymd H:i:s")
+
+					);
+					$this->db->insert('rem_remuneracion', $data);
+			}else{
+					$data = array(
+				      	'anticipo' => $info_trabajador['anticipo'],
+				      	'aguinaldo' => $info_trabajador['aguinaldo'],
+					);				
+					$this->db->where('idpersonal', $idtrabajador);
+					$this->db->where('id_periodo', $idperiodo);
+					$this->db->update('rem_remuneracion',$data); 
+
+			}
 		}
 
 		$this->db->trans_complete();
