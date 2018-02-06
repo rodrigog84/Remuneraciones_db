@@ -21,7 +21,7 @@
 									            </div>            
 									          </div>
 									          <?php endif; ?>
-												<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_calculo_remuneraciones" id="basicBootstrapForm" method="post"> 
+												<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_calculo_remuneraciones" id="basicBootstrapForm" method="post" > 
 									            <div class="row">
 
 									                <div class="col-md-6">
@@ -63,7 +63,7 @@
 									                            </div>
 									                          </div> 
 									                          <div class='col-md-6'>
-																<div class="form-group">
+																<div class="form-group" >
 																	<label for="centro_costo">Centro de Costo</label>
 																	<select  name="centro_costo[]" id="centro_costo" class="form-control periodo selectpicker" multiple="multiple" >
 																	
@@ -350,13 +350,21 @@ $(document).ready(function() {
 <!-- Initialize the plugin: -->
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#centro_costo').multiselect();
+        $('#centro_costo').multiselect({
+        	nonSelectedText: "No hay Selección",
+        	allSelectedText: 'Todos'
+
+
+        	});
     });
 </script>
 
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#get_centro_costo').multiselect();
+        $('#get_centro_costo').multiselect({
+        	nonSelectedText: "No hay Selección",
+        	allSelectedText: 'Todos'
+        });
     });
 </script>
