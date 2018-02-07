@@ -777,7 +777,7 @@ class Rrhh extends CI_Controller {
 			foreach ($periodos_remuneracion as $periodos) {
 				//$mensajes[$periodos->id] = array();
 
-				
+				$centro_costo_periodo = $this->rrhh_model->get_centro_costo_periodo_abierto();
 				$estado = "Informaci&oacute;n Completa";
 				/*if(is_null($periodos->cierre)){
 					foreach ($personal as $trabajador) {
@@ -905,7 +905,7 @@ class Rrhh extends CI_Controller {
 			$vars['periodos_remuneracion'] = $periodos_remuneracion;	
 			$vars['formValidation'] = true;
 			$vars['centros_costo'] = $centros_costo;
-			//$vars['mensaje_html'] = $mensaje_html;	
+			$vars['centro_costo_periodo'] = $centro_costo_periodo;	
 			$vars['content_view'] = 'rrhh/calculo_remuneraciones';
 
 			$template = "template";

@@ -50,6 +50,23 @@ class Rrhh_model extends CI_Model
 
 	}
 
+	public function get_centro_costo_periodo_abierto($idperiodo = null){
+		$data_periodo = $this->db->select('cc.nombre, pr.id_periodo, pr.id_empresa, pr.id_centro_costo')
+						  ->from('rem_periodo_remuneracion pr')
+						  ->join('rem_centro_costo as cc','pr.id_centro_costo = cc.id_centro_costo')
+						  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
+		                  ->where('pr.aprueba is null')
+		                  ->where('pr.cierre is not null')
+		                  ->order_by('pr.id_centro_costo','desc');
+
+		$data_periodo = is_null($idperiodo)	? $data_periodo : $data_periodo->where('pr.id_periodo',$idperiodo);
+
+		$query = $this->db->get();
+		return is_null($idperiodo) ? $query->result() : $query->row();
+	}	
+
+
+
 	public function get_periodos_remuneracion_abiertos($idperiodo = null){
 		$data_periodo = $this->db->select('p.id_periodo, p.mes, p.anno, pr.cierre, pr.aprueba, pr.anticipo')
 						  ->from('rem_periodo as p')
@@ -787,7 +804,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			#quitamos la marca de remuneracion calculada (permite volver a calcular)
 			$this->db->where('id_periodo', $idperiodo);
 			$this->db->where('id_empresa', $this->session->userdata('empresaid'));
-
+			$this->db->where('id_centro_costo', $centro_costo);
 			$this->db->update('rem_periodo_remuneracion',array('cierre' => null)); 
 		}
 

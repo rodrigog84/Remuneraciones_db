@@ -77,7 +77,7 @@
 									                      </div>
 									                      <div class="row">
 									                      	<div class='col-md-3'>
-									                      			<button type="submit" class="btn btn-primary">Calcular</button>&nbsp;&nbsp;
+									                      			<button name="button_submit" type="submit" class="btn btn-primary">Calcular</button>&nbsp;&nbsp;
 									                      	</div>
 									                      </div>                    
 									                    </div><!-- /.box-body -->
@@ -196,7 +196,7 @@
 								<input type="hidden" name="id_periodo2" value="<?php echo $periodo->id_periodo; ?>">
 								<!--<input type="text" name="id_periodo" value="fdfdffdsgtrsfdghtryh"> -->
 								<select  name="centro_costo2[]" id="get_centro_costo" class="form-control selectpicker" multiple="multiple" style="width: 100px;" >
-									<?php foreach ($centros_costo as $centro_costo) { ?>
+									<?php foreach ($centro_costo_periodo as $centro_costo) { ?>
 	       							<?php $centrocostoselected = $centro_costo->id == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
 	        						<option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
 	        						<?php } ?>
@@ -303,13 +303,13 @@ $(document).ready(function() {
             $('#span_status').attr('class',"label "+var_json["label_style"]);     
             cerrado = var_json["status"] == 'cerrado' ? true : false;
         }});
-
-      if(cerrado){
-        $('input').attr('readonly',true);
-      }else{
-        $('input').attr('readonly',false);
-      }      
-
+      
+	      if(cerrado){
+	        $('input').attr('readonly',true);
+	      }else{
+	        $('input').attr('readonly',false);
+	      }      
+  		
     $('#basicBootstrapForm').formValidation({
         framework: 'bootstrap',
         excluded: ':disabled',
@@ -353,9 +353,8 @@ $(document).ready(function() {
         $('#centro_costo').multiselect({
         	nonSelectedText: "No hay Selección",
         	allSelectedText: 'Todos'
-
-
         	});
+
     });
 </script>
 
@@ -365,6 +364,10 @@ $(document).ready(function() {
         $('#get_centro_costo').multiselect({
         	nonSelectedText: "No hay Selección",
         	allSelectedText: 'Todos'
+
         });
+
     });
 </script>
+
+
