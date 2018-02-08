@@ -788,6 +788,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				#elimino los bonos cargados a la remuneracion
 				$this->db->delete('rem_bonos_remuneracion', array('idremuneracion' => $remuneracion->id_remuneracion)); 
 
+				$this->db->delete('rem_haber_descuento_remuneracion', array('idremuneracion' => $remuneracion->id_remuneracion)); 
+
 				#devuelvo los valores de las cargas retroactivas
 				$this->db->query("update p
 								  set 
@@ -823,6 +825,44 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	}	
 
 
+	public function get_haberes_descuentos($idtrabajador,$imponible = null,$tipo = null){
+
+			if(!is_null($imponible)){
+					$campo_imponible = $imponible == true ? 1 : 0;	
+			}		
+		
+
+			//OBTIENE LOS HABERES DEL TRABAJADOR
+			$haberes_data = $this->db->select('d.monto, h.imponible, h.nombre')
+							  ->from('rem_haber_descuento_personal_tmp d')
+							  ->join('rem_conf_haber_descuento as h','d.idconfhd = h.id')
+			                  ->where('d.id_personal',$idtrabajador);
+			
+
+			$haberes_data = is_null($imponible) ? $haberes_data : $haberes_data->where('h.imponible',$campo_imponible);  	
+			$haberes_data = is_null($tipo) ? $haberes_data : $haberes_data->where('h.tipo',$tipo);  	
+
+			$query = $this->db->get();
+			//echo $this->db->last_query(); exit;
+			return $query->result();		
+	}
+
+
+	public function get_bonos_by_remuneracion($idremuneracion,$imponible = null){
+
+		if(!is_null($imponible)){
+			$campo_imponible = $imponible == true ? 1 : 0;	
+		}
+		
+		$bonos_data = $this->db->select('id, descripcion, imponible, monto')
+						  ->from('gc_bonos_remuneracion')
+						  ->where('idremuneracion',$idremuneracion)
+		                  ->order_by('id');
+
+		$bonos_data = is_null($imponible) ? $bonos_data : $bonos_data->where('imponible',$campo_imponible);  		                  
+		$query = $this->db->get();
+		return $query->result();
+	}	
 
 
 	public function calcular_remuneraciones($idperiodo,$centro_costo){
@@ -871,6 +911,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$bonos_imponibles = 0;
 			$bonos_no_imponibles = 0;
 
+			//OBTIENE LOS HABERES DEL TRABAJADOR
+			$datos_hd = $this->get_haberes_descuentos($trabajador->id_personal,null,'HABER');			
+
 			$diastrabajo = $trabajador->parttime == 1 ? $trabajador->diastrabajo : 30;
 			$sueldo_base_mes = round(($trabajador->sueldobase/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
 
@@ -879,6 +922,24 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$colacion_mes = round(($trabajador->colacion/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
 
 			
+
+			foreach ($datos_hd as $bono) {
+
+					
+					if($bono->imponible == 1){
+						$bonos_imponibles += $bono->monto;
+
+					}else{
+						$bonos_no_imponibles += $bono->monto;
+					}				
+					$data_bono = array(
+								'idremuneracion' => $datos_remuneracion->id_remuneracion,
+								'descripcion' => $bono->nombre,
+								'imponible' => $bono->imponible,
+								'monto' => $bono->monto
+								);
+					$this->db->insert('rem_haber_descuento_remuneracion', $data_bono);
+			}			
 
 			foreach ($datos_bonos as $bono) {
 				$tiene_bono = false;
@@ -1093,10 +1154,28 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 			//exit;
 
+			$datos_d = $this->get_haberes_descuentos($trabajador->id_personal,null,'DESCUENTO');			
+
 
 			//$datos_descuentos = $this->get_descuento($idperiodo,'D',$trabajador->id);
 			$datos_descuentos = array();
 			$monto_descuento = 0;
+
+
+			foreach ($datos_d as $info_descuento) {
+
+					$monto_descuento += $info_descuento->monto;
+					$data_bono = array(
+								'idremuneracion' => $datos_remuneracion->id_remuneracion,
+								'descripcion' => $info_descuento->nombre,
+								'imponible' => $info_descuento->imponible,
+								'monto' => $info_descuento->monto
+								);
+					$this->db->insert('rem_haber_descuento_remuneracion', $data_bono);
+			}
+
+
+
 			foreach ($datos_descuentos as $info_descuento) {
 				$monto_descuento += $info_descuento->monto;
 				if(!array_key_exists($info_descuento->tipodescuento,$array_descuentos)){
@@ -1306,7 +1385,7 @@ limit 1		*/
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
 						  ->join('rem_empresa as co','pe.id_empresa = co.id_empresa')
-						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo')
+						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and r.idcentrocosto = pr.id_centro_costo')
 						  ->join('rem_isapre as i','pe.idisapre = i.id_isapre')
 						  ->join('rem_cargos as c','pe.idcargo = c.id_cargos')
 						  ->join('rem_afp as a','pe.idafp = a.id_afp')
@@ -1802,6 +1881,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 public function generar_contenido_comprobante($datos_remuneracion){
 
+
 			$html = '<html>
 					<head>
 					<style type="text/css">
@@ -1968,16 +2048,27 @@ public function generar_contenido_comprobante($datos_remuneracion){
 
 						//$datos_bonos_imponibles = $this->get_bonos_by_remuneracion($datos_remuneracion->id,true);
 
-						$datos_bonos_imponibles = array();
+						$datos_hd = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,true,'HABER');
 
-						foreach ($datos_bonos_imponibles as $bono_imponible) {
+						foreach ($datos_hd as $bono_imponible) {
+
+							$html .= '<tr>
+									<td class="tdClass" >' . $bono_imponible->nombre . '</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($bono_imponible->monto,0,".",".") . '</td>
+									</tr>';
+
+						}
+
+						//$datos_bonos_imponibles = array();
+
+						/*foreach ($datos_bonos_imponibles as $bono_imponible) {
 
 							$html .= '<tr>
 									<td class="tdClass" >' . $bono_imponible->descripcion . '</td>
 									<td class="tdClass tdClassNumber" >$ ' . number_format($bono_imponible->monto,0,".",".") . '</td>
 									</tr>';
 
-						}
+						}*/
 
 						/*if($datos_remuneracion->bonosimponibles > 0){
 							$html .= '<tr>
@@ -1985,7 +2076,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->bonosimponibles,0,".",".") . '</td>
 									</tr>';
 						}*/												
-
+						
 						if($datos_remuneracion->montohorasextras50 > 0){
 							$html .= '<tr>
 									<td class="tdClass" >Horas Extras (50%)</td>
@@ -2050,7 +2141,20 @@ public function generar_contenido_comprobante($datos_remuneracion){
 
 						//$datos_bonos_no_imponibles = $this->get_bonos_by_remuneracion($datos_remuneracion->id,false);
 
-						$datos_bonos_no_imponibles = array();
+
+						$datos_hd = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,false,'HABER');
+
+						foreach ($datos_hd as $bono_no_imponible) {
+
+							$html .= '<tr>
+									<td class="tdClass" >' . $bono_no_imponible->nombre . '</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($bono_no_imponible->monto,0,".",".") . '</td>
+									</tr>';
+
+						}
+
+
+						/*$datos_bonos_no_imponibles = array();
 
 						foreach ($datos_bonos_no_imponibles as $bono_no_imponible) {
 
@@ -2059,7 +2163,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 									<td class="tdClass tdClassNumber" >$ ' . number_format($bono_no_imponible->monto,0,".",".") . '</td>
 									</tr>';
 
-						}												
+						}	*/											
 
 						if($datos_remuneracion->sueldonoimponible > 0){
 							$html .= '<tr>
@@ -2218,7 +2322,21 @@ public function generar_contenido_comprobante($datos_remuneracion){
 
 						//$datos_descuentos = $this->get_descuento($datos_remuneracion->idperiodo,'D',$datos_remuneracion->idtrabajador);
 
-						$datos_descuentos = array();
+
+						$datos_d = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,null,'DESCUENTO');
+
+						foreach ($datos_d as $info_descuento) {
+
+							$html .= '<tr>
+									<td class="tdClass" >' . $info_descuento->nombre . '</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($info_descuento->monto,0,".",".") . '</td>
+									</tr>';
+
+						}
+
+						/*$datos_descuentos = array();
+
+
 
 						foreach ($datos_descuentos as $info_descuento) {
 
@@ -2227,7 +2345,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 									<td class="tdClass tdClassNumber" >$ ' . number_format($info_descuento->monto,0,".",".") . '</td>
 									</tr>';
 
-						}
+						}*/
 
 
 						//$datos_prestamos = $this->get_descuento($datos_remuneracion->idperiodo,'P',$datos_remuneracion->idtrabajador);
@@ -2297,10 +2415,14 @@ public function generar_contenido_comprobante($datos_remuneracion){
 			$html .=	"</body>
 						</html>";
 
-						//echo $html; exit;
+							//echo $html; exit;
+
+						//echo "<pre>";
+						//print_r($datos_remuneracion);
 				
 				$this->db->where('id_remuneracion',$datos_remuneracion->id_remuneracion);
 				$this->db->update('rem_remuneracion', array('pdf_content' => $html));			
+				//echo $this->db->last_query();
 
 	}	
 
