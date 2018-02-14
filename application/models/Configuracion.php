@@ -52,6 +52,13 @@ class Configuracion extends CI_Model
 		return $datos;
 
 	}
+
+
+	public function add_haberes_descuentos($datos){
+
+			$this->db->insert('rem_conf_haber_descuento',$datos);
+
+	}
 }
 
 

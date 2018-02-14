@@ -4,7 +4,7 @@
 
 													
 														  <div class="graph">
-														  <form id="basicBootstrapForm" action="<?php echo base_url();?>configuraciones/submit_haber_descuento" id="basicBootstrapForm" method="post">
+														  <form id="basicBootstrapForm" action="<?php echo base_url();?>configuraciones/submit_haber_descuento" method="post">
 
 															<div class="tables">
 																<table class="table"> 
@@ -17,20 +17,20 @@
 																	</thead> 
 																	<tbody> 
 																		<tr class="active" id="variable">
-																			<td>
-																				<select name="selector1" id="selector1" class="form-control">
-																					<option>Seleccione.</option>
+																			<td class="form-group">
+																				<select name="tipo" id="tipo" class="tipo form-control">
+																					<option value="">Seleccione.</option>
 																					<option value="HABER">Haber</option>
 																					<option value="DESCUENTO">Descuento</option>
 																				</select>
 																			</td>
 
-																			<td>
-																				<input type="text" name="codigo" class="form-control" id="codigo" placeholder="Código">
+																			<td class="form-group">
+																				<input type="text" name="codigo" id="codigo" class="form-control codigo" id="codigo" placeholder="Código">
 																			</td>
 
-																			<td>
-																				<input type="text" name="descripcion" class="form-control" id="descripcion" placeholder="Descripción">
+																			<td class="form-group">
+																				<input type="text" name="descripcion" id="descripcion" class="descripcion  form-control" id="descripcion" placeholder="Descripción">
 																			</td> 
 																		</tr>  
 																		
@@ -243,3 +243,84 @@
 															
 													</div>
 											</div>
+
+
+<script>
+
+
+
+$(document).ready(function() {
+
+$('#basicBootstrapForm').formValidation({
+        framework: 'bootstrap',
+        excluded: ':disabled',
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+
+            tipo: {
+                // The children's full name are inputs with class .childFullName
+                // The field is placed inside .col-xs-6 div instead of .form-group
+                selector: '.tipo',
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Tipo es requerido'
+                    },
+                },
+
+            },          
+           
+     		codigo: {
+                selector: '.codigo',
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'C&oacute;digo Haber/Descuento es requerido'
+                    },
+                },
+
+            }, 
+
+     		descripcion: {
+                selector: '.descripcion',
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Descripci&oacute;n es requerida'
+                    },
+                },
+
+            }, 
+
+
+     		tipocalculo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Tipo C&aacute;lculo es requerido'
+                    },
+                },
+
+            },   
+
+   			formacalculo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Forma C&aacute;lculo es requerido'
+                    },
+                },
+
+            },              
+           
+        }
+    })
+});
+
+
+
+</script>											
