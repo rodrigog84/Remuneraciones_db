@@ -185,4 +185,70 @@ class Carga_masiva extends CI_Controller {
 
 	}
 
+	public function asistencia(){
+
+		//LUEGO DE SUBIR EL ARCHIVO	
+		$config['upload_path'] = "./uploads/cargas/";
+
+		//VALIDA QUE CARPETA EXISTA
+		if(!file_exists($config['upload_path'])){
+			mkdir($config['upload_path'],0777,true);
+		}
+
+        $config['file_name'] = date("Ymd")."_".date("His")."_";
+        $config['allowed_types'] = "*";
+        $config['max_size'] = "10240";
+
+        //carga libreria para cargar archivos
+        $this->load->library('upload', $config);
+
+        //Campo a leer
+        $this->upload->do_upload("userfile");
+   		$dataupload = $this->upload->data();
+
+   		
+		//cargamos el archivo
+   		$archivotmp = $dataupload['file_ext'];	  	
+		//obtenemos el archivo .csv
+
+
+    	$gestor = fopen("./uploads/cargas/" . $dataupload['file_name'], "r");
+    	$i = 0;
+
+
+	    while (($datos = fgetcsv($gestor, 10000, ";")) !== FALSE) {
+
+
+			if($i != 0){ 
+	       
+			       //$datos = explode(";",$linea); 
+			       //print_r($datos);
+			       $rut = $datos[0];
+			       $dv = utf8_encode($datos[1]);
+			       $dias = $dato[2];
+
+			       $idempresa = $this->session->userdata('empresaid');
+
+			       $array_datos = array(
+						'id_empresa' => $idempresa,
+			       		'rut' => $rut,
+			       		'dv' => $dv,			       		
+						'dias' => $dias,
+										
+					);
+		       	   //guardamos en base de datos la línea leida
+		       	 //print_r($array_datos);
+		       	  $array_datos['updated_at'] = date('Y-m-d H:i:s');
+				  $array_datos['created_at'] = date('Y-m-d H:i:s');
+				  $this->db->insert('', $array_datos);
+			     
+	   		 }
+	   		 $i++;
+		}
+
+		$this->session->set_flashdata('personal_result',8);
+		redirect('rrhh/asistencia');
+
+	}
+
 }

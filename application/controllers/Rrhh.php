@@ -321,13 +321,7 @@ class Rrhh extends CI_Controller {
 			$content = array(
 						'menu' => 'Administraci&oacute;n',
 						'title' => 'Administraci&oacute;n',
-						'subtitle' => 'Carga Masiva de Colaboradores');
-
-
-
-
-
-       
+						'subtitle' => 'Carga Masiva de Colaboradores');       
 		
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'rrhh/carga_masiva_personal';
@@ -350,6 +344,43 @@ class Rrhh extends CI_Controller {
 			$this->load->view('template',$vars);
 
 		}
+
+	}
+
+	public function carga_masiva_asistencia()
+	{
+
+		//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+			$content = array(
+						'menu' => 'Administraci&oacute;n',
+						'title' => 'Administraci&oacute;n',
+						'subtitle' => 'Carga Masiva de Asistencia');
+
+       
+		
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'rrhh/carga_masiva_asistencia';
+			$vars['formValidation'] = true;
+			$vars['dataTables'] = true;
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		//}else{
+		//	$content = array(
+		//				'menu' => 'Error 403',
+		//				'title' => 'Error 403',
+		//				'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		//}
 
 	}
 
