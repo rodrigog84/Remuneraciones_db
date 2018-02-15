@@ -738,6 +738,19 @@ class Rrhh extends CI_Controller {
 
 	}				
 
+	public function centro_costo_periodo_abierto($idperiodo)
+	{
+		if($idperiodo == null){}
+			
+
+		else{
+			$centro_costo_periodo = $this->rrhh_model->get_centro_costo_periodo_abierto($idperiodo);
+					
+			echo json_encode($centro_costo_periodo);
+		}
+		
+	}
+
 
 	public function calculo_remuneraciones($resultid = '')
 	{
@@ -774,10 +787,14 @@ class Rrhh extends CI_Controller {
 			$array_remuneracion_trabajador = array();
 			$mensajes = array();
 			$mensaje_html = array();
-			foreach ($periodos_remuneracion as $periodos) {
+			
+			/*var_dump(json_encode($periodos_remuneracion));
+				die();*/
+			foreach ($periodos_remuneracion as $periodo) {
 				//$mensajes[$periodos->id] = array();
 
-				$centro_costo_periodo = $this->rrhh_model->get_centro_costo_periodo_abierto();
+
+				//$centro_costo_periodo = $this->rrhh_model->get_centro_costo_periodo_abierto($periodo->id_periodo);
 				$estado = "Informaci&oacute;n Completa";
 				/*if(is_null($periodos->cierre)){
 					foreach ($personal as $trabajador) {
@@ -875,7 +892,7 @@ class Rrhh extends CI_Controller {
 				}
 						*/
 
-				$periodos->estado = $estado;
+				$periodo->estado = $estado;
 
 				/*$mensaje_html[$periodos->id] = "";
 				if(count($mensajes[$periodos->id]) > 0){
@@ -905,7 +922,7 @@ class Rrhh extends CI_Controller {
 			$vars['periodos_remuneracion'] = $periodos_remuneracion;	
 			$vars['formValidation'] = true;
 			$vars['centros_costo'] = $centros_costo;
-			$vars['centro_costo_periodo'] = $centro_costo_periodo;	
+			//$vars['centro_costo_periodo'] = $centro_costo_periodo;	
 			$vars['content_view'] = 'rrhh/calculo_remuneraciones';
 
 			$template = "template";

@@ -62,7 +62,7 @@ class Rrhh_model extends CI_Model
 		$data_periodo = is_null($idperiodo)	? $data_periodo : $data_periodo->where('pr.id_periodo',$idperiodo);
 
 		$query = $this->db->get();
-		return is_null($idperiodo) ? $query->result() : $query->row();
+		return $query->result() ;
 	}	
 
 

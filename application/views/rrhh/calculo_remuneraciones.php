@@ -68,7 +68,7 @@
 																	<select  name="centro_costo[]" id="centro_costo" class="form-control periodo selectpicker" multiple="multiple" >
 																	
 																		<?php foreach ($centros_costo as $centro_costo) { ?>
-	       																<?php $centrocostoselected = $centro_costo->id == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
+	       																<?php $centrocostoselected = $centro_costo->id_centro_costo == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
 	        																<option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
 	        																<?php } ?>
 																	</select>
@@ -192,14 +192,16 @@
             
                 <div class="modal-body">
                     <p>Seleccione Centro de Costo que desea rechazar</p>
+                 										
+								
                  				<form name="f1" action="<?php echo base_url();?>rrhh/rechaza_remuneraciones" id="f1" method="post">
+                 				
 								<input type="hidden" name="id_periodo2" value="<?php echo $periodo->id_periodo; ?>">
+								
 								<!--<input type="text" name="id_periodo" value="fdfdffdsgtrsfdghtryh"> -->
-								<select  name="centro_costo2[]" id="get_centro_costo" class="form-control selectpicker" multiple="multiple" style="width: 100px;" >
-									<?php foreach ($centro_costo_periodo as $centro_costo) { ?>
-	       							<?php $centrocostoselected = $centro_costo->id == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
-	        						<option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
-	        						<?php } ?>
+								<!--<select  name="centro_costo2" id="get_centro_costo" class="form-control selectpicker" multiple="multiple" style="width: 100px;" >-->
+									<select  name="centro_costo2[]" id="centro_costo2" class="form-control selectpicker" multiple="multiple" style="width: 100px;" >
+									
 								</select><br><br>
 								</form>
 						
@@ -255,15 +257,38 @@ $(document).ready(function(){
     </script>
     <script>
     	function mostrar_modal(id_periodo_js){
-         
-        	document.forms.f1.id_periodo2.value=id_periodo_js;
-        	$("#refuse-publish").modal();
+         	
 
-                	
+        	
+			
+        	document.forms.f1.id_periodo2.value=id_periodo_js;
+        
+        	
+        	$("#centro_costo2").html('')
+        	$('#centro_costo2').multiselect('rebuild');
+        	$.ajax({type: "GET",
+		    		url: "<?php echo base_url();?>rrhh/centro_costo_periodo_abierto/"+id_periodo_js, 
+		    		dataType: "json",
+		    		success: function(centro_costo_periodo){
+		      			$.each(centro_costo_periodo,function(id_centro_costo) {
+		      				
+		        			$("#centro_costo2").append('<option value='+this.id_centro_costo+'>'+this.nombre+'</option>');
+		        			$('#centro_costo2').multiselect('rebuild');
+		        			
+		     			});        
+    				},
+				    error: function(centro_costo_periodo) {
+				      alert('error'+id_periodo_js);
+				    }
+				  });
+
+        
+        	
+        	$("#refuse-publish").modal();
+                     	
          
-          } 
-            
-        ;
+          };
+
     </script>
 
 
@@ -361,7 +386,7 @@ $(document).ready(function() {
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#get_centro_costo').multiselect({
+        $('#centro_costo2').multiselect({
         	nonSelectedText: "No hay Selección",
         	allSelectedText: 'Todos'
 
