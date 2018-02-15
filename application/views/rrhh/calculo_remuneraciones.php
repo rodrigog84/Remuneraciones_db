@@ -256,14 +256,9 @@ $(document).ready(function(){
         });
     </script>
     <script>
-    	function mostrar_modal(id_periodo_js){
-         	
 
-        	
-			
-        	document.forms.f1.id_periodo2.value=id_periodo_js;
-        
-        	
+    	function mostrar_modal(id_periodo_js){
+			document.forms.f1.id_periodo2.value=id_periodo_js;       	
         	$("#centro_costo2").html('')
         	$('#centro_costo2').multiselect('rebuild');
         	$.ajax({type: "GET",
@@ -271,22 +266,15 @@ $(document).ready(function(){
 		    		dataType: "json",
 		    		success: function(centro_costo_periodo){
 		      			$.each(centro_costo_periodo,function(id_centro_costo) {
-		      				
 		        			$("#centro_costo2").append('<option value='+this.id_centro_costo+'>'+this.nombre+'</option>');
-		        			$('#centro_costo2').multiselect('rebuild');
-		        			
+		        			$('#centro_costo2').multiselect('rebuild');		        			
 		     			});        
     				},
 				    error: function(centro_costo_periodo) {
 				      alert('error'+id_periodo_js);
 				    }
-				  });
-
-        
-        	
+				  });      	        	
         	$("#refuse-publish").modal();
-                     	
-         
           };
 
     </script>
