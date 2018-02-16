@@ -387,6 +387,46 @@ class Rrhh extends CI_Controller {
 
 	}
 
+	public function carga_masiva_horas_extras()
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$mes  = $this->input->post('mes');
+			$anno  = $this->input->post('anno');
+
+			//echo $mes." -- ".$anno; exit;
+			$content = array(
+						'menu' => 'Administraci&oacute;n',
+						'title' => 'Administraci&oacute;n',
+						'subtitle' => 'Carga Masiva Horas Extras');
+
+       
+		
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'rrhh/carga_masiva_horas_extras';
+			$vars['formValidation'] = true;
+			$vars['dataTables'] = true;
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
 
 
 
@@ -1510,6 +1550,10 @@ public function previred($idperiodo = null)
 			}elseif($resultid == 2){
 				$vars['message'] = "Error al agregar Horas Extraordinarias";
 				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 3){
+				$vars['message'] = "Horas Extraordinarias agregadas correctamente";
+				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-ban';
 			}
 

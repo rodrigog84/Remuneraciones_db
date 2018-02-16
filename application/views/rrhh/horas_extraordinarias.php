@@ -47,7 +47,7 @@
 									                      </div>                    
 									                    </div><!-- /.box-body -->
 									                  </div>
-									                  <a href="<?php echo base_url();?>rrhh/carga_masiva_personal" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a> 
+									                  <a href="<?php echo base_url();?>rrhh/carga_masiva_horas_extras" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a> 
 									                </div>
 
 
