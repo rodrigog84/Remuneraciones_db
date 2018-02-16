@@ -350,9 +350,12 @@ class Rrhh extends CI_Controller {
 	public function carga_masiva_asistencia()
 	{
 
-		//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
+			$mes  = $this->input->post('mes');
+			$anno  = $this->input->post('anno');
 
+			//echo $mes." -- ".$anno; exit;
 			$content = array(
 						'menu' => 'Administraci&oacute;n',
 						'title' => 'Administraci&oacute;n',
@@ -369,18 +372,18 @@ class Rrhh extends CI_Controller {
 
 			$this->load->view($template,$vars);	
 
-		//}else{
-		//	$content = array(
-		//				'menu' => 'Error 403',
-		//				'title' => 'Error 403',
-		//				'subtitle' => '403 error');
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
 
 
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'forbidden';
 			$this->load->view('template',$vars);
 
-		//}
+		}
 
 	}
 
@@ -1436,6 +1439,10 @@ public function previred($idperiodo = null)
 			}elseif($resultid == 2){
 				$vars['message'] = "Error al agregar asistencia";
 				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 3){
+				$vars['message'] = "Asistencia Cargada Correctamente";
+				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-ban';
 			}
 

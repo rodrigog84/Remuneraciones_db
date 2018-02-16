@@ -14,6 +14,7 @@ class Carga_masiva extends CI_Controller {
 			$this->load->helper('date');
 			$this->lang->load('ion_auth');
 			$this->load->helper('format');
+			$this->load->model('rrhh_model');
 		}
 
 	  public function insertar(){
@@ -215,38 +216,38 @@ class Carga_masiva extends CI_Controller {
     	$gestor = fopen("./uploads/cargas/" . $dataupload['file_name'], "r");
     	$i = 0;
 
-
+    	$array_trabajadores = array();
 	    while (($datos = fgetcsv($gestor, 10000, ";")) !== FALSE) {
 
 
 			if($i != 0){ 
 	       
-			       //$datos = explode(";",$linea); 
-			       //print_r($datos);
 			       $rut = $datos[0];
 			       $dv = utf8_encode($datos[1]);
-			       $dias = $dato[2];
+			       $dias = $datos[2];
+			       $mes = $datos[3];
+			       $anno = $datos[4];
 
 			       $idempresa = $this->session->userdata('empresaid');
 
-			       $array_datos = array(
-						'id_empresa' => $idempresa,
-			       		'rut' => $rut,
-			       		'dv' => $dv,			       		
-						'dias' => $dias,
-										
-					);
-		       	   //guardamos en base de datos la línea leida
-		       	 //print_r($array_datos);
-		       	  $array_datos['updated_at'] = date('Y-m-d H:i:s');
-				  $array_datos['created_at'] = date('Y-m-d H:i:s');
-				  $this->db->insert('', $array_datos);
+					$this->db->select('id_personal')
+									  ->from('rem_personal')
+					                  ->where('rut', $rut)
+					                  ->where('id_empresa', $idempresa);
+					$query = $this->db->get();
+					$id_personal = $query->row()->id_personal;
+					
+					$array_trabajadores[$id_personal] = $dias;
+					
+
 			     
 	   		 }
 	   		 $i++;
 		}
 
-		$this->session->set_flashdata('personal_result',8);
+		$this->rrhh_model->save_asistencia($array_trabajadores,$mes,$anno);
+
+		$this->session->set_flashdata('asistencia_result',3);
 		redirect('rrhh/asistencia');
 
 	}
