@@ -158,7 +158,7 @@
 													
 											</div>
 									<!--/charts-inner-->
-
+<!-- MODAL DE APROBACIÓN DE REMUNERACIONES -->
     <div class="modal fade" id="confirm-publish" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -180,7 +180,7 @@
             </div>
         </div>
     </div>
-
+<!-- MODAL DE RECHAZO DE REMUNERACIÓN POR CENTRO DE COSCO -->
     <div class="modal fade" id="refuse-publish" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -195,13 +195,8 @@
                  										
 								
                  				<form name="f1" action="<?php echo base_url();?>rrhh/rechaza_remuneraciones" id="f1" method="post">
-                 				
-								<input type="hidden" name="id_periodo2" value="<?php echo $periodo->id_periodo; ?>">
-								
-								<!--<input type="text" name="id_periodo" value="fdfdffdsgtrsfdghtryh"> -->
-								<!--<select  name="centro_costo2" id="get_centro_costo" class="form-control selectpicker" multiple="multiple" style="width: 100px;" >-->
-									<select  name="centro_costo2[]" id="centro_costo2" class="form-control selectpicker" multiple="multiple" style="width: 100px;" >
-									
+                 				<input type="hidden" name="id_periodo2" value="<?php echo $periodo->id_periodo; ?>">
+								<select  name="centro_costo2[]" id="centro_costo2" class="form-control selectpicker" multiple="multiple" style="width: 100px;" >
 								</select><br><br>
 								</form>
 						
@@ -235,26 +230,24 @@ $(document).ready(function(){
 </style>
 
 
-    <script>
+<script>
         $('#confirm-publish').on('show.bs.modal', function(e) {
 
             $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
             
         });
-    </script>
+</script>
 
 
-
-    <script>
+ <script>
         $('#b1').click(function(){  
 
         	
-           //$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
            document.forms.f1.submit();
             
             
         });
-    </script>
+ </script>
     <script>
 
     	function mostrar_modal(id_periodo_js){
@@ -275,6 +268,7 @@ $(document).ready(function(){
 				    }
 				  });      	        	
         	$("#refuse-publish").modal();
+
           };
 
     </script>
@@ -379,7 +373,7 @@ $(document).ready(function() {
         	allSelectedText: 'Todos'
 
         });
-
+        
     });
 </script>
 
