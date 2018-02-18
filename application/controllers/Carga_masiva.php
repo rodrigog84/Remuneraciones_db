@@ -17,6 +17,37 @@ class Carga_masiva extends CI_Controller {
 			$this->load->model('rrhh_model');
 		}
 
+	  public function exportarExcelasistencia(){
+            
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=asistencia.xls"); 
+            
+            $idempresa = $this->session->userdata('empresaid');
+
+            $query = $this->db->query('SELECT * FROM rem_personal WHERE id_empresa like "%'.$nombre.'%"');
+            
+            $users = $query->result_array();
+            
+            echo '<table>';
+            echo "<tr>";
+                echo "<td>RUT</td>";
+                echo "<td>NOMBRE</td>";
+                echo "<td>DV</td>";
+                echo "<td>DIAS</td>";
+                echo "<td>MES</td>";
+                echo "<td>AÑO</td>";   
+              echo "<tr>";
+              
+              foreach($users as $v){
+                 echo "<td>".$v['rut']."</td>";
+                 echo "<td>".$v['dv']."</td>";
+                 
+                 echo '</table>';
+        }
+
+    }
+
+
 	  public function insertar(){
 
 		//LUEGO DE SUBIR EL ARCHIVO	

@@ -11,7 +11,7 @@
                   <h4 class="panel-title">Carga Masiva de Asistencia</h4>
                   <div class="pull-right box-tools">
 
-                    <h4><a href="<?php echo base_url(); ?>uploads/ejemploCarga.xls" data-toggle="tooltip" title="Ejemplo"><i class="fa fa-file-excel-o"></i></a></h4>
+                    <h4><a href="<?php echo base_url(); ?>arga_masiva/exportarExcelasistencia" data-toggle="tooltip" title="DEscarga Ejemplo"><i class="fa fa-file-excel-o"></i></a></h4>
                   </div><!-- /. tools -->                                        
                 </div><!-- /.box-header -->
                 <!-- form start -->
@@ -19,7 +19,7 @@
 
                   <div class="panel-body">
                         <div class="form-group">
-                              <label for="exampleInputFile">Archivo de Carga  - <a href="<?php echo base_url(); ?>uploads/ejemploCarga.xls" data-toggle="tooltip" title="Ejemplo">Descargar Ejemplo</a></label>
+                              <label for="exampleInputFile">Archivo de Carga  - <a href="<?php echo base_url(); ?>Carga_masiva/exportarExcelasistencia" data-toggle="tooltip" title="Ejemplo">Descargar Ejemplo</a></label>
                               <input type="file" id="userfile" name="userfile">
                         </div>  
                   </div><!-- /.box-body -->
