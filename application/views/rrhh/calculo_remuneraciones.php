@@ -65,7 +65,7 @@
 									                          <div class='col-md-6'>
 																<div class="form-group" >
 																	<label for="centro_costo">Centro de Costo</label>
-																	<select  name="centro_costo[]" id="centro_costo" class="form-control periodo selectpicker" multiple="multiple" >
+																	<select  name="centro_costo[]" id="centro_costo" class="form-control periodo selectpicker data-selected-text-format='count'" data-size="5" multiple="multiple" >
 																	
 																		<?php foreach ($centros_costo as $centro_costo) { ?>
 	       																<?php $centrocostoselected = $centro_costo->id_centro_costo == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
@@ -77,7 +77,7 @@
 									                      </div>
 									                      <div class="row">
 									                      	<div class='col-md-3'>
-									                      			<button name="button_submit" type="submit" class="btn btn-primary">Calcular</button>&nbsp;&nbsp;
+									                      			<button name="button_submit" id="button_submit" type ="submit" class="btn btn-primary">Calcular</button>&nbsp;&nbsp;
 									                      	</div>
 									                      </div>                    
 									                    </div><!-- /.box-body -->
@@ -196,6 +196,7 @@
 								
                  				<form name="f1" action="<?php echo base_url();?>rrhh/rechaza_remuneraciones" id="f1" method="post">
                  				<input type="hidden" name="id_periodo2" value="<?php echo $periodo->id_periodo; ?>">
+                 				<input type="text" name="prueba" >
 								<select  name="centro_costo2[]" id="centro_costo2" class="form-control selectpicker" multiple="multiple" style="width: 100px;" >
 								</select><br><br>
 								</form>
@@ -241,17 +242,29 @@ $(document).ready(function(){
 
  <script>
         $('#b1').click(function(){  
-
-        	
-           document.forms.f1.submit();
-            
-            
+        	var x =document.getElementById("centro_costo2").selectedIndex; 
+        	if(x==-1){
+        		alert("Debe seleccionar un Centro de Costo");
+        	}else{
+        		document.forms.f1.submit();	
+        	}
         });
+
+        /*$('#button_submit').click(function(){  
+        	var x =document.getElementById("centro_costo").selectedIndex; 
+        	if(x==-1){
+        		alert("Debe seleccionar un Centro de Costo");
+        	}else{
+        		document.forms.basicBootstrapForm.submit();	
+        	}
+        });*/
+
  </script>
     <script>
 
     	function mostrar_modal(id_periodo_js){
-			document.forms.f1.id_periodo2.value=id_periodo_js;       	
+			document.forms.f1.id_periodo2.value=id_periodo_js; 
+			document.forms.f1.prueba.value=document.getElementById("centro_costo2").selectedIndex;      	
         	$("#centro_costo2").html('')
         	$('#centro_costo2').multiselect('rebuild');
         	$.ajax({type: "GET",
@@ -278,6 +291,7 @@ $(document).ready(function(){
 
 $('.periodo').change(function(){
     $('#basicBootstrapForm').formValidation('revalidateField', 'anno');
+      //var id_select = document.getElementById("centro_costo").selectedIndex; 
       var cerrado = false;
       $.ajax({url: "<?php echo base_url();?>rrhh/get_status_rem/calculo/"+$('#mes').val()+"/"+$('#anno').val(),
         type: 'GET',
@@ -289,8 +303,8 @@ $('.periodo').change(function(){
             cerrado = var_json["status"] == 'cerrado' ? true : false;
         }});
 
-      if(cerrado){
-        $('input').attr('readonly',true);
+      if(cerrado ){
+       	$('input').attr('readonly',true);	
       }else{
         $('input').attr('readonly',false);
       }
@@ -301,6 +315,7 @@ $('.periodo').change(function(){
 $(document).ready(function() {
 
       var cerrado = false;
+      //var id_select = document.getElementById("centro_costo").selectedIndex; 
       $.ajax({url: "<?php echo base_url();?>rrhh/get_status_rem/calculo/"+$('#mes').val()+"/"+$('#anno').val(),
         type: 'GET',
         async: false,
@@ -312,7 +327,7 @@ $(document).ready(function() {
         }});
       
 	      if(cerrado){
-	        $('input').attr('readonly',true);
+		  	$('input').attr('readonly',true);	    	
 	      }else{
 	        $('input').attr('readonly',false);
 	      }      
