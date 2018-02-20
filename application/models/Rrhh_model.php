@@ -241,13 +241,15 @@ public function add_personal($array_datos,$idtrabajador){
 						  ->join('rem_periodo as p','pr.id_periodo = p.id_periodo')
 		                  ->where('p.mes', $mes)
 		                  ->where('p.anno', $anno)
-		                  ->where('pr.id_empresa', $this->session->userdata('empresaid'));
+		                  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
+		                  ->order_by('pr.cierre');
+		                  //->where('pr.cierre is null');
 		$query = $this->db->get();
 		$datos_periodo = $query->row();
 		if(count($datos_periodo) == 0){
 			return 2;
 		}else{
-
+			//for ($i=1;i<=count($datos_periodo);$i++){
 			if(is_null($datos_periodo->cierre)){
 				return is_null($datos_periodo->anticipo) ? 1 : 3;  #EL 3 aplica sólo en cálculo de anticipo
 			}else{
