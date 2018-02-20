@@ -196,7 +196,7 @@
 								
                  				<form name="f1" action="<?php echo base_url();?>rrhh/rechaza_remuneraciones" id="f1" method="post">
                  				<input type="hidden" name="id_periodo2" value="<?php echo $periodo->id_periodo; ?>">
-                 				<input type="text" name="prueba" >
+                 				<!--<input type="hidden" name="prueba" >-->
 								<select  name="centro_costo2[]" id="centro_costo2" class="form-control selectpicker" multiple="multiple" style="width: 100px;" >
 								</select><br><br>
 								</form>
@@ -264,7 +264,7 @@ $(document).ready(function(){
 
     	function mostrar_modal(id_periodo_js){
 			document.forms.f1.id_periodo2.value=id_periodo_js; 
-			document.forms.f1.prueba.value=document.getElementById("centro_costo2").selectedIndex;      	
+			//document.forms.f1.prueba.value=document.getElementById("centro_costo2").selectedIndex;      	
         	$("#centro_costo2").html('')
         	$('#centro_costo2').multiselect('rebuild');
         	$.ajax({type: "GET",
