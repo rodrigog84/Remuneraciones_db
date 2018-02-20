@@ -65,12 +65,12 @@
 									                          <div class='col-md-6'>
 																<div class="form-group" >
 																	<label for="centro_costo">Centro de Costo</label>
-																	<select  name="centro_costo[]" id="centro_costo" class="form-control periodo selectpicker data-selected-text-format='count'" data-size="5" multiple="multiple" >
+																	<select  name="centro_costo[]" id="centro_costo" class="form-control selectpicker data-selected-text-format='count'" data-size="5" multiple="multiple" >
 																	
-																		<?php foreach ($centros_costo as $centro_costo) { ?>
+																	<!--	<?php foreach ($centros_costo as $centro_costo) { ?>
 	       																<?php $centrocostoselected = $centro_costo->id_centro_costo == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
 	        																<option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
-	        																<?php } ?>
+	        																<?php } ?>-->
 																	</select>
 																</div>
 															  </div>
@@ -250,17 +250,9 @@ $(document).ready(function(){
         	}
         });
 
-        /*$('#button_submit').click(function(){  
-        	var x =document.getElementById("centro_costo").selectedIndex; 
-        	if(x==-1){
-        		alert("Debe seleccionar un Centro de Costo");
-        	}else{
-        		document.forms.basicBootstrapForm.submit();	
-        	}
-        });*/
-
  </script>
-    <script>
+
+ <script>
 
     	function mostrar_modal(id_periodo_js){
 			document.forms.f1.id_periodo2.value=id_periodo_js; 
@@ -290,9 +282,22 @@ $(document).ready(function(){
 <script>
 
 $('.periodo').change(function(){
-    $('#basicBootstrapForm').formValidation('revalidateField', 'anno');
+ 
+   $('#basicBootstrapForm').formValidation('revalidateField', 'anno');
       //var id_select = document.getElementById("centro_costo").selectedIndex; 
       var cerrado = false;
+      $("#centro_costo").html('');
+      $('#centro_costo').multiselect('rebuild');
+        	$.ajax({type: "GET",
+		    		url: "<?php echo base_url();?>rrhh/centro_costo_no_calculado/"+$('#mes').val()+"/"+$('#anno').val(), 
+		    		dataType: "json",
+		    		success: function(centro_costo_no_calculado){
+		      			$.each(centro_costo_no_calculado,function(id_centro_costo) {
+		        			$("#centro_costo").append('<option value='+this.id_centro_costo+'>'+this.nombre+'</option>');
+		        			$('#centro_costo').multiselect('rebuild');		        			
+		     			});        
+    				}});
+
       $.ajax({url: "<?php echo base_url();?>rrhh/get_status_rem/calculo/"+$('#mes').val()+"/"+$('#anno').val(),
         type: 'GET',
         async: false,

@@ -812,8 +812,7 @@ class Rrhh extends CI_Controller {
 
 	}				
 
-	public function centro_costo_periodo_abierto($idperiodo)
-	{
+	public function centro_costo_periodo_abierto($idperiodo){
 		if($idperiodo == null){}
 			
 
@@ -824,6 +823,21 @@ class Rrhh extends CI_Controller {
 		}
 		
 	}
+
+
+
+	public function centro_costo_no_calculado($mes,$anno){
+
+		
+			$centro_costo_no_calculado = $this->rrhh_model->get_centro_costo_no_calculado($mes,$anno);
+					
+			echo json_encode($centro_costo_no_calculado);
+		
+		
+	}
+
+
+
 
 
 	public function calculo_remuneraciones($resultid = '')

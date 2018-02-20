@@ -65,6 +65,23 @@ class Rrhh_model extends CI_Model
 		return $query->result() ;
 	}	
 
+	Public function get_centro_costo_no_calculado($mes,$anno){
+		$data_periodo = "select id_centro_costo, nombre 
+						from rem_centro_costo 
+						where id_empresa =".$this->session->userdata('empresaid')." 
+						and valido is not null 
+						and id_centro_costo not in (select pr.id_centro_costo  
+													from rem_periodo_remuneracion as pr
+													join rem_periodo as p on pr.id_periodo = p.id_periodo
+													where p.mes =".$mes." 
+													and p.anno = ".$anno."
+													and pr.id_empresa =".$this->session->userdata('empresaid')."
+													and cierre is not null)"; 
+    	
+    	$query= $this->db->query($data_periodo);
+   		return $query->result();
+    	
+	}
 
 
 	public function get_periodos_remuneracion_abiertos($idperiodo = null){
@@ -126,7 +143,7 @@ public function add_personal($array_datos,$idtrabajador){
 				}
 
 
-				unset($array_datos['rut']);
+				unset($array_datos['rut']); 
 				unset($array_datos['dv']);
 				$this->db->where('id', $idtrabajador);
 				$this->db->where('idcomunidad', $this->session->userdata('empresaid'));		
