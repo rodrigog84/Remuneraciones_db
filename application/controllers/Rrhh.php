@@ -1868,9 +1868,7 @@ public function previred($idperiodo = null)
 			}
 		}
 
-
-		
-		(array(
+		echo json_encode(array(
 		    'valid' => $valid
 		));
 	}	
