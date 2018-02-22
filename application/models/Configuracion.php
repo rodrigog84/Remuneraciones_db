@@ -40,14 +40,18 @@ class Configuracion extends CI_Model
 		$this->load->helper('format');
 	}
 
-	public function get_haberes_descuentos($idhaberdescto = null){
+	public function get_haberes_descuentos($idhaberdescto = null,$tipo = null){
 
-		$habdescto_data = $this->db->select('id, codigo, tipo, nombre, editable, visible')
-						  ->from('rem_conf_haber_descuento')
+		$habdescto_data = $this->db->select('d.id, d.codigo, d.tipo, d.nombre, d.editable, d.visible')
+						  ->from('rem_conf_haber_descuento d')
+						  ->join('rem_conf_haber_descuento_empresa de','d.id = de.idconfhd and de.idempresa = ' . $this->session->userdata('empresaid'),'left')
 						  ->where('valido = 1')
+						  ->where('(editable = 0 or de.idempresa = ' . $this->session->userdata('empresaid') . ')')
 						  ->order_by('nombre');
-		$habdescto_data = is_null($idhaberdescto) ? $habdescto_data : $habdescto_data->where('id',$idhaberdescto);  		                  
+		$habdescto_data = is_null($idhaberdescto) ? $habdescto_data : $habdescto_data->where('id',$idhaberdescto);  		
+		$habdescto_data = is_null($tipo) ? $habdescto_data : $habdescto_data->where('d.tipo',$tipo);  		                  
 		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
 		$datos = is_null($idhaberdescto) ? $query->result() : $query->row();
 		return $datos;
 
@@ -57,6 +61,12 @@ class Configuracion extends CI_Model
 	public function add_haberes_descuentos($datos){
 
 			$this->db->insert('rem_conf_haber_descuento',$datos);
+			$idhaberdescto = $this->db->insert_id();
+
+
+			$array_hdemp = array('idconfhd' => $idhaberdescto,
+								 'idempresa' => $this->session->userdata('empresaid'));
+			$this->db->insert('rem_conf_haber_descuento_empresa',$array_hdemp);
 
 	}
 }
