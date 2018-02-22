@@ -2017,6 +2017,72 @@ public function submit_anticipos(){
 	}	
 
 
+	public function hab_descto_variable(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			
+			$resultid = $this->session->flashdata('personal_result');
+			if($resultid == 1){
+				$vars['message'] = "Trabajador Agregado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+				$vars['mantencion_personal'] = 'active';				
+				$vars['leyes_sociales'] = '';		
+				$vars['apv'] = '';		
+				$vars['salud'] = '';		
+				$vars['otros'] = '';	
+			}
+
+			$this->load->model('admin');
+			$centros_costo = $this->admin->get_centro_costo();
+			$content = array(
+						'menu' => 'Configuraciones',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Haberes / Descuentos');
+
+			$vars['content_menu'] = $content;				
+			$vars['centros_costo'] = $centros_costo;				
+			$vars['content_view'] = 'rrhh/hab_descto_variable';
+			$vars['formValidation'] = true;
+			$vars['gritter'] = true;
+
+			$template = "template";
+			
+
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}	
+
+
+	}	
+
+
+
+	function get_hab_descto($tipo = null){
+
+			$this->load->model('configuracion');
+
+			$haberes_desctos = $this->configuracion->get_haberes_descuentos(null,$tipo);
+
+			echo json_encode($haberes_desctos);
+
+
+	}
+
+
 public function prueba(){
 	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 			//$mes = $this->input->post('mes');

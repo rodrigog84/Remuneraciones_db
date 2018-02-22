@@ -41,7 +41,7 @@ class Configuraciones extends CI_Controller {
 			
 			$resultid = $this->session->flashdata('haber_descuento_result');
 			if($resultid == 1){
-				$vars['message'] = "Trabajador Agregado correctamente";
+				$vars['message'] = "Haber/Descuento Agregado correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';		
 				$vars['mantencion_personal'] = 'active';				
