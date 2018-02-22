@@ -826,6 +826,21 @@ class Rrhh extends CI_Controller {
 
 
 
+	public function centro_costo_pendiente($idperiodo){
+
+		
+			$centro_costo_pendiente = $this->rrhh_model->get_centro_costo_pendiente($idperiodo);
+			
+			if ($centro_costo_pendiente == 0){
+
+				echo json_encode('0');
+			}else{
+
+			echo json_encode($centro_costo_pendiente);
+			}
+		
+	}
+
 	public function centro_costo_no_calculado($mes,$anno){
 
 		
@@ -835,7 +850,6 @@ class Rrhh extends CI_Controller {
 		
 		
 	}
-
 
 
 
@@ -1426,9 +1440,17 @@ public function previred($idperiodo = null)
 
 
 
-	public function aprueba_remuneraciones($idperiodo,$centro_costo){
+	public function aprueba_remuneraciones($idperiodo){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-			$publicar = $this->rrhh_model->aprobar_remuneracion($idperiodo,$centro_costo);
+			
+			$idperiodo = $this->input->post('id_periodo3');
+
+
+			$publicar = $this->rrhh_model->aprobar_remuneracion($idperiodo);
+
+			
+
+
 
 			$this->session->set_flashdata('calculo_remuneraciones_result', 3);
 			redirect('rrhh/calculo_remuneraciones');	
@@ -1847,7 +1869,8 @@ public function previred($idperiodo = null)
 		}
 
 
-		echo json_encode(array(
+		
+		(array(
 		    'valid' => $valid
 		));
 	}	

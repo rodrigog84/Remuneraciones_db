@@ -57,6 +57,7 @@
     <script src="<?php echo base_url(); ?>assets/plugins/jquery-cookie/jquery.cookie.js"></script>
     <!-- ================== END BASE JS ================== -->
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
     <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 
     <!-- ================== END PAGE LEVEL JS ================== -->

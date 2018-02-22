@@ -21,7 +21,7 @@
 									            </div>            
 									          </div>
 									          <?php endif; ?>
-												<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_calculo_remuneraciones" id="basicBootstrapForm" method="post" > 
+												<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_calculo_remuneraciones" name="basicBootstrapForm" method="post" > 
 									            <div class="row">
 
 									                <div class="col-md-6">
@@ -77,7 +77,7 @@
 									                      </div>
 									                      <div class="row">
 									                      	<div class='col-md-3'>
-									                      			<button name="button_submit" id="button_submit" type ="submit" class="btn btn-primary">Calcular</button>&nbsp;&nbsp;
+									                      			<button name="button_submit" id="button_submit" type="button" class="btn btn-primary">Calcular</button>&nbsp;&nbsp;
 									                      	</div>
 									                      </div>                    
 									                    </div><!-- /.box-body -->
@@ -132,9 +132,14 @@
 																			</td> 
 																			<td>
 																				<?php if($periodo->estado == 'Informaci&oacute;n Completa' && !is_null($periodo->cierre)){ ?>
-                            															<a href="#" data-href="<?php echo base_url(); ?>rrhh/aprueba_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="modal" data-target="#confirm-publish" title="Aprobar" class="btn btn-xs btn-success"><span class="fa fa-check"></span></a>
-                            														<!--<a href="<?php echo base_url(); ?>rrhh/rechaza_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="tooltip" title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>-->
-                            														<a href="#" onclick="mostrar_modal(<?php echo $periodo->id_periodo;?>)"  title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-check"></span></a>
+                            															<!--<a href="#" data-href="<?php echo base_url(); ?>rrhh/aprueba_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="modal" data-target="#confirm-publish" title="Aprobar" class="btn btn-xs btn-success"><span class="fa fa-check"></span></a>-->
+
+                            															<a href="#" onclick="mostrar_modal_return(<?php echo $periodo->id_periodo;?>)" title="Aprobar" class="btn btn-xs btn-success"><span class="fa fa-check"></span></a>
+
+
+
+                            															<!--<a href="<?php echo base_url(); ?>rrhh/rechaza_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="tooltip" title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>-->
+                            															<a href="#" onclick="mostrar_modal(<?php echo $periodo->id_periodo;?>)"  title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-check"></span></a>
                           														<?php }else{ ?>
                             															&nbsp;
                           														<?php } ?>																				
@@ -170,16 +175,49 @@
             
                 <div class="modal-body">
                     <p>Se traspasar&aacute; la informaci&oacute;n de remuneraciones.&nbsp;&nbsp;Una vez aprobado, no podr&aacute; reversar la transacci&oacute;n.</p>
+                    <form name="f3" action="<?php echo base_url();?>rrhh/aprueba_remuneraciones" id="f3" method="post">
+                    <input type="hidden" name="id_periodo3" value="<?php echo $periodo->id_periodo; ?>">
+
                     <p>Desea continuar?</p>
                 </div>
                 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-success btn-ok">Aprobar</a>
+                    <a id="b3" class="btn btn-success btn-ok">Aprobar</a>
                 </div>
             </div>
         </div>
     </div>
+ <!-- MODAL DE VALIDACIÓN DE APROBACION DE REMUNERACIONES -->
+ 	<div class="modal fade" id="return-publish" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Atenci&oacute;n</h4>
+                </div>
+            
+                <div class="modal-body">
+                    
+                    <p style="font-size:14px;">Antes de Aprobar las Remuneraciones se deben calcular todos los Centros de Costos</p>
+                    <div id="texto_modal"> </div>
+                    <form name="f2" action="<?php echo base_url();?>rrhh/rechaza_remuneraciones" id="f2" method="post">
+                    <input type="hidden" name="prueba" value="<?php echo $periodo->id_periodo; ?>">
+                    </form>
+                    
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Volver</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 <!-- MODAL DE RECHAZO DE REMUNERACIÓN POR CENTRO DE COSCO -->
     <div class="modal fade" id="refuse-publish" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -244,13 +282,57 @@ $(document).ready(function(){
         $('#b1').click(function(){  
         	var x =document.getElementById("centro_costo2").selectedIndex; 
         	if(x==-1){
-        		alert("Debe seleccionar un Centro de Costo");
+        		bootbox.alert("Debe seleccionar un Centro de Costo");
         	}else{
         		document.forms.f1.submit();	
         	}
         });
 
+
+        $('#b3').click(function(){  
+        	
+        		document.forms.f3.submit();	
+        	}
+        
+        );
+
+
  </script>
+
+<script>
+	function mostrar_modal_return(id_periodo_aprobar){
+		
+		//document.forms.f2.prueba.value=id_periodo_aprobar;
+		document.forms.f3.id_periodo3.value=id_periodo_aprobar;
+		$.ajax({type: "GET",
+		    		url: "<?php echo base_url();?>rrhh/centro_costo_pendiente/"+id_periodo_aprobar, 
+		    		dataType: "json",
+		    		success: function(centro_costo_pendiente){
+		      			if(centro_costo_pendiente ==0){
+		      				$("#confirm-publish").modal();
+
+						}else{
+							$.each(centro_costo_pendiente,function(id_centro_costo) {
+		        			$('#texto_modal').text("Centro de costo pendiente: "+this.nombre+"");	        			
+		     			});
+						 	
+						 	$("#return-publish").modal();
+							}
+
+		      		}
+		     	}); 
+
+		
+	};
+
+
+
+
+</script>
+
+
+
+
 
  <script>
 
@@ -284,43 +366,60 @@ $(document).ready(function(){
 $('.periodo').change(function(){
  
    $('#basicBootstrapForm').formValidation('revalidateField', 'anno');
-      //var id_select = document.getElementById("centro_costo").selectedIndex; 
-      var cerrado = false;
-      $("#centro_costo").html('');
-      $('#centro_costo').multiselect('rebuild');
-        	$.ajax({type: "GET",
-		    		url: "<?php echo base_url();?>rrhh/centro_costo_no_calculado/"+$('#mes').val()+"/"+$('#anno').val(), 
-		    		dataType: "json",
-		    		success: function(centro_costo_no_calculado){
-		      			$.each(centro_costo_no_calculado,function(id_centro_costo) {
-		        			$("#centro_costo").append('<option value='+this.id_centro_costo+'>'+this.nombre+'</option>');
-		        			$('#centro_costo').multiselect('rebuild');		        			
-		     			});        
-    				}});
+      
+     // var id_select = document.getElementById("centro_costo").selectedIndex; 
+          var cerrado = false;
+	      $("#centro_costo").html('');
+	      $('#centro_costo').multiselect('rebuild');
+	        	$.ajax({type: "GET",
+			    		url: "<?php echo base_url();?>rrhh/centro_costo_no_calculado/"+$('#mes').val()+"/"+$('#anno').val(), 
+			    		dataType: "json",
+			    		success: function(centro_costo_no_calculado){
+			      			$.each(centro_costo_no_calculado,function(id_centro_costo) {
+			        			$("#centro_costo").append('<option value='+this.id_centro_costo+'>'+this.nombre+'</option>');
+			        			$('#centro_costo').multiselect('rebuild');		        			
+			     			});        
+	    				}});
 
-      $.ajax({url: "<?php echo base_url();?>rrhh/get_status_rem/calculo/"+$('#mes').val()+"/"+$('#anno').val(),
-        type: 'GET',
-        async: false,
-        success : function(data) {
-            var_json = $.parseJSON(data);
-            $('#span_status').html(var_json["label_text"]);
-            $('#span_status').attr('class',"label "+var_json["label_style"]);     
-            cerrado = var_json["status"] == 'cerrado' ? true : false;
-        }});
+	      $.ajax({url: "<?php echo base_url();?>rrhh/get_status_rem/calculo/"+$('#mes').val()+"/"+$('#anno').val(),
+	        type: 'GET',
+	        async: false,
+	        success : function(data) {
+	            var_json = $.parseJSON(data);
+	            $('#span_status').html(var_json["label_text"]);
+	            $('#span_status').attr('class',"label "+var_json["label_style"]);     
+	            cerrado = var_json["status"] == 'cerrado' ? true : false;
+	        }});
+	  
+	      if(cerrado ){
+			$('#button_submit').attr('disabled',true);
+		  	$('input').attr('readonly',true);	
 
-      if(cerrado ){
-       	$('input').attr('readonly',true);	
-      }else{
-        $('input').attr('readonly',false);
-      }
-
+	      }else{
+	        $('#button_submit').attr('disabled',false);
+	        $('input').attr('readonly',false);
+	      }      
 });
+
+
+       $('#button_submit').click(function(){  
+        	var x =document.getElementById("centro_costo").selectedIndex; 
+        	if(x==-1){
+        		//alert("Debe seleccionar un Centro de Costo");
+        		bootbox.alert("Debe seleccionar un Centro de Costo");
+        	}else{
+        		document.forms.basicBootstrapForm.submit();	
+        	}
+        });
+
+
+
 
 
 $(document).ready(function() {
 
       var cerrado = false;
-      //var id_select = document.getElementById("centro_costo").selectedIndex; 
+     
       $.ajax({url: "<?php echo base_url();?>rrhh/get_status_rem/calculo/"+$('#mes').val()+"/"+$('#anno').val(),
         type: 'GET',
         async: false,
@@ -332,8 +431,11 @@ $(document).ready(function() {
         }});
       
 	      if(cerrado){
-		  	$('input').attr('readonly',true);	    	
+		  	$('#button_submit').attr('disabled',true);
+		  	$('input').attr('readonly',true);	
+
 	      }else{
+	        $('#button_submit').attr('disabled',false);
 	        $('input').attr('readonly',false);
 	      }      
   		

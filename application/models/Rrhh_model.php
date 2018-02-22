@@ -84,6 +84,29 @@ class Rrhh_model extends CI_Model
 	}
 
 
+
+	public function get_centro_costo_pendiente($idperiodo =null){
+
+		$data_periodo = "select id_centro_costo, nombre 
+						from rem_centro_costo
+						where id_empresa =".$this->session->userdata('empresaid')." 
+						and valido is not null
+						and id_centro_costo not in (select id_centro_costo 
+													from rem_periodo_remuneracion
+													where id_periodo =".$idperiodo."
+													and id_empresa =".$this->session->userdata('empresaid')." 
+													and cierre is not null)";
+
+        $query= $this->db->query($data_periodo);
+   		if(count($query->result()) == 0){
+			return 0;
+		}else{
+
+   		return $query->result();
+   	}
+
+	}
+
 	public function get_periodos_remuneracion_abiertos($idperiodo = null){
 		$data_periodo = $this->db->select('p.id_periodo, p.mes, p.anno, pr.cierre, pr.aprueba, pr.anticipo')
 						  ->from('rem_periodo as p')
@@ -844,7 +867,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	public function aprobar_remuneracion($idperiodo,$centro_costo){
 
 		$this->db->where('id_periodo', $idperiodo);
-		$this->db->where('id_centro_costo', $centro_costo);
+		//$this->db->where('id_centro_costo', $centro_costo);
 		$this->db->where('id_empresa', $this->session->userdata('empresaid'));
 		$this->db->update('rem_periodo_remuneracion',array('aprueba' => date("Ymd H:i:s"))); 
 		return 1;
