@@ -106,6 +106,20 @@
 
 
 
+      <?php if(isset($daterangepicker2)){ ?>
+        <script type="text/javascript" src="<?php echo base_url(); ?>plugins/bootstrap-daterangepicker-master/moment.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>plugins/bootstrap-daterangepicker-master/daterangepicker.js"></script>
+
+        <script type="text/javascript" src="<?php echo base_url(); ?>plugins/bootstrap-daterangepicker-master/moment-weekday-calc.min.js"></script>
+        <link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>plugins/bootstrap-daterangepicker-master/daterangepicker.css" />
+      <?php } ?>
+
+
+      <?php if(!isset($moment)){ ?>
+            <script src="<?php echo base_url(); ?>plugins/moment.js"></script>
+            <!--script src="<?php echo base_url(); ?>plugins/moment-with-locales.js"></script-->
+      <?php } ?>   
+
 
       <?php if(isset($datetimepicker_advance)){ ?>
         <link href="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />

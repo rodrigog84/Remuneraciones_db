@@ -678,7 +678,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 						  ->where('p.active = 1')
 						 // ->where_in('idcentrocosto',$centro_costo)
 		                  ->order_by('p.nombre');
-		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id',$idtrabajador);
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);
 		$personal_data = !$centro_costo  ? $personal_data : $personal_data->where_in('idcentrocosto',$centro_costo);
 
 		$query = $this->db->get();
@@ -2588,7 +2588,17 @@ public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$i
 		return is_null($idmovimiento) ? $query->result() : $query->row();
 	}
 
+	public function get_movimiento($idmovimiento = null){
 
+		$movimiento_data = $this->db->select('id, nombre, rango, codprevired')
+						  ->from('rem_movimientos_personal')
+						  ->where('active = 1')
+		                  ->order_by('codprevired','asc');
+		$movimiento_data = is_null($idmovimiento) ? $movimiento_data : $movimiento_data->where('id',$idmovimiento);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idmovimiento) ? $query->result() : $query->row();
+		return $datos;
+	}
 
 public function previred($datos_remuneracion){
 
