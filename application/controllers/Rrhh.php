@@ -2229,6 +2229,383 @@ public function submit_anticipos(){
 	}
 
 
+
+public function mov_personal($resultid = '')
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+			$resultid = $this->session->flashdata('movimientos_personal_result');
+			if($resultid == 1){
+				$vars['message'] = "Movimiento agregado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al agregar movimiento.  Trabajador no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 3){
+				$vars['message'] = "Error al ver movimientos.  Trabajador no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 4){
+				$vars['message'] = "Error al eliminar movimiento.  Movimiento no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 5){
+				$vars['message'] = "Error al agregar/editar movimiento.  Per&iacute;odo asociado ya se encuentra cerrado";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 6){
+				$vars['message'] = "Error al agregar/editar movimiento.  Fechas del movimiento deben corresponder al mismo per&iacute;odo";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 7){
+				$vars['message'] = "Error al agregar movimiento.  Debe indicar per&iacute;odo";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}
+
+
+			$personal = $this->rrhh_model->get_personal(); 
+
+
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Movimientos del Personal');
+
+			$vars['content_menu'] = $content;				
+			$vars['personal'] = $personal;	
+			$vars['content_view'] = 'rrhh/mov_personal';
+			$vars['datatable'] = true;
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+	public function ver_movimiento_personal($idpersonal = null)
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$resultid = $this->session->flashdata('ver_movimientos_personal_result');
+			if($resultid == 1){
+				$vars['message'] = "Movimiento eliminado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al eliminar/editar movimiento.  Movimiento no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 3){
+				$vars['message'] = "Error al eliminar/editar movimiento.  Per&iacute;odo asociado ya se encuentra cerrado";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 4){
+				$vars['message'] = "Movimiento agregado/editado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}elseif($resultid == 5){
+				$vars['message'] = "Error al agregar/editar movimiento.  Per&iacute;odo asociado ya se encuentra cerrado";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 6){
+				$vars['message'] = "Error al agregar/editar movimiento.  Fechas del movimiento deben corresponder al mismo per&iacute;odo";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}
+
+			if(is_null($idpersonal)){
+				$this->session->set_flashdata('movimientos_personal_result', 3);
+				redirect('rrhh/mov_personal');	
+			}
+	
+
+			$personal = $this->rrhh_model->get_personal($idpersonal);
+
+			if(is_null($personal)){
+				$this->session->set_flashdata('movimientos_personal_result', 3);
+				redirect('rrhh/mov_personal');	
+			}
+
+			$movimientos = $this->rrhh_model->get_lista_movimientos($idpersonal);
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Agregar movimiento del Personal');
+
+
+
+
+			$mes = $this->session->flashdata('descuentos_mes') == '' ? date('m') : $this->session->flashdata('descuentos_mes');
+			$anno = $this->session->flashdata('descuentos_anno') == '' ? date('Y') : $this->session->flashdata('descuentos_anno');
+
+			$vars['mes'] = $mes;	
+			$vars['anno'] = $anno;	
+
+			//$saldo_vacaciones = 0;
+			$vars['content_menu'] = $content;				
+			$vars['personal'] = $personal;	
+			$vars['movimientos'] = $movimientos;
+			$vars['content_view'] = 'rrhh/ver_movimiento_personal';
+			$vars['formValidation'] = true;
+			$vars['datetimepicker'] = true;
+			$vars['gritter'] = true;
+
+
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
+
+
+public function add_movimiento_personal($idpersonal = null,$idmovimiento = null)
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			if(is_null($idpersonal)){
+				$this->session->set_flashdata('movimientos_personal_result', 2);
+				redirect('remuneraciones/movimientos_personal');	
+			}
+
+			$personal = $this->rrhh_model->get_personal($idpersonal);
+
+			if(is_null($personal)){
+				$this->session->set_flashdata('movimientos_personal_result', 2);
+				redirect('rrhh/mov_personal');	
+			}
+
+
+
+
+
+			$movimientos = $this->rrhh_model->get_movimiento();
+			if(!is_null($idmovimiento)){
+				$movimiento_realizado = $this->rrhh_model->get_lista_movimientos($idpersonal,$idmovimiento);
+
+				if(is_null($movimiento_realizado)){
+					$this->session->set_flashdata('ver_movimientos_personal_result', 2);
+					redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+				}
+				$url_back = "rrhh/ver_movimiento_personal/".$idpersonal;
+				$vars['fechadesde'] = $movimiento_realizado->fecmovimiento;
+				$vars['fechahasta'] = $movimiento_realizado->fechastamovimiento;
+
+				$mes = substr($movimiento_realizado->fecmovimiento,5,2);
+				$anno = substr($movimiento_realizado->fecmovimiento,0,4);
+				$vars['minDate'] = "01/".str_pad($mes,2,"0",STR_PAD_LEFT)."/".$anno;
+				$vars['maxDate'] = ultimo_dia_mes($mes,$anno)."/".str_pad($mes,2,"0",STR_PAD_LEFT)."/".$anno;
+
+
+
+
+
+			}else{
+
+				$mes = $this->input->post('mes');
+				$anno = $this->input->post('anno');
+				if(empty($mes) || empty($anno)){
+					$this->session->set_flashdata('movimientos_personal_result', 7);
+					redirect('rrhh/mov_personal');	
+				}
+
+
+
+				$movimiento_realizado = array();
+				$url_back = "rrhh/ver_movimiento_personal/".$idpersonal;
+				$vars['fechadesde'] = date("Y-m-d");
+				$vars['fechahasta'] = date("Y-m-d");
+				$vars['minDate'] = "01/".str_pad($mes,2,"0",STR_PAD_LEFT)."/".$anno;
+				$vars['maxDate'] = ultimo_dia_mes($mes,$anno)."/".str_pad($mes,2,"0",STR_PAD_LEFT)."/".$anno;
+
+			}
+
+
+			$vars['mes'] = $mes;
+			$vars['anno'] = $anno;			
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Agregar movimiento del Personal');
+
+
+
+
+
+			//$saldo_vacaciones = 0;
+			$vars['content_menu'] = $content;				
+			$vars['personal'] = $personal;	
+			$vars['movimientos'] = $movimientos;
+			$vars['movimiento_realizado'] = $movimiento_realizado;
+			$vars['url_back'] = $url_back;
+			$vars['content_view'] = 'rrhh/add_movimiento_personal';
+			$vars['formValidation'] = true;
+			
+			$vars['datetimepicker'] = true;
+			$vars['daterangepicker2'] = true;	
+			//$vars['moment'] = true;	
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}		
+
+	public function submit_movimiento_personal(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			$idpersonal = $this->input->post('idpersonal');
+			$comentarios = $this->input->post('comentarios');	
+			$movimientos = $this->input->post('movimientos');	
+			$idmovimiento = $this->input->post('idmovimiento');	
+
+			//print_r($this->input->post(NULL,true)); exit;
+
+			$array_datos = array(
+								'idpersonal' => $idpersonal,
+								'idmovimiento' => $idmovimiento,
+								'idpersonal' => $idpersonal,
+								'movimientos' => $movimientos,
+								'comentarios' => $comentarios,
+								'fecmovimiento' => $this->input->post("fechadesde"),
+								'fechastamovimiento' => $this->input->post("fechahasta"),
+								'created_at' => date("Ymd H:i:s")
+								);
+
+			$result = $this->rrhh_model->add_movimiento_personal($array_datos);
+
+
+			if($result == 1){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 4);
+				#$this->session->set_flashdata('movimientos_personal_result', 1);
+				#redirect('remuneraciones/movimientos_personal');	
+				redirect('rrhh/ver_movimiento_personal/'.$idpersonal);
+			}else if($result == 2){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 4);
+				redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+			}else if($result == 3){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 2);
+				redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+			}else if($result == 4){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 3);
+				redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+			}else if($result == 5){
+				#$this->session->set_flashdata('movimientos_personal_result', 5);
+				#redirect('remuneraciones/movimientos_personal');	
+				$this->session->set_flashdata('ver_movimientos_personal_result', 5);
+				redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+			}else if($result == 6){
+				#$this->session->set_flashdata('movimientos_personal_result', 6);
+				#redirect('remuneraciones/movimientos_personal');	
+				$this->session->set_flashdata('ver_movimientos_personal_result', 6);
+				redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+			}
+			
+			
+			
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+
+		}		
+
+
+	}
+
+
+	public function delete_movimiento_personal($idpersonal = '',$idmovimiento = '')
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+
+			if($idpersonal == '' || $idmovimiento == ''){
+				$this->session->set_flashdata('movimientos_personal_result',4);
+				redirect('rrhh/movimientos_personal');	
+			}
+
+
+			$result = $this->rrhh_model->delete_movimiento_personal($idpersonal,$idmovimiento);
+
+
+			if($result == 1){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 1);
+			}else if($result == 2){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 2);
+			}else if($result == 3){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 3);				
+			}
+			redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+
+			
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}		
+
 public function prueba(){
 	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 			//$mes = $this->input->post('mes');

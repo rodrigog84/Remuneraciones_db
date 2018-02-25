@@ -55,6 +55,20 @@ class Admin extends CI_Model
 		return $datos;
 	}
 
+
+	public function get_periodo_by_mes($mes,$anno){
+
+			$this->db->select('id_periodo ')
+							  ->from('rem_periodo')
+							  ->where('mes',$mes)
+							  ->where('anno',$anno);
+
+			$query = $this->db->get();	
+			return $query->row();						  
+	}
+
+
+
 	public function add_estudios($array_datos){
 
 

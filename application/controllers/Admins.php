@@ -455,15 +455,15 @@ class Admins extends CI_Controller {
 
 			$tabla_asig_familiar = $this->admin->get_tabla_asig_familiar(); 
 
-			/*$content = array(
+			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',
-						'subtitle' => 'Asignaci&oacute;n Familiar');*/
+						'subtitle' => 'Asignaci&oacute;n Familiar');
 
 
 			$vars['formValidation'] = true;
 			$vars['mask'] = true;			
-			//$vars['content_menu'] = $content;				
+			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'admins/asig_familiar';
 			$vars['tabla_asig_familiar'] = $tabla_asig_familiar;
 			
@@ -558,13 +558,13 @@ class Admins extends CI_Controller {
 			$feriados = $this->admin->get_feriado();
 
 
-			/*$content = array(
+			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',
 						'subtitle' => 'Administraci&oacute;n de Feriados');
-			*/
 			
-			//$vars['content_menu'] = $content;			
+			
+			$vars['content_menu'] = $content;			
 			$vars['datetimepicker'] = true;	
 			$vars['content_view'] = 'admins/feriados';
 			$vars['feriados'] = $feriados;
