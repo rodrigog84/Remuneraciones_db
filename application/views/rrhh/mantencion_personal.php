@@ -42,9 +42,10 @@
 	                              										  <td><small><?php echo $trabajador->direccion;?></small></td>
 	                              										  <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo";?></small></td>
 																			<td>
-																				<button type="button" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-        																		
-        																		<button type="button" class="btn btn-danger" id="opciones" title="Eliminar" data-toggle="modal" data-target="#myModalElim"><i class="fa fa-times" aria-hidden="true"></i></button>
+																				<!--<a href="<?php echo base_url();?>rrhh/mod_trabajador" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>-->
+																				<a href="<?php echo base_url();?>rrhh/mod_trabajador" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>
+        																		<!--<a href="#" class="btn btn-info" role="button">Link Button</a>-->
+        																		<a href="#" onclick="desactivar_colaborador(<?php echo $trabajador->rut;?>)" class="btn btn-danger" id="Desactivar" title="Activar/Desactivar" data-toggle="modal" data-target="#myModalElim"><i class="fa fa-times" aria-hidden="true" type="button"></i></a>
 																			</td>
 																		</tr> 
 
@@ -112,4 +113,72 @@ $(function () {
 
 
     });
+</script>
+
+
+<script>
+	function desactivar_colaborador(rut){
+
+		$.ajax({type: "GET",
+		    		url: "<?php echo base_url();?>rrhh/verificar_trabajador/", 
+		    		dataType: "json",
+		    		success: function(personal){
+		      			if(personal ==0){
+		      				
+								bootbox.confirm({
+							    title: "Activar Colaborador",
+							    message: "¿Desea realizar la activación de Colaborador?"+rut,
+							    buttons: {
+							        cancel: {
+							            label: '<i class="fa fa-times"></i> Cancelar'
+							        },
+							        confirm: {
+							            label: '<i class="fa fa-check"></i> Confirmar'
+							        }
+							    },
+							    callback: function (result) {
+							        //console.log('This was logged in the callback: ' + result);
+							        if (result == true){
+							    		window.location="<?php echo base_url();?>rrhh/activar_trabajador/"+rut;
+							    	}
+							    }
+
+								});
+
+						}else{
+								bootbox.confirm({
+							    title: "Desactivar Colaborador",
+							    message: "¿Desea realizar la desactivación de Colaborador?",
+							    buttons: {
+							        cancel: {
+							            label: '<i class="fa fa-times"></i> Cancelar'
+							        },
+							        confirm: {
+							            label: '<i class="fa fa-check"></i> Confirmar'
+							        }
+							    },
+							    callback: function (result) {
+							        //console.log('This was logged in the callback: ' + result);
+							        if (result == true){
+							   		window.location="<?php echo base_url();?>rrhh/desactivar_trabajador/"+rut;
+							    	}
+							    }
+
+								});
+
+
+							}
+
+		      		}
+		     	}); 
+		
+
+
+
+		
+	
+
+
+
+};
 </script>

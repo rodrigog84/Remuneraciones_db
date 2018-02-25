@@ -125,6 +125,79 @@ class Rrhh_model extends CI_Model
 	}	
 
 
+public function verificar_personal($rut){
+
+		$this->db->trans_start();
+
+		$this->db->select('p.id_personal, p.active')
+						  ->from('rem_personal as p')
+		                  ->where('p.rut', $rut)
+		                  ->where('p.id_empresa', $this->session->userdata('empresaid'))
+		                  ->where('p.active = 1');		
+		$query = $this->db->get();
+		$datos = $query->row();
+		if(count($datos) == 0){
+			return 0;
+		}
+		else{
+			return 1;
+		
+
+		}
+		$this->db->trans_complete();
+}
+
+
+public function desactivar_personal($rut){
+
+		$this->db->trans_start();
+
+		$this->db->select('p.id_personal, p.active')
+						  ->from('rem_personal as p')
+		                  ->where('p.rut', $rut)
+		                  ->where('p.id_empresa', $this->session->userdata('empresaid'))
+		                  ->where('p.active = 1');		
+		$query = $this->db->get();
+		$datos = $query->row();
+		if(count($datos) == 0){
+			return 0;
+		}else{
+			$this->db->where('rut', $rut);
+			$this->db->where('id_empresa', $this->session->userdata('empresaid'));
+			$this->db->update('rem_personal',array('active' => '0')); 
+			$this->db->trans_complete();
+			return 1;
+
+		}
+
+
+
+}
+
+public function activar_personal($rut){
+
+		$this->db->trans_start();
+
+		$this->db->select('p.id_personal, p.active')
+						  ->from('rem_personal as p')
+		                  ->where('p.rut', $rut)
+		                  ->where('p.id_empresa', $this->session->userdata('empresaid'))
+		                  ->where('p.active = 0');		
+		$query = $this->db->get();
+		$datos = $query->row();
+		if(count($datos) == 0){
+			return 0;
+		}else{
+			$this->db->where('rut', $rut);
+			$this->db->where('id_empresa', $this->session->userdata('empresaid'));
+			$this->db->update('rem_personal',array('active' => '1')); 
+			$this->db->trans_complete();
+			return 1;
+
+		}
+}
+
+
 
 public function add_personal($array_datos,$idtrabajador){
 
@@ -272,7 +345,7 @@ public function add_personal($array_datos,$idtrabajador){
 		if(count($datos_periodo) == 0){
 			return 2;
 		}else{
-			//for ($i=1;i<=count($datos_periodo);$i++){
+			
 			if(is_null($datos_periodo->cierre)){
 				return is_null($datos_periodo->anticipo) ? 1 : 3;  #EL 3 aplica sólo en cálculo de anticipo
 			}else{
@@ -678,7 +751,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 						  ->where('p.active = 1')
 						 // ->where_in('idcentrocosto',$centro_costo)
 		                  ->order_by('p.nombre');
-		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id',$idtrabajador);
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);
 		$personal_data = !$centro_costo  ? $personal_data : $personal_data->where_in('idcentrocosto',$centro_costo);
 
 		$query = $this->db->get();
