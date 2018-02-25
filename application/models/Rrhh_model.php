@@ -1348,8 +1348,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			#Y POR DIAS NO TRABAJADOS, EL PROPORCIONAL AL SUELDO IMPONIBLE ANTEIOR.  SI NO EXISTE, EN BASE AL CONTRATO
 
 			#1.- VERIFICAR SI TIENE LICENCIA EN EL PERÍODO
-			//$movimientos = $this->get_lista_movimientos($trabajador->id,null,$idperiodo,3);
-			$movimientos = array();
+			$movimientos = $this->get_lista_movimientos($trabajador->id_personal,null,$idperiodo,3);
+			//$movimientos = array();
 			$tiene_licencia = count($movimientos) > 0 ? true : false;
 
 			//ocupo esta query para sacar el ultimo sueldo imponible, sino tomar suedo base según contrato.
