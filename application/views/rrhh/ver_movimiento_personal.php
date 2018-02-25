@@ -96,8 +96,8 @@
                         <td><?php echo $movimiento->rango == 1 ? formato_fecha($movimiento->fechastamovimiento,'Y-m-d','d/m/Y') : "-";?></td>
                         <td><?php echo $movimiento->comentario; ?></td>
                         <td>
-                           <a href="<?php echo base_url();?>rrhh/add_movimiento_personal/<?php echo $personal->id;?>/<?php echo $movimiento->id;?>" data-toggle="tooltip" title="Editar Movimiento" ><span class="glyphicon glyphicon-edit"></span></a>&nbsp;&nbsp;
-                           <a href="<?php echo base_url();?>rrhh/delete_movimiento_personal/<?php echo $personal->id;?>/<?php echo $movimiento->id;?>" data-toggle="tooltip" title="Eliminar Movimiento" ><span class="glyphicon glyphicon-trash"></span></a>                           
+                           <a href="<?php echo base_url();?>rrhh/add_movimiento_personal/<?php echo $personal->id_personal;?>/<?php echo $movimiento->id;?>" data-toggle="tooltip" title="Editar Movimiento" ><span class="glyphicon glyphicon-edit"></span></a>&nbsp;&nbsp;
+                           <a href="<?php echo base_url();?>rrhh/delete_movimiento_personal/<?php echo $personal->id_personal;?>/<?php echo $movimiento->id;?>" data-toggle="tooltip" title="Eliminar Movimiento" ><span class="glyphicon glyphicon-trash"></span></a>                           
                         </td>                        
                       </tr>
                         <?php $i++; ?>
@@ -161,3 +161,25 @@ $(document).ready(function() {
 
 
 </script>
+<script>
+
+    $(document).ready(function() {
+        <?php if(isset($message)){ ?>
+
+        $.gritter.add({
+            title: 'Atención',
+            text: '<?php echo $message;?>',
+            sticky: false,
+            image: '<?php echo base_url();?>images/logos/<?php echo $classmessage == 'success' ? 'check_ok_accept_apply_1582.png' : 'alert-icon.png';?>',
+            time: 5000,
+            class_name: 'my-sticky-class'
+        });
+        /*setTimeout(redirige, 1500);
+        function redirige(){
+            location.href = '<?php //echo base_url();?>welcome/dashboard';
+        }*/
+        <?php } ?>
+
+
+    });
+</script>   

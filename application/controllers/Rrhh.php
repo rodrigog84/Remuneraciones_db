@@ -2219,6 +2219,8 @@ public function mov_personal($resultid = '')
 			$vars['content_view'] = 'rrhh/ver_movimiento_personal';
 			$vars['formValidation'] = true;
 			$vars['datetimepicker'] = true;
+			$vars['gritter'] = true;
+
 
 			$template = "template";
 			
@@ -2262,13 +2264,13 @@ public function add_movimiento_personal($idpersonal = null,$idmovimiento = null)
 
 			$movimientos = $this->rrhh_model->get_movimiento();
 			if(!is_null($idmovimiento)){
-				$movimiento_realizado = $this->remuneracion->get_lista_movimientos($idpersonal,$idmovimiento);
+				$movimiento_realizado = $this->rrhh_model->get_lista_movimientos($idpersonal,$idmovimiento);
 
 				if(is_null($movimiento_realizado)){
 					$this->session->set_flashdata('ver_movimientos_personal_result', 2);
-					redirect('remuneraciones/ver_movimiento_personal/'.$idpersonal);	
+					redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
 				}
-				$url_back = "remuneraciones/ver_movimiento_personal/".$idpersonal;
+				$url_back = "rrhh/ver_movimiento_personal/".$idpersonal;
 				$vars['fechadesde'] = $movimiento_realizado->fecmovimiento;
 				$vars['fechahasta'] = $movimiento_realizado->fechastamovimiento;
 
@@ -2346,7 +2348,115 @@ public function add_movimiento_personal($idpersonal = null,$idmovimiento = null)
 
 	}		
 
+	public function submit_movimiento_personal(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			$idpersonal = $this->input->post('idpersonal');
+			$comentarios = $this->input->post('comentarios');	
+			$movimientos = $this->input->post('movimientos');	
+			$idmovimiento = $this->input->post('idmovimiento');	
 
+			//print_r($this->input->post(NULL,true)); exit;
+
+			$array_datos = array(
+								'idpersonal' => $idpersonal,
+								'idmovimiento' => $idmovimiento,
+								'idpersonal' => $idpersonal,
+								'movimientos' => $movimientos,
+								'comentarios' => $comentarios,
+								'fecmovimiento' => $this->input->post("fechadesde"),
+								'fechastamovimiento' => $this->input->post("fechahasta"),
+								'created_at' => date("Ymd H:i:s")
+								);
+
+			$result = $this->rrhh_model->add_movimiento_personal($array_datos);
+
+
+			if($result == 1){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 4);
+				#$this->session->set_flashdata('movimientos_personal_result', 1);
+				#redirect('remuneraciones/movimientos_personal');	
+				redirect('rrhh/ver_movimiento_personal/'.$idpersonal);
+			}else if($result == 2){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 4);
+				redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+			}else if($result == 3){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 2);
+				redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+			}else if($result == 4){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 3);
+				redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+			}else if($result == 5){
+				#$this->session->set_flashdata('movimientos_personal_result', 5);
+				#redirect('remuneraciones/movimientos_personal');	
+				$this->session->set_flashdata('ver_movimientos_personal_result', 5);
+				redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+			}else if($result == 6){
+				#$this->session->set_flashdata('movimientos_personal_result', 6);
+				#redirect('remuneraciones/movimientos_personal');	
+				$this->session->set_flashdata('ver_movimientos_personal_result', 6);
+				redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+			}
+			
+			
+			
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+
+		}		
+
+
+	}
+
+
+	public function delete_movimiento_personal($idpersonal = '',$idmovimiento = '')
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+
+			if($idpersonal == '' || $idmovimiento == ''){
+				$this->session->set_flashdata('movimientos_personal_result',4);
+				redirect('rrhh/movimientos_personal');	
+			}
+
+
+			$result = $this->rrhh_model->delete_movimiento_personal($idpersonal,$idmovimiento);
+
+
+			if($result == 1){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 1);
+			}else if($result == 2){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 2);
+			}else if($result == 3){
+				$this->session->set_flashdata('ver_movimientos_personal_result', 3);				
+			}
+			redirect('rrhh/ver_movimiento_personal/'.$idpersonal);	
+
+			
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}		
 
 public function prueba(){
 	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
