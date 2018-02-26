@@ -427,7 +427,7 @@ class Rrhh extends CI_Controller {
 
 	}
 
-public function mod_trabajador($idtrabajador = null)
+public function mod_trabajador($rut = null,$idtrabajador = null)
 	{
 
 		//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
@@ -435,6 +435,7 @@ public function mod_trabajador($idtrabajador = null)
 
 			/***** CARGA DE DATOS PARA FORMULARIO ***/
 			$this->load->model('admin');
+			$this->load->model('rrhh_model');
 			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
 			$regiones = $this->admin->get_regiones();
 			$estados_civiles = $this->admin->get_estado_civil();
@@ -447,7 +448,8 @@ public function mod_trabajador($idtrabajador = null)
 			$centros_costo = $this->admin->get_centro_costo();
 			$afps = $this->admin->get_afp();
 			$isapres = $this->admin->get_isapre();
-			
+			$datos_personal = $this->rrhh_model->get_personal_datos($rut);
+
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 
 			/**** CARGA DE DATOS TRABAJADOR ****/
@@ -512,7 +514,7 @@ public function mod_trabajador($idtrabajador = null)
 								'active' => is_null($idtrabajador) ? "1" : $trabajador->active,
 								);
 			
-
+			
 			$vars['content_menu'] = $content;				
 			$vars['regiones'] = $regiones;
 			$vars['estados_civiles'] = $estados_civiles;			
@@ -526,7 +528,7 @@ public function mod_trabajador($idtrabajador = null)
 			$vars['tramos_asig_familiar'] = $tramos_asig_familiar;
 			$vars['afps'] = $afps;
 			$vars['isapres'] = $isapres;
-			$vars['content_view'] = 'rrhh/add_trabajador';
+			$vars['content_view'] = 'rrhh/mod_trabajador';
 			$vars['datos_form'] = $datos_form;
 			$vars['bonos'] = $bonos;
 			$vars['formValidation'] = true;
@@ -535,7 +537,7 @@ public function mod_trabajador($idtrabajador = null)
 			$vars['jqueryRut'] = true;
 			$vars['mask'] = true;
 			$vars['inputmask'] = true;
-
+			$vars['datos_personal'] = $datos_personal;
 
 			$template = "template";
 			$this->load->view($template,$vars);	
@@ -698,7 +700,135 @@ public function mod_trabajador($idtrabajador = null)
 
 	}
 
+public function editar_trabajador(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			//echo "<pre>";
+			//print_r($this->input->post(NULL,true));  EXIT;
+			$idtrabajador = $this->input->post("idtrabajador");
+       		$rut = str_replace(".","",$this->input->post("rut"));
+			$arrayRut = explode("-",$rut);
+			$numficha = $this->input->post('numficha');
+			$nombre = $this->input->post('nombre');
+			$apaterno = $this->input->post('apaterno');
+			$amaterno = $this->input->post('amaterno');
+			$fecnacimiento = $this->input->post('fechanacimiento');
+			$idnacionalidad = $this->input->post('nacionalidad');
+			$idecivil = $this->input->post('ecivil');
+			$sexo = $this->input->post('sexo');
+			$direccion = $this->input->post('direccion');
+			$email = $this->input->post('email');
+			$tiporenta = $this->input->post('tiporenta');
+			$idcargo = $this->input->post('cargo');
+			$idestudio = $this->input->post('estudios');
+			$titulo = $this->input->post('titulo');
+			$ididioma = $this->input->post('idioma');
+			$idjefe = $this->input->post('jefe');
+			$idreemplazo = $this->input->post('reemplazo');
+			$idlicencia = $this->input->post('licencia');
+			$tallapolera = $this->input->post('polera');
+			$tallapantalon = $this->input->post('pantalon');
+			$tipodocumento = $this->input->post('tipo_documento');
+			$idcentrocosto = $this->input->post('centro_costo');
+			$cbeneficio = $this->input->post('beneficio');
+			$fono = $this->input->post('fono');
+			$afp = $this->input->post('afp');
+			$isapre = $this->input->post('isapre');
+			$sueldo_base = $this->input->post('sueldo_base');
+		
 
+
+			$array_datos = array(
+								'idempresa' => $this->session->userdata('empresaid'),
+	       						'rut' => $idtrabajador == 0 ? $arrayRut[0] : "",
+	       						'dv' => $idtrabajador == 0 ? $arrayRut[1] : "",
+	       						'nombre' => $numficha,
+								'nombre' => $nombre,
+								'apaterno' => $apaterno,
+								'amaterno' => $amaterno,
+								'fecnacimiento' => substr($fecnacimiento,6,4)."-".substr($fecnacimiento,3,2)."-".substr($fecnacimiento,0,2),
+								'idnacionalidad' => $idnacionalidad,
+								'nacionalidad' => 'C', //ELIMINAR DESPUES
+								'idecivil' => $idecivil,
+								'sexo' => $sexo,
+								'direccion' => $direccion,
+								'email' => $email,
+								'tiporenta' => $tiporenta,
+								'idcargo' => $idcargo,
+								'idestudio' => $idestudio,
+								'titulo' => $titulo,
+								'ididioma' => $ididioma,
+								'idjefe' => $idjefe,
+								'idreemplazo' => $idreemplazo,
+								'idlicencia' => $idlicencia,
+								'tallapolera' => $tallapolera,
+								'tallapantalon' => $tallapantalon,
+								'tipodocumento' => $tipodocumento,
+								'idcentrocosto' => $idcentrocosto,
+								'cbeneficio' => $cbeneficio,
+								'fono' => $fono,
+								'idafp' => $afp,
+								'idisapre' => $isapre,
+								'sueldobase' => $sueldo_base,
+								
+								//DATOS POR DEFECTO
+								'idregion' => 1,
+								'idcomuna' => 1,
+								'fecingreso' => '2017-09-05',
+								'fecinicvacaciones' => '2017-09-05',
+								'saldoinicvacaciones' => 0,
+								'saldoinicvacprog' => 0,
+								'diasprogresivos' => 0,
+								'diasvactomados' => 0,
+								'diasprogtomados' => 0,
+								'tipocontrato' => 'I',
+								'parttime' => 0,
+								'segcesantia' => 0,
+								'pensionado' => 0,
+								'diastrabajo' => 30,
+								'horasdiarias' => 8,
+								'horassemanales' => 45,
+								//'sueldobase' => 250000,
+								'tipogratificacion' => 'SG',
+								'gratificacion' => 0,
+								'cargassimples' => 0,
+								'cargasinvalidas' => 0,
+								'cargasmaternales' => 0,
+								'cargasretroactivas' => 0,
+								'idasigfamiliar' => NULL,
+								'asigfamiliar' => 0,
+								'movilizacion' => 0,
+								'colacion' => 0,
+								'active' => 1,
+
+								//OTROS
+								'adicafp' => 0,);
+
+
+
+
+			$result = $this->rrhh_model->edit_personal($array_datos,$idtrabajador);
+
+			if($result == -1){
+				$this->session->set_flashdata('personal_result', 2);
+			}else{
+				if($idtrabajador == 0){
+					$this->session->set_flashdata('personal_result', 1);
+				}else{
+					$this->session->set_flashdata('personal_result', 6);
+				}
+			}
+			redirect('rrhh/mantencion_personal');	
+
+
+
+		}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}	
 
 
 	public function submit_trabajador(){

@@ -43,7 +43,7 @@
 	                              										  <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo";?></small></td>
 																			<td>
 																				<!--<a href="<?php echo base_url();?>rrhh/mod_trabajador" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>-->
-																				<a href="<?php echo base_url();?>rrhh/mod_trabajador" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>
+																				<a href="<?php echo base_url();?>rrhh/mod_trabajador/<?php echo $trabajador->rut ?>" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>
         																		<!--<a href="#" class="btn btn-info" role="button">Link Button</a>-->
         																		<a href="#" onclick="desactivar_colaborador(<?php echo $trabajador->rut;?>)" class="btn btn-danger" id="Desactivar" title="Activar/Desactivar" data-toggle="modal" data-target="#myModalElim"><i class="fa fa-times" aria-hidden="true" type="button"></i></a>
 																			</td>

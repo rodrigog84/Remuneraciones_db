@@ -1,4 +1,4 @@
-<?php if(isset($message)): ?>
+<!--<?php if(isset($message)): ?>
      <div class="row">
         <div class="col-md-12">
                   <div class="alert alert-<?php echo $classmessage; ?> alert-dismissable">
@@ -8,11 +8,11 @@
               </div>
     </div>            
   </div>
-  <?php endif; ?>
+  <?php endif; ?>-->
 
 
-<!--sub-heard-part--><form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_trabajador" id="basicBootstrapForm" method="post">
-<!--sub-heard-part-->
+<!--sub-heard-part--><form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/editar_trabajador" id="basicBootstrapForm" method="post">
+<!--sub-heard-part-->	 <?php foreach ($datos_personal as $datospersonales){ ?>
 								<div class="sub-heard-part">
 									<ul class="nav nav-tabs">
   										<li class="active"><a href="#datospersonales" data-toggle="tab">Datos Personales </a></li>
@@ -56,7 +56,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="rut" id="rut"  class="form-control1"  placeholder="98.123.456-7" title="Escriba Rut" >
+																<input type="text" name="rut" id="rut"  class="form-control1"  placeholder="98.123.456-7" title="Escriba Rut" value="<?php echo $datospersonales->rut;?>">
 															</td>
 															<td>
 																<input type="text" name="numficha" id="numficha" class="form-control1" id="" placeholder="Número de Ficha">
@@ -76,14 +76,14 @@
 														<tbody>
 															<td >
 																<div class="form-group">
-																<input type="text" name="nombre" class="form-control1" id="nombre" placeholder="Nombre Completo">
+																<input type="text" name="nombre" class="form-control1" id="nombre" placeholder="Nombre Completo" value="<?php echo $datospersonales->nombre;?>">
 																</div>
 															</td>
 															<td class="form-group">
-																<input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="Apellido Parterno">
+																<input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="Apellido Parterno" value="<?php echo $datospersonales->apaterno;?>">
 															</td>
 															<td class="form-group">
-																<input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="Apellido Materno">
+																<input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="Apellido Materno" value="<?php echo $datospersonales->amaterno;?>">
 															</td>
 														</tbody>
 													</table>
@@ -150,10 +150,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="direccion" id="direccion" class="form-control1" placeholder="Dirección" data-toggle="modal" data-target="#myModalDireccion">
+																<input type="text" name="direccion" id="direccion" class="form-control1" placeholder="Dirección" data-toggle="modal" data-target="#myModalDireccion" value="<?php echo $datospersonales->direccion;?>">
 															</td>
 															<td>
-																<input type="text" name="email" id="email" class="form-control1" placeholder="Email">
+																<input type="text" name="email" id="email" class="form-control1" placeholder="Email" value="<?php echo $datospersonales->email;?>">
 															</td>
 														</tbody>
 													</table>
@@ -353,7 +353,7 @@
 																<input type="text" name="clase" class="form-control1" id="clase" placeholder="Clases">
 															</td>
 															<td>
-																<input type="text" name="sueldo_base" class="form-control1" id="sueldo_base" placeholder="Sueldo Base">
+																<input type="text" name="sueldo_base" class="form-control1" id="sueldo_base" placeholder="Sueldo Base" value="<?php echo $datospersonales->sueldobase;?>">
 															</td>
 															<td>
 																<input type="text" name="tipo_cc" class="form-control1" id="tipo_cc" placeholder="Tipo CC">
@@ -918,7 +918,7 @@
 										<a href="<?php echo base_url();?>rrhh/mantencion_personal" class="btn btn-success">Volver</a>	
 									</div>
 								</div>
-
+								<?php } ?>
 							</form>
 <script>
 function VerificaRut(rut) {
