@@ -226,6 +226,79 @@ public function cartola_vacaciones($idpersonal = '')
 
 	}	
 
+	public function comprobante_solicitud($idpersonal = null,$idcartola = null)
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			if(is_null($idpersonal) || is_null($idcartola)){
+				redirect('main/dashboard/');				
+			}
+
+			$cartola = $this->auxiliar->get_cartola_vacaciones($idpersonal,$idcartola);
+
+
+
+			if(count($cartola) == 0){ // SI NO ENCUENTRO NINGUNA CARTOLA (CORRESPONDE A OTRA COMUNIDAD POR EJEMPLO)
+				redirect('main/dashboard/');
+			}else{
+				$datosdetalle = $this->auxiliar->comprobante_solicitud($idpersonal,$idcartola);
+			}
+
+			exit;
+
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+	public function delete_vacaciones($idpersonal = '',$idcartola = '')
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+
+			if($idpersonal == '' || $idcartola == ''){
+				$this->session->set_flashdata('vacaciones_result',5);
+				redirect('auxiliares/vacaciones');	
+			}
+
+			$result = $this->auxiliar->delete_vacaciones($idpersonal,$idcartola);
+
+
+			if($result){
+				$this->session->set_flashdata('cartola_vacaciones_result', 1);
+			}else{
+				$this->session->set_flashdata('cartola_vacaciones_result', 2);
+			}
+			redirect('auxiliares/cartola_vacaciones/'.$idpersonal);	
+
+			
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
 
 	public function add_dia_progresivo($idpersonal = '',$idcartola = null)
 	{
