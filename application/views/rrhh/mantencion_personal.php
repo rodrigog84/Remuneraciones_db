@@ -120,7 +120,7 @@ $(function () {
 	function desactivar_colaborador(rut){
 
 		$.ajax({type: "GET",
-		    		url: "<?php echo base_url();?>rrhh/verificar_trabajador/", 
+		    		url: "<?php echo base_url();?>rrhh/verificar_trabajador/"+rut, 
 		    		dataType: "json",
 		    		success: function(personal){
 		      			if(personal ==0){
