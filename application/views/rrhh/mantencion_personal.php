@@ -127,7 +127,7 @@ $(function () {
 		      				
 								bootbox.confirm({
 							    title: "Activar Colaborador",
-							    message: "¿Desea realizar la activación de Colaborador?"+rut,
+							    message: "¿Desea realizar la activación de Colaborador?",
 							    buttons: {
 							        cancel: {
 							            label: '<i class="fa fa-times"></i> Cancelar'

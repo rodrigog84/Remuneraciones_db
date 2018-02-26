@@ -676,7 +676,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 
 
 
-	public function verificar_trabajador($rut){
+	public function verificar_trabajador($rut=null){
 
 		$personal = $this->rrhh_model->verificar_personal($rut);
 					
@@ -685,7 +685,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 		echo json_encode($personal);
 	}
 
-	public function desactivar_trabajador($rut){
+	public function desactivar_trabajador($rut=null){
 
 		$personal = $this->rrhh_model->desactivar_personal($rut);
 		redirect('rrhh/mantencion_personal');
@@ -693,7 +693,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 	}
 
 
-	public function activar_trabajador($rut){
+	public function activar_trabajador($rut=null){
 
 		$personal = $this->rrhh_model->activar_personal($rut);
 		redirect('rrhh/mantencion_personal');
@@ -701,7 +701,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 	}
 
 public function editar_trabajador(){
-		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+		//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 			//echo "<pre>";
 			//print_r($this->input->post(NULL,true));  EXIT;
 			$idtrabajador = $this->input->post("idtrabajador");
@@ -738,7 +738,7 @@ public function editar_trabajador(){
 
 
 			$array_datos = array(
-								'idempresa' => $this->session->userdata('empresaid'),
+								'id_empresa' => $this->session->userdata('empresaid'),
 	       						'rut' => $idtrabajador == 0 ? $arrayRut[0] : "",
 	       						'dv' => $idtrabajador == 0 ? $arrayRut[1] : "",
 	       						'nombre' => $numficha,
@@ -821,11 +821,11 @@ public function editar_trabajador(){
 
 
 
-		}else{
+	/*	}else{
 			$vars['content_view'] = 'forbidden';
 			$this->load->view('template',$vars);
 
-		}		
+		}		*/
 
 
 	}	
