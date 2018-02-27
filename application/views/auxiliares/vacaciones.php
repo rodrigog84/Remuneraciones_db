@@ -71,7 +71,7 @@
                               <?php } ?>
                             <?php }else{ ?>
                             <tr>
-                              <td colspan="4">No existen trabajadores en la empresa</td>
+                              <td colspan="9">No existen trabajadores en la empresa</td>
                             </tr>
                           <?php } ?>
                           </tbody>
