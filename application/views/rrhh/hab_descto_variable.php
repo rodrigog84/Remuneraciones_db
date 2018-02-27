@@ -35,6 +35,8 @@
                             </div>  
                           </div>                      
                         </div>
+                        <div class="row" id="tabla_colaboradores"></div>
+
                             
                                                         <div class="box-footer">
                         <button type="submit" class="btn btn-primary">Guardar</button>&nbsp;&nbsp;
@@ -66,6 +68,13 @@
         <?php } ?>
 
 
+
+        $('div#sel_all').on('click',function(){
+
+            console.log("asdasdasdasd");
+
+        })
+
        
 
         $('.busca_col').on('change',function(){
@@ -74,12 +83,61 @@
 
           if(hab_descto != '' && centro_costo != ''){
 
-
+                var table = "";
+                var fila = 1;
                 $.ajax({
                     type: "GET",
-                    url: '<?php echo base_url();?>rrhh/get_hab_descto/',
+                    url: '<?php echo base_url();?>rrhh/get_colaboradores/' + centro_costo,
                 }).success(function(response) {
-                    console.log(response);
+                    
+                     table += '<table  class="table table-bordered table-striped dt-responsive">\
+                          <thead>\
+                            <tr>\
+                              <th >#</th>\
+                              <th ><input type="checkbox" id="sel_all" name="sel_all" ></th>\
+                              <th >Rut</th>\
+                              <th >Nombre</th>\
+                            </tr>\
+                          </thead>\
+                          <tbody>';
+
+                        var_json = $.parseJSON(response);
+
+                        if(var_json.length > 0){
+                              for(i=0;i<var_json.length;i++){
+                                    table += '<tr>\
+                                       <td><small>' + fila + '</small></td>\
+                                       <td><small><input type="checkbox" id="sel_col-' + var_json[i].rut + '" name="sel_col-' + var_json[i].rut + '" class="sel_col"></small></td>\
+                                       <td><small>' + var_json[i].rut + '-' + var_json[i].dv + '</small></td>\
+                                       <td><small>' + var_json[i].nombre + '</small></td>\
+                                      </tr>';
+                                      fila++;
+                              }
+
+
+                        }else{
+                            table += '<tr ><td colspan="4">No existen colaboradores en el centro de costo seleccionado</td></tr>';
+
+                        }
+
+
+
+                          
+                          table +='</tbody>\
+                                  </table>';
+
+
+                          $('#tabla_colaboradores').html(table);
+
+
+                          $('#sel_all').on('click',function(){
+
+                                  if($(this).is(':checked')){
+                                      $('.sel_col').attr('checked','checked');
+                                  }else{
+                                      $('.sel_col').attr('checked',false);
+                                  }
+                          })
                        // Limpiamos el select
                         /*$('#hab_descto option').remove();
                         
@@ -92,6 +150,10 @@
 
 
                 });  
+
+          }else{
+
+              $('#tabla_colaboradores').html('');
 
           }
 

@@ -2446,6 +2446,15 @@ public function mov_personal($resultid = '')
 
 	}
 
+
+	public function get_colaboradores($centrocosto){
+
+			$personal = $this->rrhh_model->get_personal(null,$centrocosto);
+			echo json_encode($personal);
+
+
+	}
+
 	public function ver_movimiento_personal($idpersonal = null)
 	{
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
