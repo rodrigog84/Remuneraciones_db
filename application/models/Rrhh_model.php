@@ -709,7 +709,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$array_campos = array(
 				'id_personal', 
 				'id_empresa', 
-				'rut', 
+				'concat(cast(rut as varchar),\'-\',dv) as rut', 
 				'dv', 
 				'nombre', 
 				'apaterno', 
