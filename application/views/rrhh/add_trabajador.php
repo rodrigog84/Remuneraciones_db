@@ -405,6 +405,29 @@
 													<table class="table table-striped">
     													<thead> 
 															<tr> 
+																<th>Fecha Inicio Cálculo Vacaciones:</th> 
+																<th>Saldo Inicial Días Vacaciones Legales:</th>
+																<th>Saldo Inicial Días Vacaciones Progresivas:</th>
+																
+															</tr> 
+														</thead>
+														<tbody>
+															<td>
+																<input placeholder="Fecha Inicio Vacaciones" class="form-control1" id="fecha_inicio_vacaciones" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+															</td>
+															<td>
+																<input type="text" name="seccion" class="form-control1" id="vacaciones_legales" placeholder="Sección">
+															</td>
+															<td>
+																<input type="text" name="seccion" class="form-control1" id="vacaciones_progresivas" placeholder="Sección">
+															</td>
+		
+														</tbody>
+													</table>
+
+													<table class="table table-striped">
+    													<thead> 
+															<tr> 
 																<th>Motivo de Egreso:</th> 
 																<th>Tipo de Contrato:</th>
 																<th>Jornada de Trabajo:</th>
@@ -1019,7 +1042,7 @@ $(document).ready(function() {
 <script src="js/jquery-ui.js"></script>
 <script>
 	$(function() {
-		$( "#datepicker,#datepicker2,#datepicker3,#datepicker4,#datepicker5,#datepicker6,#datepicker7,#datepicker8,#datepicker9,#datepicker10,#datepicker11,#datepicker12,#feriados,#fecha_real,#vencimiento_1,#fechanacimiento").datepicker();
+		$( "#datepicker,#datepicker2,#datepicker3,#datepicker4,#datepicker5,#datepicker6,#datepicker7,#datepicker8,#datepicker9,#datepicker10,#datepicker11,#datepicker12,#feriados,#fecha_real,#vencimiento_1,#fechanacimiento,#fecha_inicio_vacaciones").datepicker();
 	});
 </script>
 <!--date-piker-->								

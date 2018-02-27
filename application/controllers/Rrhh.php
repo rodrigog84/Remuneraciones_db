@@ -750,8 +750,12 @@ public function editar_trabajador(){
 			$afp = $this->input->post('afp');
 			$isapre = $this->input->post('isapre');
 			$sueldo_base = $this->input->post('sueldo_base');
-		
+			$fecinicvacaciones = $this->input->post('fecha_inicio_vacaciones');
+			$saldoinicvacaciones = $this->input->post('vacaciones_legales');
+			$saldoinicvacprog = $this->input->post('vacaciones_progresivas');
+			$fecingreso = $this->input->post('datepicker2');
 
+					
 
 			$array_datos = array(
 								'id_empresa' => $this->session->userdata('empresaid'),
@@ -785,14 +789,15 @@ public function editar_trabajador(){
 								'idafp' => $afp,
 								'idisapre' => $isapre,
 								'sueldobase' => $sueldo_base,
+								'fecinicvacaciones' => $fecinicvacaciones,
+								'saldoinicvacaciones' => $saldoinicvacaciones,
+								'saldoinicvacprog' => $saldoinicvacprog,
+								'fecingreso' => $fecingreso,
 								
 								//DATOS POR DEFECTO
 								'idregion' => 1,
 								'idcomuna' => 1,
-								'fecingreso' => '2017-09-05',
-								'fecinicvacaciones' => '2017-09-05',
-								'saldoinicvacaciones' => 0,
-								'saldoinicvacprog' => 0,
+								
 								'diasprogresivos' => 0,
 								'diasvactomados' => 0,
 								'diasprogtomados' => 0,
@@ -881,6 +886,10 @@ public function editar_trabajador(){
 			$afp = $this->input->post('afp');
 			$isapre = $this->input->post('isapre');
 			$sueldo_base = $this->input->post('sueldo_base');
+			$fecinicvacaciones = $this->input->post('fecha_inicio_vacaciones');
+			$saldoinicvacaciones = $this->input->post('vacaciones_legales');
+			$saldoinicvacprog = $this->input->post('vacaciones_progresivas');
+			$fecingreso = $this->input->post('datepicker2');
 			
 
 
@@ -943,14 +952,14 @@ public function editar_trabajador(){
 								'idafp' => $afp,
 								'idisapre' => $isapre,
 								'sueldobase' => $sueldo_base,
+								'fecingreso' => $fecingreso,
+								'fecinicvacaciones' => $fecinicvacaciones,
+								'saldoinicvacaciones' => $saldoinicvacaciones,
+								'saldoinicvacprog' => $saldoinicvacprog,
 								
 								//DATOS POR DEFECTO
 								'idregion' => 1,
 								'idcomuna' => 1,
-								'fecingreso' => '2017-09-05',
-								'fecinicvacaciones' => '2017-09-05',
-								'saldoinicvacaciones' => 0,
-								'saldoinicvacprog' => 0,
 								'diasprogresivos' => 0,
 								'diasvactomados' => 0,
 								'diasprogtomados' => 0,
