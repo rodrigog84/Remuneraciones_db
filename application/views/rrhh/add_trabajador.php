@@ -413,13 +413,13 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Inicio Vacaciones" class="form-control1" id="fecha_inicio_vacaciones" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Inicio Vacaciones" class="form-control1" id="fecha_inicio_vacaciones"  size="30" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
-																<input type="text" name="seccion" class="form-control1" id="vacaciones_legales" placeholder="Sección">
+																<input type="text" name="seccion" class="form-control1" id="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30">
 															</td>
 															<td>
-																<input type="text" name="seccion" class="form-control1" id="vacaciones_progresivas" placeholder="Sección">
+																<input type="text" name="seccion" class="form-control1" id="vacaciones_progresivas" placeholder="Saldo Inicial Vacaciones Progresivas" size="30">
 															</td>
 		
 														</tbody>
