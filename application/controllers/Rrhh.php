@@ -427,6 +427,22 @@ class Rrhh extends CI_Controller {
 
 	}
 
+
+public function datos_personal($rut=null){
+
+	$datos_personal2 = $this->rrhh_model->get_personal_datos($rut);
+	//json_encode($datos_personal2);
+	if ($datos_personal2 == 0){
+
+				echo json_encode('0');
+			}else{
+
+			echo json_encode($datos_personal2);
+			}
+
+}
+
+
 public function mod_trabajador($rut = null,$idtrabajador = null)
 	{
 
@@ -537,11 +553,11 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['jqueryRut'] = true;
 			$vars['mask'] = true;
 			$vars['inputmask'] = true;
-			$vars['datos_personal'] = $datos_personal;
+			$vars['idrut'] = $rut;
 
 			$template = "template";
 			$this->load->view($template,$vars);	
-
+			//json_encode($datos_personal);
 
 		/*//}else{
 			$vars['content_view'] = 'forbidden';

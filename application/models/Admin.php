@@ -628,7 +628,7 @@ public function get_estado_civil(){
 		$this->db->select('id_estado_civil , nombre ')
 						  ->from('rem_estado_civil')
 						  ->where('activo = 1')
-		                  ->order_by('nombre asc');
+		                  ->order_by('id_estado_civil asc');
 		$query = $this->db->get();
 
 		return $query->result();

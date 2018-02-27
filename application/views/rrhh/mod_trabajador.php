@@ -12,7 +12,7 @@
 
 
 <!--sub-heard-part--><form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/editar_trabajador" id="basicBootstrapForm" method="post">
-<!--sub-heard-part-->	 <?php foreach ($datos_personal as $datospersonales){ ?>
+<!--sub-heard-part-->	
 								<div class="sub-heard-part">
 									<ul class="nav nav-tabs">
   										<li class="active"><a href="#datospersonales" data-toggle="tab">Datos Personales </a></li>
@@ -56,7 +56,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="rut" id="rut"  class="form-control1"  placeholder="98.123.456-7" title="Escriba Rut" value="<?php echo $datospersonales->rut;?>">
+																<input type="text" name="rut" id="rut"  class="form-control1"  placeholder="98.123.456-7" title="Escriba Rut" >
 															</td>
 															<td>
 																<input type="text" name="numficha" id="numficha" class="form-control1" id="" placeholder="Número de Ficha">
@@ -76,14 +76,14 @@
 														<tbody>
 															<td >
 																<div class="form-group">
-																<input type="text" name="nombre" class="form-control1" id="nombre" placeholder="Nombre Completo" value="<?php echo $datospersonales->nombre;?>">
+																<input type="text" name="nombre" class="form-control1" id="nombre" placeholder="Nombre Completo" >
 																</div>
 															</td>
 															<td class="form-group">
-																<input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="Apellido Parterno" value="<?php echo $datospersonales->apaterno;?>">
+																<input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="Apellido Parterno">
 															</td>
 															<td class="form-group">
-																<input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="Apellido Materno" value="<?php echo $datospersonales->amaterno;?>">
+																<input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="Apellido Materno" >
 															</td>
 														</tbody>
 													</table>
@@ -123,7 +123,7 @@
 														<tbody>
 															<td>
 																<select name="ecivil" id="ecivil" class="form-control1">
-							                                   <option value="">Seleccione Estado Civil</option>
+							                                   <option value="0">Seleccione Estado Civil</option>
 								                                    <?php foreach ($estados_civiles as $estado_civil) { ?>
 								                                      <?php $ecivilselected = $estado_civil->id == $datos_form['idecivil'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $estado_civil->id_estado_civil;?>" <?php echo $ecivilselected;?> ><?php echo $estado_civil->nombre;?></option>
@@ -150,10 +150,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="direccion" id="direccion" class="form-control1" placeholder="Dirección" data-toggle="modal" data-target="#myModalDireccion" value="<?php echo $datospersonales->direccion;?>">
+																<input type="text" name="direccion" id="direccion" class="form-control1" placeholder="Dirección" data-toggle="modal" data-target="#myModalDireccion" >
 															</td>
 															<td>
-																<input type="text" name="email" id="email" class="form-control1" placeholder="Email" value="<?php echo $datospersonales->email;?>">
+																<input type="text" name="email" id="email" class="form-control1" placeholder="Email" >
 															</td>
 														</tbody>
 													</table>
@@ -179,7 +179,7 @@
 														 <?php $label_cargo = ""; ?>
 
 							                              <select name="cargo" id="cargo"  class="form-control1"  >
-							                                  <option value="">Seleccione un Cargo</option>
+							                                  <option value="0">Seleccione un Cargo</option>
 							                                  <?php foreach ($cargos as $cargo) { ?>
 							                                      <?php if($cargo->idpadre != $label_cargo){
 							                                              if($label_cargo != ''){
@@ -353,7 +353,7 @@
 																<input type="text" name="clase" class="form-control1" id="clase" placeholder="Clases">
 															</td>
 															<td>
-																<input type="text" name="sueldo_base" class="form-control1" id="sueldo_base" placeholder="Sueldo Base" value="<?php echo $datospersonales->sueldobase;?>">
+																<input type="text" name="sueldo_base" class="form-control1" id="sueldo_base" placeholder="Sueldo Base" >
 															</td>
 															<td>
 																<input type="text" name="tipo_cc" class="form-control1" id="tipo_cc" placeholder="Tipo CC">
@@ -918,7 +918,7 @@
 										<a href="<?php echo base_url();?>rrhh/mantencion_personal" class="btn btn-success">Volver</a>	
 									</div>
 								</div>
-								<?php } ?>
+							
 							</form>
 <script>
 function VerificaRut(rut) {
@@ -980,39 +980,48 @@ $(document).ready(function(){
     if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
       event.preventDefault();
     } 
-  })   
+  })
+
+
 });
 
 
-/*
 
-$(document).ready(function() {
-    $('#basicBootstrapForm').formValidation({
-        framework: 'bootstrap',
-        excluded: ':disabled',
-        icon: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            lectura: {
-                // The children's full name are inputs with class .childFullName
-                selector: '.apaterno',
-                // The field is placed inside .col-xs-6 div instead of .form-group
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Informaci&oacute;n de Horas Extraordinarias es requerida'
-                    },
-                },
-
-            },
-        }
-    })
-    
-});*/
 </script>
+
+
+
+<script>
+    
+    $(function(){
+        
+    	$.ajax({type: "GET",
+		    		url: "<?php echo base_url();?>rrhh/datos_personal/<?php echo $idrut;?>", 
+		    		dataType: "json",
+		    		success: function(datos_personal2){
+		      			$.each(datos_personal2,function(nombre) {
+		      			$("#nombre").val(this.nombre);
+		      			$("#rut").val(this.rut);
+		      			$("#apaterno").val(this.apaterno);
+		      			$("#amaterno").val(this.amaterno);
+		      			$("#direccion").val(this.direccion);
+		      			$("#email").val(this.email);	
+        				$("#nacionalidad").val(this.idnacionalidad);
+        				$("#sueldo_base").val(this.sueldobase);
+        				$("#ecivil").val(this.idecivil);
+        				$("#sexo").val(this.sexo);
+        				$("#fechanacimiento").val(this.fecnacimiento);
+        				$("#cargo").val(this.idcargo);
+        				$("#isapre").val(this.idisapre);
+        				$("#centro_costo").val(this.idcentrocosto);
+        				$("#afp").val(this.idafp);
+        				}
+        				)}
+        				});
+    	});
+
+</script>
+
 
 <!--date-piker-->
 <link rel="stylesheet" href="css/jquery-ui.css" />

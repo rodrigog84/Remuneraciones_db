@@ -752,6 +752,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'cotapv', 
 				'idisapre', 
 				'valorpactado',
+				'idnacionalidad',
 				/*'COALESCE((select sum(monto) as monto from rem_bonos_personal where idpersonal = p.id and fijo = 1 and imponible = 1),0) as bonos_fijos',*/
 				'0 as bonos_fijos',
 				'DATEDIFF(YY,fecafc,getdate()) as annos_afc,
