@@ -391,7 +391,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Ingreso" class="form-control1" name ="datepicker2" id="datepicker2" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
 																<input placeholder="Fecha Retiro" class="form-control1" id="datepicker3" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
