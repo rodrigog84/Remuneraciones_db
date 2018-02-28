@@ -98,7 +98,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" id="datepicker" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" id="datepicker" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" /> 
 															</td>
 															<td>
 																<select name="nacionalidad" id="nacionalidad" class="form-control1">
@@ -178,7 +178,7 @@
 															<td>
 														 <?php $label_cargo = ""; ?>
 
-							                              <select name="cargo" id="cargo"  class="form-control1"  >
+							                              <select name="cargo" id="cargo"  class="form-control1" required  >
 							                                  <option value="0">Seleccione un Cargo</option>
 							                                  <?php foreach ($cargos as $cargo) { ?>
 							                                      <?php if($cargo->idpadre != $label_cargo){

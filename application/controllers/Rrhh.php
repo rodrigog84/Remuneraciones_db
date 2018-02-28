@@ -753,7 +753,7 @@ public function editar_trabajador(){
 			$fecinicvacaciones = $this->input->post('fecha_inicio_vacaciones');
 			$saldoinicvacaciones = $this->input->post('vacaciones_legales');
 			$saldoinicvacprog = $this->input->post('vacaciones_progresivas');
-			$fecingreso = $this->input->post('datepicker2');
+			$fecingreso = $this->input->post('datepicker2'); 
 
 					
 
