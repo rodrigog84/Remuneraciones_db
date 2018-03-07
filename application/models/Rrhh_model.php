@@ -763,7 +763,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'nombre', 
 				'apaterno', 
 				'amaterno', 
-				'fecnacimiento', 
+				'format(fecnacimiento,\'MM-dd-yyyy\',\'en-US\') as fecnacimiento', 
 				'sexo', 
 				'idecivil', 
 				'nacionalidad', 
@@ -772,7 +772,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'idcomuna', 
 				'fono', 
 				'email', 
-				'fecingreso', 
+				'format(fecingreso,\'MM-dd-yyyy\',\'en-US\') as fecingreso', 
 				'fecingreso as fecingreso_sformat',
 				'idcargo', 
 				'tipocontrato', 
@@ -804,15 +804,15 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'idnacionalidad',
 				/*'COALESCE((select sum(monto) as monto from rem_bonos_personal where idpersonal = p.id and fijo = 1 and imponible = 1),0) as bonos_fijos',*/
 				'0 as bonos_fijos',
-				'DATEDIFF(YY,fecafc,getdate()) as annos_afc,
-				DATEDIFF(MM,fecinicvacaciones,getdate()) as meses_vac,
-				fecinicvacaciones,
-				saldoinicvacaciones,
-				diasvactomados,
-				diasprogresivos,
-				diasprogtomados,
-				saldoinicvacprog,
-				idcentrocosto'
+				'DATEDIFF(YY,fecafc,getdate()) as annos_afc',
+				'DATEDIFF(MM,fecinicvacaciones,getdate()) as meses_vac',
+				'format(fecinicvacaciones,\'MM-dd-yyyy\',\'en-US\') as fecinicvacaciones',
+				'saldoinicvacaciones',
+				'diasvactomados',
+				'diasprogresivos',
+				'diasprogtomados',
+				'saldoinicvacprog',
+				'idcentrocosto'
 			);
 		
 		$personal_data = $this->db->select($array_campos)
