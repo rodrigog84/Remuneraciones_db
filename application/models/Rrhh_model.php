@@ -332,6 +332,55 @@ public function add_personal($array_datos,$idtrabajador){
 
 
 
+	public function save_hab_descto_variable($array_datos_hab_descto){
+
+		$this->db->trans_start();
+
+		$lista_montos = $array_datos_hab_descto['lista_montos'];
+		$mes = $array_datos_hab_descto['mes'];
+		$anno = $array_datos_hab_descto['anno'];
+	// evaluar si existe periodo
+		$this->db->select('p.id_periodo')
+						  ->from('rem_periodo as p')
+		                  ->where('p.mes', $mes)
+		                  ->where('p.anno', $anno);
+		$query = $this->db->get();
+		$datos_periodo = $query->row();
+		$idperiodo = 0;
+		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+				$data = array(
+			      	'mes' => $mes,
+			      	'anno' =>  $anno
+				);
+				$this->db->insert('rem_periodo', $data);
+				$idperiodo = $this->db->insert_id();
+		}else{
+				$idperiodo = $datos_periodo->id_periodo;
+		}
+
+
+		$this->load->model('configuracion');
+		$datos_hab_descto = $this->configuracion->get_haberes_descuentos($array_datos_hab_descto['id_hab_descto']);
+
+		$listado_col = $array_datos_hab_descto['listado_col'];
+		foreach ($listado_col as $idpersonal) {
+			$array_datos = array(
+								'idconf' => $array_datos_hab_descto['id_hab_descto'],
+								'idpersonal' => $idpersonal,
+								'descripcion' => $datos_hab_descto->nombre,
+								'monto' => str_replace(".","",$lista_montos[$idpersonal]),
+								'idperiodo' => $idperiodo,
+								'created_at' => date('Ymd H:i:s'),
+								'updated_at' => date('Ymd H:i:s')
+							);
+			$this->db->insert('rem_bonos_personal',$array_datos);
+		}
+
+
+		$this->db->trans_complete();
+		return 1;
+
+	}
 
 	public function get_datos_remuneracion($mes,$anno,$idtrabajador = null){
 
@@ -1130,11 +1179,17 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		
 
 			//OBTIENE LOS HABERES DEL TRABAJADOR
-			$haberes_data = $this->db->select('d.monto, h.imponible, h.nombre')
+			/*$haberes_data = $this->db->select('d.monto, h.imponible, h.nombre')
 							  ->from('rem_haber_descuento_personal_tmp d')
 							  ->join('rem_conf_haber_descuento as h','d.idconfhd = h.id')
-			                  ->where('d.id_personal',$idtrabajador);
+			                  ->where('d.id_personal',$idtrabajador);*/
 			
+			$haberes_data = $this->db->select('d.monto, h.imponible, h.nombre')
+							  ->from('rem_bonos_personal d')
+							  ->join('rem_conf_haber_descuento as h','d.idconf = h.id')
+							  ->join('rem_personal as p','d.idpersonal = p.id_personal')
+			                  ->where('d.id_personal',$idtrabajador)
+			                  ->where('p.id_empresa',$this->session->userdata('empresaid'));
 
 			$haberes_data = is_null($imponible) ? $haberes_data : $haberes_data->where('h.imponible',$campo_imponible);  	
 			$haberes_data = is_null($tipo) ? $haberes_data : $haberes_data->where('h.tipo',$tipo);  	
@@ -1209,7 +1264,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$bonos_no_imponibles = 0;
 
 			//OBTIENE LOS HABERES DEL TRABAJADOR
-			$datos_hd = $this->get_haberes_descuentos($trabajador->id_personal,null,'HABER');			
+			$datos_hd = $this->get_haberes_descuentos($trabajador->id_personal,null,'HABER');	
 
 			$diastrabajo = $trabajador->parttime == 1 ? $trabajador->diastrabajo : 30;
 			$sueldo_base_mes = round(($trabajador->sueldobase/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
