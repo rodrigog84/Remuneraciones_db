@@ -49,11 +49,11 @@
 																			<td>
 																				<div class="form-group">
 																					<div class="col-sm-8">
-																						<div class="radio block">
+																						<!--div class="radio block">
 																							<label>
 																								<input class="form-check-input" type="radio" name="tipocalculo" id="tc_calculado" value="calculado" > Calculado
 																							</label>
-																						</div>
+																						</div-->
 																						<div class="radio block">
 																							<label>
 																								<input class="form-check-input" type="radio" name="tipocalculo" id="tc_informado" value="informado" > Informado
@@ -64,11 +64,11 @@
 																								<input class="form-check-input" type="radio" name="tipocalculo" id="tc_tramo" value="tramo" > Tramo
 																							</label>
 																						</div>
-																						<div class="radio block">
+																						<!--div class="radio block">
 																							<label>
 																								<input class="form-check-input" type="radio" name="tipocalculo" id="tc_calc_inf" value="calculado_informado" > Cálculado/Informado
 																							</label>
-																						</div>
+																						</div-->
 																					</div>
 																				</div>
 																			</td>
@@ -88,7 +88,7 @@
 																						</div>
 																						<div class="radio block">
 																							<label>
-																								<input class="form-check-input" type="radio" name="formacalculo" id="fc_diario" value="diario"> Diario
+																								<input class="form-check-input" type="radio" name="formacalculo" id="fc_diario" value="diario" disabled> Diario
 																							</label>
 																						</div>
 																						<div class="radio block">
@@ -123,25 +123,25 @@
 																						</div>
 																						<div class="radio block">
 																							<label>
-																								<input class="form-check-input" type="checkbox" name="reajustable" id="reajustable" value="reajustable"> Reajustable
+																								<input class="form-check-input" type="checkbox" name="reajustable" id="reajustable" value="reajustable" disabled> Reajustable
 																							</label>
 																						</div>
 																						<div class="radio block">
 																							<label>
-																								<input class="form-check-input" type="checkbox" name="provision" id="provision" value="provision"> Provisión
+																								<input class="form-check-input" type="checkbox" name="provision" id="provision" value="provision" disabled> Provisión
 																							</label>
 																						</div>
-																						<div class="radio block">
+																						<!--div class="radio block">
 																							<label>
 																								<input class="form-check-input" type="checkbox" name="embargable" id="embargable" value="embargable"> Embargable
-																						</div>
-																						<div class="radio block">
+																						</div-->
+																						<!--div class="radio block">
 																							<label>
 																								<input class="form-check-input" type="checkbox" name="gratificacion" id="gratificacion" value="gratificacion"> Gratificación
-																						</div>
+																						</div-->
 																						<div class="radio block">
 																							<label>
-																								<input class="form-check-input" type="checkbox" name="insoluto" id="insoluto" value="insoluto"> Insoluto
+																								<input class="form-check-input" type="checkbox" name="insoluto" id="insoluto" value="insoluto" disabled> Insoluto
 																						</div>
 																					</div>
 																				</div>
@@ -157,31 +157,31 @@
 																						</div>
 																						<div class="radio block">
 																							<label>
-																								<input class="form-check-input" type="checkbox" name="tributable"  id="tributable" value="tributable"> Tributable
+																								<input class="form-check-input" type="checkbox" name="tributable"  id="tributable" value="tributable" > Tributable
 																							</label>
 																						</div>
-																						<div class="radio block">
+																						<!--div class="radio block">
 																							<label>
 																								<input class="form-check-input" type="checkbox" name="jornada" id="jornada" value="jornada"> Jornada
 																							</label>
-																						</div>
+																						</div-->
 																						<div class="radio block">
 																							<label>
-																								<input class="form-check-input" type="checkbox" name="finiquito" id="finiquito" value="finiquito"> Finiquito
+																								<input class="form-check-input" type="checkbox" name="finiquito" id="finiquito" value="finiquito" disabled> Finiquito
 																							</label>
 																						</div>
 																						<div class="radio block">
 																							<label>
-																								<input class="form-check-input" type="checkbox" name="contable" id="contable" value="contable"> Contable
+																								<input class="form-check-input" type="checkbox" name="contable" id="contable" value="contable" disabled> Contable
 																						</div>
 																						<div class="radio block">
 																							<label>
-																								<input class="form-check-input" type="checkbox" name="sobregiro" id="sobregiro" value="sobregiro"> Sobregiro
+																								<input class="form-check-input" type="checkbox" name="sobregiro" id="sobregiro" value="sobregiro" disabled> Sobregiro
 																						</div>
-																						<div class="radio block">
+																						<!--div class="radio block">
 																							<label>
 																								<input class="form-check-input" type="checkbox" name="liqminimo" id="liqminimo" value="liqminimo"> Liq.Minimo
-																						</div>
+																						</div-->
 																					</div>
 																				</div>
 																			</td>

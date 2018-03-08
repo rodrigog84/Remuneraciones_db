@@ -2322,17 +2322,23 @@ public function submit_anticipos(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 			
-			$resultid = $this->session->flashdata('personal_result');
+			$resultid = $this->session->flashdata('hab_descto_variable_result');
 			if($resultid == 1){
-				$vars['message'] = "Trabajador Agregado correctamente";
+				$vars['message'] = "Haber/Descuento Agregado correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = 'active';				
-				$vars['leyes_sociales'] = '';		
-				$vars['apv'] = '';		
-				$vars['salud'] = '';		
-				$vars['otros'] = '';	
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al agregar Haber y/o Descuentos Variables";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
 			}
+
+
+			$mes = $this->session->flashdata('hab_descto_mes') == '' ? date('m') : $this->session->flashdata('hab_descto_mes');
+			$anno = $this->session->flashdata('hab_descto_anno') == '' ? date('Y') : $this->session->flashdata('hab_descto_anno');
+
+
+
 
 			$this->load->model('admin');
 			$centros_costo = $this->admin->get_centro_costo();
@@ -2342,9 +2348,13 @@ public function submit_anticipos(){
 						'subtitle' => 'Creaci&oacute;n Haberes / Descuentos');
 
 			$vars['content_menu'] = $content;				
-			$vars['centros_costo'] = $centros_costo;				
+			$vars['centros_costo'] = $centros_costo;	
+			$vars['mes'] = $mes;	
+			$vars['anno'] = $anno;							
 			$vars['content_view'] = 'rrhh/hab_descto_variable';
 			$vars['formValidation'] = true;
+			$vars['maleta'] = true;	
+			$vars['mask'] = true;			
 			$vars['gritter'] = true;
 
 			$template = "template";
@@ -2370,6 +2380,67 @@ public function submit_anticipos(){
 
 	}	
 
+
+
+
+	public function submit_hab_descto_variable(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+
+
+
+			$array_post = $this->input->post(NULL,true);
+
+			$tipo = $this->input->post('tipo');
+			$id_hab_descto = $this->input->post('hab_descto');
+			$array_col = array();
+			$array_montos = array();
+			foreach ($array_post as $key => $value) {
+				$array_key = explode("-",$key);
+				if($array_key[0] == 'sel_col'){
+					array_push($array_col,$array_key[1]);
+				}
+
+				if($array_key[0] == 'monto_col'){
+					$array_montos[$array_key[1]] = $value;
+				}
+			}
+
+			$mes = $this->input->post('mes');
+			$anno = $this->input->post('anno');
+
+			if(empty($mes) || empty($anno) || empty($tipo) || empty($id_hab_descto) ){	
+				$this->session->set_flashdata('hab_descto_variable_result', 2);
+				redirect('rrhh/hab_descto_variable');	
+			}
+			
+
+			$array_datos_hab_descto = array('id_hab_descto' => $id_hab_descto,
+											 'mes' => $mes,
+											 'anno' => $anno,
+											 'listado_col' => $array_col,
+											 'lista_montos' => $array_montos );
+
+
+
+
+			$this->rrhh_model->save_hab_descto_variable($array_datos_hab_descto);
+
+			$this->session->set_flashdata('hab_descto_variable_result', 1);
+			$this->session->set_flashdata('hab_descto_mes', $mes);
+			$this->session->set_flashdata('hab_descto_anno', $anno);
+			redirect('rrhh/hab_descto_variable');	
+
+
+		}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}	
 
 
 	function get_hab_descto($tipo = null){
