@@ -56,10 +56,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="rut" id="rut"  class="form-control1"  placeholder="98.123.456-7" title="Escriba Rut" >
+																<input type="text" name="rut" id="rut"  class="form-control1"  placeholder="98.123.456-7" title="Escriba Rut" required >
 															</td>
 															<td>
-																<input type="text" name="numficha" id="numficha" class="form-control1" id="" placeholder="Número de Ficha">
+																<input type="text" name="numficha" id="numficha" class="form-control1" id="" placeholder="Número de Ficha" >
 															</td>
 														</tbody>	
 													</table>
@@ -76,14 +76,14 @@
 														<tbody>
 															<td >
 																<div class="form-group">
-																<input type="text" name="nombre" class="form-control1" id="nombre" placeholder="Nombre Completo">
+																<input type="text" name="nombre" class="form-control1" id="nombre" placeholder="Nombre Completo" required>
 																</div>
 															</td>
 															<td class="form-group">
-																<input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="Apellido Parterno">
+																<input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="Apellido Parterno" required>
 															</td>
 															<td class="form-group">
-																<input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="Apellido Materno">
+																<input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="Apellido Materno" required>
 															</td>
 														</tbody>
 													</table>
@@ -98,10 +98,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" id="datepicker" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" required id="datepicker" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
-																<select name="nacionalidad" id="nacionalidad" class="form-control1">
+																<select name="nacionalidad" id="nacionalidad" class="form-control1" required>
 																	<option>Seleccione Nacionalidad</option>
 						                                    		<?php foreach ($paises as $pais) { ?>
 								                                      <?php $paisselected = $pais->id == $datos_form['id_nacionalidad'] ? "selected" : ""; ?>
@@ -122,7 +122,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<select name="ecivil" id="ecivil" class="form-control1">
+																<select name="ecivil" id="ecivil" class="form-control1" required>
 							                                   <option value="">Seleccione Estado Civil</option>
 								                                    <?php foreach ($estados_civiles as $estado_civil) { ?>
 								                                      <?php $ecivilselected = $estado_civil->id == $datos_form['idecivil'] ? "selected" : ""; ?>
@@ -131,7 +131,7 @@
 																</select>
 															</td>
 															<td>
-								                                <select name="sexo" id="sexo"  class="form-control1">
+								                                <select name="sexo" id="sexo"  class="form-control1" required>
 								                                    <option value="">Seleccione Sexo</option>
 								                                    <option value="M" <?php echo $datos_form['sexo'] == 'M' ? 'selected' : ''; ?>>Masculino</option>
 								                                    <option value="F" <?php echo $datos_form['sexo'] == 'F' ? 'selected' : ''; ?>>Femenino</option>
@@ -150,7 +150,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="direccion" id="direccion" class="form-control1" placeholder="Dirección" data-toggle="modal" data-target="#myModalDireccion">
+																<input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="Dirección" data-toggle="modal" data-target="#myModalDireccion">
 															</td>
 															<td>
 																<input type="text" name="email" id="email" class="form-control1" placeholder="Email">
