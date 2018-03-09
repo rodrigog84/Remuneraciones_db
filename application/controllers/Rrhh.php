@@ -3003,17 +3003,20 @@ public function prueba(){
 
 public function contrato_colaborador($rut){
 	$content = array(
-						'menu' => 'Error 403',
-						'title' => 'Error 403',
-						'subtitle' => '403 error');
+						'menu' => 'Contratos',
+						'title' => 'Contrato Colaborador',
+						'subtitle' => 'Contratos');
 	$vars['rut'] = $rut;
+
+	$personal = $this->admin->get_personal_total(); 
+	$vars['personal'] = $personal;
+	//$vars['nombre'] = $nombre;
+	//$vars['appaterno'] = $apaterno;
+	//$vars['amaterno'] = $amaterno;
 	$vars['content_menu'] = $content;				
 	//$vars['content_view'] = 'forbidden';
 	$vars['content_view'] = 'rrhh/contrato_colaborador';
 	$this->load->view('template',$vars);
-
-
-
 
 
 }
