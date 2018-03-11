@@ -416,10 +416,10 @@
 																<input placeholder="Fecha Inicio Vacaciones" class="form-control1" id="fecha_inicio_vacaciones"  size="30" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
-																<input type="text" name="seccion" class="form-control1" id="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30">
+																<input type="text" name="seccion" class="form-control1" id="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30" value="0">
 															</td>
 															<td>
-																<input type="text" name="seccion" class="form-control1" id="vacaciones_progresivas" placeholder="Saldo Inicial Vacaciones Progresivas" size="30">
+																<input type="text" name="seccion" class="form-control1" id="vacaciones_progresivas" placeholder="Saldo Inicial Vacaciones Progresivas" size="30" value="0">
 															</td>
 		
 														</tbody>
@@ -1003,7 +1003,10 @@ $(document).ready(function(){
     if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
       event.preventDefault();
     } 
-  })   
+  })
+
+
+
 });
 
 
@@ -1046,3 +1049,14 @@ $(document).ready(function() {
 	});
 </script>
 <!--date-piker-->								
+<script>
+	
+$('.datepicker2').change(function(){
+
+	//$("#fecha_inicio_vacaciones").val('13/10/2012');
+	bootbox.alert("fecha");
+
+});
+
+
+</script>

@@ -509,6 +509,25 @@ class Admin extends CI_Model
 	}	
 
 
+
+public function get_cargo_colaborador($idtrabajador = null){
+
+		$personal_data = $this->db->select('p.id_personal, p.id_empresa, p.rut, p.dv, p.nombre, p.apaterno, p.amaterno, p.fecnacimiento, p.sexo, p.idecivil, p.nacionalidad, p.direccion, 
+		p.idregion, p.idcomuna, p.fono, p.email, p.fecingreso, p.idcargo, p.tipocontrato, p.parttime, p.segcesantia, p.fecafc, p.diastrabajo, p.horasdiarias, 
+		p.horassemanales, p.sueldobase, p.tipogratificacion, p.gratificacion, p.asigfamiliar, p.cargassimples, p.cargasinvalidas, p.cargasmaternales, p.cargasretroactivas, 
+		p.idasigfamiliar, p.movilizacion, p.colacion, p.pensionado,p.idafp, p.adicafp, p.tipoahorrovol, p.ahorrovol, p.instapv, p.nrocontratoapv, p.tipocotapv, 
+		p.cotapv, p.formapagoapv, p.depconvapv, p.idisapre, p.valorpactado, p.fecinicvacaciones, p.saldoinicvacaciones, p.saldoinicvacprog, p.active, c.nombre nombre_cargo')
+						  ->from('rem_personal p, rem_cargos c')
+						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
+						  ->where('c.id_cargos = p.idcargo')
+						  ->order_by('p.active','desc')
+		                  ->order_by('p.nombre');
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
+		return $datos;
+	}
+
 public function get_personal_total($idtrabajador = null){
 
 		$personal_data = $this->db->select('id_personal, id_empresa, rut, dv, nombre, apaterno, amaterno, fecnacimiento, sexo, idecivil, nacionalidad, direccion, idregion, idcomuna, fono, email, fecingreso, idcargo, tipocontrato, parttime, segcesantia, fecafc, diastrabajo, horasdiarias, horassemanales, sueldobase, tipogratificacion, gratificacion, asigfamiliar, cargassimples, cargasinvalidas, cargasmaternales, cargasretroactivas, idasigfamiliar, movilizacion, colacion, pensionado, idafp, adicafp, tipoahorrovol, ahorrovol, instapv, nrocontratoapv, tipocotapv, cotapv, formapagoapv, depconvapv, idisapre, valorpactado, fecinicvacaciones, saldoinicvacaciones, saldoinicvacprog, active')

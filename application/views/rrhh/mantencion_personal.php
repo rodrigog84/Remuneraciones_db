@@ -25,7 +25,7 @@
 																			<th>#</th>
                             												<th>Nombre Trabajador</th>
                             												<th>Rut</th>
-                            												<th>Direcci&oacute;n</th>
+                            												<th>Cargo</th>
                             												<th>Estado</th>
 																			<th>Opciones</th>
 
@@ -39,7 +39,7 @@
 											                              <td><small><?php echo $i ;?></small></td>
 	                              										  <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
 	                                									  <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
-	                              										  <td><small><?php echo $trabajador->direccion;?></small></td>
+	                              										  <td><small><?php echo $trabajador->nombre_cargo;?></small></td>
 	                              										  <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo";?></small></td>
 																			<td>
 																				<!--<a href="<?php echo base_url();?>rrhh/mod_trabajador" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>-->
