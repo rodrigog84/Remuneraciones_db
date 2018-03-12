@@ -509,7 +509,7 @@ class Admin extends CI_Model
 	}	
 
 
-	public function get_bancos(){
+	public function get_bancos($id_empresa=null){
 
 		$banco_data = $this->db->select("id_banco,cod_sbif,nombre")
 						  ->from('rem_banco')
@@ -518,7 +518,7 @@ class Admin extends CI_Model
 
 			                  
 		$query = $this->db->get();
-		$datos = $query->row();		
+		$datos = is_null($id_empresa) ? $query->result() : $query->row();
 		return $datos;
 
 	}	

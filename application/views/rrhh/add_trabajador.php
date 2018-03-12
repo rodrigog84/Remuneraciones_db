@@ -668,7 +668,7 @@
 														<tbody>
 															<td>
 																<select name="tramo[]" id="tramo" class="form-control1">
-																	<option>Seleccione Banco</option>
+																	<option>Seleccione tramo</option>
 						                                    		<?php foreach ($tramos_asig_familiar as $tramo) { ?>
 								                                      <?php $tramoselected = $tramo->id_tabla_asig_familiar == $datos_form['id_tabla_asig_familiar'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $tramo->id_tabla_asig_familiar;?>" <?php echo $tramoselected;?> ><?php echo 'TRAMO '.$tramo->tramo;?></option>
