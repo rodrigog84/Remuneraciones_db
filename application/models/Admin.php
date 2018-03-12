@@ -538,6 +538,21 @@ class Admin extends CI_Model
 	}	
 
 
+	public function get_jornada_trabajo($id_empresa=null){
+
+		$banco_data = $this->db->select("id_jornada,nombre")
+						  ->from('rem_jornada_trabajo')
+						  ->where('id_empresa',$this->session->userdata('empresaid'))
+		                  ->order_by('nombre asc');
+
+			                  
+		$query = $this->db->get();
+		$datos = is_null($id_empresa) ? $query->result() : $query->row();
+		return $datos;
+
+	}	
+
+
 
 	public function get_vestuario_pantalon($id_empresa=null){
 

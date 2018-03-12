@@ -730,6 +730,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$polera = $this->admin->get_vestuario_polera();
 			$forma_pago = $this->admin->get_forma_pago();
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
+			$jornada_trabajo = $this->admin->get_jornada_trabajo();
 
 			/**** CARGA DE DATOS TRABAJADOR ****/
 			$trabajador = is_null($idtrabajador) ?  array() : $this->admin->get_personal_total($idtrabajador); 
@@ -820,6 +821,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['polera'] = $polera;
 			$vars['bancos'] = $bancos;
 			$vars['forma_pago'] = $forma_pago;
+			$vars['jornada_trabajo'] =$jornada_trabajo;
 
 			$template = "template";
 			$this->load->view($template,$vars);	

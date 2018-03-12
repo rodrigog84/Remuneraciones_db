@@ -717,12 +717,14 @@
 																<input type="text" name="zona_familiar" class="form-control1" id="zona_familiar" placeholder="Zona A. Familiar">
 															</td>
 															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
+																<select name="jornada_trabajo" id="jornada_trabajo" class="form-control1">
+																	<option>Seleccione Forma de Pago</option>
+						                                    		<?php foreach ($jornada_trabajo as $jornada) { ?>
+								                                      <?php $jornadaselected = $jornada->id_jornada == $datos_form['id_jornada'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $jornada->id_jornada;?>" <?php echo $jornadaselected;?> ><?php echo $jornada->nombre;?></option>
+								                                    <?php } ?>
 																</select>
+
 															</td>
 														</tbody>
 													</table>
