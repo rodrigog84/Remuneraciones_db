@@ -667,7 +667,16 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="tramo" class="form-control1" id="tramo" placeholder="Tramo p/Asig. Familiar">
+																<select name="tramo[]" id="tramo" class="form-control1">
+																	<option>Seleccione Banco</option>
+						                                    		<?php foreach ($tramos_asig_familiar as $tramo) { ?>
+								                                      <?php $tramoselected = $tramo->id_tabla_asig_familiar == $datos_form['id_tabla_asig_familiar'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $tramo->id_tabla_asig_familiar;?>" <?php echo $tramoselected;?> ><?php echo 'TRAMO '.$tramo->tramo;?></option>
+								                                    <?php } ?>																
+								                                </select>
+
+																
+																<!--<input type="text" name="tramo" class="form-control1" id="tramo" placeholder="Tramo p/Asig. Familiar">-->
 															</td>
 															<td>
 																<input type="text" name="trabajo_pesado" class="form-control1" id="trabajo_pesado" placeholder="Trabajo Pesado/Insalub">
@@ -746,10 +755,6 @@
 								                                      <option value="<?php echo $banco->id_banco;?>" <?php echo $bancoselected;?> ><?php echo $banco->nombre;?></option>
 								                                    <?php } ?>																
 								                                </select>
-
-
-
-
 															</td>
 														</tbody>
 													</table>
