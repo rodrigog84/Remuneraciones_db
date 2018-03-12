@@ -115,10 +115,11 @@ class Rrhh extends CI_Controller {
 			}
 
 			$this->load->model('admin');
+			
 			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
 
 
-			$this->load->model('admin');
+			
 			//$personal = $this->admin->get_personal_total(); 
 			$personal = $this->admin->get_cargo_colaborador();
 			//$afps = $this->admin->get_afp(); 
@@ -141,7 +142,6 @@ class Rrhh extends CI_Controller {
 			$vars['mask'] = true;
 			$vars['formValidation'] = true;
 			$vars['gritter'] = true;
-
 			$vars['empresa'] = $empresa;
 			$vars['personal'] = $personal;
 			//$vars['afps'] = $afps;
@@ -725,6 +725,9 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$centros_costo = $this->admin->get_centro_costo();
 			$afps = $this->admin->get_afp();
 			$isapres = $this->admin->get_isapre();
+			$pantalon = $this->admin->get_vestuario_pantalon();
+			$bancos = $this->admin->get_bancos();
+			$polera = $this->admin->get_vestuario_polera();
 			
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 
@@ -813,7 +816,9 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['jqueryRut'] = true;
 			$vars['mask'] = true;
 			$vars['inputmask'] = true;
-
+			$vars['pantalon'] = $pantalon;
+			$vars['polera'] = $polera;
+			$vars['bancos'] = $bancos;
 
 			$template = "template";
 			$this->load->view($template,$vars);	

@@ -509,6 +509,53 @@ class Admin extends CI_Model
 	}	
 
 
+	public function get_bancos(){
+
+		$banco_data = $this->db->select("id_banco,cod_sbif,nombre")
+						  ->from('rem_banco')
+						  ->where('activo = 1')
+		                  ->order_by('nombre asc');
+
+			                  
+		$query = $this->db->get();
+		$datos = $query->row();		
+		return $datos;
+
+	}	
+
+
+
+
+	public function get_vestuario_pantalon($id_empresa=null){
+
+		$vestuario_pantalon = $this->db->select('id_vestuario,tipo_vestuario,talla')
+									  ->from('rem_vestuario')
+									 // ->where('id_empresa',$this->session->userdata('empresaid'))
+									  ->where('tipo_vestuario','pantalon');
+					                  
+		//$vestuario_pantalon = is_null($id_empresa) ? $empresas_data : $empresas_data->where('id_empresa',$id_empresa);  		                  
+		$query = $this->db->get();
+		$datos = is_null($id_empresa) ? $query->result() : $query->row();		
+		return $datos;		
+
+	}
+
+
+	public function get_vestuario_polera($id_empresa=null){
+
+		$vestuario_pantalon = $this->db->select('id_vestuario,tipo_vestuario,talla')
+									  ->from('rem_vestuario')
+									 // ->where('id_empresa',$this->session->userdata('empresaid'))
+									  ->where('tipo_vestuario','polera');
+					                  
+		//$vestuario_pantalon = is_null($id_empresa) ? $empresas_data : $empresas_data->where('id_empresa',$id_empresa);  		                  
+		$query = $this->db->get();
+		$datos = is_null($id_empresa) ? $query->result() : $query->row();		
+		return $datos;		
+
+	}
+
+
 
 public function get_cargo_colaborador($idtrabajador = null){
 

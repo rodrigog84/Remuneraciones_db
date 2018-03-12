@@ -286,10 +286,26 @@
 																</select>
 															</td>
 															<td>
-																<input type="text" name="polera" id="polera" class="form-control1" placeholder="Talla de Polera">
+																<select name="polera[]" id="polera" class="form-control1">
+																	<option>Seleccione Talla</option>
+						                                    		<?php foreach ($polera as $tpolera) { ?>
+								                                      <?php $poleraselected = $tpolera->id_vestuario == $datos_form['idvestuario'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $tpolera->id_vestuario;?>" <?php echo $poleraselected;?>><?php echo $tpolera->talla;?></option>
+								                                    <?php } ?>
+																</select>
+
+																<!--<input type="text" name="polera" id="polera" class="form-control1" placeholder="Talla de Polera">-->
 															</td>
 															<td>
-																<input type="text" name="pantalon" id="pantalon" class="form-control1" placeholder="Talla de Pantalón">
+																<select name="pantalon[]" id="pantalon" class="form-control1">
+																	<option>Seleccione Talla</option>
+						                                    		<?php foreach ($pantalon as $tpantalon) { ?>
+								                                      <?php $pantalonselected = $tpantalon->id_vestuario == $datos_form['idvestuario'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $tpantalon->id_vestuario;?>" <?php echo $pantalonselected;?>><?php echo $tpantalon->talla;?></option>
+								                                    <?php } ?>
+																</select>
+														
+																<!--<input type="text" name="pantalon" id="pantalon" class="form-control1" placeholder="Talla de Pantalón">-->
 															</td>
 														</tbody>
 													</table>
@@ -307,7 +323,7 @@
 																<input type="text" name="tipo_documento" id="tipo_documento" class="form-control1" placeholder="Tipo de Documento">
 															</td>
 															<td>
-																<select name="centro_costo" id="centro_costo" class="form-control1">
+																<select name="centro_costo[]" id="centro_costo" class="form-control1">
 																	<option>Seleccione Centro Costo</option>
 						                                    		<?php foreach ($centros_costo as $centro_costo) { ?>
 								                                      <?php $centrocostoselected = $centro_costo->id == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
@@ -477,7 +493,12 @@
 																<input type="text" name="codigo_ine" class="form-control1" id="codigo_ine" placeholder="Código Ine">
 															</td>
 															<td>
-																<input type="text" name="sindicato" class="form-control1" id="sindicato" placeholder="Sindicato">
+																<select name="sindicato" id="sindicato" class="form-control1">
+																	<option value="SI">SI</option>
+																	<option value="NO">NO</option>
+																
+																</select>
+																
 															</td>
 														</tbody>
 													</table>
@@ -485,14 +506,19 @@
 													<table class="table table-striped">
     													<thead> 
 															<tr> 
-																<th>Régimen de Pago:</th> 
+																<th>Rol Privado</th> 
 																<th>Sitio Laboral:</th>
 																<th>Zona Brecha:</th>
 															</tr> 
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="regimen_pago" class="form-control1" id="regimen_pago" placeholder="Régimen de Pago">
+																<select name="regimen_pago" id="regimen_pago" class="form-control1">
+																	<option value="SI">SI</option>
+																	<option value="NO">NO</option>
+																
+																</select>
+																
 															</td>
 															<td>
 																<input type="text" name="sitio_laboral" class="form-control1" id="sitio_laboral" placeholder="Sitio Laboral">
@@ -541,12 +567,12 @@
 																</select>
 															</td>
 															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
+																<select name="jubilado" id="jubilado" class="form-control1">
+																	<option value="SI">SI</option>
+																	<option value="NO">NO</option>
+																
 																</select>
+																
 															</td>
 														</tbody>
 													</table>
@@ -560,12 +586,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
-																</select>
+																<input type="text" name="pago_cotiza" class="form-control1" id="pago_cotiza" placeholder="L. Pago Cotiz">
 															</td>
 															<td>
 																<select name="afp" id="afp" class="form-control1">
@@ -677,16 +698,12 @@
 
 													<table class="table table-striped">
 														<thead>
-															<tr>
-																<th>C.C.A.F:</th>
+															<tr>																
 																<th>Zona A. Familiar:</th>
 																<th>Jornada de Trabajo:</th>
 															</tr>
 														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="ccaf" class="form-control1" id="ccaf" placeholder="C.C.A.F">
-															</td>
+														<tbody>															
 															<td>
 																<input type="text" name="zona_familiar" class="form-control1" id="zona_familiar" placeholder="Zona A. Familiar">
 															</td>
@@ -722,12 +739,17 @@
 																</select>
 															</td>
 															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
-																</select>
+																<select name="banco[]" id="banco" class="form-control1">
+																	<option>Seleccione Banco</option>
+						                                    		<?php foreach ($bancos as $banco) { ?>
+								                                      <?php $bancoselected = $banco->id_banco == $datos_form['id_banco'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $banco->id_banco;?>" <?php echo $bancoselected;?> ><?php echo $banco->nombre;?></option>
+								                                    <?php } ?>																
+								                                </select>
+
+
+
+
 															</td>
 														</tbody>
 													</table>
