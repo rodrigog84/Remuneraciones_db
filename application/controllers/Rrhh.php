@@ -728,7 +728,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$pantalon = $this->admin->get_vestuario_pantalon();
 			$bancos = $this->admin->get_bancos();
 			$polera = $this->admin->get_vestuario_polera();
-			
+			$forma_pago = $this->admin->get_forma_pago();
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 
 			/**** CARGA DE DATOS TRABAJADOR ****/
@@ -819,6 +819,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['pantalon'] = $pantalon;
 			$vars['polera'] = $polera;
 			$vars['bancos'] = $bancos;
+			$vars['forma_pago'] = $forma_pago;
 
 			$template = "template";
 			$this->load->view($template,$vars);	

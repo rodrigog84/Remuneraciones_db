@@ -740,11 +740,12 @@
 														</thead>
 														<tbody>
 															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
+																<select name="forma_pago[]" id="forma_pago" class="form-control1">
+																	<option>Seleccione Forma de Pago</option>
+						                                    		<?php foreach ($forma_pago as $pago) { ?>
+								                                      <?php $pagoselected = $pago->id_forma_pago == $datos_form['id_forma_pago'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $pago->id_forma_pago;?>" <?php echo $pagoselected;?> ><?php echo $pago->descripcion;?></option>
+								                                    <?php } ?>
 																</select>
 															</td>
 															<td>
@@ -752,7 +753,7 @@
 																	<option>Seleccione Banco</option>
 						                                    		<?php foreach ($bancos as $banco) { ?>
 								                                      <?php $bancoselected = $banco->id_banco == $datos_form['id_banco'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $banco->id_banco;?>" <?php echo $bancoselected;?> ><?php echo $banco->nombre;?></option>
+								                                      <option value="<?php echo $banco->id_banco;?>" <?php echo $bancoselected;?> ><?php echo $banco->cod_sbif.' - '.$banco->nombre;?></option>
 								                                    <?php } ?>																
 								                                </select>
 															</td>
