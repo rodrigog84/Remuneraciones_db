@@ -13,7 +13,7 @@
                         </a>
                         <div class="media-body">
                         <h4 class="media-heading">Estimados (as)</h4>
-                            <h5><p>Les damos la más cordial bienvenida al Sistema de Remuneraciones de Dynamics.</p></h5>
+                            <h5><p>Les damos la más cordial bienvenida al Sistema de Remuneraciones de Infosys.</p></h5>
                         </div>
                     </li>
 		</ul>

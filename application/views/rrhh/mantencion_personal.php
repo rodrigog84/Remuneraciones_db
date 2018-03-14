@@ -23,7 +23,7 @@
 																	<thead> 
 																		<tr>
 																			<th>#</th>
-                            												<th>Nombre Trabajador</th>
+                            												<th>Nombre Colaborador</th>
                             												<th>Rut</th>
                             												<th>Cargo</th>
                             												<th>Estado</th>
