@@ -912,7 +912,7 @@ public function editar_trabajador(){
 								'nombre' => $nombre,
 								'apaterno' => $apaterno,
 								'amaterno' => $amaterno,
-								'fecnacimiento' => substr($fecnacimiento,6,4)."-".substr($fecnacimiento,3,2)."-".substr($fecnacimiento,0,2),
+								'fecnacimiento' => substr($fecnacimiento,6,4).substr($fecnacimiento,0,2).substr($fecnacimiento,3,2),
 								'idnacionalidad' => $idnacionalidad,
 								'nacionalidad' => 'C', //ELIMINAR DESPUES
 								'idecivil' => $idecivil,
@@ -1036,10 +1036,10 @@ public function editar_trabajador(){
 			$fecinicvacaciones = $this->input->post('fecha_inicio_vacaciones');
 			$saldoinicvacaciones = $this->input->post('vacaciones_legales');
 			$saldoinicvacprog = $this->input->post('vacaciones_progresivas');
-			$fecingreso = $this->input->post('datepicker2');
+			//$fecingreso = $this->input->post('datepicker2');
 			
 
-
+			$fecingreso = '20180301';
 			/*$idregion = $this->input->post('region');
 			$idcomuna = $this->input->post('comuna');
 			$fecingreso = $this->input->post('fechaingreso');
