@@ -1118,7 +1118,7 @@ public function editar_trabajador(){
 								'horasdiarias' => 8,
 								'horassemanales' => 45,
 								//'sueldobase' => 250000,
-								'tipogratificacion' => 'SG',
+								'tipogratificacion' => 'TL',
 								'gratificacion' => 0,
 								'cargassimples' => 0,
 								'cargasinvalidas' => 0,
