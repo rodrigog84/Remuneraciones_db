@@ -936,9 +936,15 @@ public function editar_trabajador(){
 								'idafp' => $afp,
 								'idisapre' => $isapre,
 								'sueldobase' => $sueldo_base,
-								'fecinicvacaciones' => $fecinicvacaciones,
+								/*'fecinicvacaciones' => $fecinicvacaciones,
 								'saldoinicvacaciones' => $saldoinicvacaciones,
-								'saldoinicvacprog' => $saldoinicvacprog,
+								'saldoinicvacprog' => $saldoinicvacprog,*/
+
+								'fecinicvacaciones' => $fecingreso,
+								'saldoinicvacaciones' => 0,
+								'saldoinicvacprog' => 0,	
+
+
 								'fecingreso' => $fecingreso,
 								
 								//DATOS POR DEFECTO
@@ -1100,9 +1106,13 @@ public function editar_trabajador(){
 								'idisapre' => $isapre,
 								'sueldobase' => $sueldo_base,
 								'fecingreso' => $fecingreso,
-								'fecinicvacaciones' => $fecinicvacaciones,
-								'saldoinicvacaciones' => $saldoinicvacaciones,
-								'saldoinicvacprog' => $saldoinicvacprog,
+								//'fecinicvacaciones' => $fecinicvacaciones,
+								//'saldoinicvacaciones' => $saldoinicvacaciones,
+								//'saldoinicvacprog' => $saldoinicvacprog,
+
+								'fecinicvacaciones' => $fecingreso,
+								'saldoinicvacaciones' => 0,
+								'saldoinicvacprog' => 0,								
 								
 								//DATOS POR DEFECTO
 								'idregion' => 1,
