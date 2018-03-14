@@ -67,10 +67,10 @@
 																	<label for="centro_costo">Centro de Costo</label>
 																	<select  name="centro_costo[]" id="centro_costo" class="form-control selectpicker data-selected-text-format='count'" data-size="5" multiple="multiple" >
 																	
-																	<!--	<?php foreach ($centros_costo as $centro_costo) { ?>
+																		<?php foreach ($centros_costo as $centro_costo) { ?>
 	       																<?php $centrocostoselected = $centro_costo->id_centro_costo == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
 	        																<option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
-	        																<?php } ?>-->
+	        																<?php } ?>
 																	</select>
 																</div>
 															  </div>
