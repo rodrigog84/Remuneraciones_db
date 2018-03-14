@@ -234,8 +234,8 @@ public function add_personal($array_datos,$idtrabajador){
 		$datos = $query->row();
 		if(count($datos) == 0){ // nuevo trabajador no existe
 			if($idtrabajador == 0){
-				$array_datos['updated_at'] = date('Y-m-d H:i:s');
-				$array_datos['created_at'] = date('Y-m-d H:i:s');
+				$array_datos['updated_at'] = date('Ymd H:i:s');
+				$array_datos['created_at'] = date('Ymd H:i:s');
 				$this->db->insert('rem_personal', $array_datos);
 				$idpersonal = $this->db->insert_id();
 

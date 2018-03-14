@@ -247,7 +247,7 @@
 														<tbody>
 															<td>
 																<select name="jefe" id="jefe" class="form-control1">
-																	<option>Seleccione Jefe o Supervisor</option>
+																	<option value="">Seleccione Jefe o Supervisor</option>
 						                                    		<?php foreach ($personal as $trabajador) { ?>
 								                                      <?php $jefeselected = $trabajador->id == $datos_form['idjefe'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
@@ -256,7 +256,7 @@
 															</td>
 															<td>
 																<select name="reemplazo" id="reemplazo" class="form-control1">
-																	<option>Seleccione Reemplazo</option>
+																	<option value="">Seleccione Reemplazo</option>
 						                                    		<?php foreach ($personal as $trabajador) { ?>
 								                                      <?php $jefeselected = $trabajador->id == $datos_form['idjefe'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
@@ -278,7 +278,7 @@
 														<tbody>
 															<td>
 																<select name="licencia" id="licencia" class="form-control1">
-																	<option>Seleccione Tipo Licencia</option>
+																	<option value="">Seleccione Tipo Licencia</option>
 						                                    		<?php foreach ($licencias as $licencia) { ?>
 								                                      <?php $licenciaselected = $licencia->id == $datos_form['idlicencia'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $licencia->id_licencia_conducir;?>" <?php echo $licenciaselected;?> ><?php echo $licencia->nombre;?></option>
@@ -286,8 +286,8 @@
 																</select>
 															</td>
 															<td>
-																<select name="polera[]" id="polera" class="form-control1">
-																	<option>Seleccione Talla</option>
+																<select name="polera" id="polera" class="form-control1">
+																	<option  value="">Seleccione Talla</option>
 						                                    		<?php foreach ($polera as $tpolera) { ?>
 								                                      <?php $poleraselected = $tpolera->id_vestuario == $datos_form['idvestuario'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $tpolera->id_vestuario;?>" <?php echo $poleraselected;?>><?php echo $tpolera->talla;?></option>
@@ -297,8 +297,8 @@
 																<!--<input type="text" name="polera" id="polera" class="form-control1" placeholder="Talla de Polera">-->
 															</td>
 															<td>
-																<select name="pantalon[]" id="pantalon" class="form-control1">
-																	<option>Seleccione Talla</option>
+																<select name="pantalon" id="pantalon" class="form-control1">
+																	<option value="">Seleccione Talla</option>
 						                                    		<?php foreach ($pantalon as $tpantalon) { ?>
 								                                      <?php $pantalonselected = $tpantalon->id_vestuario == $datos_form['idvestuario'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $tpantalon->id_vestuario;?>" <?php echo $pantalonselected;?>><?php echo $tpantalon->talla;?></option>
@@ -323,8 +323,8 @@
 																<input type="text" name="tipo_documento" id="tipo_documento" class="form-control1" placeholder="Tipo de Documento">
 															</td>
 															<td>
-																<select name="centro_costo[]" id="centro_costo" class="form-control1">
-																	<option>Seleccione Centro Costo</option>
+																<select name="centro_costo" id="centro_costo" class="form-control1">
+																	<option value="">Seleccione Centro Costo</option>
 						                                    		<?php foreach ($centros_costo as $centro_costo) { ?>
 								                                      <?php $centrocostoselected = $centro_costo->id == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
@@ -667,7 +667,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<select name="tramo[]" id="tramo" class="form-control1">
+																<select name="tramo" id="tramo" class="form-control1">
 																	<option>Seleccione tramo</option>
 						                                    		<?php foreach ($tramos_asig_familiar as $tramo) { ?>
 								                                      <?php $tramoselected = $tramo->id_tabla_asig_familiar == $datos_form['id_tabla_asig_familiar'] ? "selected" : ""; ?>
@@ -742,7 +742,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<select name="forma_pago[]" id="forma_pago" class="form-control1">
+																<select name="forma_pago" id="forma_pago" class="form-control1">
 																	<option>Seleccione Forma de Pago</option>
 						                                    		<?php foreach ($forma_pago as $pago) { ?>
 								                                      <?php $pagoselected = $pago->id_forma_pago == $datos_form['id_forma_pago'] ? "selected" : ""; ?>
@@ -751,7 +751,7 @@
 																</select>
 															</td>
 															<td>
-																<select name="banco[]" id="banco" class="form-control1">
+																<select name="banco" id="banco" class="form-control1">
 																	<option>Seleccione Banco</option>
 						                                    		<?php foreach ($bancos as $banco) { ?>
 								                                      <?php $bancoselected = $banco->id_banco == $datos_form['id_banco'] ? "selected" : ""; ?>

@@ -1000,7 +1000,7 @@ public function editar_trabajador(){
 	public function submit_trabajador(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 			//echo "<pre>";
-			//print_r($this->input->post(NULL,true));  EXIT;
+			//print_r($this->input->post(NULL,true));  exit;
 			$idtrabajador = $this->input->post("idtrabajador");
        		$rut = str_replace(".","",$this->input->post("rut"));
 			$arrayRut = explode("-",$rut);
@@ -1066,14 +1066,14 @@ public function editar_trabajador(){
 			$activo = $this->input->post('activo') == 'on' ? 1 : 0;*/
 
 			$array_datos = array(
-								'idempresa' => $this->session->userdata('empresaid'),
+								'id_empresa' => $this->session->userdata('empresaid'),
 	       						'rut' => $idtrabajador == 0 ? $arrayRut[0] : "",
 	       						'dv' => $idtrabajador == 0 ? $arrayRut[1] : "",
 	       						'nombre' => $numficha,
 								'nombre' => $nombre,
 								'apaterno' => $apaterno,
 								'amaterno' => $amaterno,
-								'fecnacimiento' => substr($fecnacimiento,6,4)."-".substr($fecnacimiento,3,2)."-".substr($fecnacimiento,0,2),
+								'fecnacimiento' => substr($fecnacimiento,6,4).substr($fecnacimiento,0,2).substr($fecnacimiento,3,2),
 								'idnacionalidad' => $idnacionalidad,
 								'nacionalidad' => 'C', //ELIMINAR DESPUES
 								'idecivil' => $idecivil,
@@ -1164,7 +1164,7 @@ public function editar_trabajador(){
 
 								);
 			$result = $this->rrhh_model->add_personal($array_datos,$idtrabajador);
-
+			//EXIT;
 			if($result == -1){
 				$this->session->set_flashdata('personal_result', 2);
 			}else{
