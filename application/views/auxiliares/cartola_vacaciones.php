@@ -231,7 +231,7 @@
 
                           <?php }else{ ?>
                               <tr>
-                                <td colspan="5">No existen vacaciones solicitadas</td>
+                                <td colspan="7">No existen vacaciones solicitadas</td>
                               </tr>
                           <?php } ?>
 
