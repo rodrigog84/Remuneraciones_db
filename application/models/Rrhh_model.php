@@ -1188,7 +1188,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 							  ->from('rem_bonos_personal d')
 							  ->join('rem_conf_haber_descuento as h','d.idconf = h.id')
 							  ->join('rem_personal as p','d.idpersonal = p.id_personal')
-			                  ->where('d.id_personal',$idtrabajador)
+			                  ->where('d.idpersonal',$idtrabajador)
 			                  ->where('p.id_empresa',$this->session->userdata('empresaid'));
 
 			$haberes_data = is_null($imponible) ? $haberes_data : $haberes_data->where('h.imponible',$campo_imponible);  	
