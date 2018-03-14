@@ -214,7 +214,7 @@
                                 <td><?php echo formato_fecha($linea_cartola->fecfin,'Y-m-d','d/m/Y'); ?></td>
                                 <td><?php echo $linea_cartola->dias; ?></td>
                                 <td><?php echo $linea_cartola->comentarios; ?></td>
-                                <td><a href="<?php echo base_url();?>auxiliares/comprobante_solicitud/<?php echo $personal->id_personal;?>/<?php echo $linea_cartola->id;?>" data-toggle="tooltip" title="Editar Solicitud" target="_blank" ><i class="fa  fa-file-pdf-o"></i></a></td>
+                                <td><a href="<?php echo base_url();?>auxiliares/comprobante_solicitud/<?php echo $personal->id_personal;?>/<?php echo $linea_cartola->id;?>" data-toggle="tooltip" title="Ver Comprobante" target="_blank" ><i class="fa  fa-file-pdf-o"></i></a></td>
                                  <?php if($i == count($cartola)){ ?>
                                 <td>
                            <a href="<?php echo base_url();?>auxiliares/solicita_vacaciones/<?php echo $personal->id_personal;?>/<?php echo $linea_cartola->id;?>" data-toggle="tooltip" title="Editar Solicitud" ><span class="glyphicon glyphicon-edit"></span></a>&nbsp;&nbsp;
