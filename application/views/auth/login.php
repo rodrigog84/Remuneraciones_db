@@ -61,11 +61,11 @@
         <div class="form-group m-b-20">
           <input type="password" name="password" id="password" value="" class="form-control input-lg" placeholder="Contraseña" />
         </div>
-        <div class="checkbox m-b-20">
+        <!--div class="checkbox m-b-20">
           <label>
             <input type="checkbox" id="remember" /> Recordar Usuario
           </label>
-        </div>
+        </div-->
         <div class="login-buttons">
           <button type="submit" class="btn btn-success btn-block btn-lg">Acceder</button>
         </div>
