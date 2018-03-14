@@ -103,7 +103,7 @@
   <div class="panel-footer">
     <button type="submit" class="btn btn-success"><?php echo $titulo; ?></button>
     &nbsp;&nbsp;
-    <a href="<?php echo base_url();?>remuneraciones/vacaciones" class="btn btn-default">Volver</a> 
+    <a href="<?php echo base_url();?>auxiliares/vacaciones" class="btn btn-default">Volver</a> 
     <input type="hidden" id="fechadesde" name="fechadesde" value="<?php echo $fechadesde;?>" />
     <input type="hidden" id="fechahasta" name="fechahasta" value="<?php echo $fechahasta;?>" />
     <input type="hidden" id="idcartola" name="idcartola" value="<?php echo $idcartola;?>" />                                       
