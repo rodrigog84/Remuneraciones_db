@@ -602,6 +602,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$afps = $this->admin->get_afp();
 			$isapres = $this->admin->get_isapre();
 			$datos_personal = $this->rrhh_model->get_personal_datos($rut);
+			$pantalon = $this->admin->get_vestuario_pantalon();			
+			$polera = $this->admin->get_vestuario_polera();
 
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 
@@ -686,6 +688,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['bonos'] = $bonos;
 			$vars['formValidation'] = true;
 			$vars['datetimepicker'] = true;
+			$vars['pantalon'] = $pantalon;
+			$vars['polera'] = $polera;
 			//$vars['icheck'] = true;
 			$vars['jqueryRut'] = true;
 			$vars['mask'] = true;
@@ -725,9 +729,9 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$centros_costo = $this->admin->get_centro_costo();
 			$afps = $this->admin->get_afp();
 			$isapres = $this->admin->get_isapre();
-			$pantalon = $this->admin->get_vestuario_pantalon();
-			$bancos = $this->admin->get_bancos();
+			$pantalon = $this->admin->get_vestuario_pantalon();			
 			$polera = $this->admin->get_vestuario_polera();
+			$bancos = $this->admin->get_bancos();
 			$forma_pago = $this->admin->get_forma_pago();
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 			$jornada_trabajo = $this->admin->get_jornada_trabajo();
@@ -901,7 +905,10 @@ public function editar_trabajador(){
 			$saldoinicvacaciones = $this->input->post('vacaciones_legales');
 			$saldoinicvacprog = $this->input->post('vacaciones_progresivas');
 			$fecingreso = $this->input->post('datepicker2');
-			//$fecingreso = '20180301';
+			$tallapantalon = $this->input->post('pantalon');
+			$tallapolera = $this->input->post('polera');
+
+			
 
 			$date = DateTime::createFromFormat('d/m/Y', $fecingreso);
 			$fecingreso = $date->format('Ymd');
@@ -943,6 +950,9 @@ public function editar_trabajador(){
 								'idafp' => $afp,
 								'idisapre' => $isapre,
 								'sueldobase' => $sueldo_base,
+								'tallapantalon' => $tallapantalon,
+								'tallapolera' => $tallapolera,
+
 								/*'fecinicvacaciones' => $fecinicvacaciones,
 								'saldoinicvacaciones' => $saldoinicvacaciones,
 								'saldoinicvacprog' => $saldoinicvacprog,*/

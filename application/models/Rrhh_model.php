@@ -812,7 +812,10 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'diasprogresivos',
 				'diasprogtomados',
 				'saldoinicvacprog',
-				'idcentrocosto'
+				'idcentrocosto',
+				'tallapolera',
+				'tallapantalon'
+
 			);
 		
 		$personal_data = $this->db->select($array_campos)

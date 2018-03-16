@@ -1112,6 +1112,8 @@ $(document).ready(function(){
         				$("#fecha_inicio_vacaciones").val(this.fecinicvacaciones);
         				$("#vacaciones_legales").val(this.saldoinicvacaciones);
         				$("#vacaciones_progresivas").val(this.saldoinicvacprog);
+        				$("#polera").val(this.tallapolera);
+        				$("#pantalon").val(this.tallapantalon);
 
         				}
         				)}
