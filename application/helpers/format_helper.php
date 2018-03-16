@@ -224,6 +224,7 @@ if (!function_exists('date2string'))
       $orden_letras[35] = "AJ";
       $orden_letras[36] = "AK";
       $orden_letras[37] = "AL";
+      $orden_letras[38] = "AM";
 
       return $orden_letras[$valor];
     }

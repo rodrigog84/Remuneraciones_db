@@ -1901,19 +1901,21 @@ limit 1		*/
 			 $sheet->getColumnDimension('AH')->setWidth(15);			
 			 $sheet->setCellValue('AH'.$i, 'Total Otros Descuentos');				 			 			 			 		
 			 $sheet->getColumnDimension('AI')->setWidth(15);			
-			 $sheet->setCellValue('AI'.$i, 'Aporte Seguro Cesantía');	 
-			 $sheet->getColumnDimension('AJ')->setWidth(15);			
-			 $sheet->setCellValue('AJ'.$i, 'Aporte SIS');	 
+			 $sheet->setCellValue('AI'.$i, 'Líquido a Pagar');				 			 			 			 		
+			 $sheet->getColumnDimension('AJ')->setWidth(15);	
+			 $sheet->setCellValue('AJ'.$i, 'Aporte Seguro Cesantía');	 
 			 $sheet->getColumnDimension('AK')->setWidth(15);			
-			 $sheet->setCellValue('AK'.$i, 'Mutual de Seguridad');	 
+			 $sheet->setCellValue('AK'.$i, 'Aporte SIS');	 
 			 $sheet->getColumnDimension('AL')->setWidth(15);			
-			 $sheet->setCellValue('AL'.$i, 'Total Aportes Patronales');	 
+			 $sheet->setCellValue('AL'.$i, 'Mutual de Seguridad');	 
+			 $sheet->getColumnDimension('AM')->setWidth(15);			
+			 $sheet->setCellValue('AM'.$i, 'Total Aportes Patronales');	 
 
 
 
-			 $columnaFinal = 37;
-			 $mergeTotal = 38;
-			 $columnaTotales = 37;
+			 $columnaFinal = 38;
+			 $mergeTotal = 39;
+			 $columnaTotales = 38;
 			 $sheet->getStyle("B".$i.":".ordenLetrasExcel($columnaFinal).$i)->getFont()->setBold(true);
 			 $i++;
 			$filaInicio = $i-1; 
@@ -2013,14 +2015,16 @@ limit 1		*/
             	$sheet->getStyle('AG'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
             	$sheet->setCellValue("AH".$i,$remuneracion->otrosdescuentos);
             	$sheet->getStyle('AH'.$i)->getNumberFormat()->setFormatCode('#,##0');             	            	            	
-            	$sheet->setCellValue("AI".$i,$remuneracion->aportesegcesantia);
-            	$sheet->getStyle('AI'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AJ".$i,$remuneracion->seginvalidez);
+            	$sheet->setCellValue("AI".$i,$remuneracion->sueldoliquido);
+            	$sheet->getStyle('AI'.$i)->getNumberFormat()->setFormatCode('#,##0');              	
+            	$sheet->setCellValue("AJ".$i,$remuneracion->aportesegcesantia);
             	$sheet->getStyle('AJ'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AK".$i,$remuneracion->aportepatronal);
+            	$sheet->setCellValue("AK".$i,$remuneracion->seginvalidez);
             	$sheet->getStyle('AK'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AL".$i,$remuneracion->aportesegcesantia + $remuneracion->seginvalidez + $remuneracion->aportepatronal);
-            	$sheet->getStyle('AL'.$i)->getNumberFormat()->setFormatCode('#,##0');              	            	            	
+            	$sheet->setCellValue("AL".$i,$remuneracion->aportepatronal);
+            	$sheet->getStyle('AL'.$i)->getNumberFormat()->setFormatCode('#,##0');  
+            	$sheet->setCellValue("AM".$i,$remuneracion->aportesegcesantia + $remuneracion->seginvalidez + $remuneracion->aportepatronal);
+            	$sheet->getStyle('AM'.$i)->getNumberFormat()->setFormatCode('#,##0');              	            	            	
 
 	 			if($i % 2 != 0){
 	 				//echo "consulta 4: -- i : ".$i. "  -- mod : ". ($i % 2)."<br>";
@@ -2115,8 +2119,12 @@ limit 1		*/
 
 						$sheet->getStyle("AH".$filaInicio.":AH".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
 						$sheet->getStyle("AH".$filaInicio.":AH".$i)->getFill()->getStartColor()->setRGB('E8EDFF');									
-						$sheet->getStyle("AL".$filaInicio.":AL".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle("AL".$filaInicio.":AL".$i)->getFill()->getStartColor()->setRGB('E8EDFF');											
+						$sheet->getStyle("AI".$filaInicio.":AI".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+						$sheet->getStyle("AI".$filaInicio.":AI".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
+
+
+						$sheet->getStyle("AM".$filaInicio.":AM".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+						$sheet->getStyle("AM".$filaInicio.":AM".$i)->getFill()->getStartColor()->setRGB('E8EDFF');											
 			/******************************************************************************************************/
 
 
