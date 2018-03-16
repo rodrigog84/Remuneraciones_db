@@ -731,6 +731,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$forma_pago = $this->admin->get_forma_pago();
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 			$jornada_trabajo = $this->admin->get_jornada_trabajo();
+			$apv = $this->admin->get_apv();
 
 			/**** CARGA DE DATOS TRABAJADOR ****/
 			$trabajador = is_null($idtrabajador) ?  array() : $this->admin->get_personal_total($idtrabajador); 
@@ -808,6 +809,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['tramos_asig_familiar'] = $tramos_asig_familiar;
 			$vars['afps'] = $afps;
 			$vars['isapres'] = $isapres;
+			$vars['apv'] = $apv;
 			$vars['content_view'] = 'rrhh/add_trabajador';
 			$vars['datos_form'] = $datos_form;
 			$vars['bonos'] = $bonos;
@@ -1042,10 +1044,23 @@ public function editar_trabajador(){
 			$fecinicvacaciones = $this->input->post('fecha_inicio_vacaciones');
 			$saldoinicvacaciones = $this->input->post('vacaciones_legales');
 			$saldoinicvacprog = $this->input->post('vacaciones_progresivas');
-			//$fecingreso = $this->input->post('datepicker2');
-			
+			$fecingreso = $this->input->post('datepicker2');
+			$apv = $this->input->post('apv');
+			$numero_contrato_apv = $this->input->post('numero_contrato_apv');
+			$tipo_cotizacion = $this->input->post('tipo_cotizacion');
+			$monto_pactado = $this->input->post('monto_pactado');
+			$fecafc = $this->input->post('datepicker6');
+			$cotapv = $this->input->post('monto_cotizacion_apv');
 
-			$fecingreso = '20180301';
+
+			// SE REGULARIZA LOS CAMPOS FECHA DEL FORMATO dd/mm/yyyy A yyyy/mm/dd DE LA BD	
+
+			//$fecnacimiento = date("yyyy/mm/dd", $fecnacimiento);
+			$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
+			$fecnacimiento = $date->format('Ymd');
+			//echo $fecingreso;*/
+
+			//$fecingreso = '20180301';
 			/*$idregion = $this->input->post('region');
 			$idcomuna = $this->input->post('comuna');
 			$fecingreso = $this->input->post('fechaingreso');
@@ -1081,7 +1096,7 @@ public function editar_trabajador(){
 								'nombre' => $nombre,
 								'apaterno' => $apaterno,
 								'amaterno' => $amaterno,
-								'fecnacimiento' => substr($fecnacimiento,6,4).substr($fecnacimiento,0,2).substr($fecnacimiento,3,2),
+								'fecnacimiento' => $fecnacimiento,//substr($fecnacimiento,6,4).substr($fecnacimiento,0,2).substr($fecnacimiento,3,2),
 								'idnacionalidad' => $idnacionalidad,
 								'nacionalidad' => 'C', //ELIMINAR DESPUES
 								'idecivil' => $idecivil,
@@ -1106,6 +1121,13 @@ public function editar_trabajador(){
 								'idisapre' => $isapre,
 								'sueldobase' => $sueldo_base,
 								'fecingreso' => $fecingreso,
+								'instapv' => $apv,
+								'nrocontratoapv' => $numero_contrato_apv,
+								'tipocotapv' => $tipo_cotizacion,
+								'valorpactado' => $monto_pactado,
+								'fecafc' => $fecafc,
+								'cotapv' => $cotapv,
+
 								//'fecinicvacaciones' => $fecinicvacaciones,
 								//'saldoinicvacaciones' => $saldoinicvacaciones,
 								//'saldoinicvacprog' => $saldoinicvacprog,

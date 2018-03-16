@@ -632,7 +632,7 @@ public function get_personal_total($idtrabajador = null){
 
 	public function get_apv($idapv = null){
 
-		$apv_data = $this->db->select('id, nombre, codprevired')
+		$apv_data = $this->db->select('id_apv, nombre, codprevired')
 						  ->from('rem_apv a')
 						  ->where('a.active = 1')
 		                  ->order_by('a.nombre');
