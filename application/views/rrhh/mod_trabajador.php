@@ -1114,6 +1114,8 @@ $(document).ready(function(){
         				$("#vacaciones_progresivas").val(this.saldoinicvacprog);
         				$("#polera").val(this.tallapolera);
         				$("#pantalon").val(this.tallapantalon);
+        				$("#titulo").val(this.titulo);
+        				$("#licencia").val(this.idlicencia);
 
         				}
         				)}

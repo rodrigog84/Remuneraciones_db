@@ -814,7 +814,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'saldoinicvacprog',
 				'idcentrocosto',
 				'tallapolera',
-				'tallapantalon'
+				'tallapantalon',
+				'titulo',
+				'idlicencia'
 
 			);
 		

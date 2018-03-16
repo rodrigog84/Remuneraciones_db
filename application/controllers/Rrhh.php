@@ -604,6 +604,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$datos_personal = $this->rrhh_model->get_personal_datos($rut);
 			$pantalon = $this->admin->get_vestuario_pantalon();			
 			$polera = $this->admin->get_vestuario_polera();
+			$apv = $this->admin->get_apv();
+
 
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 
@@ -690,6 +692,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['datetimepicker'] = true;
 			$vars['pantalon'] = $pantalon;
 			$vars['polera'] = $polera;
+			$vars['apv'] = $apv;
 			//$vars['icheck'] = true;
 			$vars['jqueryRut'] = true;
 			$vars['mask'] = true;
@@ -1066,6 +1069,8 @@ public function editar_trabajador(){
 			$monto_pactado = $this->input->post('monto_pactado');
 			$fecafc = $this->input->post('datepicker6');
 			$cotapv = $this->input->post('monto_cotizacion_apv');
+			$tallapantalon = $this->input->post('pantalon');
+			$tallapolera = $this->input->post('polera');
 
 
 			// SE REGULARIZA LOS CAMPOS FECHA DEL FORMATO dd/mm/yyyy A yyyy/mm/dd DE LA BD	
@@ -1141,6 +1146,8 @@ public function editar_trabajador(){
 								'valorpactado' => $monto_pactado,
 								'fecafc' => $fecafc,
 								'cotapv' => $cotapv,
+								'tallapantalon' => $tallapantalon,
+								'tallapolera' => $tallapolera,
 
 								//'fecinicvacaciones' => $fecinicvacaciones,
 								//'saldoinicvacaciones' => $saldoinicvacaciones,
