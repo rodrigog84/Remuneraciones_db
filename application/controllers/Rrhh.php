@@ -900,8 +900,13 @@ public function editar_trabajador(){
 			$fecinicvacaciones = $this->input->post('fecha_inicio_vacaciones');
 			$saldoinicvacaciones = $this->input->post('vacaciones_legales');
 			$saldoinicvacprog = $this->input->post('vacaciones_progresivas');
-			//$fecingreso = $this->input->post('datepicker2');
-			$fecingreso = '20180301';
+			$fecingreso = $this->input->post('datepicker2');
+			//$fecingreso = '20180301';
+
+			$date = DateTime::createFromFormat('d/m/Y', $fecingreso);
+			$fecingreso = $date->format('Ymd');
+			$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
+			$fecnacimiento = $date->format('Ymd');
 
 
 					
@@ -914,7 +919,7 @@ public function editar_trabajador(){
 								'nombre' => $nombre,
 								'apaterno' => $apaterno,
 								'amaterno' => $amaterno,
-								'fecnacimiento' => substr($fecnacimiento,6,4).substr($fecnacimiento,0,2).substr($fecnacimiento,3,2),
+								'fecnacimiento' => $fecnacimiento,//substr($fecnacimiento,6,4).substr($fecnacimiento,0,2).substr($fecnacimiento,3,2),
 								'idnacionalidad' => $idnacionalidad,
 								'nacionalidad' => 'C', //ELIMINAR DESPUES
 								'idecivil' => $idecivil,
@@ -1055,10 +1060,9 @@ public function editar_trabajador(){
 
 			// SE REGULARIZA LOS CAMPOS FECHA DEL FORMATO dd/mm/yyyy A yyyy/mm/dd DE LA BD	
 
-			//$fecnacimiento = date("yyyy/mm/dd", $fecnacimiento);
 			$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
 			$fecnacimiento = $date->format('Ymd');
-			//echo $fecingreso;*/
+
 
 			//$fecingreso = '20180301';
 			/*$idregion = $this->input->post('region');
