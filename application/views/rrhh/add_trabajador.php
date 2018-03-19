@@ -406,7 +406,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" name="datepicker2"type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
 																<input placeholder="Fecha Retiro" class="form-control1" id="datepicker3" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
@@ -603,8 +603,10 @@
 													<table class="table table-striped">
     													<thead> 
 															<tr> 
-																<th>Fecha Incorporación AFP:</th> 
-																<th>Fecha Seguro Cesantia:</th>
+																<th>Fecha Incorporación AFP:</th> 																	
+
+																<th><input class="form-control1" id="seguro_cesantia" type="checkbox" onchange="habilitar(this.checked);" > Seguro Cesantia:</th>
+																<!--<th>Fecha Seguro Cesantia:</th>-->
 															</tr> 
 														</thead>
 														<tbody>
@@ -612,7 +614,7 @@
 																<input placeholder="Fecha Incorp.AFP" class="form-control1" id="datepicker5" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
-																<input placeholder="Fecha Seguro Cesantia" class="form-control1" id="datepicker6" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Ingreso AFC" class="form-control1" id="datepicker6" type="text" value="" disabled onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 														</tbody>
 													</table>
@@ -622,6 +624,7 @@
 															<tr>
 																<th>Cese AFC:</th>
 																<th>Isapre:</th>
+																<th>Monto Pactado Plan Isapre (UF):</th>
 															</tr>
 														</thead>
 														<tbody>
@@ -636,6 +639,9 @@
 								                                      <option value="<?php echo $isapre->id_isapre;?>" <?php echo $isapreselected;?> ><?php echo $isapre->nombre;?></option>
 								                                    <?php } ?>
 								                                   </select>
+															</td>
+															<td>
+																<input type="number" min="0" max="99" minlength="1" maxlength="2" step="0.01"name="monto_pactado"  class="form-control1" id="monto_pactado" placeholder="">
 															</td>
 														</tbody>
 													</table>
@@ -657,7 +663,42 @@
 															</td>
 														</tbody>
 													</table>
-
+													<table class="table table-striped">
+														<thead>
+															<tr>
+																<th>A.P.V.</th>
+																<th>Numero Contrato A.P.V.:</th>
+																<th>Tipo Cotización A.P.V:</th>
+																<th>Monto Cotización A.P.V:</th>
+															</tr>
+														</thead>
+														<tbody>
+															<td>
+																<select name="apv" id="apv" class="form-control1" >
+																	<option>Seleccione APV</option>
+						                                    		<?php foreach ($apv as $apvs) { ?>
+								                                      <?php $apvselected = $apvs->id_apv == $datos_form['idapv'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $apvs->id_apv;?>" <?php echo $apvselected;?> ><?php echo $apvs->nombre;?></option>
+								                                    <?php } ?>
+								                                   </select>
+																
+															</td>
+															<td>
+																<input type="number" name="numero_contrato_apv" class="form-control1" id="numero_contrato_apv" placeholder="Numero Contrato">
+															</td>
+															<td>
+																<select name="tipo_cotizacion" id="tipo_cotizacion" class="form-control1">
+																	<option value="pesos">PESO</option>
+																	<option value="uf">UF</option>
+																	<option value="porcentaje">PORCENTAJE</option>
+																</select>
+																
+															</td>
+															<td>
+																<input type="text" name="monto_cotizacion_apv" maxlength="2" class="form-control1" id="monto_cotizacion_apv" placeholder="Monto Cotizacion">
+															</td>
+														</tbody>
+													</table>
 													<table class="table table-striped">
 														<thead>
 															<tr>
@@ -1075,18 +1116,28 @@ $(document).ready(function() {
 <script src="js/jquery-ui.js"></script>
 <script>
 	$(function() {
-		$( "#datepicker,#datepicker2,#datepicker3,#datepicker4,#datepicker5,#datepicker6,#datepicker7,#datepicker8,#datepicker9,#datepicker10,#datepicker11,#datepicker12,#feriados,#fecha_real,#vencimiento_1,#fechanacimiento,#fecha_inicio_vacaciones").datepicker();
+		$( "#datepicker,#datepicker2,#datepicker3,#datepicker4,#datepicker5,#datepicker6,#datepicker7,#datepicker8,#datepicker9,#datepicker10,#datepicker11,#datepicker12,#feriados,#fecha_real,#vencimiento_1,#fechanacimiento,#fecha_inicio_vacaciones").datepicker({
+  dateFormat: "dd/mm/yy"
+});
 	});
 </script>
 <!--date-piker-->								
-<script>
-	
-$('.datepicker2').change(function(){
-
-	//$("#fecha_inicio_vacaciones").val('13/10/2012');
-	bootbox.alert("fecha");
-
-});
 
 
 </script>
+
+
+<script>
+		function habilitar(value)
+		{
+			if(value==true)
+			{
+				// habilitamos
+				document.getElementById("datepicker6").disabled=false;
+			}else if(value==false){
+				// deshabilitamos
+				document.getElementById("datepicker6").disabled=true;
+			}
+		}
+	</script>
+

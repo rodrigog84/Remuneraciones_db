@@ -56,10 +56,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="rut" id="rut"  class="form-control1"  placeholder="98.123.456-7" title="Escriba Rut" required>
+																<input type="text" name="rut" id="rut"  class="form-control1"  placeholder="98.123.456-7" title="Escriba Rut" required >
 															</td>
 															<td>
-																<input type="text" name="numficha" id="numficha" class="form-control1" id="" placeholder="Número de Ficha">
+																<input type="text" name="numficha" id="numficha" class="form-control1" id="" placeholder="Número de Ficha" >
 															</td>
 														</tbody>	
 													</table>
@@ -98,7 +98,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" required id="datepicker" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" /> 
+																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" required id="datepicker" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
 																<select name="nacionalidad" id="nacionalidad" class="form-control1" required>
@@ -123,7 +123,7 @@
 														<tbody>
 															<td>
 																<select name="ecivil" id="ecivil" class="form-control1" required>
-							                                   <option value="0">Seleccione Estado Civil</option>
+							                                   <option value="">Seleccione Estado Civil</option>
 								                                    <?php foreach ($estados_civiles as $estado_civil) { ?>
 								                                      <?php $ecivilselected = $estado_civil->id == $datos_form['idecivil'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $estado_civil->id_estado_civil;?>" <?php echo $ecivilselected;?> ><?php echo $estado_civil->nombre;?></option>
@@ -150,10 +150,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="direccion" id="direccion" class="form-control1" placeholder="Dirección" data-toggle="modal" data-target="#myModalDireccion" required>
+																<input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="Dirección" data-toggle="modal" data-target="#myModalDireccion">
 															</td>
 															<td>
-																<input type="text" name="email" id="email" class="form-control1" placeholder="Email" >
+																<input type="text" name="email" id="email" class="form-control1" placeholder="Email">
 															</td>
 														</tbody>
 													</table>
@@ -178,8 +178,8 @@
 															<td>
 														 <?php $label_cargo = ""; ?>
 
-							                              <select name="cargo" id="cargo"  class="form-control1" required  >
-							                                  <option value="0">Seleccione un Cargo</option>
+							                              <select name="cargo" id="cargo"  class="form-control1"  >
+							                                  <option value="">Seleccione un Cargo</option>
 							                                  <?php foreach ($cargos as $cargo) { ?>
 							                                      <?php if($cargo->idpadre != $label_cargo){
 							                                              if($label_cargo != ''){
@@ -247,7 +247,7 @@
 														<tbody>
 															<td>
 																<select name="jefe" id="jefe" class="form-control1">
-																	<option>Seleccione Jefe o Supervisor</option>
+																	<option value="">Seleccione Jefe o Supervisor</option>
 						                                    		<?php foreach ($personal as $trabajador) { ?>
 								                                      <?php $jefeselected = $trabajador->id == $datos_form['idjefe'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
@@ -256,7 +256,7 @@
 															</td>
 															<td>
 																<select name="reemplazo" id="reemplazo" class="form-control1">
-																	<option>Seleccione Reemplazo</option>
+																	<option value="">Seleccione Reemplazo</option>
 						                                    		<?php foreach ($personal as $trabajador) { ?>
 								                                      <?php $jefeselected = $trabajador->id == $datos_form['idjefe'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
@@ -278,7 +278,7 @@
 														<tbody>
 															<td>
 																<select name="licencia" id="licencia" class="form-control1">
-																	<option>Seleccione Tipo Licencia</option>
+																	<option value="">Seleccione Tipo Licencia</option>
 						                                    		<?php foreach ($licencias as $licencia) { ?>
 								                                      <?php $licenciaselected = $licencia->id == $datos_form['idlicencia'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $licencia->id_licencia_conducir;?>" <?php echo $licenciaselected;?> ><?php echo $licencia->nombre;?></option>
@@ -286,10 +286,26 @@
 																</select>
 															</td>
 															<td>
-																<input type="text" name="polera" id="polera" class="form-control1" placeholder="Talla de Polera">
+																<select name="polera" id="polera" class="form-control1">
+																	<option  value="">Seleccione Talla</option>
+						                                    		<?php foreach ($polera as $tpolera) { ?>
+								                                      <?php $poleraselected = $tpolera->id_vestuario == $datos_form['idvestuario'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $tpolera->id_vestuario;?>" <?php echo $poleraselected;?>><?php echo $tpolera->talla;?></option>
+								                                    <?php } ?>
+																</select>
+
+																<!--<input type="text" name="polera" id="polera" class="form-control1" placeholder="Talla de Polera">-->
 															</td>
 															<td>
-																<input type="text" name="pantalon" id="pantalon" class="form-control1" placeholder="Talla de Pantalón">
+																<select name="pantalon" id="pantalon" class="form-control1">
+																	<option value="">Seleccione Talla</option>
+						                                    		<?php foreach ($pantalon as $tpantalon) { ?>
+								                                      <?php $pantalonselected = $tpantalon->id_vestuario == $datos_form['idvestuario'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $tpantalon->id_vestuario;?>" <?php echo $pantalonselected;?>><?php echo $tpantalon->talla;?></option>
+								                                    <?php } ?>
+																</select>
+														
+																<!--<input type="text" name="pantalon" id="pantalon" class="form-control1" placeholder="Talla de Pantalón">-->
 															</td>
 														</tbody>
 													</table>
@@ -308,7 +324,7 @@
 															</td>
 															<td>
 																<select name="centro_costo" id="centro_costo" class="form-control1">
-																	<option>Seleccione Centro Costo</option>
+																	<option value="">Seleccione Centro Costo</option>
 						                                    		<?php foreach ($centros_costo as $centro_costo) { ?>
 								                                      <?php $centrocostoselected = $centro_costo->id == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
@@ -353,7 +369,7 @@
 																<input type="text" name="clase" class="form-control1" id="clase" placeholder="Clases">
 															</td>
 															<td>
-																<input type="text" name="sueldo_base" class="form-control1" id="sueldo_base" placeholder="Sueldo Base" >
+																<input type="text" name="sueldo_base" class="form-control1" id="sueldo_base" placeholder="Sueldo Base">
 															</td>
 															<td>
 																<input type="text" name="tipo_cc" class="form-control1" id="tipo_cc" placeholder="Tipo CC">
@@ -386,12 +402,11 @@
 																<th>Fecha de Ingreso:</th> 
 																<th>Fecha de Retiro:</th>
 																<th>Fecha de Finiquito:</th>
-
 															</tr> 
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Ingreso" class="form-control1" name ="datepicker2" id="datepicker2" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" name="datepicker2"type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
 																<input placeholder="Fecha Retiro" class="form-control1" id="datepicker3" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
@@ -402,8 +417,6 @@
 		
 														</tbody>
 													</table>
-
-
 
 													<table class="table table-striped">
     													<thead> 
@@ -416,13 +429,13 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Inicio Vacaciones" class="form-control1" id="fecha_inicio_vacaciones" size="30" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Inicio Vacaciones" class="form-control1" id="fecha_inicio_vacaciones"  size="30" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
-																<input type="text" name="seccion" class="form-control1" id="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30">
+																<input type="text" name="seccion" class="form-control1" id="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30" value="0">
 															</td>
 															<td>
-																<input type="text" name="seccion" class="form-control1" id="vacaciones_progresivas" placeholder="Saldo Inicial Vacaciones Progresivas" size="30" >
+																<input type="text" name="seccion" class="form-control1" id="vacaciones_progresivas" placeholder="Saldo Inicial Vacaciones Progresivas" size="30" value="0">
 															</td>
 		
 														</tbody>
@@ -480,7 +493,12 @@
 																<input type="text" name="codigo_ine" class="form-control1" id="codigo_ine" placeholder="Código Ine">
 															</td>
 															<td>
-																<input type="text" name="sindicato" class="form-control1" id="sindicato" placeholder="Sindicato">
+																<select name="sindicato" id="sindicato" class="form-control1">
+																	<option value="SI">SI</option>
+																	<option value="NO">NO</option>
+																
+																</select>
+																
 															</td>
 														</tbody>
 													</table>
@@ -488,14 +506,19 @@
 													<table class="table table-striped">
     													<thead> 
 															<tr> 
-																<th>Régimen de Pago:</th> 
+																<th>Rol Privado</th> 
 																<th>Sitio Laboral:</th>
 																<th>Zona Brecha:</th>
 															</tr> 
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="regimen_pago" class="form-control1" id="regimen_pago" placeholder="Régimen de Pago">
+																<select name="regimen_pago" id="regimen_pago" class="form-control1">
+																	<option value="SI">SI</option>
+																	<option value="NO">NO</option>
+																
+																</select>
+																
 															</td>
 															<td>
 																<input type="text" name="sitio_laboral" class="form-control1" id="sitio_laboral" placeholder="Sitio Laboral">
@@ -544,12 +567,12 @@
 																</select>
 															</td>
 															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
+																<select name="jubilado" id="jubilado" class="form-control1">
+																	<option value="SI">SI</option>
+																	<option value="NO">NO</option>
+																
 																</select>
+																
 															</td>
 														</tbody>
 													</table>
@@ -563,12 +586,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
-																</select>
+																<input type="text" name="pago_cotiza" class="form-control1" id="pago_cotiza" placeholder="L. Pago Cotiz">
 															</td>
 															<td>
 																<select name="afp" id="afp" class="form-control1">
@@ -585,8 +603,10 @@
 													<table class="table table-striped">
     													<thead> 
 															<tr> 
-																<th>Fecha Incorporación AFP:</th> 
-																<th>Fecha Seguro Cesantia:</th>
+																<th>Fecha Incorporación AFP:</th> 																	
+
+																<th><input class="form-control1" id="seguro_cesantia" type="checkbox" onchange="habilitar(this.checked);" > Seguro Cesantia:</th>
+																<!--<th>Fecha Seguro Cesantia:</th>-->
 															</tr> 
 														</thead>
 														<tbody>
@@ -594,7 +614,7 @@
 																<input placeholder="Fecha Incorp.AFP" class="form-control1" id="datepicker5" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 															<td>
-																<input placeholder="Fecha Seguro Cesantia" class="form-control1" id="datepicker6" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Ingreso AFC" class="form-control1" id="datepicker6" type="text" value="" disabled onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
 															</td>
 														</tbody>
 													</table>
@@ -604,6 +624,7 @@
 															<tr>
 																<th>Cese AFC:</th>
 																<th>Isapre:</th>
+																<th>Monto Pactado Plan Isapre (UF):</th>
 															</tr>
 														</thead>
 														<tbody>
@@ -618,6 +639,9 @@
 								                                      <option value="<?php echo $isapre->id_isapre;?>" <?php echo $isapreselected;?> ><?php echo $isapre->nombre;?></option>
 								                                    <?php } ?>
 								                                   </select>
+															</td>
+															<td>
+																<input type="number" min="0" max="99" minlength="1" maxlength="2" step="0.01"name="monto_pactado"  class="form-control1" id="monto_pactado" placeholder="">
 															</td>
 														</tbody>
 													</table>
@@ -639,7 +663,42 @@
 															</td>
 														</tbody>
 													</table>
-
+													<table class="table table-striped">
+														<thead>
+															<tr>
+																<th>A.P.V.</th>
+																<th>Numero Contrato A.P.V.:</th>
+																<th>Tipo Cotización A.P.V:</th>
+																<th>Monto Cotización A.P.V:</th>
+															</tr>
+														</thead>
+														<tbody>
+															<td>
+																<select name="apv" id="apv" class="form-control1" >
+																	<option>Seleccione APV</option>
+						                                    		<?php foreach ($apv as $apvs) { ?>
+								                                      <?php $apvselected = $apvs->id_apv == $datos_form['idapv'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $apvs->id_apv;?>" <?php echo $apvselected;?> ><?php echo $apvs->nombre;?></option>
+								                                    <?php } ?>
+								                                   </select>
+																
+															</td>
+															<td>
+																<input type="number" name="numero_contrato_apv" class="form-control1" id="numero_contrato_apv" placeholder="Numero Contrato">
+															</td>
+															<td>
+																<select name="tipo_cotizacion" id="tipo_cotizacion" class="form-control1">
+																	<option value="pesos">PESO</option>
+																	<option value="uf">UF</option>
+																	<option value="porcentaje">PORCENTAJE</option>
+																</select>
+																
+															</td>
+															<td>
+																<input type="text" name="monto_cotizacion_apv" maxlength="2" class="form-control1" id="monto_cotizacion_apv" placeholder="Monto Cotizacion">
+															</td>
+														</tbody>
+													</table>
 													<table class="table table-striped">
 														<thead>
 															<tr>
@@ -649,7 +708,16 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="tramo" class="form-control1" id="tramo" placeholder="Tramo p/Asig. Familiar">
+																<select name="tramo" id="tramo" class="form-control1">
+																	<option>Seleccione tramo</option>
+						                                    		<?php foreach ($tramos_asig_familiar as $tramo) { ?>
+								                                      <?php $tramoselected = $tramo->id_tabla_asig_familiar == $datos_form['id_tabla_asig_familiar'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $tramo->id_tabla_asig_familiar;?>" <?php echo $tramoselected;?> ><?php echo 'TRAMO '.$tramo->tramo;?></option>
+								                                    <?php } ?>																
+								                                </select>
+
+																
+																<!--<input type="text" name="tramo" class="form-control1" id="tramo" placeholder="Tramo p/Asig. Familiar">-->
 															</td>
 															<td>
 																<input type="text" name="trabajo_pesado" class="form-control1" id="trabajo_pesado" placeholder="Trabajo Pesado/Insalub">
@@ -680,26 +748,24 @@
 
 													<table class="table table-striped">
 														<thead>
-															<tr>
-																<th>C.C.A.F:</th>
+															<tr>																
 																<th>Zona A. Familiar:</th>
 																<th>Jornada de Trabajo:</th>
 															</tr>
 														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="ccaf" class="form-control1" id="ccaf" placeholder="C.C.A.F">
-															</td>
+														<tbody>															
 															<td>
 																<input type="text" name="zona_familiar" class="form-control1" id="zona_familiar" placeholder="Zona A. Familiar">
 															</td>
 															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
+																<select name="jornada_trabajo" id="jornada_trabajo" class="form-control1">
+																	<option>Seleccione Forma de Pago</option>
+						                                    		<?php foreach ($jornada_trabajo as $jornada) { ?>
+								                                      <?php $jornadaselected = $jornada->id_jornada == $datos_form['id_jornada'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $jornada->id_jornada;?>" <?php echo $jornadaselected;?> ><?php echo $jornada->nombre;?></option>
+								                                    <?php } ?>
 																</select>
+
 															</td>
 														</tbody>
 													</table>
@@ -717,20 +783,22 @@
 														</thead>
 														<tbody>
 															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
+																<select name="forma_pago" id="forma_pago" class="form-control1">
+																	<option>Seleccione Forma de Pago</option>
+						                                    		<?php foreach ($forma_pago as $pago) { ?>
+								                                      <?php $pagoselected = $pago->id_forma_pago == $datos_form['id_forma_pago'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $pago->id_forma_pago;?>" <?php echo $pagoselected;?> ><?php echo $pago->descripcion;?></option>
+								                                    <?php } ?>
 																</select>
 															</td>
 															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
-																</select>
+																<select name="banco" id="banco" class="form-control1">
+																	<option>Seleccione Banco</option>
+						                                    		<?php foreach ($bancos as $banco) { ?>
+								                                      <?php $bancoselected = $banco->id_banco == $datos_form['id_banco'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $banco->id_banco;?>" <?php echo $bancoselected;?> ><?php echo $banco->cod_sbif.' - '.$banco->nombre;?></option>
+								                                    <?php } ?>																
+								                                </select>
 															</td>
 														</tbody>
 													</table>
@@ -936,8 +1004,7 @@
 													</table>
 												</section>
 											</div>
-										</div>
-										<br>
+										</div>		<br>
 										<br>
 										<button type="submit" class="btn btn-info">Guardar</button>
 										
@@ -1045,6 +1112,10 @@ $(document).ready(function(){
         				$("#fecha_inicio_vacaciones").val(this.fecinicvacaciones);
         				$("#vacaciones_legales").val(this.saldoinicvacaciones);
         				$("#vacaciones_progresivas").val(this.saldoinicvacprog);
+        				$("#polera").val(this.tallapolera);
+        				$("#pantalon").val(this.tallapantalon);
+        				$("#titulo").val(this.titulo);
+        				$("#licencia").val(this.idlicencia);
 
         				}
         				)}
@@ -1059,7 +1130,7 @@ $(document).ready(function(){
 <script src="js/jquery-ui.js"></script>
 <script>
 	$(function() {
-		$( "#datepicker,#datepicker2,#datepicker3,#datepicker4,#datepicker5,#datepicker6,#datepicker7,#datepicker8,#datepicker9,#datepicker10,#datepicker11,#datepicker12,#feriados,#fecha_real,#vencimiento_1,#fechanacimiento,#fecha_inicio_vacaciones").datepicker();
+		$( "#datepicker,#datepicker2,#datepicker3,#datepicker4,#datepicker5,#datepicker6,#datepicker7,#datepicker8,#datepicker9,#datepicker10,#datepicker11,#datepicker12,#feriados,#fecha_real,#vencimiento_1,#fechanacimiento,#fecha_inicio_vacaciones").datepicker( {dateFormat: "dd/mm/yy"});
 	});
 </script>
 <!--date-piker-->								
