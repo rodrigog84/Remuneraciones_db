@@ -17,36 +17,7 @@ class Carga_masiva extends CI_Controller {
 			$this->load->model('rrhh_model');
 		}
 
-	  public function exportarExcelasistencia(){
-            
-            header("Content-type: application/vnd.ms-excel"); 
-            header("Content-disposition: attachment; filename=asistencia.xls"); 
-            
-            $idempresa = $this->session->userdata('empresaid');
-
-            $query = $this->db->query('SELECT * FROM rem_personal WHERE id_empresa like "%'.$nombre.'%"');
-            
-            $users = $query->result_array();
-            
-            echo '<table>';
-            echo "<tr>";
-                echo "<td>RUT</td>";
-                echo "<td>NOMBRE</td>";
-                echo "<td>DV</td>";
-                echo "<td>DIAS</td>";
-                echo "<td>MES</td>";
-                echo "<td>AÑO</td>";   
-              echo "<tr>";
-              
-              foreach($users as $v){
-                 echo "<td>".$v['rut']."</td>";
-                 echo "<td>".$v['dv']."</td>";
-                 
-                 echo '</table>';
-        }
-
-    }
-
+	  
 
 	  public function insertar(){
 
@@ -88,47 +59,77 @@ class Carga_masiva extends CI_Controller {
 			       //print_r($datos);
 			       $rut = $datos[0];
 			       $dv = utf8_encode($datos[1]);
-			       $ficha = $datos[2];
+			       $nombres = utf8_encode($datos[2]);			       
 			       $apellidop = utf8_encode($datos[3]);
 			       $apellidom = utf8_encode($datos[4]);
-			       $nombres = utf8_encode($datos[5]);
+			       $fechanacimiento = $datos[5];
 			       $sexo = utf8_encode($datos[6]);
 			       $estadocivil = ($datos[7]);
 			       $nacionalidad = utf8_encode($datos[8]);
-			       $fechanacimiento = $datos[9];
-			       $direccion = utf8_encode($datos[10]);
-			       $region = utf8_encode($datos[11]);
-			       $comuna = utf8_encode($datos[12]);
-			       $email = utf8_encode($datos[13]);
-			       $fono = utf8_encode($datos[14]);
-			       $fechaingreso = $datos[15];
-			       $tipocontrato = utf8_encode($datos[16]);
-			       $diastrabajo = utf8_encode($datos[17]);
-			       $sueldobase = utf8_encode($datos[18]);
-			       $tipoGrat = utf8_encode($datos[19]);
-			       $MontoMov= $datos[20];
-			       $Montocol= $datos[21];
-			       $CentrodeCosto= $datos[22];
-			       $AFP= $datos[23];
-			       $MontoCotizad= $datos[24];
-			       $MontoAhVoluntario= $datos[25];
-			       $TramoAsigFam= utf8_encode($datos[26]);
-			       $NroCargasSimples= $datos[27];
-			       $NroCargasMat= $datos[28];
-			       $NroCargasIn= $datos[29];
-			       $NroCargasRet= $datos[30];
-			       $APV= utf8_encode($datos[31]);
-			       $NroContratoAPV= $datos[32];
-			       $TipoCotizAPV= utf8_encode($datos[33]);
-			       $MontoCotizAPV= $datos[34];
-			       $FormadePagoAPV= utf8_encode($datos[35]);
-			       $DepConvAPV= $datos[36];
-			       $InstituSalud= utf8_encode($datos[37]);
-			       $MontopactadoUF= $datos[38];
-			       $AfiliadoSeguroCesantía= utf8_encode($datos[39]);
-			       $BancoPagoSueldo= utf8_encode($datos[40]);
-			       $NroCuentaBanco= $datos[41];
-			       //$idempresa= utf8_encode($datos[42]);
+			       $direccion = utf8_encode($datos[9]);
+			       $region = $datos[10];
+			       $comuna = $datos[11];
+			       $fono = $datos[12];
+			       $email = $datos[13];			      
+			       $fechaingreso = $datos[14];
+			       $idcargo = $datos[15];
+			       $fecinicvacaciones = $datos[16];
+			       $saldoinicvacaciones = $datos[17];
+			       $saldoinicvacprog = $datos[18];
+			       $diasprogresivos = $datos[19];
+			       $diasvactomad = $datos[20];
+			       $diasprogtomados = $datos[21];
+			       $tipocontrato = utf8_encode($datos[22]);
+			       $parttime = $datos[23];
+			       $segcesantia = $datos[24];
+			       $fecafc = $datos[25];
+			       $diastrabajo = $datos[26];
+			       $horasdiarias = $datos[27];
+			       $horassemanales = $datos[28];
+			       $sueldobase = $datos[29];
+			       $tipogratificacion = utf8_encode($datos[30]);
+			       $gratificacion = $datos[31];
+			       $asigfamiliar = $datos[32];
+			       $cargassimples = $datos[33];
+			       $cargasinvalidas = $datos[34];
+			       $cargasmaternales = $datos[35];
+			       $cargasretroactivas = $datos[36];
+			       $idasigfamiliar = $datos[37];
+			       $movilizacion = $datos[38];
+			       $colacion = $datos[39];
+			       $pensionado = $datos[40];
+			       $idafp = $datos[41];
+			       $adicafp = $datos[42];
+			       $tipoahorrovol = utf8_encode($datos[43]);
+			       $ahorrovol = $datos[44];
+			       $instapv = $datos[45];
+			       $nrocontratoapv = $datos[46];
+			       $tipocotapv = $datos[47];
+			       $cotapv = $datos[48];
+			       $formapagoapv = $datos[49];
+			       $depconvapv = $datos[50];
+			       $idisapre = $datos[51];
+			       $valorpactado = $datos[52];
+			       $active = $datos[53];
+			       $created_at = $datos[54];
+			       $updated_at = $datos[55];
+			       $numficha = $datos[56];
+			       $idnacionalidad = $datos[57];
+			       $tiporenta = $datos[58];
+			       $idestudio = $datos[59];
+			       $titulo = $datos[60];
+			       $ididioma = $datos[61];
+			       $idjefe = $datos[62];
+			       $idlicencia = $datos[63];
+			       $tipodocumento = $datos[64];
+			       $tallapolera = $datos[65];
+			       $tallapantalon = $datos[66];
+			       $idcentrocosto = $datos[67];
+			       $cbeneficio = $datos[68];
+			       $idreemplazo = $datos[69];
+			       $createdby = $datos[70];
+			       $idbanco = $datos[71];
+			       $nrocuentabanco = $datos[72];
 			       $idempresa = $this->session->userdata('empresaid');
 
 			       $array_datos = array(
@@ -138,74 +139,78 @@ class Carga_masiva extends CI_Controller {
 						'nombre' => $nombres,
 						'apaterno' => $apellidop,
 						'amaterno' => $apellidom,
-						'fecnacimiento' => substr($fechanacimiento,6,4)."-".substr($fechanacimiento,3,2)."-".substr($fechanacimiento,0,2),
+						'fecnacimiento' => $fechanacimiento,
 						'sexo' => $sexo,
-						'idecivil' => 1,
-						'nacionalidad' => 'C', //ELIMINAR DESPUES
+						'idecivil' => $estadocivil,
+						'nacionalidad' => $nacionalidad, 
 						'direccion' => $direccion,
-						'idregion' => 1,
-						'idcomuna' => 1, 
+						'idregion' => $region,
+						'idcomuna' => $comuna, 
 						'fono' => $fono,
 						'email' => $email,
-						'fecingreso' => substr($fechaingreso,6,4)."-".substr($fechaingreso,3,2)."-".substr($fechaingreso,0,2),
-						'idcargo' => 1,
-						'fecinicvacaciones' => '2017-09-05',
-						'saldoinicvacaciones' => 0,
-						'saldoinicvacprog' => 0,
-						'diasprogresivos' => 0,
-						'diasvactomados' => 0,
-						'diasprogtomados' => 0,
-						'tipocontrato' => 'I',
-						'parttime' => 0,
-						'segcesantia' => 0,
-						'fecafc' => '2018-02-01',
-						'diastrabajo' => 30,
-						'horasdiarias' => 8,
-						'horassemanales' => 45,
+						'fecingreso' => $fechaingreso,
+						'idcargo' => $idcargo,
+						'fecinicvacaciones' => $fecinicvacaciones,
+						'saldoinicvacaciones' => $saldoinicvacaciones,
+						'saldoinicvacprog' => $saldoinicvacprog,
+						'diasprogresivos' => $diasprogresivos,
+						'diasvactomados' => $diasvactomad,
+						'diasprogtomados' => $diasprogtomados,
+						'tipocontrato' => $tipocontrato,
+						'parttime' => $parttime,
+						'segcesantia' => $segcesantia,
+						'fecafc' => $fecafc,
+						'diastrabajo' => $diastrabajo,
+						'horasdiarias' => $horasdiarias,
+						'horassemanales' => $horassemanales,
 						'sueldobase' => $sueldobase,
-						'tipogratificacion' => 'SG',
-						'gratificacion' => 0,
-						'asigfamiliar' => 0,
-						'cargassimples' => 0,
-						'cargasinvalidas' => 0,
-						'cargasmaternales' => 0,
-						'cargasretroactivas' => 0,
-						'idasigfamiliar' => NULL,
-						'movilizacion' => 0,
-						'colacion' => 0,
-						'pensionado' => 0,
-						'idafp' => 1,
-						'adicafp' => 0,
-						'tipoahorrovol' => 0,
-						'ahorrovol' => 0,
-						'instapv' => 0,
-						'nrocontratoapv' => 0,
-						'tipocotapv' => 0,
-						'cotapv' => 0,
-						'formapagoapv' => 0,
-						'depconvapv' => 0,
-						'idisapre' => 0,
-						'valorpactado' => 0,
-						'active' => 1,
-						'numficha' => $ficha,
-						'idnacionalidad' => 1,
-						'tiporenta' => 0,
-						'idestudio' => 1,
-						'titulo' => 'universitario',
-						'ididioma' => 1,
-						'idjefe' => 1,						
-						'idlicencia' => 1,
-						'tipodocumento' => 'F',
-						'tallapolera' => 'L',
-						'tallapantalon' => '48',						
-						'idcentrocosto' => 1,
-						'cbeneficio' => 1,
-						'idreemplazo' => 1,						
+						'tipogratificacion' => $tipogratificacion,
+						'gratificacion' => $gratificacion,
+						'asigfamiliar' => $asigfamiliar,
+						'cargassimples' => $cargassimples,
+						'cargasinvalidas' => $cargasinvalidas,
+						'cargasmaternales' => $cargasmaternales,
+						'cargasretroactivas' => $cargasretroactivas,
+						'idasigfamiliar' => $idasigfamiliar,
+						'movilizacion' => $movilizacion,
+						'colacion' => $colacion,
+						'pensionado' => $pensionado,
+						'idafp' => $idafp,
+						'adicafp' => $adicafp,
+						'tipoahorrovol' => $tipoahorrovol,
+						'ahorrovol' => $ahorrovol,
+						'instapv' => $instapv,
+						'nrocontratoapv' => $nrocontratoapv,
+						'tipocotapv' => $tipocotapv,
+						'cotapv' => $cotapv,
+						'formapagoapv' => $formapagoapv,
+						'depconvapv' => $depconvapv,
+						'idisapre' => $idisapre,
+						'valorpactado' => $valorpactado,
+						'active' => $active,
+						'numficha' => $numficha,
+						'idnacionalidad' => $idnacionalidad,
+						'tiporenta' => $tiporenta,
+						'idestudio' => $idestudio,
+						'titulo' => $titulo,
+						'ididioma' => $ididioma,
+						'idjefe' => $idjefe,						
+						'idlicencia' => $idlicencia,
+						'tipodocumento' => $tipodocumento,
+						'tallapolera' => $tallapolera,
+						'tallapantalon' => $tallapantalon,						
+						'idcentrocosto' => $idcentrocosto,
+						'cbeneficio' => $cbeneficio,
+						'idreemplazo' => $idreemplazo,
+						'created_by' => $createdby,
+						//'idbanco' => $idbanco,
+						//'nrocuentabanco' => $nrocuentabanco,					
 					);
 		       	   //guardamos en base de datos la línea leida
-		       	 //print_r($array_datos);
+		       	  //print_r($array_datos);
 		       	  $array_datos['updated_at'] = date('Y-m-d H:i:s');
 				  $array_datos['created_at'] = date('Y-m-d H:i:s');
+				  //$array_datos['created_by'] = $createdby;
 				  $this->db->insert('rem_personal_paso', $array_datos);
 			     
 	   		 }
