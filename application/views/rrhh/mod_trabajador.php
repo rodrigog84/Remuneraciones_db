@@ -641,7 +641,7 @@
 								                                   </select>
 															</td>
 															<td>
-																<input type="number" min="0" max="99" minlength="1" maxlength="2" step="0.01"name="monto_pactado"  class="form-control1" id="monto_pactado" placeholder="">
+																<input type="number" min="0" max="99" minlength="1" maxlength="2" step="0.01" name="monto_pactado"  class="form-control1" id="monto_pactado" placeholder="">
 															</td>
 														</tbody>
 													</table>
@@ -1116,6 +1116,14 @@ $(document).ready(function(){
         				$("#pantalon").val(this.tallapantalon);
         				$("#titulo").val(this.titulo);
         				$("#licencia").val(this.idlicencia);
+        				$("#estudios").val(this.idestudio);
+        				$("#fono").val(this.fono);
+        				$("#numero_contrato_apv").val(this.nrocontratoapv);
+        				$("#apv").val(this.instapv);
+        				$("#tipo_cotizacion").val(this.tipocotapv);
+        				$("#monto_cotizacion_apv").val(this.cotapv);
+        				$("#monto_pactado").val(this.valorpactado);
+
 
         				}
         				)}
@@ -1133,4 +1141,18 @@ $(document).ready(function(){
 		$( "#datepicker,#datepicker2,#datepicker3,#datepicker4,#datepicker5,#datepicker6,#datepicker7,#datepicker8,#datepicker9,#datepicker10,#datepicker11,#datepicker12,#feriados,#fecha_real,#vencimiento_1,#fechanacimiento,#fecha_inicio_vacaciones").datepicker( {dateFormat: "dd/mm/yy"});
 	});
 </script>
-<!--date-piker-->								
+<!--date-piker-->		
+
+<script>
+		function habilitar(value)
+		{
+			if(value==true)
+			{
+				// habilitamos
+				document.getElementById("datepicker6").disabled=false;
+			}else if(value==false){
+				// deshabilitamos
+				document.getElementById("datepicker6").disabled=true;
+			}
+		}
+	</script>
