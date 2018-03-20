@@ -884,8 +884,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'cotapv', 
 				'idisapre', 
 				'valorpactado',
-				/*'COALESCE((select sum(monto) as monto from rem_bonos_personal where idpersonal = p.id and fijo = 1 and imponible = 1),0) as bonos_fijos',*/
-				'0 as bonos_fijos',
+				"COALESCE((select sum(per.monto) as monto from rem_bonos_personal per
+							inner join rem_conf_haber_descuento h on per.idconf = h.id
+ 							where per.idpersonal = p.id_personal and h.tipo = 'HABER' and h.tipocalculo = 'fijo' and h.imponible = 1),0) as bonos_fijos",
 				'DATEDIFF(YY,fecafc,getdate()) as annos_afc,
 				DATEDIFF(MM,fecinicvacaciones,getdate()) as meses_vac,
 				fecinicvacaciones,
@@ -961,7 +962,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'cotapv', 
 				'idisapre', 
 				'valorpactado',
-				/*'COALESCE((select sum(monto) as monto from rem_bonos_personal where idpersonal = p.id and fijo = 1 and imponible = 1),0) as bonos_fijos',*/
+				'COALESCE((select sum(p.monto) as monto from rem_bonos_personal p
+							inner join rem_conf_haber_descuento h on p.idconf = h.id
+ 							where p.idpersonal = p.id and h.tipo = "HABER" and h.tipocalculo = "fijo" and h.imponible = 1),0) as bonos_fijos',				
 				'0 as bonos_fijos',
 				'DATEDIFF(YY,fecafc,getdate()) as annos_afc,
 				DATEDIFF(MM,fecinicvacaciones,getdate()) as meses_vac,
@@ -1189,7 +1192,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 							  ->join('rem_conf_haber_descuento as h','d.idconfhd = h.id')
 			                  ->where('d.id_personal',$idtrabajador);*/
 			
-			$haberes_data = $this->db->select('d.monto, h.imponible, h.nombre')
+			$haberes_data = $this->db->select('d.monto, h.imponible, h.nombre, d.idperiodo, h.formacalculo, h.tributable')
 							  ->from('rem_bonos_personal d')
 							  ->join('rem_conf_haber_descuento as h','d.idconf = h.id')
 							  ->join('rem_personal as p','d.idpersonal = p.id_personal')
@@ -1261,6 +1264,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$personal = $this->get_personal(null,$centro_costo); 
 
 		foreach ($personal as $trabajador) { // calculo de sueldos por cada trabajador
+
 			$datos_remuneracion = $this->get_datos_remuneracion_by_periodo($idperiodo,$trabajador->id_personal);
 
 			$datos_bonos = array();
@@ -1271,6 +1275,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			//OBTIENE LOS HABERES DEL TRABAJADOR
 			$datos_hd = $this->get_haberes_descuentos($trabajador->id_personal,null,'HABER');	
 
+
 			$diastrabajo = $trabajador->parttime == 1 ? $trabajador->diastrabajo : 30;
 			$sueldo_base_mes = round(($trabajador->sueldobase/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
 
@@ -1278,55 +1283,41 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$movilizacion_mes = round(($trabajador->movilizacion/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
 			$colacion_mes = round(($trabajador->colacion/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
 
-			
+			$bonos_no_imponibles_tributables = 0;
 
 			foreach ($datos_hd as $bono) {
 
-					
+				$tiene_bono = false;
+				if($bono->formacalculo == 'fijo'){ // se suma siempre
+					$tiene_bono = true;
+				}else{ // validar si corresponde al período
+
+					$tiene_bono = $bono->idperiodo == $idperiodo ? true : false; // el bono corresponde al periodo que estamos calculando.  Entonces si aplica el bono
+				}			
+
+				//NO PUEDE SER FIJO Y PROPORCIONAL????
+				if($tiene_bono){
+
+					$valor_bono = $bono->formacalculo == 'proporcional' ? round(($bono->monto/$diastrabajo)*$datos_remuneracion->diastrabajo,0) : $bono->monto;
+
 					if($bono->imponible == 1){
-						$bonos_imponibles += $bono->monto;
+						$bonos_imponibles += $valor_bono;
 
 					}else{
-						$bonos_no_imponibles += $bono->monto;
+
+						$bonos_no_imponibles += $valor_bono;
+						$bonos_no_imponibles_tributables += $bono->tributable == 1 ? $valor_bono : 0;
 					}				
 					$data_bono = array(
 								'idremuneracion' => $datos_remuneracion->id_remuneracion,
 								'descripcion' => $bono->nombre,
 								'imponible' => $bono->imponible,
-								'monto' => $bono->monto
-								);
-					$this->db->insert('rem_haber_descuento_remuneracion', $data_bono);
-			}			
-
-			foreach ($datos_bonos as $bono) {
-				$tiene_bono = false;
-				if($bono->fijo == 1){ // se suma siempre
-					$tiene_bono = true;
-				}else{ // validar si corresponde al período
-					$array_fecha_bono = explode("/",$bono->fecha);
-					$mes_bono = (int)$array_fecha_bono[1];
-					$anno_bono = $array_fecha_bono[2];
-					$tiene_bono = $mes_bono == $periodo->mes && $anno_bono == $periodo->anno ? true : false; // el bono corresponde al periodo que estamos calculando.  Entonces si aplica el bono
-				}
-
-				if($tiene_bono){
-					
-					$valor_bono = $bono->proporcional == 1 ? round(($bono->monto/$diastrabajo)*$datos_remuneracion->diastrabajo,0) : $bono->monto;
-					if($bono->imponible == 1){
-						$bonos_imponibles += $valor_bono;
-
-					}else{
-						$bonos_no_imponibles += $valor_bono;
-					}				
-					$data_bono = array(
-								'idremuneracion' => $datos_remuneracion->id,
-								'descripcion' => $bono->descripcion,
-								'imponible' => $bono->imponible,
 								'monto' => $valor_bono
 								);
-					$this->db->insert('rem_bonos_remuneracion', $data_bono);
+					$this->db->insert('rem_haber_descuento_remuneracion', $data_bono);
 				}
-			}
+			}			
+
 
 			$datos_afp = $this->admin->get_afp($trabajador->idafp);
 			//$valor_hora = $trabajador->parttime == 1 ? ((($trabajador->sueldobase + $trabajador->bonos_fijos)/$trabajador->diastrabajo)/$trabajador->horasdiarias) : ((($trabajador->sueldobase + $trabajador->bonos_fijos)/30)*7)/45;
@@ -1486,7 +1477,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 			
 
-			$base_tributaria = $sueldo_imponible - $cot_obligatoria - $comision_afp - $adic_afp - $segcesantia - $cot_salud_oblig - $cot_adic_isapre - $cot_fonasa - $cot_inp;
+			$base_tributaria = $sueldo_imponible + $bonos_no_imponibles_tributables - $cot_obligatoria - $comision_afp - $adic_afp - $segcesantia - $cot_salud_oblig - $cot_adic_isapre - $cot_fonasa - $cot_inp;
 
 			$impuesto = 0;
 			foreach ($tabla_impuesto as $rango) {

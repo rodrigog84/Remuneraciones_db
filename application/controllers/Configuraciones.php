@@ -171,6 +171,7 @@ public function submit_haber_descuento(){
 			$datos['contable'] = $this->input->post('contable') == '' ? 0 : 1;
 			$datos['sobregiro'] = $this->input->post('sobregiro') == '' ? 0 : 1;
 			$datos['liqminimo'] = $this->input->post('liqminimo') == '' ? 0 : 1;
+			$datos['semanacorrida'] = $this->input->post('semanacorrida') == '' ? 0 : 1;
 			$datos['editable'] = 1;
 			$datos['visible'] = 1;
 			$datos['valido'] = 1;

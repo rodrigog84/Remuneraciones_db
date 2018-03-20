@@ -143,6 +143,10 @@
 																							<label>
 																								<input class="form-check-input" type="checkbox" name="insoluto" id="insoluto" value="insoluto" disabled> Insoluto
 																						</div>
+																						<div class="radio block">
+																							<label>
+																								<input class="form-check-input" type="checkbox" name="semanacorrida" id="semanacorrida" value="semanacorrida" > Semana Corrida
+																						</div>																						
 																					</div>
 																				</div>
 																			</td>
