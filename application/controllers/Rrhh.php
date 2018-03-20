@@ -35,32 +35,33 @@ class Rrhh extends CI_Controller {
 	}
 
 	public function exportarExcelasistencia(){
-            
+            	
             header("Content-type: application/vnd.ms-excel"); 
             header("Content-disposition: attachment; filename=asistencia.xls"); 
             
             $idempresa = $this->session->userdata('empresaid');
 
-            $query = $this->db->query('SELECT * FROM rem_personal WHERE id_empresa like "%'.$nombre.'%"');
+            $query = $this->db->query('SELECT * FROM rem_personal WHERE id_empresa like '.$idempresa.'');
             
             $users = $query->result_array();
-            
+
             echo '<table>';
             echo "<tr>";
-                echo "<td>RUT</td>";
-                echo "<td>NOMBRE</td>";
+                echo "<td>RUT</td>";               
                 echo "<td>DV</td>";
                 echo "<td>DIAS</td>";
                 echo "<td>MES</td>";
-                echo "<td>AÑO</td>";   
-              echo "<tr>";
+                echo "<td>ANO</td>";   
+              echo "</tr>";
               
               foreach($users as $v){
+              	echo "<tr>";
                  echo "<td>".$v['rut']."</td>";
                  echo "<td>".$v['dv']."</td>";
-                 
-                 echo '</table>';
-        }
+                 echo "</tr>";
+               }	
+         echo '</table>';
+         exit;
 
     }
 
@@ -636,6 +637,11 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$pantalon = $this->admin->get_vestuario_pantalon();			
 			$polera = $this->admin->get_vestuario_polera();
 			$apv = $this->admin->get_apv();
+			$bancos = $this->admin->get_bancos();
+			$forma_pago = $this->admin->get_forma_pago();
+			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
+			$jornada_trabajo = $this->admin->get_jornada_trabajo();
+		
 
 
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
@@ -724,6 +730,12 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['pantalon'] = $pantalon;
 			$vars['polera'] = $polera;
 			$vars['apv'] = $apv;
+
+			$vars['bancos'] = $bancos;
+			$vars['forma_pago'] = $forma_pago;
+			$vars['tramos_asig_familiar'] = $tramos_asig_familiar;
+			$vars['jornada_trabajo'] = $jornada_trabajo;
+
 			//$vars['icheck'] = true;
 			$vars['jqueryRut'] = true;
 			$vars['mask'] = true;
@@ -941,7 +953,8 @@ public function editar_trabajador(){
 			$fecingreso = $this->input->post('datepicker2');
 			$tallapantalon = $this->input->post('pantalon');
 			$tallapolera = $this->input->post('polera');
-
+			$tramo = $this->input->post('tramo');
+			$monto_pactado = $this->input->post('monto_pactado');
 			
 
 			$date = DateTime::createFromFormat('d/m/Y', $fecingreso);
@@ -986,22 +999,23 @@ public function editar_trabajador(){
 								'sueldobase' => $sueldo_base,
 								'tallapantalon' => $tallapantalon,
 								'tallapolera' => $tallapolera,
+								'idasigfamiliar' => $tramo,
+								'valorpactado' => $monto_pactado,
 
 								/*'fecinicvacaciones' => $fecinicvacaciones,
 								'saldoinicvacaciones' => $saldoinicvacaciones,
 								'saldoinicvacprog' => $saldoinicvacprog,*/
 
 								'fecinicvacaciones' => $fecingreso,
+								'fecingreso' => $fecingreso,
 								'saldoinicvacaciones' => 0,
 								'saldoinicvacprog' => 0,	
 
-
-								'fecingreso' => $fecingreso,
+								
 								
 								//DATOS POR DEFECTO
 								'idregion' => 1,
-								'idcomuna' => 1,
-								
+								'idcomuna' => 1,								
 								'diasprogresivos' => 0,
 								'diasvactomados' => 0,
 								'diasprogtomados' => 0,
@@ -1019,7 +1033,7 @@ public function editar_trabajador(){
 								'cargasinvalidas' => 0,
 								'cargasmaternales' => 0,
 								'cargasretroactivas' => 0,
-								'idasigfamiliar' => NULL,
+								
 								'asigfamiliar' => 0,
 								'movilizacion' => 0,
 								'colacion' => 0,
@@ -1106,9 +1120,10 @@ public function editar_trabajador(){
 
 			// SE REGULARIZA LOS CAMPOS FECHA DEL FORMATO dd/mm/yyyy A yyyy/mm/dd DE LA BD	
 
+			$date = DateTime::createFromFormat('d/m/Y', $fecingreso);
+			$fecingreso = $date->format('Ymd');
 			$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
 			$fecnacimiento = $date->format('Ymd');
-
 
 			//$fecingreso = '20180301';
 			/*$idregion = $this->input->post('region');

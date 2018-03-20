@@ -816,7 +816,11 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'tallapolera',
 				'tallapantalon',
 				'titulo',
-				'idlicencia'
+				'idlicencia',
+				'idestudio',
+				'instapv',
+				'nrocontratoapv'
+
 
 			);
 		
