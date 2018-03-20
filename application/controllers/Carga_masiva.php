@@ -207,9 +207,9 @@ class Carga_masiva extends CI_Controller {
 						//'nrocuentabanco' => $nrocuentabanco,					
 					);
 		       	   //guardamos en base de datos la línea leida
-		       	  //print_r($array_datos);
-		       	  $array_datos['updated_at'] = date('Y-m-d H:i:s');
-				  $array_datos['created_at'] = date('Y-m-d H:i:s');
+		       	  print_r($array_datos);
+		       	  $array_datos['updated_at'] = date("Ymd H:i:s");
+				  $array_datos['created_at'] = date("Ymd H:i:s");
 				  //$array_datos['created_by'] = $createdby;
 				  $this->db->insert('rem_personal_paso', $array_datos);
 			     
