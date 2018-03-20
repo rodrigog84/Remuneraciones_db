@@ -57,7 +57,7 @@ class Carga_masiva extends CI_Controller {
 	       
 			       //$datos = explode(";",$linea); 
 			       //print_r($datos);
-			       $rut = $datos[0];
+			       $rut = (int)$datos[0];
 			       $dv = utf8_encode($datos[1]);
 			       $nombres = utf8_encode($datos[2]);			       
 			       $apellidop = utf8_encode($datos[3]);
@@ -109,7 +109,7 @@ class Carga_masiva extends CI_Controller {
 			       $formapagoapv = $datos[49];
 			       $depconvapv = $datos[50];
 			       $idisapre = $datos[51];
-			       $valorpactado = $datos[52];
+			       $valorpactado = (float)$datos[52];
 			       $active = $datos[53];
 			       $created_at = $datos[54];
 			       $updated_at = $datos[55];
@@ -175,7 +175,7 @@ class Carga_masiva extends CI_Controller {
 						'movilizacion' => $movilizacion,
 						'colacion' => $colacion,
 						'pensionado' => $pensionado,
-						'idafp' => $idafp,
+						'idafp' => (int)$idafp,
 						'adicafp' => $adicafp,
 						'tipoahorrovol' => $tipoahorrovol,
 						'ahorrovol' => $ahorrovol,
@@ -207,7 +207,7 @@ class Carga_masiva extends CI_Controller {
 						//'nrocuentabanco' => $nrocuentabanco,					
 					);
 		       	   //guardamos en base de datos la línea leida
-		       	  print_r($array_datos);
+		       	  //qprint_r($array_datos);
 		       	  $array_datos['updated_at'] = date("Ymd H:i:s");
 				  $array_datos['created_at'] = date("Ymd H:i:s");
 				  //$array_datos['created_by'] = $createdby;
@@ -271,9 +271,13 @@ class Carga_masiva extends CI_Controller {
 					                  ->where('rut', $rut)
 					                  ->where('id_empresa', $idempresa);
 					$query = $this->db->get();
-					$id_personal = $query->row()->id_personal;
-					
-					$array_trabajadores[$id_personal] = $dias;
+
+					if(isset($query->row()->id_personal)){
+						$id_personal = $query->row()->id_personal;
+						$array_trabajadores[$id_personal] = $dias;						
+
+					}
+
 					
 
 			     

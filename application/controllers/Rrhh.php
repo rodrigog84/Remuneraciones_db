@@ -35,32 +35,33 @@ class Rrhh extends CI_Controller {
 	}
 
 	public function exportarExcelasistencia(){
-            
+            	
             header("Content-type: application/vnd.ms-excel"); 
             header("Content-disposition: attachment; filename=asistencia.xls"); 
             
             $idempresa = $this->session->userdata('empresaid');
 
-            $query = $this->db->query('SELECT * FROM rem_personal WHERE id_empresa like "%'.$nombre.'%"');
+            $query = $this->db->query('SELECT * FROM rem_personal WHERE id_empresa like '.$idempresa.'');
             
             $users = $query->result_array();
-            
+
             echo '<table>';
             echo "<tr>";
-                echo "<td>RUT</td>";
-                echo "<td>NOMBRE</td>";
+                echo "<td>RUT</td>";               
                 echo "<td>DV</td>";
                 echo "<td>DIAS</td>";
                 echo "<td>MES</td>";
-                echo "<td>AÑO</td>";   
-              echo "<tr>";
+                echo "<td>ANO</td>";   
+              echo "</tr>";
               
               foreach($users as $v){
+              	echo "<tr>";
                  echo "<td>".$v['rut']."</td>";
                  echo "<td>".$v['dv']."</td>";
-                 
-                 echo '</table>';
-        }
+                 echo "</tr>";
+               }	
+         echo '</table>';
+         exit;
 
     }
 
