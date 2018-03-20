@@ -19,7 +19,7 @@
 
                   <div class="panel-body">
                         <div class="form-group">
-                              <label for="exampleInputFile">Archivo de Carga  - <a href="<?php echo base_url(); ?>uploads/ejemploCarga.xls" data-toggle="tooltip" title="Ejemplo">Descargar Ejemplo</a></label>
+                              <label for="exampleInputFile">Archivo de Carga  - <a href="<?php echo base_url(); ?>rrhh/exportarExcelhorasextras" data-toggle="tooltip" title="Ejemplo">Descargar Ejemplo</a></label>
                               <input type="file" id="userfile" name="userfile">
                         </div>  
                   </div><!-- /.box-body -->

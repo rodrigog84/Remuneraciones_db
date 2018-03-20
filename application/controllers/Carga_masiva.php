@@ -287,6 +287,9 @@ class Carga_masiva extends CI_Controller {
 
 		$this->rrhh_model->save_asistencia($array_trabajadores,$mes,$anno);
 
+		//print_r($array_trabajadores);
+		//exit;
+
 		$this->session->set_flashdata('asistencia_result',3);
 		redirect('rrhh/asistencia');
 
@@ -342,13 +345,20 @@ class Carga_masiva extends CI_Controller {
 					                  ->where('rut', $rut)
 					                  ->where('id_empresa', $idempresa);
 					$query = $this->db->get();
+
+					if(isset($query->row()->id_personal)){
+					
 					$id_personal = $query->row()->id_personal;
+
+
 
 					$this->db->select('valorhorasextras100,valorhorasextras50')
 									  ->from('rem_remuneracion')
 					                  ->where('idpersonal', $id_personal)
 					                  ->where('id_empresa', $idempresa);
 					$query = $this->db->get();
+
+					
 					$monto100 = $query->row()->valorhorasextras100;
 					$monto50 = $query->row()->valorhorasextras50;
 					$montohorasextras100 = ($monto100 * $horas2 );
@@ -358,6 +368,8 @@ class Carga_masiva extends CI_Controller {
 					$array_trabajadores[$i]['monto50'] = $montohorasextras50;
 					$array_trabajadores[$i]['horas100'] = $horas1;
 					$array_trabajadores[$i]['monto100'] = $montohorasextras100;
+
+				}
 									
 								     
 	   		 }

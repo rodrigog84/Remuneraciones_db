@@ -65,6 +65,38 @@ class Rrhh extends CI_Controller {
 
     }
 
+    public function exportarExcelhorasextras(){
+            	
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=horasextras.xls"); 
+            
+            $idempresa = $this->session->userdata('empresaid');
+
+            $query = $this->db->query('SELECT * FROM rem_personal WHERE id_empresa like '.$idempresa.'');
+            
+            $users = $query->result_array();
+
+            echo '<table>';
+            echo "<tr>";
+                echo "<td>RUT</td>";               
+                echo "<td>DV</td>";
+                echo "<td>HORAS 100%</td>";
+                echo "<td>HORAS 50%</td>";
+                echo "<td>MES</td>";
+                echo "<td>ANO</td>";   
+              echo "</tr>";
+              
+              foreach($users as $v){
+              	echo "<tr>";
+                 echo "<td>".$v['rut']."</td>";
+                 echo "<td>".$v['dv']."</td>";
+                 echo "</tr>";
+               }	
+         echo '</table>';
+         exit;
+
+    }
+
 
 
 

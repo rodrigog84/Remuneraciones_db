@@ -438,7 +438,7 @@ public function save_asistencia($array_trabajadores,$mes,$anno){
 		                  ->where('p.anno', $anno);
 		$query = $this->db->get();
 		$datos_periodo = $query->row();
-		$idperiodo = 0;
+		//$idperiodo = 0;
 		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'mes' => $mes,
@@ -466,10 +466,18 @@ public function save_asistencia($array_trabajadores,$mes,$anno){
 				$this->db->insert('rem_periodo_remuneracion', $data);
 		}
 
-
+		//print_r($array_trabajadores);
+		//exit;
 
 
 		foreach ($array_trabajadores as $idtrabajador => $info_trabajador) {
+
+			/*print_r("---");
+			print_r($idtrabajador);
+			print_r("---");
+			print_r($info_trabajador);
+			print_r("---");
+			print_r($idperiodo);*/
 
 			$this->db->select('r.id_periodo')
 							  ->from('rem_remuneracion as r')
@@ -498,6 +506,8 @@ public function save_asistencia($array_trabajadores,$mes,$anno){
 
 			}
 		}
+
+		//exit;
 
 		$this->db->trans_complete();
 		return 1;
