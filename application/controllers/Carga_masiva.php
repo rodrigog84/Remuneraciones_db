@@ -295,6 +295,85 @@ class Carga_masiva extends CI_Controller {
 
 	}
 
+	public function anticipos(){
+
+		//LUEGO DE SUBIR EL ARCHIVO	
+		$config['upload_path'] = "./uploads/cargas/";
+
+		//VALIDA QUE CARPETA EXISTA
+		if(!file_exists($config['upload_path'])){
+			mkdir($config['upload_path'],0777,true);
+		}
+
+        $config['file_name'] = date("Ymd")."_".date("His")."_";
+        $config['allowed_types'] = "*";
+        $config['max_size'] = "10240";
+
+        //carga libreria para cargar archivos
+        $this->load->library('upload', $config);
+
+        //Campo a leer
+        $this->upload->do_upload("userfile");
+   		$dataupload = $this->upload->data();
+
+   		
+		//cargamos el archivo
+   		$archivotmp = $dataupload['file_ext'];	  	
+		//obtenemos el archivo .csv
+
+
+    	$gestor = fopen("./uploads/cargas/" . $dataupload['file_name'], "r");
+    	$i = 0;
+
+    	$array_trabajadores = array();
+	    while (($datos = fgetcsv($gestor, 10000, ";")) !== FALSE) {
+
+
+			if($i != 0){ 
+	       
+			       $rut = $datos[0];
+			       $dv = utf8_encode($datos[1]);
+			       $anticipos = $datos[2];
+			       $aguinaldo = $datos[3];
+			       $mes = $datos[4];
+			       $anno = $datos[5];
+
+			       $idempresa = $this->session->userdata('empresaid');
+
+			      
+
+					$this->db->select('id_personal')
+									  ->from('rem_personal')
+					                  ->where('rut', $rut)
+					                  ->where('id_empresa', $idempresa);
+					$query = $this->db->get();
+
+					if(isset($query->row()->id_personal)){
+
+						$id_personal = $query->row()->id_personal;
+
+						$array_trabajadores[$i]['idtrabajador'] = $id_personal;
+					    $array_trabajadores[$i]['anticipos'] = $anticipos;
+						$array_trabajadores[$i]['aguinaldo'] = $aguinaldo;
+							
+
+					}
+
+					
+
+			     
+	   		 }
+	   		 $i++;
+		}
+
+		$this->rrhh_model->save_anticipo_masiva($array_trabajadores,$mes,$anno);
+
+		
+		$this->session->set_flashdata('anticipos_result',1);
+		redirect('rrhh/anticipos');
+
+	}
+
 	public function horasextras(){
 
 		//LUEGO DE SUBIR EL ARCHIVO	

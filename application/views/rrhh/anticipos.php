@@ -42,6 +42,8 @@
                                         </div>                    
                                       </div><!-- /.box-body -->
                                     </div>
+                                    <a href="<?php echo base_url();?>rrhh/carga_masiva_anticipos" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a> 
+
                                   </div>
 
 

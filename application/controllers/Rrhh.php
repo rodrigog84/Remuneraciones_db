@@ -628,6 +628,46 @@ class Rrhh extends CI_Controller {
 
 	}
 
+	public function carga_masiva_anticipos()
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$mes  = $this->input->post('mes');
+			$anno  = $this->input->post('anno');
+
+			//echo $mes." -- ".$anno; exit;
+			$content = array(
+						'menu' => 'Administraci&oacute;n',
+						'title' => 'Administraci&oacute;n',
+						'subtitle' => 'Carga Masiva Anticipos');
+
+       
+		
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'rrhh/carga_masiva_anticipos';
+			$vars['formValidation'] = true;
+			$vars['dataTables'] = true;
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
 
 public function datos_personal($rut=null){
 
