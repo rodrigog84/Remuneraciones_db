@@ -39,7 +39,7 @@
 	                              										  <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo";?></small></td>
 																			<td>
 																				<!--<a href="<?php echo base_url();?>rrhh/mod_trabajador" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>-->
-																				<a href="<?php echo base_url();?>rrhh/contrato_colaborador/<?php echo $trabajador->rut ?>" class="btn btn-info opciones" id="opciones" title="Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>
+																				<a href="<?php echo base_url();?>rrhh/contrato_colaborador/<?php echo $trabajador->rut ?><?php echo $trabajador->nombre ?>" class="btn btn-info opciones" id="opciones" title="Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>
         																		<!--<a href="#" class="btn btn-info" role="button">Link Button</a>-->
         																		
 																			</td>
