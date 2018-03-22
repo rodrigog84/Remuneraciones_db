@@ -990,7 +990,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'valorpactado',
 				"COALESCE((select sum(per.monto) as monto from rem_bonos_personal per
 							inner join rem_conf_haber_descuento h on per.idconf = h.id
- 							where per.idpersonal = p.id_personal and h.tipo = 'HABER' and h.tipocalculo = 'fijo' and h.imponible = 1),0) as bonos_fijos",
+ 							where per.idpersonal = p.id_personal and h.tipo = 'HABER' and h.fijo = 1 and h.imponible = 1),0) as bonos_fijos",
 				'DATEDIFF(YY,fecafc,getdate()) as annos_afc,
 				DATEDIFF(MM,fecinicvacaciones,getdate()) as meses_vac,
 				fecinicvacaciones,
@@ -1068,7 +1068,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'valorpactado',
 				'COALESCE((select sum(p.monto) as monto from rem_bonos_personal p
 							inner join rem_conf_haber_descuento h on p.idconf = h.id
- 							where p.idpersonal = p.id and h.tipo = "HABER" and h.tipocalculo = "fijo" and h.imponible = 1),0) as bonos_fijos',				
+ 							where p.idpersonal = p.id and h.tipo = "HABER" and h.fijo = 1 and h.imponible = 1),0) as bonos_fijos',				
 				'0 as bonos_fijos',
 				'DATEDIFF(YY,fecafc,getdate()) as annos_afc,
 				DATEDIFF(MM,fecinicvacaciones,getdate()) as meses_vac,
@@ -1296,7 +1296,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 							  ->join('rem_conf_haber_descuento as h','d.idconfhd = h.id')
 			                  ->where('d.id_personal',$idtrabajador);*/
 			
-			$haberes_data = $this->db->select('d.monto, h.imponible, h.nombre, d.idperiodo, h.formacalculo, h.tributable')
+			$haberes_data = $this->db->select('d.monto, h.imponible, h.nombre, d.idperiodo, h.formacalculo, h.tributable, h.semanacorrida, h.fijo, h.proporcional')
 							  ->from('rem_bonos_personal d')
 							  ->join('rem_conf_haber_descuento as h','d.idconf = h.id')
 							  ->join('rem_personal as p','d.idpersonal = p.id_personal')
@@ -1392,7 +1392,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			foreach ($datos_hd as $bono) {
 
 				$tiene_bono = false;
-				if($bono->formacalculo == 'fijo'){ // se suma siempre
+				if($bono->fijo == 1){ // se suma siempre
 					$tiene_bono = true;
 				}else{ // validar si corresponde al período
 
@@ -1402,7 +1402,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				//NO PUEDE SER FIJO Y PROPORCIONAL????
 				if($tiene_bono){
 
-					$valor_bono = $bono->formacalculo == 'proporcional' ? round(($bono->monto/$diastrabajo)*$datos_remuneracion->diastrabajo,0) : $bono->monto;
+					$valor_bono = $bono->proporcional == 1 ? round(($bono->monto/$diastrabajo)*$datos_remuneracion->diastrabajo,0) : $bono->monto;
 
 					if($bono->imponible == 1){
 						$bonos_imponibles += $valor_bono;

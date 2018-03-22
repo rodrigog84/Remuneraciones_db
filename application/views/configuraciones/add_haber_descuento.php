@@ -78,12 +78,12 @@
 																					<div class="col-sm-8">
 																						<div class="radio block">
 																							<label>
-																								<input class="form-check-input" type="radio" name="formacalculo" name="formacalculo" id="fc_fijo" value="fijo"> Fijo
+																								<input class="form-check-input" type="radio" name="formacalculo" name="formacalculo" id="fc_fijo" value="fijo" disabled> Fijo
 																							</label>
 																						</div>
 																						<div class="radio block">
 																							<label>
-																								<input class="form-check-input" type="radio" name="formacalculo" id="fc_proporcional"  value="proporcional" > Proporcional
+																								<input class="form-check-input" type="radio" name="formacalculo" id="fc_proporcional"  value="proporcional" disabled > Proporcional
 																							</label>
 																						</div>
 																						<div class="radio block">
@@ -123,12 +123,12 @@
 																						</div>
 																						<div class="radio block">
 																							<label>
-																								<input class="form-check-input" type="checkbox" name="reajustable" id="reajustable" value="reajustable" disabled> Reajustable
+																								<input class="form-check-input" type="checkbox" name="fijo" id="fijo" value="fijo" > Fijo
 																							</label>
 																						</div>
 																						<div class="radio block">
 																							<label>
-																								<input class="form-check-input" type="checkbox" name="provision" id="provision" value="provision" disabled> Provisión
+																								<input class="form-check-input" type="checkbox" name="proporcional" id="proporcional" value="proporcional" > Proporcional
 																							</label>
 																						</div>
 																						<!--div class="radio block">
@@ -146,7 +146,11 @@
 																						<div class="radio block">
 																							<label>
 																								<input class="form-check-input" type="checkbox" name="semanacorrida" id="semanacorrida" value="semanacorrida" > Semana Corrida
-																						</div>																						
+																						</div>										<div class="radio block">
+																							<label>
+																								<input class="form-check-input" type="checkbox" name="reajustable" id="reajustable" value="reajustable" disabled> Reajustable
+																							</label>
+																						</div>												
 																					</div>
 																				</div>
 																			</td>
@@ -181,6 +185,11 @@
 																						<div class="radio block">
 																							<label>
 																								<input class="form-check-input" type="checkbox" name="sobregiro" id="sobregiro" value="sobregiro" disabled> Sobregiro
+																						</div>
+																						<div class="radio block">
+																							<label>
+																								<input class="form-check-input" type="checkbox" name="provision" id="provision" value="provision" disabled> Provisión
+																							</label>
 																						</div>
 																						<!--div class="radio block">
 																							<label>
