@@ -260,8 +260,8 @@ class Carga_masiva extends CI_Controller {
 	       
 			       $rut = $datos[0];
 			       $dv = utf8_encode($datos[1]);
-			       $dias = $datos[2];
-			       $nombres = $datos[3];
+			       $nombres = $datos[2];
+			       $dias = $datos[3];
 			       $mes = $datos[4];
 			       $anno = $datos[5];
 
@@ -334,14 +334,13 @@ class Carga_masiva extends CI_Controller {
 	       
 			       $rut = $datos[0];
 			       $dv = utf8_encode($datos[1]);
-			       $anticipos = $datos[2];
-			       $aguinaldo = $datos[3];
-			       $mes = $datos[4];
-			       $anno = $datos[5];
+			       $nombres = $datos[2];
+			       $anticipos = $datos[3];
+			       $aguinaldo = $datos[4];
+			       $mes = $datos[5];
+			       $anno = $datos[6];
 
-			       $idempresa = $this->session->userdata('empresaid');
-
-			      
+			       $idempresa = $this->session->userdata('empresaid');		      
 
 					$this->db->select('id_personal')
 									  ->from('rem_personal')
@@ -413,10 +412,11 @@ class Carga_masiva extends CI_Controller {
 	       
 			       $rut = $datos[0];
 			       $dv = utf8_encode($datos[1]);
-			       $horas1 = $datos[2];
-			       $horas2 = $datos[3];
-			       $mes = $datos[4];
-			       $anno = $datos[5];
+			       $nombres = $datos[2];
+			       $horas1 = $datos[3];
+			       $horas2 = $datos[4];
+			       $mes = $datos[5];
+			       $anno = $datos[6];
 
 			        $idempresa = $this->session->userdata('empresaid');
 
