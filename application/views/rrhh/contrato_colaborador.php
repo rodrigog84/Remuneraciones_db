@@ -4,7 +4,7 @@
 		<font color="Green" face="arial">
 			<h3 align="left"><i>Nombre : <?php echo $personal->nombre." ".$personal->apaterno." ".$personal->amaterno;?> Rut : <?php echo $personal->rut."-".$personal->dv;?></i></h3>
 		</font>
-			<h3 class="inner-tittle two">Generar &nbsp;&nbsp; <a href="<?php echo base_url();?>rrhh/add_trabajador" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Contrato</a>
+			<h3 class="inner-tittle two">Generar &nbsp;&nbsp; <a href="<?php echo base_url();?>rrhh/genera_contrato/<?php echo $personal->id_personal?>" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Contrato</a>
 			&nbsp;&nbsp;
 			<a href="<?php echo base_url();?>rrhh/carga_masiva_personal" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Anexo</a>
 			</h3>		
@@ -26,9 +26,9 @@
 													</tr> 
 												</thead> 
 												<tbody> 
-          										<?php if(count($contrato) > 0 ){ ?>
-            										<?php $i = 1; ?>
-            										<?php foreach ($personal as $trabajador) { ?>				
+          										<?php //if(count($contrato) > 0 ){ ?>
+            										<?php //$i = 1; ?>
+            										<?php //foreach ($personal as $trabajador) { ?>				
 													<tr class="active" id="variable">
 						                              <td><td>
               										  <td></small></td>
@@ -40,9 +40,9 @@
 																</td>
 															</tr> 
 
-								                            <?php $i++;?>
-									                       <?php } ?>
-              												<?php } ?>		
+								                            <?php// $i++;?>
+									                       <?php //} ?>
+              												<?php //} ?>		
 															
 														</tbody> 
 													</table> 

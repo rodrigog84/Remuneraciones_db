@@ -3251,14 +3251,49 @@ public function contrato_colaborador($rut){
 						'subtitle' => 'Contratos');
 	$vars['rut'] = $rut;
 
-	$personal = $this->admin->get_personal_total(); 
+	$personal = $this->admin->get_personal_total($rut); 
 	$vars['personal'] = $personal;
-	//$vars['nombre'] = $nombre;
+	$vars['contrato'] = 1;
 	//$vars['appaterno'] = $apaterno;
 	//$vars['amaterno'] = $amaterno;
 	$vars['content_menu'] = $content;				
 	$vars['content_view'] = 'forbidden';
 	$vars['content_view'] = 'rrhh/contrato_colaborador';
+	$this->load->view('template',$vars);
+
+	/*}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}*/
+
+
+}
+
+public function genera_contrato($idpersonal){
+
+	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+	$content = array(
+						'menu' => 'Contratos',
+						'title' => 'Genera Contrato Colaborador',
+						'subtitle' => 'Contratos Colaboradores');
+	
+	$personal = $this->admin->get_personal_total($idpersonal); 
+	$vars['personal'] = $personal;
+	$vars['contrato'] = 1;
+	//$vars['appaterno'] = $apaterno;
+	//$vars['amaterno'] = $amaterno;
+	$vars['content_menu'] = $content;				
+	$vars['content_view'] = 'forbidden';
+	$vars['content_view'] = 'rrhh/genera_contrato';
 	$this->load->view('template',$vars);
 
 	/*}else{
