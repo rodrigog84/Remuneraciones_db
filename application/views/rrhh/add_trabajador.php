@@ -387,10 +387,23 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="categoria" class="form-control1" id="categoria" placeholder="Categoria">
+																
+																<select name="categoria" id="categoria" class="form-control1">
+																	<option value="">Seleccione Categoria</option>
+						                                    		<?php foreach ($categorias as $categoria) { ?>
+								                                      <?php $categoriaselected = $categoria->id == $datos_form['idcategoria'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $categoria->id_categoria;?>" <?php echo $categoriaselected;?> ><?php echo $categoria->nombre;?></option>
+								                                    <?php } ?>
+																</select>
 															</td>
 															<td>
-																<input type="text" name="lugar_pago" class="form-control1" id="lugar_pago" placeholder="Lugar de Pago" data-toggle="modal" data-target="#myModalPago">
+																<select name="lugar_pago" id="lugar_pago" class="form-control1">
+																	<option value="">Seleccione Lugar de Pago</option>
+						                                    		<?php foreach ($lugar_pago as $lugar_pagos) { ?>
+								                                      <?php $lugarpagosselected = $lugar_pago->id == $datos_form['idlugarpago'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $lugar_pago->id_categoria;?>" <?php echo $lugarpagosselected;?> ><?php echo $lugar_pago->nombre;?></option>
+								                                    <?php } ?>
+																</select>
 															</td>
 		
 														</tbody>
@@ -507,6 +520,7 @@
     													<thead> 
 															<tr> 
 																<th>Rol Privado</th> 
+																<th>Semana Corrida</th>  
 																<th>Sitio Laboral:</th>
 																<th>Zona Brecha:</th>
 															</tr> 
@@ -514,6 +528,14 @@
 														<tbody>
 															<td>
 																<select name="regimen_pago" id="regimen_pago" class="form-control1">
+																	<option value="SI">SI</option>
+																	<option value="NO">NO</option>
+																
+																</select>
+																
+															</td>
+															<td>
+																<select name="semana_corrida" id="semana_corrida" class="form-control1">
 																	<option value="SI">SI</option>
 																	<option value="NO">NO</option>
 																

@@ -716,6 +716,29 @@ public function get_parametros_generales(){
 
 	}	
 
+	public function get_categoria($idcategoria = null){
+
+		$categoria_data = $this->db->select('id_categoria, nombre')
+						  ->from('rem_categoria')
+		                  ->order_by('nombre');
+		$categoria_data = is_null($idcategoria) ? $categoria_data : $categoria_data->where('id_categoria',$idcategoria);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idcategoria) ? $query->result() : $query->row();
+		return $datos;
+	}	
+
+
+	public function get_lugar_pago($idlugarpago = null){
+
+		$lugar_pago = $this->db->select('id_lugar_pago, nombre')
+						  ->from('rem_lugar_pago')
+		                  ->order_by('nombre');
+		$lugar_pago = is_null($idlugarpago) ? $lugar_pago : $lugar_pago->where('id_lugar_pago',$idlugarpago);  		                  
+		$query = $this->db->get();
+		$datos = is_null($idlugarpago) ? $query->result() : $query->row();
+		return $datos;
+	}	
+
 
 public function get_estado_civil(){
 

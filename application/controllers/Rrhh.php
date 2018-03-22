@@ -745,7 +745,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$forma_pago = $this->admin->get_forma_pago();
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 			$jornada_trabajo = $this->admin->get_jornada_trabajo();
-		
+			$categoria = $this->admin->get_categoria();
+			$lugar_pago= $this->admin->get_lugar_pago();
 
 
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
@@ -834,7 +835,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['pantalon'] = $pantalon;
 			$vars['polera'] = $polera;
 			$vars['apv'] = $apv;
-
+			$vars['categorias'] = $categoria;
+			$vars['lugar_pago'] = $lugar_pago;
 			$vars['bancos'] = $bancos;
 			$vars['forma_pago'] = $forma_pago;
 			$vars['tramos_asig_familiar'] = $tramos_asig_familiar;
@@ -886,6 +888,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 			$jornada_trabajo = $this->admin->get_jornada_trabajo();
 			$apv = $this->admin->get_apv();
+			$categoria = $this->admin->get_categoria();
+			$lugar_pago= $this->admin->get_lugar_pago();
 
 			/**** CARGA DE DATOS TRABAJADOR ****/
 			$trabajador = is_null($idtrabajador) ?  array() : $this->admin->get_personal_total($idtrabajador); 
@@ -969,6 +973,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['bonos'] = $bonos;
 			$vars['formValidation'] = true;
 			$vars['datetimepicker'] = true;
+			$vars['categorias'] = $categoria;
+			$vars['lugar_pago'] = $lugar_pago;
 			//$vars['icheck'] = true;
 			$vars['jqueryRut'] = true;
 			$vars['mask'] = true;
@@ -1059,6 +1065,14 @@ public function editar_trabajador(){
 			$tallapolera = $this->input->post('polera');
 			$tramo = $this->input->post('tramo');
 			$monto_pactado = $this->input->post('monto_pactado');
+			$categoria = $this->input->post('categoria');
+			$lugar_pago = $this->input->post('lugar_pago');
+
+			$jubilado = $this->input->post('jubilado');
+			$regimen_pago = $this->input->post('regimen_pago');
+			$sindicato = $this->input->post('sindicato');
+			$semana_corrida = $this->input->post('semana_corrida');
+
 			
 
 			$date = DateTime::createFromFormat('d/m/Y', $fecingreso);
@@ -1112,6 +1126,12 @@ public function editar_trabajador(){
 
 								'fecinicvacaciones' => $fecingreso,
 								'fecingreso' => $fecingreso,
+								'id_lugar_pago' => $lugar_pago,
+								'id_categoria' => $categoria,
+								'jubilado' => $jubilado,
+								'rol_privado' => $regimen_pago,
+								'sindicato' => $sindicato,
+								'semana_corrida' => $semana_corrida,
 								'saldoinicvacaciones' => 0,
 								'saldoinicvacprog' => 0,	
 
@@ -1220,6 +1240,12 @@ public function editar_trabajador(){
 			$cotapv = $this->input->post('monto_cotizacion_apv');
 			$tallapantalon = $this->input->post('pantalon');
 			$tallapolera = $this->input->post('polera');
+			$categoria = $this->input->post('categoria');
+			$lugar_pago = $this->input->post('lugar_pago');
+			$jubilado = $this->input->post('jubilado');
+			$regimen_pago = $this->input->post('regimen_pago');
+			$sindicato = $this->input->post('sindicato');
+			$semana_corrida = $this->input->post('semana_corrida');
 
 
 			// SE REGULARIZA LOS CAMPOS FECHA DEL FORMATO dd/mm/yyyy A yyyy/mm/dd DE LA BD	
@@ -1304,6 +1330,12 @@ public function editar_trabajador(){
 								//'saldoinicvacprog' => $saldoinicvacprog,
 
 								'fecinicvacaciones' => $fecingreso,
+								'id_lugar_pago' => $lugar_pago,
+								'id_categoria' => $categoria,
+								'jubilado' => $jubilado,
+								'rol_privado' => $regimen_pago,
+								'sindicato' => $sindicato,
+								'semana_corrida' => $semana_corrida,
 								'saldoinicvacaciones' => 0,
 								'saldoinicvacprog' => 0,								
 								

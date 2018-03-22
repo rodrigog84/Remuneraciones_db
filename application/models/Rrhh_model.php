@@ -913,7 +913,13 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'idlicencia',
 				'idestudio',
 				'instapv',
-				'nrocontratoapv'
+				'nrocontratoapv',
+				'jubilado',
+				'sindicato',
+				'rol_privado',
+				'id_lugar_pago',
+				'id_categoria',
+				'semana_corrida'
 
 
 			);
