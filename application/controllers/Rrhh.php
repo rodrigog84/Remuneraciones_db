@@ -39,25 +39,24 @@ class Rrhh extends CI_Controller {
             header("Content-type: application/vnd.ms-excel"); 
             header("Content-disposition: attachment; filename=asistencia.xls"); 
             
-            $idempresa = $this->session->userdata('empresaid');
-
-            $query = $this->db->query('SELECT * FROM rem_personal WHERE id_empresa like '.$idempresa.'');
-            
-            $users = $query->result_array();
+            $personal = $this->rrhh_model->get_personal();
 
             echo '<table>';
             echo "<tr>";
                 echo "<td>RUT</td>";               
                 echo "<td>DV</td>";
+                echo "<td>NOMBRES</td>";
                 echo "<td>DIAS</td>";
                 echo "<td>MES</td>";
                 echo "<td>ANO</td>";   
               echo "</tr>";
-              
-              foreach($users as $v){
-              	echo "<tr>";
-                 echo "<td>".$v['rut']."</td>";
-                 echo "<td>".$v['dv']."</td>";
+
+                          
+              foreach($personal as $v){
+              	 echo "<tr>";
+                 echo "<td>".$v->rut."</td>";
+                 echo "<td>".$v->dv."</td>";
+                 echo "<td>".$v->nombre." ".$v->apaterno." ".$v->amaterno."</td>";
                  echo "</tr>";
                }	
          echo '</table>';
@@ -70,26 +69,24 @@ class Rrhh extends CI_Controller {
             header("Content-type: application/vnd.ms-excel"); 
             header("Content-disposition: attachment; filename=anticipos.xls"); 
             
-            $idempresa = $this->session->userdata('empresaid');
-
-            $query = $this->db->query('SELECT * FROM rem_personal WHERE id_empresa like '.$idempresa.'');
-            
-            $users = $query->result_array();
+            $personal = $this->rrhh_model->get_personal();
 
             echo '<table>';
             echo "<tr>";
                 echo "<td>RUT</td>";               
                 echo "<td>DV</td>";
+                echo "<td>NOMBRE</td>";
                 echo "<td>ANTICIPOS</td>";
                 echo "<td>AGUINALDO</td>";
                 echo "<td>MES</td>";
                 echo "<td>ANO</td>";   
               echo "</tr>";
               
-              foreach($users as $v){
+              foreach($personal as $v){
               	echo "<tr>";
-                 echo "<td>".$v['rut']."</td>";
-                 echo "<td>".$v['dv']."</td>";
+                 echo "<td>".$v->rut."</td>";
+                 echo "<td>".$v->dv."</td>";
+                 echo "<td>".$v->nombre." ".$v->apaterno." ".$v->amaterno."</td>";
                  echo "</tr>";
                }	
          echo '</table>';
@@ -102,26 +99,24 @@ class Rrhh extends CI_Controller {
             header("Content-type: application/vnd.ms-excel"); 
             header("Content-disposition: attachment; filename=horasextras.xls"); 
             
-            $idempresa = $this->session->userdata('empresaid');
-
-            $query = $this->db->query('SELECT * FROM rem_personal WHERE id_empresa like '.$idempresa.'');
-            
-            $users = $query->result_array();
+            $personal = $this->rrhh_model->get_personal();
 
             echo '<table>';
             echo "<tr>";
                 echo "<td>RUT</td>";               
                 echo "<td>DV</td>";
+                echo "<td>NOMBRE</td>";
                 echo "<td>HORAS 100%</td>";
                 echo "<td>HORAS 50%</td>";
                 echo "<td>MES</td>";
                 echo "<td>ANO</td>";   
               echo "</tr>";
               
-              foreach($users as $v){
+              foreach($personal as $v){
               	echo "<tr>";
-                 echo "<td>".$v['rut']."</td>";
-                 echo "<td>".$v['dv']."</td>";
+                 echo "<td>".$v->rut."</td>";
+                 echo "<td>".$v->dv."</td>";
+                 echo "<td>".$v->nombre." ".$v->apaterno." ".$v->amaterno."</td>";
                  echo "</tr>";
                }	
          echo '</table>';

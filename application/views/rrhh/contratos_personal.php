@@ -9,49 +9,46 @@
 								
 									<div class="graph-visual tables-main">
 											
-													
-													<h3 class="inner-tittle two">Descripción</h3>
-														  <div class="graph">
+									
+									<h3 class="inner-tittle two">Descripción</h3>
+										  <div class="graph">
 
-														  	
-															<div class="tables">
-																<table id="listado" class="table"> 
-																	<thead> 
-																		<tr>
-																			<th>#</th>
-                            												<th>Nombre Trabajador</th>
-                            												<th>Rut</th>
-                            												<th>Direcci&oacute;n</th>
-                            												<th>Estado</th>
-																			<th>Opciones</th>
+										  	
+											<div class="tables">
+										<table id="listado" class="table"> 
+											<thead> 
+												<tr>
+													<th>#</th>
+    												<th>Nombre Trabajador</th>
+    												<th>Rut</th>
+    												<th>Direcci&oacute;n</th>
+    												<th>Estado</th>
+													<th>Opciones</th>
 
-																		</tr> 
-																	</thead> 
-																	<tbody> 
-	                          										<?php if(count($personal) > 0 ){ ?>
-	                            										<?php $i = 1; ?>
-	                            										<?php foreach ($personal as $trabajador) { ?>				
-																		<tr class="active" id="variable">
-											                              <td><small><?php echo $i ;?></small></td>
-	                              										  <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
+												</tr> 
+											</thead> 
+											<tbody> 
+	                          	<?php if(count($personal) > 0 ){ ?>
+	                            <?php $i = 1; ?>
+	                            <?php foreach ($personal as $trabajador) { ?>				
+								<tr class="active" id="variable">
+	                              <td><small><?php echo $i ;?></small></td>
+									  <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
 	                                									  <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
 	                              										  <td><small><?php echo $trabajador->direccion;?></small></td>
 	                              										  <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo";?></small></td>
-																			<td>
-																				<!--<a href="<?php echo base_url();?>rrhh/mod_trabajador" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>-->
-																				<a href="<?php echo base_url();?>rrhh/contrato_colaborador/<?php echo $trabajador->rut ?><?php echo $trabajador->nombre ?>" class="btn btn-info opciones" id="opciones" title="Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>
-        																		<!--<a href="#" class="btn btn-info" role="button">Link Button</a>-->
-        																		
-																			</td>
-																		</tr> 
+								<td>			
+								<a href="<?php echo base_url();?>rrhh/contrato_colaborador/<?php echo $trabajador->id_personal?>" class="btn btn-info opciones" id="opciones" title="Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>						
+								</td>
+								</tr> 
 
-											                            <?php $i++;?>
-												                       <?php } ?>
-                          												<?php } ?>		
-																		
-																	</tbody> 
-																</table> 
-															</div>
+	                            <?php $i++;?>
+		                       <?php } ?>
+									<?php } ?>		
+								
+							</tbody> 
+						</table> 
+					</div>
 												
 													</div>
 											</div>

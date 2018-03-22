@@ -261,8 +261,9 @@ class Carga_masiva extends CI_Controller {
 			       $rut = $datos[0];
 			       $dv = utf8_encode($datos[1]);
 			       $dias = $datos[2];
-			       $mes = $datos[3];
-			       $anno = $datos[4];
+			       $nombres = $datos[3];
+			       $mes = $datos[4];
+			       $anno = $datos[5];
 
 			       $idempresa = $this->session->userdata('empresaid');
 

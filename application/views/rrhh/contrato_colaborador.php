@@ -2,7 +2,7 @@
 <div class="sub-heard-part">
 		<td>
 		<font color="Green" face="arial">
-			<h3 align="left"><i>Nombre : <?php echo $rut;?> Rut : <?php echo $rut;?></i></h3>
+			<h3 align="left"><i>Nombre : <?php echo $personal->nombre." ".$personal->apaterno." ".$personal->amaterno;?> Rut : <?php echo $personal->rut."-".$personal->dv;?></i></h3>
 		</font>
 			<h3 class="inner-tittle two">Generar &nbsp;&nbsp; <a href="<?php echo base_url();?>rrhh/add_trabajador" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Contrato</a>
 			&nbsp;&nbsp;
@@ -12,9 +12,7 @@
 											
 													
 								<h3 class="inner-tittle two">Descripción</h3>
-									  <div class="graph">
-
-									  	
+									  <div class="graph">							  	
 										<div class="tables">
 											<table id="listado" class="table"> 
 												<thead> 
@@ -28,7 +26,7 @@
 													</tr> 
 												</thead> 
 												<tbody> 
-          										<?php if(count($personal) > 0 ){ ?>
+          										<?php if(count($contrato) > 0 ){ ?>
             										<?php $i = 1; ?>
             										<?php foreach ($personal as $trabajador) { ?>				
 													<tr class="active" id="variable">
