@@ -148,7 +148,8 @@ public function submit_haber_descuento(){
 			$codigo = $this->input->post('codigo');
 			$descripcion = $this->input->post('descripcion');
 			$tipocalculo = $this->input->post('tipocalculo');
-			$formacalculo = $this->input->post('formacalculo');
+			//$formacalculo = $this->input->post('formacalculo');
+			$formacalculo = 'fijo';
 
 			$datos = array();
 			$datos['tipo'] = $tipo;
@@ -172,6 +173,8 @@ public function submit_haber_descuento(){
 			$datos['sobregiro'] = $this->input->post('sobregiro') == '' ? 0 : 1;
 			$datos['liqminimo'] = $this->input->post('liqminimo') == '' ? 0 : 1;
 			$datos['semanacorrida'] = $this->input->post('semanacorrida') == '' ? 0 : 1;
+			$datos['fijo'] = $this->input->post('fijo') == '' ? 0 : 1;
+			$datos['proporcional'] = $this->input->post('proporcional') == '' ? 0 : 1;
 			$datos['editable'] = 1;
 			$datos['visible'] = 1;
 			$datos['valido'] = 1;
