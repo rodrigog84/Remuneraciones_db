@@ -42,7 +42,7 @@ class Configuracion extends CI_Model
 
 	public function get_haberes_descuentos($idhaberdescto = null,$tipo = null){
 
-		$habdescto_data = $this->db->select('d.id, d.codigo, d.tipo, d.nombre, d.editable, d.visible')
+		$habdescto_data = $this->db->select('d.id, d.codigo, d.tipo, d.nombre, d.editable, d.visible, d.tipocalculo, d.formacalculo, d.imponible, d.fijo, d.proporcional, d.semanacorrida, d.tributable, d.retjudicial')
 						  ->from('rem_conf_haber_descuento d')
 						  ->join('rem_conf_haber_descuento_empresa de','d.id = de.idconfhd and de.idempresa = ' . $this->session->userdata('empresaid'),'left')
 						  ->where('valido = 1')
@@ -58,8 +58,11 @@ class Configuracion extends CI_Model
 	}
 
 
-	public function add_haberes_descuentos($datos){
+	public function add_haberes_descuentos($datos,$idhab){
 
+		var_dump($idhab); 
+		if($idhab == 0){
+			//echo "1"; exit;
 			$this->db->insert('rem_conf_haber_descuento',$datos);
 			$idhaberdescto = $this->db->insert_id();
 
@@ -67,6 +70,28 @@ class Configuracion extends CI_Model
 			$array_hdemp = array('idconfhd' => $idhaberdescto,
 								 'idempresa' => $this->session->userdata('empresaid'));
 			$this->db->insert('rem_conf_haber_descuento_empresa',$array_hdemp);
+
+		}else{
+			//echo "2"; exit;
+
+			$array_datos = array(
+						'tipo' => $datos['tipo'],
+						'nombre' => $datos['nombre'],
+						'tipocalculo' => $datos['tipocalculo'],
+						'formacalculo' => $datos['formacalculo'],
+						'codigo' => $datos['codigo'],
+						'imponible' => $datos['imponible'],
+						'fijo' => $datos['fijo'],
+						'proporcional' => $datos['proporcional'],
+						'semanacorrida' => $datos['semanacorrida'],
+						'retjudicial' => $datos['retjudicial'],
+						'tributable' => $datos['tributable'],
+				);
+
+
+			$this->db->where('id',$idhab);
+			$this->db->update('rem_conf_haber_descuento',$array_datos);
+		}
 
 	}
 }

@@ -44,11 +44,11 @@ class Configuraciones extends CI_Controller {
 				$vars['message'] = "Haber/Descuento Agregado correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = 'active';				
-				$vars['leyes_sociales'] = '';		
-				$vars['apv'] = '';		
-				$vars['salud'] = '';		
-				$vars['otros'] = '';	
+			}else if($resultid == 2){
+				$vars['message'] = "Haber/Descuento no puede ser editado";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
 			}
 
 			$haberes_descuentos = $this->configuracion->get_haberes_descuentos(); 
@@ -91,7 +91,7 @@ class Configuraciones extends CI_Controller {
 	}	
 
 
-public function add_haber_descuento(){
+public function add_haber_descuento($idhaberdescto = null){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 			
@@ -107,6 +107,19 @@ public function add_haber_descuento(){
 				$vars['otros'] = '';	
 			}
 
+			$haberes_descuentos = array();
+			if(!is_null($idhaberdescto)){
+					$haberes_descuentos = $this->configuracion->get_haberes_descuentos($idhaberdescto); 	
+					if($haberes_descuentos->editable == 0){
+							$this->session->set_flashdata('haber_descuento_result', 2);
+							redirect('configuraciones/hab_descto');	
+
+
+					}
+
+			}
+			
+
 			$content = array(
 						'menu' => 'Configuraciones',
 						'title' => 'Configuraciones',
@@ -115,6 +128,7 @@ public function add_haber_descuento(){
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'configuraciones/add_haber_descuento';
 			$vars['formValidation'] = true;
+			$vars['haberes_descuentos'] = $haberes_descuentos;
 			$vars['gritter'] = true;
 
 			$template = "template";
@@ -143,7 +157,6 @@ public function add_haber_descuento(){
 
 public function submit_haber_descuento(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-
 			$tipo = $this->input->post('tipo');
 			$codigo = $this->input->post('codigo');
 			$descripcion = $this->input->post('descripcion');
@@ -175,12 +188,14 @@ public function submit_haber_descuento(){
 			$datos['semanacorrida'] = $this->input->post('semanacorrida') == '' ? 0 : 1;
 			$datos['fijo'] = $this->input->post('fijo') == '' ? 0 : 1;
 			$datos['proporcional'] = $this->input->post('proporcional') == '' ? 0 : 1;
+			
 			$datos['editable'] = 1;
 			$datos['visible'] = 1;
 			$datos['valido'] = 1;
+			$idhab = $this->input->post('idhab');
 
 
-			$haberes_descuentos = $this->configuracion->add_haberes_descuentos($datos); 
+			$haberes_descuentos = $this->configuracion->add_haberes_descuentos($datos,$idhab); 
 
 			$this->session->set_flashdata('haber_descuento_result', 1);
 			redirect('configuraciones/hab_descto');	

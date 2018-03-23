@@ -1,4 +1,4 @@
-<!--sub-heard-part-->
+/<!--sub-heard-part-->
 								  <!--//sub-heard-part-->
 								
 									<div class="graph-visual tables-main">
@@ -17,6 +17,7 @@
                             												<th>Tipo</th>
                             												<th>Nombre</th>
                             												<th>Pertenece a </th>
+                                                    <th>&nbsp;</th>
 																		</tr> 
 																	</thead> 
 																	<tbody> 
@@ -28,6 +29,18 @@
 	                              										  <td><small><?php echo $haber_descuento->tipo;?></small></td>
 	                              										  <td><small><?php echo $haber_descuento->nombre;?></small></td>
 	                              										  <td><small><?php echo $haber_descuento->editable == 0 ? 'General' : 'Propio';?></small></td>
+                                                      <?php if($haber_descuento->editable == 0){ ?>
+                                                      <td>
+                                                           &nbsp;
+                                                      </td>     
+
+                                                      <?php }else{ ?>
+                                                      <td>
+                                                           <a href="<?php echo base_url(); ?>configuraciones/add_haber_descuento/<?php echo $haber_descuento->id;?>" data-toggle="tooltip" title="Editar Haber/Descuento"><i class="fa fa-lg fa-edit"></i></a>
+                                                          &nbsp;&nbsp;
+                                                          <i class="fa fa-lg fa-trash"></i>
+                                                      </td>          
+                                                      <?php } ?>                                            
 																		</tr> 
 
 											                            <?php $i++;?>
