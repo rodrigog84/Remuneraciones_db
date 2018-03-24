@@ -1,4 +1,4 @@
-<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_hab_descto_variable" method="post" role="form" enctype="multipart/form-data">
+<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_genera_contrato" method="post" role="form" enctype="multipart/form-data">
 
                             <div class="panel panel-inverse">                       
                                 <div class="panel-heading">
@@ -20,14 +20,15 @@
                             </thead>
                             <tbody>
                               <td>
-                                <input type="text" name="rut" id="rut"  class="form-control1"  placeholder="<?php echo $personal->rut."-".$personal->dv;?>" title="Escriba Rut" required >
+                                <input type="text" name="rut" id="rut"  class="form-control1"  placeholder="<?php echo $personal->rut."-".$personal->dv;?>" title="Escriba Rut" disabled  >
                               </td>
                               <td>
-                                <input type="text" name="fechaingreso" id="fechaingreso" class="form-control1" id="" placeholder="<?php echo $personal->fecingreso;?>" >
+                                <input type="text" name="fechaingreso" id="fechaingreso" class="form-control1" id="" placeholder="<?php echo $personal->fecingreso;?>" disabled >
                               </td>
                               <td>
-                                <input type="text" name="sueldobase" id="sueldobase" class="form-control1" id="" placeholder="<?php echo $personal->sueldobase;?>" >
+                                <input type="text" name="sueldobase" id="sueldobase" class="form-control1" id="" placeholder="<?php echo $personal->sueldobase;?>" disabled >
                               </td>
+                              
                             </tbody>  
                           </table>
 
@@ -42,14 +43,14 @@
                             <tbody>
                               <td >
                                 <div class="form-group">
-                                <input type="text" name="nombre" class="form-control1" id="nombre" placeholder="<?php echo $personal->nombre;?>" required>
+                                <input type="text" name="nombre" class="form-control1" id="nombre" placeholder="<?php echo $personal->nombre;?>" disabled>
                                 </div>
                               </td>
                               <td class="form-group">
-                                <input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="<?php echo $personal->apaterno;?>" required>
+                                <input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="<?php echo $personal->apaterno;?>" disabled>
                               </td>
                               <td class="form-group">
-                                <input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="<?php echo $personal->amaterno;?>" required>
+                                <input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="<?php echo $personal->amaterno;?>" disabled>
                               </td>
                             </tbody>
                           </table>                          
@@ -63,10 +64,10 @@
                             </thead>
                             <tbody>
                               <td>
-                                <input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="<?php echo $personal->direccion;?>" data-toggle="modal" data-target="#myModalDireccion">
+                                <input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="<?php echo $personal->direccion;?>" data-toggle="modal" data-target="#myModalDireccion" size="40" disabled>
                               </td>
                               <td>
-                                <input type="text" name="email" id="email" class="form-control1" placeholder="<?php echo $personal->email;?>">
+                                <input type="text" name="email" id="email" class="form-control1" placeholder="<?php echo $personal->email;?>" disabled>
                               </td>
                             </tbody>
                           </table>
@@ -82,35 +83,50 @@
                         <div class='row'>
                           <div class='col-md-4'>
                             <div class="form-group">
-                                  <label for="caja">Tipo Contrato</label>    
-                                  <select name="tipo" id="tipo"  class="form-control"  >
-                                      <option value="">Seleccione Tipo</option>
-                                      <option value="VENDEDOR">VENDEDOR</option>
-                                      <option value="JEFE SUCURSAL">JEFE SUCURSAL</option>
-                                      <option value="GERENCIA">GERENCIA</option>                         
-                                  </select>
+                              <label for="caja">Tipo Contrato</label>    
+                               <select name="tipo" id="tipocontrato" class="form-control1" required>
+                              <?php foreach ($tipocontrato as $tipo) { ?>
+                                <?php $paisselected = $tipo->id == $datos_form['id_tipo_doc_colaborador'] ? "selected" : "Tipo Contrato"; ?>
+                                <option value="<?php echo $tipo->tipo;?>" <?php echo $paisselected;?> ><?php echo $tipo->tipo;?></option>
+                              <?php } ?>
+                            </select>
+
                             </div>  
                           </div>
-
-                        <div class="panel-body">
-                        <div class='row'>
-                          <div class='col-md-4'>                            
-                          </div>                           
-                          <div class='col-md-4'>
-                          <table class="table table-striped">
-                            <thead> 
+                           <div class='col-md-4'>
+                             <thead> 
                               <tr> 
                                 <th>Fecha Contrato:</th> 
                               </tr> 
                             </thead>
                             <tbody>
                               <td>
-                                <input placeholder="Fecha Contrato" name="fechacontrato" id="fechacontrato" class="form-control1" required id="datepicker" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
-                              </td>                             
+                                <input placeholder="Fecha Contrato" name="fechacontrato" id="fechacontrato" class="form-control1" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                              </td>  
+                              
+                                                   
                             </tbody>
-                          </table>
                           
-                          </div>                      
+                          </div>  
+
+                           <div class='col-md-4'>
+                             <thead> 
+                              <tr> 
+                                <th>id Trabajador:</th> 
+                              </tr> 
+                            </thead>
+                            <tbody>
+                              <td>
+                                <input type="text" name="idtrabajador" id="idtrabajador" class="form-control1" required id="" placeholder="<?php echo $personal->id_personal;?>" >
+                              </td>                           
+                            </tbody>
+                          
+                          </div>  
+
+                        <div class="panel-body">
+                        <div class='row'>
+                                           
+                                             
                         </div>
                         <div class="row" id="tabla_colaboradores"></div>    
                         <div class="box-footer">
@@ -123,6 +139,16 @@
                   </div>
     </form>                   
 
+
+
+
+<script>
+  $(function() {
+    $( "#fechacontrato,#fechaingreso").datepicker({
+  dateFormat: "dd/mm/yy"
+});
+  });
+</script>  
 <script>
 
     $(document).ready(function() {
@@ -145,24 +171,7 @@
               $('#tabla_colaboradores').html('');
             }else{
               $('input').attr('readonly',false);
-            }
-
-
-           /* $.get("<?php echo base_url();?>rrhh/get_datos_remuneracion/"+$('#mes').val()+"/"+$('#anno').val(),function(data){
-                     // Limpiamos el select
-                          var_json = $.parseJSON(data);
-                          $(".diastrabajo").each(
-                              function(index,value){
-                                  var id_text = $(this).attr('id');
-                                  var array_field = id_text.split("_");
-                                  idtrabajador = array_field[1];  
-
-                                  var diastrabajo =  typeof(var_json["diastrabajo_"+idtrabajador]) != 'undefined' && var_json["diastrabajo_"+idtrabajador] != null ? var_json["diastrabajo_"+idtrabajador] : parseInt($('#diasatrabajar_'+idtrabajador).html());
-                                  $(this).val(diastrabajo);
-                              }
-                              
-                          );                    
-            });*/
+            }           
             
       });
 
@@ -285,9 +294,6 @@
                             table += '<tr ><td colspan="4">No existen colaboradores en el centro de costo seleccionado</td></tr>';
 
                         }
-
-
-
                           
                           table +='</tbody>\
                                   </table>';
@@ -304,17 +310,7 @@
                                       $('.sel_col').attr('checked',false);
                                   }
                           })
-                       // Limpiamos el select
-                        /*$('#hab_descto option').remove();
-                        
-                        
-                        $('#hab_descto').append('<option value="">Seleccione Haber / Descuento</option>');
-                        var_json = $.parseJSON(response);
-                        for(i=0;i<var_json.length;i++){
-                          $('#hab_descto').append('<option value="' + var_json[i].id + '">' + '( ' + var_json[i].codigo + ' ) ' +var_json[i].nombre + '</option>');
-                        }*/
-
-
+                     
                 });  
 
           }else{
@@ -368,4 +364,8 @@ $(document).ready(function(){
 });
 
 
-</script>                  
+
+
+</script>   
+
+             

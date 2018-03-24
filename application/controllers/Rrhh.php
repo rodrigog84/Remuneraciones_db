@@ -2757,15 +2757,29 @@ public function submit_anticipos(){
 
 	}	
 
+	public function submit_genera_contrato(){
 
+		$tipo = $this->input->post("tipo");
+		$fecha = $this->input->post("fechacontrato");
+		$idtrabajador = $this->input->post("idtrabajador");
 
+		$personal = $this->admin->get_personal_total($idtrabajador);
+
+		print_r($tipo);
+		print_r(" ");
+		print_r($fecha);
+		print_r(" ");
+
+		print_r($idtrabajador);
+		
+		print_r(" ");
+
+		print_r($personal);
+		
+	}
 
 	public function submit_hab_descto_variable(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-
-
-
-
 
 			$array_post = $this->input->post(NULL,true);
 
@@ -2798,8 +2812,6 @@ public function submit_anticipos(){
 											 'anno' => $anno,
 											 'listado_col' => $array_col,
 											 'lista_montos' => $array_montos );
-
-
 
 
 			$this->rrhh_model->save_hab_descto_variable($array_datos_hab_descto);
@@ -3287,7 +3299,11 @@ public function genera_contrato($idpersonal){
 						'subtitle' => 'Contratos Colaboradores');
 	
 	$personal = $this->admin->get_personal_total($idpersonal); 
+
+	$tipocontrato = $this->admin->get_tipo_contrato();
+	
 	$vars['personal'] = $personal;
+	$vars['tipocontrato'] = $tipocontrato;
 	$vars['contrato'] = 1;
 	//$vars['appaterno'] = $apaterno;
 	//$vars['amaterno'] = $amaterno;

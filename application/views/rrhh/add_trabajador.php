@@ -104,9 +104,9 @@
 																<select name="nacionalidad" id="nacionalidad" class="form-control1" required>
 																	<option>Seleccione Nacionalidad</option>
 						                                    		<?php foreach ($paises as $pais) { ?>
-								                                      <?php $paisselected = $pais->id == $datos_form['id_nacionalidad'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $pais->id_paises;?>" <?php echo $paisselected;?> ><?php echo $pais->nombre;?></option>
-								                                    <?php } ?>
+							                                      <?php $paisselected = $pais->id == $datos_form['id_nacionalidad'] ? "selected" : ""; ?>
+							                                      <option value="<?php echo $pais->id_paises;?>" <?php echo $paisselected;?> ><?php echo $pais->nombre;?></option>
+							                                    <?php } ?>
 																</select>
 															</td>
 														</tbody>

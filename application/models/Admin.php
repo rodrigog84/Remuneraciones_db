@@ -811,6 +811,16 @@ public function get_bonos($idtrabajador = null){
 		                  ->order_by('b.id');
 		$query = $this->db->get();
 		return $query->result();
+	}
+	
+	public function get_tipo_contrato($idtipocontrato = null){
+
+		$tipocontrato = $this->db->select('id_tipo_doc_colaborador, tipo')	
+						  ->from('rem_tipo_doc_colaborador')
+		                  ->order_by('tipo');
+		$tipocontrato = is_null($idtipocontrato) ? $tipocontrato : $tipocontrato->where('id_tipo_doc_colaborador',$id_tipo_doc_colaborador);  		                  
+		$query = $this->db->get();
+		return $query->result();
 	}		
 
 
@@ -818,7 +828,7 @@ public function get_bonos($idtrabajador = null){
 
 	public function get_paises($idpais = null){
 
-			$paises_data = $this->db->select('id_paises, iso, nombre')	
+		$paises_data = $this->db->select('id_paises, iso, nombre')	
 						  ->from('rem_paises')
 		                  ->order_by('nombre');
 		$paises_data = is_null($idpais) ? $paises_data : $paises_data->where('id_paises',$idpais);  		                  
