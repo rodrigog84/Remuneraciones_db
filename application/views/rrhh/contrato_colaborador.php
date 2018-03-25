@@ -2,7 +2,7 @@
 <div class="sub-heard-part">
 		<td>
 		<font color="Green" face="arial">
-			<h3 align="left"><i>Nombre : <?php echo $personal->nombre." ".$personal->apaterno." ".$personal->amaterno;?> Rut : <?php echo $personal->rut."-".$personal->dv;?></i></h3>
+			<h3 align="left"><i>Nombre : <?php echo $personal->nombre." ".$personal->apaterno." ".$personal->amaterno;?> Rut : <?php echo $personal->rut == '' ? '' : number_format($personal->rut,0,".",".")."-".$personal->dv;?></i></h3>
 		</font>
 			<h3 class="inner-tittle two">Generar &nbsp;&nbsp; <a href="<?php echo base_url();?>rrhh/genera_contrato/<?php echo $personal->id_personal?>" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Contrato</a>
 			&nbsp;&nbsp;
