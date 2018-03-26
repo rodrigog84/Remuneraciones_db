@@ -142,11 +142,11 @@
                         </tr> 
                         <tr>
                           <td>Indemnizacion Voluntaria </td>
-                          <td> $ 228.388 </td>  
+                          <td><input type="text" name="indem_vol" id="indem_vol" class="form-control1 required" placeholder="Ingrese Monto" size="20" disabled></td>  
                         </tr> 
                         <tr>
                           <td>Desahucio </td>
-                          <td> $ 228.388 </td>  
+                          <td> <input type="text" name="desaucio" id="desaucio" class="form-control1 required" placeholder="Ingrese Monto" size="20" disabled></td>  
                         </tr> 
                         <tr class="active" class="info">
                           <th>TOTAL HABERES</th>

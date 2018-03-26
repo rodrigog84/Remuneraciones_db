@@ -2890,16 +2890,7 @@ public function submit_anticipos(){
 
 		$personal = $this->admin->get_personal_total($idtrabajador);
 
-		print_r($tipo);
-		print_r(" ");
-		print_r($fecha);
-		print_r(" ");
-
-		print_r($idtrabajador);
-		
-		print_r(" ");
-
-		print_r($personal);
+		$this->rrhh_model->generar_contrato($personal,$tipo,$fecha,$idtrabajador);
 		
 	}
 
@@ -2911,16 +2902,7 @@ public function submit_anticipos(){
 
 		$personal = $this->admin->get_personal_total($idtrabajador);
 
-		print_r($tipo);
-		print_r(" ");
-		print_r($fecha);
-		print_r(" ");
-
-		print_r($idtrabajador);
 		
-		print_r(" ");
-
-		print_r($personal);
 		
 	}
 

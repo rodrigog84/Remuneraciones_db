@@ -23,7 +23,7 @@
                                 <input type="text" name="rut" id="rut"  class="form-control1"  placeholder="<?php echo $personal->rut == '' ? '' : number_format($personal->rut,0,".",".")."-".$personal->dv;?>" title="Escriba Rut" disabled  >
                               </td>
                               <td>
-                                <input placeholder="<?php echo $personal->fecingreso ;?>" name="fechaingreso" id="fechaingreso" class="form-control1" required id="datepicker" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                                <input placeholder="<?php echo $personal->fecingreso ;?>" name="fechaingreso" id="fechaingreso" class="form-control1" required id="datepicker" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" disabled />
                                
                               </td>
                               <td>
@@ -113,12 +113,12 @@
                            <div class='col-md-4'>
                              <thead> 
                               <tr> 
-                                <th>id Trabajador:</th> 
+                                <th></th> 
                               </tr> 
                             </thead>
                             <tbody>
                               <td>
-                                <input type="text" name="idtrabajador" id="idtrabajador" class="form-control1" required id="" placeholder="<?php echo $personal->id_personal;?>" >
+                                <input type="hidden" name="idtrabajador" id="idtrabajador" class="form-control1" required id="" value="<?php echo $personal->id_personal;?>">
                               </td>                           
                             </tbody>
                           
