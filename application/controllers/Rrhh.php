@@ -26,6 +26,129 @@ class Rrhh extends CI_Controller {
       
    } 
 
+   public function finiquitos(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$vars['mantencion_personal'] = 'active';				
+			$vars['leyes_sociales'] = '';		
+			$vars['salud'] = '';	
+			$vars['otros'] = '';	
+			$vars['apv'] = '';
+			$resultid = $this->session->flashdata('personal_result');
+			if($resultid == 1){
+				$vars['message'] = "Trabajador Agregado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+				$vars['mantencion_personal'] = 'active';				
+				$vars['leyes_sociales'] = '';		
+				$vars['apv'] = '';		
+				$vars['salud'] = '';		
+				$vars['otros'] = '';	
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al agregar Trabajador. Trabajador ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+				$vars['mantencion_personal'] = 'active';				
+				$vars['leyes_sociales'] = '';		
+				$vars['apv'] = '';		
+				$vars['salud'] = '';
+				$vars['otros'] = '';							
+			}elseif($resultid == 3){
+				$vars['message'] = "Leyes sociales actualizadas correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';
+				$vars['mantencion_personal'] = '';				
+				$vars['apv'] = '';		
+				$vars['leyes_sociales'] = 'active';		
+				$vars['salud'] = '';	
+				$vars['otros'] = '';						
+			}elseif($resultid == 4){
+				$vars['message'] = "Datos de Cotizaciones de Salud actualizados correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';	
+				$vars['mantencion_personal'] = '';				
+				$vars['apv'] = '';		
+				$vars['leyes_sociales'] = '';		
+				$vars['salud'] = 'active';							
+				$vars['otros'] = '';	
+			}elseif($resultid == 5){
+				$vars['message'] = "Mutual de Seguridad/Caja de Compensaci&oacute;n actualizados correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+				$vars['mantencion_personal'] = '';				
+				$vars['apv'] = '';		
+				$vars['leyes_sociales'] = '';		
+				$vars['salud'] = '';							
+				$vars['otros'] = 'active';											
+			}elseif($resultid == 6){
+				$vars['message'] = "Trabajador Editado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+				$vars['mantencion_personal'] = 'active';				
+				$vars['apv'] = '';		
+				$vars['leyes_sociales'] = '';		
+				$vars['salud'] = '';	
+				$vars['otros'] = '';							
+			}elseif($resultid == 7){
+				$vars['message'] = "A.P.V. Editado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+				$vars['mantencion_personal'] = '';				
+				$vars['apv'] = 'active';		
+				$vars['leyes_sociales'] = '';		
+				$vars['salud'] = '';	
+				$vars['otros'] = '';							
+			}elseif($resultid == 8){
+				$vars['message'] = "Colaboradores Cargados correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}
+
+			$this->load->model('admin');
+			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
+
+
+			$this->load->model('admin');
+			$personal = $this->admin->get_personal_total(); 
+			
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Personal');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'rrhh/finiquitos_personal';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['formValidation'] = true;
+			$vars['gritter'] = true;
+
+			$vars['empresa'] = $empresa;
+			$vars['personal'] = $personal;
+			
+			$template = "template";
+			
+
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}	
+
+
+	}
+
 
 	public function index()
 	{
@@ -401,6 +524,8 @@ class Rrhh extends CI_Controller {
 
 
 	}
+
+
 	
 	public function carga_masiva_paso(){
 		//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
@@ -2849,16 +2974,19 @@ public function submit_anticipos(){
 
 		$personal = $this->admin->get_personal_total($idtrabajador);
 
-		print_r($tipo);
-		print_r(" ");
-		print_r($fecha);
-		print_r(" ");
-
-		print_r($idtrabajador);
+		$this->rrhh_model->generar_contrato($personal,$tipo,$fecha,$idtrabajador);
 		
-		print_r(" ");
+	}
 
-		print_r($personal);
+	public function submit_genera_finiquito(){
+
+		$tipo = $this->input->post("tipo");
+		$fecha = $this->input->post("fechacontrato");
+		$idtrabajador = $this->input->post("idtrabajador");
+
+		$personal = $this->admin->get_personal_total($idtrabajador);
+
+		
 		
 	}
 
@@ -2913,7 +3041,9 @@ public function submit_anticipos(){
 		}		
 
 
-	}	
+	}
+	
+		
 
 
 	function get_hab_descto($tipo = null){
@@ -3373,6 +3503,44 @@ public function contrato_colaborador($rut){
 
 }
 
+public function finiquito_colaborador($rut){
+
+	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+	$content = array(
+						'menu' => 'Feniquitos',
+						'title' => 'Finiquito Colaborador',
+						'subtitle' => 'Finiquitos');
+	$vars['rut'] = $rut;
+
+	$personal = $this->admin->get_personal_total($rut); 
+	$vars['personal'] = $personal;
+	$vars['contrato'] = 1;
+	//$vars['appaterno'] = $apaterno;
+	//$vars['amaterno'] = $amaterno;
+	$vars['content_menu'] = $content;				
+	$vars['content_view'] = 'forbidden';
+	$vars['content_view'] = 'rrhh/finiquito_colaborador';
+	$this->load->view('template',$vars);
+
+	/*}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}*/
+
+
+}
+
+
+
 public function genera_contrato($idpersonal){
 
 	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
@@ -3394,6 +3562,47 @@ public function genera_contrato($idpersonal){
 	$vars['content_menu'] = $content;				
 	$vars['content_view'] = 'forbidden';
 	$vars['content_view'] = 'rrhh/genera_contrato';
+	$this->load->view('template',$vars);
+
+	/*}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}*/
+
+
+}
+
+public function genera_finiquito($idpersonal){
+
+	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+	$content = array(
+						'menu' => 'Finiquito',
+						'title' => 'Genera Finiquito Colaborador',
+						'subtitle' => 'Finiquitos Colaboradores');
+	
+	$personal = $this->admin->get_personal_total($idpersonal); 
+
+	//print_r($personal);
+
+	//exit;
+
+	$tipocontrato = $this->admin->get_tipo_contrato();
+	
+	$vars['personal'] = $personal;
+	$vars['tipocontrato'] = $tipocontrato;
+	$vars['contrato'] = 1;
+	$vars['content_menu'] = $content;				
+	$vars['content_view'] = 'forbidden';
+	$vars['content_view'] = 'rrhh/genera_finiquito';
 	$this->load->view('template',$vars);
 
 	/*}else{

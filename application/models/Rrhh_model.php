@@ -2381,6 +2381,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 				'L'    // L - landscape, P - portrait
 				);
 			  
+	
 			//echo $html; exit;
 			$this->mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
 			$this->mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
@@ -2403,6 +2404,55 @@ public function get_remuneraciones_by_id($idremuneracion){
 			$this->mpdf->Output($nombre_archivo, "I");
 			
 	}	
+
+	public function generar_contrato($personal,$tipo,$fecha,$idtrabajador){
+
+		    
+
+			$this->db->select('formato_pdf')
+									->from('rem_formato_doc_colaborador')
+									->where('id_tipo_doc_colaborador',1)
+									->where('id_empresa',$this->session->userdata('empresaid'));
+
+			$query = $this->db->get();
+			$result = $query->row();	
+
+
+			$html_pdf = $result->formato_pdf;
+
+			$nombre_trabajador = $personal->nombre;
+
+			$html_pdf = str_replace("@nombrecolaborador",$nombre_trabajador,$html_pdf);
+
+			
+
+		
+			$this->load->library("mpdf");
+			$this->mpdf->mPDF(
+				'',    // mode - default ''
+				'',    // format - A4, for example, default ''
+				8,     // font size - default 0
+				'',    // default font family
+				10,    // margin_left
+				5,    // margin right
+				16,    // margin top
+				16,    // margin bottom
+				9,     // margin header
+				9,     // margin footer
+				'L'    // L - landscape, P - portrait
+				);
+			  
+	
+			//echo $html; exit;
+			$this->mpdf->SetTitle('Is RRHH - Contrato de Trabajo');
+			$this->mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$this->mpdf->WriteHTML($html_pdf);
+
+			// SE ALMACENA EL ARCHIVO
+			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_sueldos_".$datos_remuneracion->id.".pdf";
+			$this->mpdf->Output($nombre_archivo, "I");
+			
+	}
 
 
 public function generar_contenido_comprobante($datos_remuneracion){
