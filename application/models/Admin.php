@@ -403,6 +403,19 @@ class Admin extends CI_Model
 
 
 
+	public function get_cantidad_feriado($fec_ini,$fec_fin){
+
+		$feriado_data = $this->db->select('count(id_feriado) as cantidad',false)
+						  ->from('rem_feriado f')
+						  ->where('f.active = 1')
+						  ->where("fecha between '" . str_replace("-","",$fec_ini) . "' and '" . str_replace("-","",$fec_fin) . "'");
+                  
+		$query = $this->db->get();
+		return $query->row();
+	}
+
+
+
 
 	public function add_feriado($array_datos){
 
@@ -808,6 +821,7 @@ public function get_bonos($idtrabajador = null){
 			$bonos_data = $this->db->select('id_bono, idpersonal, descripcion, monto, fecha')	
 						  ->from('rem_bonos_personal b')
 						  ->where('b.idpersonal',$idtrabajador)
+						  ->where('b.valido',1)
 		                  ->order_by('b.id');
 		$query = $this->db->get();
 		return $query->result();

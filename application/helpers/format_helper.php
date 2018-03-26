@@ -225,6 +225,19 @@ if (!function_exists('date2string'))
       $orden_letras[36] = "AK";
       $orden_letras[37] = "AL";
       $orden_letras[38] = "AM";
+      $orden_letras[39] = "AN";
+      $orden_letras[40] = "AO";
+      $orden_letras[41] = "AP";
+      $orden_letras[42] = "AQ";
+      $orden_letras[43] = "AR";
+      $orden_letras[44] = "AS";
+      $orden_letras[45] = "AT";
+      $orden_letras[46] = "AU";
+      $orden_letras[47] = "AV";
+      $orden_letras[48] = "AW";
+      $orden_letras[49] = "AX";
+      $orden_letras[50] = "AY";
+
 
       return $orden_letras[$valor];
     }
@@ -523,6 +536,48 @@ if (!function_exists('dias_transcurridos'))
   }
 
 }  
+
+
+
+if (!function_exists('bussiness_days'))
+{
+
+  function bussiness_days($begin_date, $end_date, $type_day, $type = 'array') {
+    $date_1 = date_create($begin_date);
+    $date_2 = date_create($end_date);
+    if ($date_1 > $date_2) return FALSE;
+    $bussiness_days = array();
+    while ($date_1 <= $date_2) {
+      $day_week = $date_1->format('w');
+
+      if($type_day == 'habil'){
+        if ($day_week > 0 && $day_week < 6) {
+          $bussiness_days[$date_1->format('Y-m')][] = $date_1->format('d');
+        }
+
+      }else if($type_day == 'inhabil'){
+        if ($day_week == 0 || $day_week == 6) {
+          $bussiness_days[$date_1->format('Y-m')][] = $date_1->format('d');
+        }
+
+      }else if($type_day == 'domingos'){
+        if ($day_week == 0) {
+          $bussiness_days[$date_1->format('Y-m')][] = $date_1->format('d');
+        }        
+      }
+
+      date_add($date_1, date_interval_create_from_date_string('1 day'));
+    }
+    if (strtolower($type) === 'sum') {
+        array_map(function($k) use(&$bussiness_days) {
+            $bussiness_days[$k] = count($bussiness_days[$k]);
+        }, array_keys($bussiness_days));
+    }
+    return $bussiness_days;
+  }
+
+}  
+
 
 
 if (!function_exists('meses_transcurridos'))

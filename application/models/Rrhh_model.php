@@ -990,7 +990,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'valorpactado',
 				"COALESCE((select sum(per.monto) as monto from rem_bonos_personal per
 							inner join rem_conf_haber_descuento h on per.idconf = h.id
- 							where per.idpersonal = p.id_personal and h.tipo = 'HABER' and h.fijo = 1 and h.imponible = 1),0) as bonos_fijos",
+ 							where per.valido = 1 and per.idpersonal = p.id_personal and h.tipo = 'HABER' and h.fijo = 1 and h.imponible = 1),0) as bonos_fijos",
 				'DATEDIFF(YY,fecafc,getdate()) as annos_afc,
 				DATEDIFF(MM,fecinicvacaciones,getdate()) as meses_vac,
 				fecinicvacaciones,
@@ -999,7 +999,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				diasprogresivos,
 				diasprogtomados,
 				saldoinicvacprog,
-				idcentrocosto'
+				idcentrocosto,
+				semana_corrida'
 			);
 		
 		$personal_data = $this->db->select($array_campos)
@@ -1301,6 +1302,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 							  ->join('rem_conf_haber_descuento as h','d.idconf = h.id')
 							  ->join('rem_personal as p','d.idpersonal = p.id_personal')
 			                  ->where('d.idpersonal',$idtrabajador)
+			                  ->where('d.valido',1)
 			                  ->where('p.id_empresa',$this->session->userdata('empresaid'));
 
 			$haberes_data = is_null($imponible) ? $haberes_data : $haberes_data->where('h.imponible',$campo_imponible);  	
@@ -1312,6 +1314,23 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	}
 
 
+	public function get_haberes_descuentos_totales_validos($idhaber = null){
+
+			$haberes_desctos_data = $this->db->select('bp.id, hd.codigo, hd.tipo, bp.idpersonal, p.rut, p.dv, p.nombre as nombre_colaborador, p.apaterno, p.amaterno,  hd.nombre , bp.monto')
+							  ->from('rem_bonos_personal bp')
+							  ->join('rem_personal as p','bp.idpersonal = p.id_personal')
+							  ->join('rem_conf_haber_descuento as hd','bp.idconf = hd.id')
+							  ->join('rem_periodo_remuneracion as pr','bp.idperiodo = pr.id_periodo and p.idcentrocosto = pr.id_centro_costo')
+			                  ->where('p.id_empresa',$this->session->userdata('empresaid'))
+			                  ->where('(pr.aprueba is null or hd.fijo = 1)')
+			                  ->where('bp.valido',1);
+
+			$query = $this->db->get();
+			//echo $this->db->last_query(); exit;
+			return $query->result();		
+	}	
+
+
 	public function get_bonos_by_remuneracion($idremuneracion,$imponible = null){
 
 		if(!is_null($imponible)){
@@ -1319,7 +1338,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		}
 		
 		$bonos_data = $this->db->select('id, descripcion, imponible, monto')
-						  ->from('gc_bonos_remuneracion')
+						  ->from('rem_haber_descuento_remuneracion')
 						  ->where('idremuneracion',$idremuneracion)
 		                  ->order_by('id');
 
@@ -1329,11 +1348,38 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	}	
 
 
+	public function dias_habiles($idperiodo){
+
+		$periodo =  $this->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+
+
+		$fec_ini = $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-01";
+		$fec_fin = $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".ultimo_dia_mes($periodo->mes,$periodo->anno);
+		$dias_habiles = bussiness_days($fec_ini,$fec_fin,'habil','SUM'); 
+		$dias_inhabiles = bussiness_days($fec_ini,$fec_fin,'domingos','SUM');
+
+		$dias_feriados = $this->admin->get_cantidad_feriado($fec_ini,$fec_fin);
+		$dias_habiles = $dias_habiles[$periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)] - $dias_feriados->cantidad;
+		$dias_inhabiles = $dias_inhabiles[$periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)] + $dias_feriados->cantidad;
+
+		$array_dias = array('dias_habiles' => $dias_habiles,
+					   'dias_inhabiles' => $dias_inhabiles);
+
+		return $array_dias;
+
+	}
+
+
 	public function calcular_remuneraciones($idperiodo,$centro_costo){
 
 		$this->db->trans_start();
 
 		$periodo =  $this->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+
+
+		// CALCULAMOS DIAS HÁBILES E INHABILES DEL MES
+		$array_dias =  $this->dias_habiles($idperiodo);
+
 		$this->load->model('admin');
 		//$periodo = $this->admin->get_periodo_by_id($idperiodo);
 		$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
@@ -1367,6 +1413,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 		$personal = $this->get_personal(null,$centro_costo); 
 
+
 		foreach ($personal as $trabajador) { // calculo de sueldos por cada trabajador
 
 			$datos_remuneracion = $this->get_datos_remuneracion_by_periodo($idperiodo,$trabajador->id_personal);
@@ -1388,7 +1435,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$colacion_mes = round(($trabajador->colacion/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
 
 			$bonos_no_imponibles_tributables = 0;
-
+			$haberes_semana_corrida = 0;
 			foreach ($datos_hd as $bono) {
 
 				$tiene_bono = false;
@@ -1411,7 +1458,13 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 						$bonos_no_imponibles += $valor_bono;
 						$bonos_no_imponibles_tributables += $bono->tributable == 1 ? $valor_bono : 0;
-					}				
+					}			
+
+					if($bono->semanacorrida == 1){
+						$haberes_semana_corrida += $valor_bono;
+
+					}
+
 					$data_bono = array(
 								'idremuneracion' => $datos_remuneracion->id_remuneracion,
 								'descripcion' => $bono->nombre,
@@ -1421,6 +1474,14 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 					$this->db->insert('rem_haber_descuento_remuneracion', $data_bono);
 				}
 			}			
+
+
+			$monto_semana_corrida = 0;
+			//CALCULO SEMANA CORRIDA
+			if($trabajador->semana_corrida == 'SI'){
+				$monto_semana_corrida = round(($haberes_semana_corrida/$array_dias['dias_habiles'])*$array_dias['dias_inhabiles'],0);
+			}	
+
 
 
 			$datos_afp = $this->admin->get_afp($trabajador->idafp);
@@ -1484,7 +1545,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			}else if($trabajador->tipogratificacion == 'MF'){
 				$gratificacion = $trabajador->gratificacion;
 			}else if($trabajador->tipogratificacion == 'TL'){
-				$monto_calculo_gratificacion = $sueldo_base_mes +  $bonos_imponibles + $monto_horas50 + $monto_horas100;
+				$monto_calculo_gratificacion = $sueldo_base_mes +  $bonos_imponibles + $monto_semana_corrida + $monto_horas50 + $monto_horas100;
 				//$gratificacion_esperada = round($sueldo_base_mes/4,0);
 
 				$gratificacion_esperada = round($monto_calculo_gratificacion/4,0);
@@ -1494,8 +1555,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			}
 
 
-			$total_haberes = $sueldo_base_mes + $gratificacion + $movilizacion_mes + $colacion_mes + $bonos_imponibles + $bonos_no_imponibles + $monto_horas50 + $monto_horas100 + $aguinaldo_bruto + $asig_familiar;
-			$sueldo_imponible = $sueldo_base_mes + $gratificacion + $bonos_imponibles + $monto_horas50 + $monto_horas100 + $aguinaldo_bruto;
+			$total_haberes = $sueldo_base_mes + $gratificacion + $movilizacion_mes + $colacion_mes + $bonos_imponibles + $bonos_no_imponibles + $monto_horas50 + $monto_horas100 + $aguinaldo_bruto + $asig_familiar + $monto_semana_corrida;
+			$sueldo_imponible = $sueldo_base_mes + $gratificacion + $bonos_imponibles + $monto_horas50 + $monto_horas100 + $aguinaldo_bruto + $monto_semana_corrida;
 
 			$sueldo_no_imponible = $total_haberes - $sueldo_imponible;
 
@@ -1580,7 +1641,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 			
-
+			//MONTO SEMANA CORRIDA ESTÁ CONSIDERADO DENTRO DE SUELDO IMPONIBLE
 			$base_tributaria = $sueldo_imponible + $bonos_no_imponibles_tributables - $cot_obligatoria - $comision_afp - $adic_afp - $segcesantia - $cot_salud_oblig - $cot_adic_isapre - $cot_fonasa - $cot_inp;
 
 			$impuesto = 0;
@@ -1661,7 +1722,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			}else{
 				if($datos_remuneracion->diastrabajo < 30){
 
-					$sueldo_calculo_sis = $trabajador->sueldobase + $aguinaldo_bruto + $bonos_imponibles;
+					$sueldo_calculo_sis = $trabajador->sueldobase + $aguinaldo_bruto + $bonos_imponibles + $monto_semana_corrida;
 				}else{
 					$sueldo_calculo_sis = $sueldo_imponible;
 				}
@@ -1737,6 +1798,7 @@ limit 1		*/
 					'montocargaretroactiva' => $trabajador->asigfamiliar,
 					'asigfamiliar' => $asig_familiar,
 					'totalhaberes' => $total_haberes,
+					'semana_corrida' => $monto_semana_corrida,
 					'sueldoimponible' => $sueldo_imponible,
 					'sueldonoimponible' => $sueldo_no_imponible,
 					'sueldoimponibleimposiciones' => $sueldo_imponible_imposiciones,
@@ -1832,7 +1894,7 @@ limit 1		*/
 
 	public function get_remuneraciones_by_periodo($idperiodo,$sinsueldo = null,$idcentrocosto = null){
 		
-		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.aportesegcesantia, r.sueldoimponibleimposiciones')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones')
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
@@ -1959,63 +2021,65 @@ limit 1		*/
 			 $sheet->getColumnDimension('M')->setWidth(15);			
 			 $sheet->setCellValue('M'.$i, 'Horas Extras 100%');	
 			 $sheet->getColumnDimension('N')->setWidth(15);			
-			 $sheet->setCellValue('N'.$i, 'Aguinaldo');	
+			 $sheet->setCellValue('N'.$i, 'Semana Corrida');				 
 			 $sheet->getColumnDimension('O')->setWidth(15);			
-			 $sheet->setCellValue('O'.$i, 'Asignación Familiar');		
+			 $sheet->setCellValue('O'.$i, 'Aguinaldo');	
 			 $sheet->getColumnDimension('P')->setWidth(15);			
-			 $sheet->setCellValue('P'.$i, 'Total Haberes');				 			 
+			 $sheet->setCellValue('P'.$i, 'Asignación Familiar');		
 			 $sheet->getColumnDimension('Q')->setWidth(15);			
-			 $sheet->setCellValue('Q'.$i, 'Cotización Obligatoria');				 			 
+			 $sheet->setCellValue('Q'.$i, 'Total Haberes');				 			 
 			 $sheet->getColumnDimension('R')->setWidth(15);			
-			 $sheet->setCellValue('R'.$i, 'Comisión AFP');				 			 
+			 $sheet->setCellValue('R'.$i, 'Cotización Obligatoria');				 			 
 			 $sheet->getColumnDimension('S')->setWidth(15);			
-			 $sheet->setCellValue('S'.$i, 'Adicional AFP');				 			 
+			 $sheet->setCellValue('S'.$i, 'Comisión AFP');				 			 
 			 $sheet->getColumnDimension('T')->setWidth(15);			
-			 $sheet->setCellValue('T'.$i, 'Ahorro Voluntario');	
+			 $sheet->setCellValue('T'.$i, 'Adicional AFP');				 			 
 			 $sheet->getColumnDimension('U')->setWidth(15);			
-			 $sheet->setCellValue('U'.$i, 'APV');	
+			 $sheet->setCellValue('U'.$i, 'Ahorro Voluntario');	
 			 $sheet->getColumnDimension('V')->setWidth(15);			
-			 $sheet->setCellValue('V'.$i, 'Cotización Salud Obligatoria');	
+			 $sheet->setCellValue('V'.$i, 'APV');	
 			 $sheet->getColumnDimension('W')->setWidth(15);			
-			 $sheet->setCellValue('W'.$i, 'Cotización Adicional Isapre');	
+			 $sheet->setCellValue('W'.$i, 'Cotización Salud Obligatoria');	
 			 $sheet->getColumnDimension('X')->setWidth(15);			
-			 $sheet->setCellValue('X'.$i, 'Adicional Salud');	
+			 $sheet->setCellValue('X'.$i, 'Cotización Adicional Isapre');	
 			 $sheet->getColumnDimension('Y')->setWidth(15);			
-			 $sheet->setCellValue('Y'.$i, 'Fonasa');	
+			 $sheet->setCellValue('Y'.$i, 'Adicional Salud');	
 			 $sheet->getColumnDimension('Z')->setWidth(15);			
-			 $sheet->setCellValue('Z'.$i, 'Seguro Cesantía');	
+			 $sheet->setCellValue('Z'.$i, 'Fonasa');	
 			 $sheet->getColumnDimension('AA')->setWidth(15);			
-			 $sheet->setCellValue('AA'.$i, 'Impuesto');	
+			 $sheet->setCellValue('AA'.$i, 'Seguro Cesantía');	
 			 $sheet->getColumnDimension('AB')->setWidth(15);			
-			 $sheet->setCellValue('AB'.$i, 'Total Leyes Sociales');	
+			 $sheet->setCellValue('AB'.$i, 'Impuesto');	
 			 $sheet->getColumnDimension('AC')->setWidth(15);			
-			 $sheet->setCellValue('AC'.$i, 'Anticipo');	
+			 $sheet->setCellValue('AC'.$i, 'Total Leyes Sociales');	
 			 $sheet->getColumnDimension('AD')->setWidth(15);			
-			 $sheet->setCellValue('AD'.$i, 'Descuento por Aguinaldo');	
+			 $sheet->setCellValue('AD'.$i, 'Anticipo');	
 			 $sheet->getColumnDimension('AE')->setWidth(15);			
-			 $sheet->setCellValue('AE'.$i, 'Horas Descuento');	
+			 $sheet->setCellValue('AE'.$i, 'Descuento por Aguinaldo');	
 			 $sheet->getColumnDimension('AF')->setWidth(15);			
-			 $sheet->setCellValue('AF'.$i, 'Otros Descuentos');	
+			 $sheet->setCellValue('AF'.$i, 'Horas Descuento');	
 			 $sheet->getColumnDimension('AG')->setWidth(15);			
-			 $sheet->setCellValue('AG'.$i, 'Préstamos');	
+			 $sheet->setCellValue('AG'.$i, 'Otros Descuentos');	
 			 $sheet->getColumnDimension('AH')->setWidth(15);			
-			 $sheet->setCellValue('AH'.$i, 'Total Otros Descuentos');				 			 			 			 		
+			 $sheet->setCellValue('AH'.$i, 'Préstamos');	
 			 $sheet->getColumnDimension('AI')->setWidth(15);			
-			 $sheet->setCellValue('AI'.$i, 'Líquido a Pagar');				 			 			 			 		
-			 $sheet->getColumnDimension('AJ')->setWidth(15);	
-			 $sheet->setCellValue('AJ'.$i, 'Aporte Seguro Cesantía');	 
-			 $sheet->getColumnDimension('AK')->setWidth(15);			
-			 $sheet->setCellValue('AK'.$i, 'Aporte SIS');	 
+			 $sheet->setCellValue('AI'.$i, 'Total Otros Descuentos');				 			 			 			 		
+			 $sheet->getColumnDimension('AJ')->setWidth(15);			
+			 $sheet->setCellValue('AJ'.$i, 'Líquido a Pagar');				 			 			 			 		
+			 $sheet->getColumnDimension('AK')->setWidth(15);	
+			 $sheet->setCellValue('AK'.$i, 'Aporte Seguro Cesantía');	 
 			 $sheet->getColumnDimension('AL')->setWidth(15);			
-			 $sheet->setCellValue('AL'.$i, 'Mutual de Seguridad');	 
+			 $sheet->setCellValue('AL'.$i, 'Aporte SIS');	 
 			 $sheet->getColumnDimension('AM')->setWidth(15);			
-			 $sheet->setCellValue('AM'.$i, 'Total Aportes Patronales');	 
+			 $sheet->setCellValue('AM'.$i, 'Mutual de Seguridad');	 
+			 $sheet->getColumnDimension('AN')->setWidth(15);			
+			 $sheet->setCellValue('AN'.$i, 'Total Aportes Patronales');	 
 
 
 
-			 $columnaFinal = 38;
-			 $mergeTotal = 39;
-			 $columnaTotales = 38;
+			 $columnaFinal = 39;
+			 $mergeTotal = 40;
+			 $columnaTotales = 39;
 			 $sheet->getStyle("B".$i.":".ordenLetrasExcel($columnaFinal).$i)->getFont()->setBold(true);
 			 $i++;
 			$filaInicio = $i-1; 
@@ -2024,15 +2088,15 @@ limit 1		*/
 			$linea = 1;
             foreach ($datos_remuneracion as $remuneracion) {
 
-            	//$datos_bonos_imponibles = $this->get_bonos_by_remuneracion($remuneracion->id,true);
-            	$datos_bonos_imponibles = array();
+            	$datos_bonos_imponibles = $this->get_bonos_by_remuneracion($remuneracion->id_remuneracion,true);
+            	//$datos_bonos_imponibles = array();
             	$bonos_imponibles = 0;
             	foreach ($datos_bonos_imponibles as $bono_imponible) {
             		$bonos_imponibles += $bono_imponible->monto;
             	}
 
 
-            	//$datos_bonos_no_imponibles = $this->get_bonos_by_remuneracion($remuneracion->id,false);
+            	$datos_bonos_no_imponibles = $this->get_bonos_by_remuneracion($remuneracion->id_remuneracion,false);
             	$datos_bonos_no_imponibles = array();
             	$bonos_no_imponibles = 0;
             	foreach ($datos_bonos_no_imponibles as $bono_no_imponible) {
@@ -2073,58 +2137,60 @@ limit 1		*/
             	$sheet->getStyle('L'.$i)->getNumberFormat()->setFormatCode('#,##0');
             	$sheet->setCellValue("M".$i,$remuneracion->montohorasextras100);
             	$sheet->getStyle('M'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("N".$i,$remuneracion->aguinaldobruto);
-            	$sheet->getStyle('N'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("O".$i,$remuneracion->asigfamiliar);
-            	$sheet->getStyle('O'.$i)->getNumberFormat()->setFormatCode('#,##0');      
-            	$sheet->setCellValue("P".$i,$remuneracion->totalhaberes);
-            	$sheet->getStyle('P'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("Q".$i,$remuneracion->cotizacionobligatoria);
-            	$sheet->getStyle('Q'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("R".$i,$remuneracion->comisionafp);
+            	$sheet->setCellValue("N".$i,$remuneracion->semana_corrida);
+            	$sheet->getStyle('N'.$i)->getNumberFormat()->setFormatCode('#,##0');            	
+            	$sheet->setCellValue("O".$i,$remuneracion->aguinaldobruto);
+            	$sheet->getStyle('O'.$i)->getNumberFormat()->setFormatCode('#,##0');
+            	$sheet->setCellValue("P".$i,$remuneracion->asigfamiliar);
+            	$sheet->getStyle('P'.$i)->getNumberFormat()->setFormatCode('#,##0');      
+            	$sheet->setCellValue("Q".$i,$remuneracion->totalhaberes);
+            	$sheet->getStyle('Q'.$i)->getNumberFormat()->setFormatCode('#,##0');
+            	$sheet->setCellValue("R".$i,$remuneracion->cotizacionobligatoria);
             	$sheet->getStyle('R'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("S".$i,$remuneracion->adicafp);
+            	$sheet->setCellValue("S".$i,$remuneracion->comisionafp);
             	$sheet->getStyle('S'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("T".$i,$remuneracion->montoahorrovol);
+            	$sheet->setCellValue("T".$i,$remuneracion->adicafp);
             	$sheet->getStyle('T'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("U".$i,$remuneracion->montocotapv);
+            	$sheet->setCellValue("U".$i,$remuneracion->montoahorrovol);
             	$sheet->getStyle('U'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("V".$i,$remuneracion->cotizacionsalud);
+            	$sheet->setCellValue("V".$i,$remuneracion->montocotapv);
             	$sheet->getStyle('V'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("W".$i,$remuneracion->cotadicisapre);
+            	$sheet->setCellValue("W".$i,$remuneracion->cotizacionsalud);
             	$sheet->getStyle('W'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("X".$i,$remuneracion->adicsalud);
+            	$sheet->setCellValue("X".$i,$remuneracion->cotadicisapre);
             	$sheet->getStyle('X'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("Y".$i,$remuneracion->fonasa + $remuneracion->inp);
+            	$sheet->setCellValue("Y".$i,$remuneracion->adicsalud);
             	$sheet->getStyle('Y'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("Z".$i,$remuneracion->segcesantia);
+            	$sheet->setCellValue("Z".$i,$remuneracion->fonasa + $remuneracion->inp);
             	$sheet->getStyle('Z'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AA".$i,$remuneracion->impuesto);
+            	$sheet->setCellValue("AA".$i,$remuneracion->segcesantia);
             	$sheet->getStyle('AA'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AB".$i,$remuneracion->totalleyessociales);
+            	$sheet->setCellValue("AB".$i,$remuneracion->impuesto);
             	$sheet->getStyle('AB'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AC".$i,$remuneracion->anticipo);
+            	$sheet->setCellValue("AC".$i,$remuneracion->totalleyessociales);
             	$sheet->getStyle('AC'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AD".$i,$remuneracion->aguinaldo);
+            	$sheet->setCellValue("AD".$i,$remuneracion->anticipo);
             	$sheet->getStyle('AD'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AE".$i,$remuneracion->montodescuento);
+            	$sheet->setCellValue("AE".$i,$remuneracion->aguinaldo);
             	$sheet->getStyle('AE'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AF".$i,$monto_descuento);
+            	$sheet->setCellValue("AF".$i,$remuneracion->montodescuento);
             	$sheet->getStyle('AF'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AG".$i,$monto_prestamo);
+            	$sheet->setCellValue("AG".$i,$monto_descuento);
             	$sheet->getStyle('AG'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AH".$i,$remuneracion->otrosdescuentos);
-            	$sheet->getStyle('AH'.$i)->getNumberFormat()->setFormatCode('#,##0');             	            	            	
-            	$sheet->setCellValue("AI".$i,$remuneracion->sueldoliquido);
-            	$sheet->getStyle('AI'.$i)->getNumberFormat()->setFormatCode('#,##0');              	
-            	$sheet->setCellValue("AJ".$i,$remuneracion->aportesegcesantia);
-            	$sheet->getStyle('AJ'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AK".$i,$remuneracion->seginvalidez);
+            	$sheet->setCellValue("AH".$i,$monto_prestamo);
+            	$sheet->getStyle('AH'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
+            	$sheet->setCellValue("AI".$i,$remuneracion->otrosdescuentos);
+            	$sheet->getStyle('AI'.$i)->getNumberFormat()->setFormatCode('#,##0');             	            	            	
+            	$sheet->setCellValue("AJ".$i,$remuneracion->sueldoliquido);
+            	$sheet->getStyle('AJ'.$i)->getNumberFormat()->setFormatCode('#,##0');              	
+            	$sheet->setCellValue("AK".$i,$remuneracion->aportesegcesantia);
             	$sheet->getStyle('AK'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AL".$i,$remuneracion->aportepatronal);
+            	$sheet->setCellValue("AL".$i,$remuneracion->seginvalidez);
             	$sheet->getStyle('AL'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AM".$i,$remuneracion->aportesegcesantia + $remuneracion->seginvalidez + $remuneracion->aportepatronal);
-            	$sheet->getStyle('AM'.$i)->getNumberFormat()->setFormatCode('#,##0');              	            	            	
+            	$sheet->setCellValue("AM".$i,$remuneracion->aportepatronal);
+            	$sheet->getStyle('AM'.$i)->getNumberFormat()->setFormatCode('#,##0');  
+            	$sheet->setCellValue("AN".$i,$remuneracion->aportesegcesantia + $remuneracion->seginvalidez + $remuneracion->aportepatronal);
+            	$sheet->getStyle('AN'.$i)->getNumberFormat()->setFormatCode('#,##0');              	            	            	
 
 	 			if($i % 2 != 0){
 	 				//echo "consulta 4: -- i : ".$i. "  -- mod : ". ($i % 2)."<br>";
@@ -2211,20 +2277,20 @@ limit 1		*/
 
 		/***************************** Color montos ********************************************************/
 
-						$sheet->getStyle("P".$filaInicio.":P".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle("P".$filaInicio.":P".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
+						$sheet->getStyle("Q".$filaInicio.":Q".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+						$sheet->getStyle("Q".$filaInicio.":Q".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
 	
-						$sheet->getStyle("AB".$filaInicio.":AB".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle("AB".$filaInicio.":AB".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
+						$sheet->getStyle("AC".$filaInicio.":AC".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+						$sheet->getStyle("AC".$filaInicio.":AC".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
 
-						$sheet->getStyle("AH".$filaInicio.":AH".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle("AH".$filaInicio.":AH".$i)->getFill()->getStartColor()->setRGB('E8EDFF');									
 						$sheet->getStyle("AI".$filaInicio.":AI".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle("AI".$filaInicio.":AI".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
+						$sheet->getStyle("AI".$filaInicio.":AI".$i)->getFill()->getStartColor()->setRGB('E8EDFF');									
+						$sheet->getStyle("AJ".$filaInicio.":AJ".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+						$sheet->getStyle("AJ".$filaInicio.":AJ".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
 
 
-						$sheet->getStyle("AM".$filaInicio.":AM".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle("AM".$filaInicio.":AM".$i)->getFill()->getStartColor()->setRGB('E8EDFF');											
+						$sheet->getStyle("AN".$filaInicio.":AN".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+						$sheet->getStyle("AN".$filaInicio.":AN".$i)->getFill()->getStartColor()->setRGB('E8EDFF');											
 			/******************************************************************************************************/
 
 
@@ -2248,7 +2314,7 @@ limit 1		*/
 
 
 public function get_remuneraciones_by_id($idremuneracion){
-		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentos, r.prestamos, pr.id_periodo, pr.cierre, pr.aprueba')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.semana_corrida,  r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentos, r.prestamos, pr.id_periodo, pr.cierre, pr.aprueba')
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
@@ -2518,6 +2584,15 @@ public function generar_contenido_comprobante($datos_remuneracion){
 									</tr>';
 
 						}
+
+
+						if($datos_remuneracion->semana_corrida > 0){
+							$html .= '<tr>
+									<td class="tdClass" >Semana Corrida</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->semana_corrida,0,".",".") . '</td>
+									</tr>';
+						}						
+
 
 						//$datos_bonos_imponibles = array();
 
@@ -3080,6 +3155,22 @@ public function delete_movimiento_personal($idpersonal,$idmovimiento){
 		return 1;
 
 	}	
+
+
+public function delete_haber_descto_variable($id_hab_descto){
+		$this->db->trans_start();
+
+		$this->db->query("update b
+						  set b.valido = 0
+						  from rem_bonos_personal b 
+						  inner join rem_personal p on b.idpersonal = p.id_personal
+						  where p.id_empresa = '" . $this->session->userdata('empresaid') . "' and b.id = " . $id_hab_descto);
+
+		$this->db->trans_complete();
+
+		return 1;
+
+	}		
 
 
 

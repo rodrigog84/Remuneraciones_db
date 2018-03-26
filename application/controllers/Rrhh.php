@@ -1956,7 +1956,103 @@ public function editar_trabajador(){
 
 	}	
 
+	public function listado_hab_descto_variable(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
+			$resultid = $this->session->flashdata('hab_descto_variable_result');
+			if($resultid == 1){
+				$vars['message'] = "Haber/Descuento Agregado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al agregar Haber y/o Descuentos Variables";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 3){
+				$vars['message'] = "Error al eliminar Haber y/o Descuentos Variable";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 4){
+				$vars['message'] = "Haber/Descuento Eliminado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}
+
+
+
+
+			$haberes_descuentos = $this->rrhh_model->get_haberes_descuentos_totales_validos(); 
+
+
+			$content = array(
+						'menu' => 'Configuraciones',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Haberes / Descuentos');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'rrhh/listado_hab_descto_variable';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+
+			$vars['haberes_descuentos'] = $haberes_descuentos;
+			
+			$template = "template";
+			
+
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}	
+
+
+	}	
+
+
+	public function delete_haber_descto($id_hab_descto = '')
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+
+			if($id_hab_descto == ''){
+				$this->session->set_flashdata('hab_descto_variable_result',3);
+				redirect('rrhh/listado_hab_descto_variable');	
+			}
+
+
+			$result = $this->rrhh_model->delete_haber_descto_variable($id_hab_descto);
+
+
+			$this->session->set_flashdata('hab_descto_variable_result',4);
+			redirect('rrhh/listado_hab_descto_variable');	
+			
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
 
 	public function libro($idperiodo = null,$idcentrocosto = null)
 	{
@@ -2699,18 +2795,6 @@ public function submit_anticipos(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 			
-			$resultid = $this->session->flashdata('hab_descto_variable_result');
-			if($resultid == 1){
-				$vars['message'] = "Haber/Descuento Agregado correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';		
-			}elseif($resultid == 2){
-				$vars['message'] = "Error al agregar Haber y/o Descuentos Variables";
-				$vars['classmessage'] = 'danger';
-				$vars['icon'] = 'fa-ban';
-			}
-
-
 			$mes = $this->session->flashdata('hab_descto_mes') == '' ? date('m') : $this->session->flashdata('hab_descto_mes');
 			$anno = $this->session->flashdata('hab_descto_anno') == '' ? date('Y') : $this->session->flashdata('hab_descto_anno');
 
@@ -2819,7 +2903,7 @@ public function submit_anticipos(){
 			$this->session->set_flashdata('hab_descto_variable_result', 1);
 			$this->session->set_flashdata('hab_descto_mes', $mes);
 			$this->session->set_flashdata('hab_descto_anno', $anno);
-			redirect('rrhh/hab_descto_variable');	
+			redirect('rrhh/listado_hab_descto_variable');	
 
 
 		}else{
