@@ -2417,15 +2417,25 @@ public function get_remuneraciones_by_id($idremuneracion){
 			$query = $this->db->get();
 			$result = $query->row();	
 
+			$direccionsucursal="Américo Vespucio N º 727";
+			$nombrereemplazado="POR DEFINIR";
+			$nombrecolaborador=$personal->nombre." ".$personal->apaterno." ".$personal->amaterno;
 
 			$html_pdf = $result->formato_pdf;
 
-			$nombre_trabajador = $personal->nombre;
+			$html_pdf = str_replace("@nombrecolaborador",$nombrecolaborador,$html_pdf);
+			$html_pdf = str_replace("@fechacontrato",$fecha,$html_pdf);
+			$html_pdf = str_replace("@nacionalidad",$personal->nacionalidad,$html_pdf);	
+			$html_pdf = str_replace("@rut",$personal->rut,$html_pdf);
+			$html_pdf = str_replace("@estadocivil",$personal->idecivil,$html_pdf);
+			$html_pdf = str_replace("@fechanacimiento",$personal->fecnacimiento,$html_pdf);
+			$html_pdf = str_replace("@direccion",$personal->direccion,$html_pdf);
+			$html_pdf = str_replace("@direccionsucursal",$direccionsucursal,$html_pdf);
 
-			$html_pdf = str_replace("@nombrecolaborador",$nombre_trabajador,$html_pdf);
+			$html_pdf = str_replace("@nombreremplazado",$nombreremplazado,$html_pdf);
 
-			
-
+			$html_pdf = str_replace("@sueldobase",$personal->sueldobase,$html_pdf);
+			$html_pdf = str_replace("@fechaingreso",$personal->fecingreso,$html_pdf);
 		
 			$this->load->library("mpdf");
 			$this->mpdf->mPDF(

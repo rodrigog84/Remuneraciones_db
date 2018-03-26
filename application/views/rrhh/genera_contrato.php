@@ -1,9 +1,9 @@
 <form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_genera_contrato" method="post" role="form" enctype="multipart/form-data">
 
-                            <div class="panel panel-inverse">                       
-                                <div class="panel-heading">
-                                      <h4 class="panel-title">Colaborador</h4>
-                                  </div>
+                      <div class="panel panel-inverse">                       
+                          <div class="panel-heading">
+                             <h4 class="panel-title">Colaborador</h4>
+                          </div>
                       <div class="panel-body">
                        <div class="graph-visual tables-main">
                     <div class="graph">
@@ -124,9 +124,10 @@
                           
                           </div>  
 
-                        <div class="panel-body">
+                         <div class="panel-body">
+                        <div class="row" id=""></div>    
                         <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Generar</button>
+                        <button type="submit" class="btn btn-primary">Generar</button>&nbsp;&nbsp;&nbsp;&nbsp;
                        </div>
                       </div><!-- /.box-body -->
 

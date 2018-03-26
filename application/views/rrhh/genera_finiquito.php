@@ -110,14 +110,9 @@
                           </div>  
 
                            <div class='col-md-4'>
-                             <thead> 
-                              <tr> 
-                                <th>id Trabajador:</th> 
-                              </tr> 
-                            </thead>
-                            <tbody>
+                             <tbody>
                               <td>
-                                <input type="text" name="idtrabajador" id="idtrabajador" class="form-control1" required id="" placeholder="<?php echo $personal->id_personal;?>" >
+                                <input type="hidden" name="idtrabajador" id="idtrabajador" class="form-control1" required id="" value="<?php echo $personal->id_personal;?>">
                               </td>                           
                             </tbody>
                           
@@ -142,11 +137,11 @@
                         </tr> 
                         <tr>
                           <td>Indemnizacion Voluntaria </td>
-                          <td><input type="text" name="indem_vol" id="indem_vol" class="form-control1 required" placeholder="Ingrese Monto" size="20" disabled></td>  
+                          <td><input type="number" name="indem_vol" id="indem_vol" class="form-control1 required" placeholder="Ingrese Monto" size="20"></td>  
                         </tr> 
                         <tr>
                           <td>Desahucio </td>
-                          <td> <input type="text" name="desaucio" id="desaucio" class="form-control1 required" placeholder="Ingrese Monto" size="20" disabled></td>  
+                          <td> <input type="number" name="desaucio" id="desaucio" class="form-control1 required" placeholder="Ingrese Monto" size="20" ></td>  
                         </tr> 
                         <tr class="active" class="info">
                           <th>TOTAL HABERES</th>
@@ -157,14 +152,14 @@
                           <th>CALCULO</th>
                         </tr>
                           <td>Prestamo Empresa </td>
-                          <td> $ 228.388 </td>
+                          <td><input type="number" name="prestamo" id="prestamo" class="form-control1 required" placeholder="Ingrese Monto" size="20" ></td>
                         <tr>
                           <td>Prestamo C.C.A.F </td>
-                          <td> $ 228.388 </td>  
+                          <td><input type="number" name="cajacompensacion" id="cajacompensacion" class="form-control1 required" placeholder="Ingrese Monto" size="20" ></td>  
                         </tr> 
                         <tr>
                           <td>Otros </td>
-                          <td> $ 228.388 </td>  
+                          <td><input type="number" name="otros" id="otros" class="form-control1 required" placeholder="Ingrese Monto" size="20" ></td>  
                         </tr> 
                         <tr class="active" class="info">
                           <th>TOTAL DESCUENTOS</th>
