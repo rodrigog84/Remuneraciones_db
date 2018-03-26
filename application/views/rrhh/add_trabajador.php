@@ -98,7 +98,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" required id="datepicker" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" required id="datepicker" type="text" value="" >
 															</td>
 															<td>
 																<select name="nacionalidad" id="nacionalidad" class="form-control1" required>
@@ -214,7 +214,7 @@
 														<tbody>
 															<td>
 																<select name="estudios" id="estudios" class="form-control1">
-																	<option>Seleccione Nivel Educacional</option>
+																	<option value="">Seleccione Nivel Educacional</option>
 						                                    		<?php foreach ($estudios as $estudio) { ?>
 								                                      <?php $estudioselected = $estudio->id == $datos_form['idestudio'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $estudio->id_estudios;?>" <?php echo $estudioselected;?> ><?php echo $estudio->nombre;?></option>
@@ -226,7 +226,7 @@
 															</td>
 															<td>
 																<select name="idioma" id="idioma" class="form-control1">
-																	<option>Seleccione Idioma</option>
+																	<option value="">Seleccione Idioma</option>
 						                                    		<?php foreach ($idiomas as $idioma) { ?>
 								                                      <?php $idiomaselected = $idioma->id == $datos_form['ididioma'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $idioma->id_idioma;?>" <?php echo $idiomaselected;?> ><?php echo $idioma->nombre;?></option>
@@ -419,13 +419,13 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" name="datepicker2"type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" name="datepicker2" type="text" required value="">
 															</td>
 															<td>
-																<input placeholder="Fecha Retiro" class="form-control1" id="datepicker3" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Retiro" class="form-control1" id="datepicker3" type="text" value="" >
 															</td>
 															<td>
-																<input placeholder="Fecha de Finiquito" class="form-control1" id="datepicker4" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha de Finiquito" class="form-control1" id="datepicker4" type="text" value="" >
 															</td>
 		
 														</tbody>
@@ -442,7 +442,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Inicio Vacaciones" class="form-control1" id="fecha_inicio_vacaciones"  size="30" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Inicio Vacaciones" class="form-control1" id="fecha_inicio_vacaciones"  size="30" type="text" value="">
 															</td>
 															<td>
 																<input type="text" name="seccion" class="form-control1" id="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30" value="0">
@@ -560,10 +560,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Real" class="form-control1" id="fecha_real" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Real" class="form-control1" id="fecha_real" type="text" value="">
 															</td>
 															<td>
-																<input placeholder="1er Vencimiento" class="form-control1" id="vencimiento_1" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="1er Vencimiento" class="form-control1" id="vencimiento_1" type="text" value="" >
 															</td>
 														</tbody>
 													</table>
@@ -612,7 +612,7 @@
 															</td>
 															<td>
 																<select name="afp" id="afp" class="form-control1">
-																	<option>Seleccione AFP</option>
+																	<option value="">Seleccione AFP</option>
 						                                    		<?php foreach ($afps as $afp) { ?>
 								                                      <?php $afpselected = $afp->id == $datos_form['idafp'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $afp->id_afp;?>" <?php echo $afpselected;?> ><?php echo $afp->nombre;?></option>
@@ -655,7 +655,7 @@
 															</td>
 															<td>
 																<select name="isapre" id="isapre" class="form-control1">
-																	<option>Seleccione Isapre</option>
+																	<option value="">Seleccione Isapre</option>
 						                                    		<?php foreach ($isapres as $isapre) { ?>
 								                                      <?php $isapreselected = $isapre->id == $datos_form['idisapre'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $isapre->id_isapre;?>" <?php echo $isapreselected;?> ><?php echo $isapre->nombre;?></option>
@@ -681,7 +681,7 @@
 															</td>
 
 															<td>
-																<input placeholder="Vencimiento Plan" class="form-control1" id="datepicker9" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Vencimiento Plan" class="form-control1" id="datepicker9" type="text" value="" >
 															</td>
 														</tbody>
 													</table>
@@ -697,7 +697,7 @@
 														<tbody>
 															<td>
 																<select name="apv" id="apv" class="form-control1" >
-																	<option>Seleccione APV</option>
+																	<option value="">Seleccione APV</option>
 						                                    		<?php foreach ($apv as $apvs) { ?>
 								                                      <?php $apvselected = $apvs->id_apv == $datos_form['idapv'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $apvs->id_apv;?>" <?php echo $apvselected;?> ><?php echo $apvs->nombre;?></option>
@@ -760,10 +760,10 @@
 																<input type="text" name="estado_apvc" class="form-control1" id="estado_apvc" placeholder="Estado APVC">
 															</td>
 															<td>
-																<input placeholder="Fecha APVC" class="form-control1" id="datepicker10" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha APVC" class="form-control1" id="datepicker10" type="text" value="" >
 															</td>
 															<td>
-																<input placeholder="Término de Subsidio" class="form-control1" id="datepicker11" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Término de Subsidio" class="form-control1" id="datepicker11" type="text" value="" >
 															</td>
 														</tbody>
 													</table>
@@ -781,7 +781,7 @@
 															</td>
 															<td>
 																<select name="jornada_trabajo" id="jornada_trabajo" class="form-control1">
-																	<option>Seleccione Forma de Pago</option>
+																	<option value="">Seleccione Forma de Pago</option>
 						                                    		<?php foreach ($jornada_trabajo as $jornada) { ?>
 								                                      <?php $jornadaselected = $jornada->id_jornada == $datos_form['id_jornada'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $jornada->id_jornada;?>" <?php echo $jornadaselected;?> ><?php echo $jornada->nombre;?></option>
@@ -806,7 +806,7 @@
 														<tbody>
 															<td>
 																<select name="forma_pago" id="forma_pago" class="form-control1">
-																	<option>Seleccione Forma de Pago</option>
+																	<option value="">Seleccione Forma de Pago</option>
 						                                    		<?php foreach ($forma_pago as $pago) { ?>
 								                                      <?php $pagoselected = $pago->id_forma_pago == $datos_form['id_forma_pago'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $pago->id_forma_pago;?>" <?php echo $pagoselected;?> ><?php echo $pago->descripcion;?></option>
@@ -815,7 +815,7 @@
 															</td>
 															<td>
 																<select name="banco" id="banco" class="form-control1">
-																	<option>Seleccione Banco</option>
+																	<option value="">Seleccione Banco</option>
 						                                    		<?php foreach ($bancos as $banco) { ?>
 								                                      <?php $bancoselected = $banco->id_banco == $datos_form['id_banco'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $banco->id_banco;?>" <?php echo $bancoselected;?> ><?php echo $banco->cod_sbif.' - '.$banco->nombre;?></option>
@@ -914,7 +914,7 @@
 																<input type="text" name="codigo_anexo" class="form-control1" id="codigo_anexo" placeholder="Código de Anexo">
 															</td>
 															<td>
-																<input placeholder="2do Vencimiento" class="form-control1" id="datepicker12" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="2do Vencimiento" class="form-control1" id="datepicker12" type="text" value="" >
 															</td>
 														</tbody>
 													</table>
