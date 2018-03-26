@@ -850,6 +850,16 @@ public function get_bonos($idtrabajador = null){
 		return $query->result();
 	}
 
+	public function get_contratos($idcontrato = null){
+
+		$contratos_data = $this->db->select('id_tipo_doc_colaborador, tipo')	
+						  ->from('rem_tipo_doc_colaborador')
+		                  ->order_by('tipo');
+		$contratos_data = is_null($idcontrato ) ? $contratos_data : $contratos_data->where('id_tipo_doc_colaborador',$ididioma);  		                  
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 
 
 	public function get_idiomas($ididioma = null){

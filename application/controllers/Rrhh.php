@@ -3621,4 +3621,6 @@ public function genera_finiquito($idpersonal){
 
 }
 
+
+
 }

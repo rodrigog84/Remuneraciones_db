@@ -17,6 +17,41 @@ class Carga_masiva extends CI_Controller {
 			$this->load->model('rrhh_model');
 		}
 
+		
+
+
+	  public function contratos_archivos(){
+
+	  	$config['upload_path'] = "./uploads/cargas/";
+
+		//VALIDA QUE CARPETA EXISTA
+		if(!file_exists($config['upload_path'])){
+			mkdir($config['upload_path'],0777,true);
+		}
+
+        $config['file_name'] = date("Ymd")."_".date("His")."_";
+        $config['allowed_types'] = "*";
+        $config['max_size'] = "10240";
+
+        //carga libreria para cargar archivos
+        $this->load->library('upload', $config);
+
+        //Campo a leer
+        $this->upload->do_upload("userfile");
+   		$dataupload = $this->upload->data();
+
+   		
+		//cargamos el archivo
+   		$archivotmp = $dataupload['file_ext'];	  	
+		//obtenemos el archivo .csv
+
+		$this->session->set_flashdata('personal_result',8);
+		redirect('rrhh/carga_masiva_paso');
+
+ 	
+
+	  }
+
 	  
 
 	  public function insertar(){
