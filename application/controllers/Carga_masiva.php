@@ -45,8 +45,10 @@ class Carga_masiva extends CI_Controller {
    		$archivotmp = $dataupload['file_ext'];	  	
 		//obtenemos el archivo .csv
 
+		exit;
+
 		$this->session->set_flashdata('personal_result',8);
-		redirect('rrhh/carga_masiva_paso');
+		redirect('configuraciones/tipos_contrato');
 
  	
 
