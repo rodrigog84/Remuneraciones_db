@@ -1469,7 +1469,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 								'idremuneracion' => $datos_remuneracion->id_remuneracion,
 								'descripcion' => $bono->nombre,
 								'imponible' => $bono->imponible,
-								'monto' => $valor_bono
+								'monto' => $valor_bono,
+								'tipo' => 'HABER'
 								);
 					$this->db->insert('rem_haber_descuento_remuneracion', $data_bono);
 				}
@@ -1682,7 +1683,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 								'idremuneracion' => $datos_remuneracion->id_remuneracion,
 								'descripcion' => $info_descuento->nombre,
 								'imponible' => $info_descuento->imponible,
-								'monto' => $info_descuento->monto
+								'monto' => $info_descuento->monto,
+								'tipo' => 'DESCUENTO'
 								);
 					$this->db->insert('rem_haber_descuento_remuneracion', $data_bono);
 			}
@@ -2104,7 +2106,8 @@ limit 1		*/
             	}
 
 				//$datos_descuentos = $this->get_descuento($remuneracion->idperiodo,'D',$remuneracion->idtrabajador);
-				$datos_descuentos = array();
+				$datos_descuentos = $this->get_haberes_descuentos($remuneracion->idtrabajador,null,'DESCUENTO');	
+				//$datos_descuentos = array();
 				$monto_descuento = 0;
             	foreach ($datos_descuentos as $dato_descuento) {
             		$monto_descuento += $dato_descuento->monto;
