@@ -2304,6 +2304,49 @@ public function previred($idperiodo = null)
 	}	
 
 
+
+public function ver_remuneraciones_colaborador($idperiodo = '',$idcentrocosto = null)
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$remuneraciones = $this->rrhh_model->get_remuneracion_colaborador();
+			//$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+
+			$content = array(
+						'menu' => 'Ver',
+						'title' => 'Ver',
+						'subtitle' => 'Propiedades');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'remuneraciones/ver_remuneraciones_colaborador';
+			$vars['remuneraciones'] = $remuneraciones;
+			//$vars['datosperiodo'] = $datosperiodo;
+
+			$vars['datatable'] = true;
+			
+			
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
+
+
 	public function liquidacion($idremuneracion = null)
 	{
 
@@ -2338,6 +2381,29 @@ public function previred($idperiodo = null)
 
 	}	
 
+public function liquidacion_colaborador($idremuneracion = null)
+	{
+
+		
+			// se reemplaza provisoriamente mientras se validan las variables de session
+			//$remuneracion = $this->rrhh_model->get_remuneraciones_by_id($idremuneracion);
+			$remuneracion = $this->rrhh_model->get_remuneraciones_by_colaborador($idremuneracion);
+
+			if(count($remuneracion) == 0){ // SI NO ENCUENTRO NINGUNA REMUNERACION (CORRESPONDE A OTRA COMUNIDAD POR EJEMPLO)
+				redirect('main/dashboard/');
+			}else if(is_null($remuneracion->cierre)){
+				redirect('main/dashboard/'); // SI NO ES UN PERIODO CERRADO, SE ENVÍA AL DASHBOARD
+			}else{
+				//$datamensaje['mensaje'] = "BORRADOR";
+				$datosdetalle = $this->rrhh_model->liquidacion($remuneracion);
+			}
+
+			exit;
+
+
+		
+
+	}	
 
 
 
