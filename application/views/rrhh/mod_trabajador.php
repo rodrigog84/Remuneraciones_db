@@ -423,7 +423,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" name="datepicker2"type="text" value="">
+																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" name="datepicker2" type="text" value="" required>
 															</td>
 															<td>
 																<input placeholder="Fecha Retiro" class="form-control1" id="datepicker3" type="text" value="">
@@ -631,16 +631,16 @@
 															<tr> 
 																<th>Fecha Incorporación AFP:</th> 																	
 
-																<th><input class="form-control1" id="seguro_cesantia" type="checkbox" onchange="habilitar(this.checked);" > Seguro Cesantia:</th>
+																<th><input class="form-control1" id="seguro_cesantia" name="seguro_cesantia" type="checkbox" onchange="habilitar(this.checked);" > Seguro Cesantia:</th>
 																<!--<th>Fecha Seguro Cesantia:</th>-->
 															</tr> 
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Incorp.AFP" class="form-control1" id="datepicker5" type="text" value="" >
+																<input placeholder="Fecha Incorp.AFP" class="form-control1" id="datepicker5" name="datepicker5" type="text" value="" >
 															</td>
 															<td>
-																<input placeholder="Fecha Ingreso AFC" class="form-control1" id="datepicker6" type="text" value="" disabled >
+																<input placeholder="Fecha Ingreso AFC" class="form-control1" id="datepicker6" name="datepicker6" type="text" value="" disabled >
 															</td>
 														</tbody>
 													</table>
@@ -1156,7 +1156,21 @@ $(document).ready(function(){
         				$("#regimen_pago").val(this.rol_privado);
         				$("#tramo").val(this.idasigfamiliar);
         				$("#semana_corrida").val(this.semana_corrida);
+        				$("#tiporenta").val(this.tiporenta);
+        				$("#idioma").val(this.ididioma);
+        				$("#numficha").val(this.numficha);
+        				$("#datepicker5").val(this.fecafp);
+        				$("#datepicker6").val(this.fecafc);
+        				if (this.segcesantia ==1){
+        					$("#seguro_cesantia").val(this.segcesantia)
+        					document.getElementById("seguro_cesantia").checked = true;
+        					document.getElementById("datepicker6").disabled=false;
 
+        				}else{
+        					document.getElementById("seguro_cesantia").checked = false;
+        					document.getElementById("datepicker6").disabled=true;
+        				}
+        				
         				}
         				)}
         				});
@@ -1181,10 +1195,13 @@ $(document).ready(function(){
 			if(value==true)
 			{
 				// habilitamos
+				document.getElementById("seguro_cesantia").value = 1;
 				document.getElementById("datepicker6").disabled=false;
 			}else if(value==false){
 				// deshabilitamos
+				document.getElementById("seguro_cesantia").value = 0;
 				document.getElementById("datepicker6").disabled=true;
+				
 			}
 		}
 	</script>

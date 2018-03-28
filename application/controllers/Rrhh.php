@@ -1192,6 +1192,12 @@ public function editar_trabajador(){
 			$regimen_pago = $this->input->post('regimen_pago');
 			$sindicato = $this->input->post('sindicato');
 			$semana_corrida = $this->input->post('semana_corrida');
+			$fecafp = $this->input->post('datepicker5');
+			$fecafc = $this->input->post('datepicker6');
+			$seguro_cesantia = $this->input->post('seguro_cesantia');
+			
+
+			
 
 			
 
@@ -1199,15 +1205,34 @@ public function editar_trabajador(){
 			$fecingreso = $date->format('Ymd');
 			$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
 			$fecnacimiento = $date->format('Ymd');
+			
+			
 
+			if($fecafp !=null){
 
+				$date = DateTime::createFromFormat('d/m/Y', $fecafp);
+				$fecafp = $date->format('Ymd');
+			}else{
+				$fecafp = null;
+				
+			}
+
+			if($fecafc !=null){
+
+				$date = DateTime::createFromFormat('d/m/Y', $fecafc);
+				$fecafc = $date->format('Ymd');
+			}else{
+				$fecafc = null;
+				$seguro_cesantia =0;
+			}
+			
 					
 
 			$array_datos = array(
 								'id_empresa' => $this->session->userdata('empresaid'),
 	       						'rut' => $idtrabajador == 0 ? $arrayRut[0] : "",
 	       						'dv' => $idtrabajador == 0 ? $arrayRut[1] : "",
-	       						'nombre' => $numficha,
+	       						'numficha' => $numficha,
 								'nombre' => $nombre,
 								'apaterno' => $apaterno,
 								'amaterno' => $amaterno,
@@ -1252,6 +1277,8 @@ public function editar_trabajador(){
 								'rol_privado' => $regimen_pago,
 								'sindicato' => $sindicato,
 								'semana_corrida' => $semana_corrida,
+								'fecafp' => $fecafp,
+								'fecafc' => $fecafc,
 								'saldoinicvacaciones' => 0,
 								'saldoinicvacprog' => 0,	
 
@@ -1265,7 +1292,7 @@ public function editar_trabajador(){
 								'diasprogtomados' => 0,
 								'tipocontrato' => 'I',
 								'parttime' => 0,
-								'segcesantia' => 0,
+								'segcesantia' => $seguro_cesantia,
 								'pensionado' => 0,
 								'diastrabajo' => 30,
 								'horasdiarias' => 8,
@@ -1366,7 +1393,9 @@ public function editar_trabajador(){
 			$regimen_pago = $this->input->post('regimen_pago');
 			$sindicato = $this->input->post('sindicato');
 			$semana_corrida = $this->input->post('semana_corrida');
-
+			$fecafp = $this->input->post('datepicker5');
+			$seguro_cesantia = $this->input->post('seguro_cesantia');
+			
 
 			// SE REGULARIZA LOS CAMPOS FECHA DEL FORMATO dd/mm/yyyy A yyyy/mm/dd DE LA BD	
 
@@ -1374,6 +1403,25 @@ public function editar_trabajador(){
 			$fecingreso = $date->format('Ymd');
 			$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
 			$fecnacimiento = $date->format('Ymd');
+			
+			if($fecafp !=null){
+
+				$date = DateTime::createFromFormat('d/m/Y', $fecafp);
+				$fecafp = $date->format('Ymd');
+			}else{
+				$fecafp = null;
+				
+			}
+			
+			if($fecafc !=null){
+
+				$date = DateTime::createFromFormat('d/m/Y', $fecafc);
+				$fecafc = $date->format('Ymd');
+			}else{
+				$fecafc = null;
+				$seguro_cesantia =0;
+			}
+			
 
 			//$fecingreso = '20180301';
 			/*$idregion = $this->input->post('region');
@@ -1407,7 +1455,7 @@ public function editar_trabajador(){
 								'id_empresa' => $this->session->userdata('empresaid'),
 	       						'rut' => $idtrabajador == 0 ? $arrayRut[0] : "",
 	       						'dv' => $idtrabajador == 0 ? $arrayRut[1] : "",
-	       						'nombre' => $numficha,
+	       						'numficha' => $numficha,
 								'nombre' => $nombre,
 								'apaterno' => $apaterno,
 								'amaterno' => $amaterno,
@@ -1456,6 +1504,7 @@ public function editar_trabajador(){
 								'rol_privado' => $regimen_pago,
 								'sindicato' => $sindicato,
 								'semana_corrida' => $semana_corrida,
+								'fecafp' => $fecafp,
 								'saldoinicvacaciones' => 0,
 								'saldoinicvacprog' => 0,								
 								
@@ -1467,7 +1516,7 @@ public function editar_trabajador(){
 								'diasprogtomados' => 0,
 								'tipocontrato' => 'I',
 								'parttime' => 0,
-								'segcesantia' => 0,
+								'segcesantia' => $seguro_cesantia,
 								'pensionado' => 0,
 								'diastrabajo' => 30,
 								'horasdiarias' => 8,
