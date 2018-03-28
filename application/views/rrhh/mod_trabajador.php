@@ -423,7 +423,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" name="datepicker2"type="text" value="">
+																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" name="datepicker2" type="text" value="" required>
 															</td>
 															<td>
 																<input placeholder="Fecha Retiro" class="form-control1" id="datepicker3" type="text" value="">

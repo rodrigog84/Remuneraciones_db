@@ -633,7 +633,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Incorp.AFP" class="form-control1" id="datepicker5"  name="datepicker5" type="text" value="" required>
+																<input placeholder="Fecha Incorp.AFP" class="form-control1" id="datepicker5"  name="datepicker5" type="text" value="" >
 															</td>
 															<td>
 																<input placeholder="Fecha Ingreso AFC" class="form-control1" id="datepicker6" name="datepicker6" type="text" value="" disabled >
@@ -1157,6 +1157,7 @@ $(document).ready(function() {
 				// habilitamos
 				document.getElementById("seguro_cesantia").value = 1;
 				document.getElementById("datepicker6").disabled=false;
+				
 			}else if(value==false){
 				// deshabilitamos
 				document.getElementById("seguro_cesantia").value = 0;

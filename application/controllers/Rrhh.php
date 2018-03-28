@@ -1197,13 +1197,26 @@ public function editar_trabajador(){
 			$seguro_cesantia = $this->input->post('seguro_cesantia');
 			
 
+			
+
+			
+
 			$date = DateTime::createFromFormat('d/m/Y', $fecingreso);
 			$fecingreso = $date->format('Ymd');
 			$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
 			$fecnacimiento = $date->format('Ymd');
-			$date = DateTime::createFromFormat('d/m/Y', $fecafp);
-			$fecafp = $date->format('Ymd');
 			
+			
+
+			if($fecafp !=null){
+
+				$date = DateTime::createFromFormat('d/m/Y', $fecafp);
+				$fecafp = $date->format('Ymd');
+			}else{
+				$fecafp = null;
+				
+			}
+
 			if($fecafc !=null){
 
 				$date = DateTime::createFromFormat('d/m/Y', $fecafc);
@@ -1390,8 +1403,15 @@ public function editar_trabajador(){
 			$fecingreso = $date->format('Ymd');
 			$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
 			$fecnacimiento = $date->format('Ymd');
-			$date = DateTime::createFromFormat('d/m/Y', $fecafp);
-			$fecafp = $date->format('Ymd');
+			
+			if($fecafp !=null){
+
+				$date = DateTime::createFromFormat('d/m/Y', $fecafp);
+				$fecafp = $date->format('Ymd');
+			}else{
+				$fecafp = null;
+				
+			}
 			
 			if($fecafc !=null){
 
