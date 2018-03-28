@@ -627,16 +627,16 @@
 															<tr> 
 																<th>Fecha Incorporación AFP:</th> 																	
 
-																<th><input class="form-control1" id="seguro_cesantia" type="checkbox" onchange="habilitar(this.checked);" > Seguro Cesantia:</th>
+																<th><input class="form-control1" name="seguro_cesantia" id="seguro_cesantia" type="checkbox" onchange="habilitar(this.checked);" > Seguro Cesantia:</th>
 																<!--<th>Fecha Seguro Cesantia:</th>-->
 															</tr> 
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha Incorp.AFP" class="form-control1" id="datepicker5" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Incorp.AFP" class="form-control1" id="datepicker5"  name="datepicker5" type="text" value="" required>
 															</td>
 															<td>
-																<input placeholder="Fecha Ingreso AFC" class="form-control1" id="datepicker6" type="text" value="" disabled onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+																<input placeholder="Fecha Ingreso AFC" class="form-control1" id="datepicker6" name="datepicker6" type="text" value="" disabled >
 															</td>
 														</tbody>
 													</table>
@@ -1155,9 +1155,11 @@ $(document).ready(function() {
 			if(value==true)
 			{
 				// habilitamos
+				document.getElementById("seguro_cesantia").value = 1;
 				document.getElementById("datepicker6").disabled=false;
 			}else if(value==false){
 				// deshabilitamos
+				document.getElementById("seguro_cesantia").value = 0;
 				document.getElementById("datepicker6").disabled=true;
 			}
 		}

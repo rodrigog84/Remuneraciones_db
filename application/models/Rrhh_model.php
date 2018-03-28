@@ -898,9 +898,10 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'idnacionalidad',
 				/*'COALESCE((select sum(monto) as monto from rem_bonos_personal where idpersonal = p.id and fijo = 1 and imponible = 1),0) as bonos_fijos',*/
 				'0 as bonos_fijos',
-				'DATEDIFF(YY,fecafc,getdate()) as annos_afc',
+				//'DATEDIFF(YY,fecafc,getdate()) as annos_afc',
+				'format(fecafc,\'dd/MM/yyyy\',\'en-US\') as fecafc',
 				'DATEDIFF(MM,fecinicvacaciones,getdate()) as meses_vac',
-				'format(fecinicvacaciones,\'dd/MM/yyyyy\',\'en-US\') as fecinicvacaciones',
+				'format(fecinicvacaciones,\'dd/MM/yyyy\',\'en-US\') as fecinicvacaciones',
 				'saldoinicvacaciones',
 				'diasvactomados',
 				'diasprogresivos',
@@ -919,8 +920,13 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'rol_privado',
 				'id_lugar_pago',
 				'id_categoria',
-				'semana_corrida'
+				'semana_corrida',
+				'tiporenta',
+				'ididioma',
+				'numficha',
+				'format(fecafp,\'dd/MM/yyyy\',\'en-US\') as fecafp'
 
+				
 
 			);
 		
