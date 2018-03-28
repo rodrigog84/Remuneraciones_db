@@ -2453,15 +2453,19 @@ public function get_remuneraciones_by_id($idremuneracion){
 			
 	}	
 
-	public function generar_contrato($personal,$tipo,$fecha,$idtrabajador){		    
-
-			$this->db->select('formato_pdf')
+	public function generar_contrato($personal,$tipo,$fecha,$idtrabajador){	
+	
+	       	$this->db->select('formato_pdf')
 									->from('rem_formato_doc_colaborador')
-									->where('id_tipo_doc_colaborador',1)
+									->where('id_tipo_doc_colaborador',$tipo)
 									->where('id_empresa',$this->session->userdata('empresaid'));
 
 			$query = $this->db->get();
-			$result = $query->row();	
+			$result = $query->row();
+			
+			print_r($result);
+			
+			exit;	
 
 			$direccionsucursal="Américo Vespucio N º 727";
 			$nombrereemplazado="POR DEFINIR";
