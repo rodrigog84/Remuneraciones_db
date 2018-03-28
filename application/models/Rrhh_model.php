@@ -2412,9 +2412,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 				$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
 			}
 
-			//Variable para PDF 
-
-			
+			//Variable para PDF 		
 
 		
 			$this->load->library("mpdf");
@@ -2444,21 +2442,12 @@ public function get_remuneraciones_by_id($idremuneracion){
 				$this->mpdf->showWatermarkText = true;
 			}
 
-
-
-
-			//$this->mpdf->SetFooter('Para más información visite: http://www.tugastocomun.cl');
-
-
-			// SE ALMACENA EL ARCHIVO
 			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_sueldos_".$datos_remuneracion->id.".pdf";
 			$this->mpdf->Output($nombre_archivo, "I");
 			
 	}	
 
-	public function generar_contrato($personal,$tipo,$fecha,$idtrabajador){
-
-		    
+	public function generar_contrato($personal,$tipo,$fecha,$idtrabajador){		    
 
 			$this->db->select('formato_pdf')
 									->from('rem_formato_doc_colaborador')
@@ -2512,6 +2501,8 @@ public function get_remuneraciones_by_id($idremuneracion){
 			// SE ALMACENA EL ARCHIVO
 			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_sueldos_".$datos_remuneracion->id.".pdf";
 			$this->mpdf->Output($nombre_archivo, "I");
+
+			//redirect('rrhh/contratos');
 			
 	}
 

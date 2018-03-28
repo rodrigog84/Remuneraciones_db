@@ -15,7 +15,7 @@
          </thead>
         <tbody>
           <td>
-            <input type="text" name="tipocontrato" id="rut"  class="form-control1"  placeholder="" title="Nombre Contrato" required size="120">
+            <input type="text" name="tipocontrato" id="rut"  class="form-control1"  value="" title="Nombre Contrato" required size="120">
           </td>
           
         </tbody>  
