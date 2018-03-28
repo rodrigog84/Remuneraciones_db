@@ -22,6 +22,7 @@ class Carga_masiva extends CI_Controller {
 
 	  public function contratos_archivos(){
 
+	  	$tipocontrato = $this->input->post('tipocontrato');
 	  	$config['upload_path'] = "./uploads/cargas/";
 
 		//VALIDA QUE CARPETA EXISTA
@@ -40,14 +41,39 @@ class Carga_masiva extends CI_Controller {
         $this->upload->do_upload("userfile");
    		$dataupload = $this->upload->data();
 
+
+   		$pdf = file_get_contents($config['upload_path'].$config['file_name'].$dataupload['file_ext']);
+
+   		$pdf = iconv('','UTF-8',$pdf);
+
+   		//print_r($pdf);
+
+   		//exit;
    		
-		//cargamos el archivo
-   		$archivotmp = $dataupload['file_ext'];	  	
-		//obtenemos el archivo .csv
+		$idempresa=$this->session->userdata('empresaid');
 
-		exit;
+		$array_datos2 = array(
+			'tipo' => $tipocontrato
+					);
 
-		$this->session->set_flashdata('personal_result',8);
+		$array_datos2['updated_at'] = date("Ymd H:i:s");
+		$array_datos2['created_at'] = date("Ymd H:i:s");
+				  //$array_datos['created_by'] = $createdby;
+		$this->db->insert('rem_tipo_doc_colaborador', $array_datos2);
+		$id = $this->db->insert_id();
+
+
+		$array_datos = array(
+			'id_tipo_doc_colaborador' => $id,
+			'id_empresa' => $idempresa,
+			'formato_pdf' => $pdf,
+					);
+
+		$array_datos['updated_at'] = date("Ymd H:i:s");
+		$array_datos['created_at'] = date("Ymd H:i:s");
+				  //$array_datos['created_by'] = $createdby;
+		$this->db->insert('rem_formato_doc_colaborador', $array_datos);
+
 		redirect('configuraciones/tipos_contrato');
 
  	

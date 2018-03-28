@@ -2418,9 +2418,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 				$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
 			}
 
-			//Variable para PDF 
-
-			
+			//Variable para PDF 		
 
 		
 			$this->load->library("mpdf");
@@ -2450,21 +2448,12 @@ public function get_remuneraciones_by_id($idremuneracion){
 				$this->mpdf->showWatermarkText = true;
 			}
 
-
-
-
-			//$this->mpdf->SetFooter('Para más información visite: http://www.tugastocomun.cl');
-
-
-			// SE ALMACENA EL ARCHIVO
 			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_sueldos_".$datos_remuneracion->id.".pdf";
 			$this->mpdf->Output($nombre_archivo, "I");
 			
 	}	
 
-	public function generar_contrato($personal,$tipo,$fecha,$idtrabajador){
-
-		    
+	public function generar_contrato($personal,$tipo,$fecha,$idtrabajador){		    
 
 			$this->db->select('formato_pdf')
 									->from('rem_formato_doc_colaborador')
@@ -2518,6 +2507,8 @@ public function get_remuneraciones_by_id($idremuneracion){
 			// SE ALMACENA EL ARCHIVO
 			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_sueldos_".$datos_remuneracion->id.".pdf";
 			$this->mpdf->Output($nombre_archivo, "I");
+
+			//redirect('rrhh/contratos');
 			
 	}
 
@@ -3291,8 +3282,11 @@ public function delete_haber_descto_variable($id_hab_descto){
 
 
 
+
+
 public function previred($datos_remuneracion){
 
+			$this->load->model('admin');
 			$nombre_archivo = $this->session->userdata('empresaid')."_previred_".date("Ymd").".txt";
 			$path_archivo = "./uploads/tmp/";
 			$file = fopen($path_archivo.$nombre_archivo, "w");
@@ -3342,7 +3336,7 @@ public function previred($datos_remuneracion){
 
 				$dato_afp = $this->admin->get_afp($remuneracion->idafp);
 
-				$codprev_apv = is_null($remuneracion->idapv) ? 0 : $this->get_apv($remuneracion->idapv)->codprevired;
+				$codprev_apv = is_null($remuneracion->idapv) ? 0 : $this->admin->get_apv($remuneracion->idapv)->codprevired;
 				$codprev_mutual = is_null($remuneracion->idmutual) ? 0 : $this->admin->get_mutual_seguridad($remuneracion->idmutual)->codprevired;
 				$codprev_ccaf = is_null($remuneracion->idcaja) ? 0 : $this->admin->get_cajas_compensacion($remuneracion->idcaja)->codprevired;
 
@@ -3364,8 +3358,14 @@ public function previred($datos_remuneracion){
 				$dato_isapre = $this->admin->get_isapre($remuneracion->idisapre);
 
 
+				if(is_null($remuneracion->idasigfamiliar)){
+					$tramo_asig_familiar = "D";
+				}else{
 
-				$tramo_asig_familiar = is_null($remuneracion->idasigfamiliar) ? "D" : $this->get_tabla_asig_familiar($remuneracion->idasigfamiliar)->tramo;
+					$tramo_asig_familiar = $remuneracion->idasigfamiliar == 0 ? "D" : $this->admin->get_tabla_asig_familiar($remuneracion->idasigfamiliar)->tramo;
+				}
+				
+
 				$formapagoapv = is_null($remuneracion->formapagoapv) ? "0" : $remuneracion->formapagoapv;
 				$sueldoimponible_afp = ($remuneracion->cotizacionobligatoria+$remuneracion->comisionafp+$remuneracion->seginvalidez) > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				$sueldoimponible_fonasa = ($remuneracion->fonasa+$remuneracion->inp) > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
@@ -3591,6 +3591,8 @@ public function previred($datos_remuneracion){
 
 			
 			fclose($file);
+
+			//exit;
 
 			$data_archivo = basename($path_archivo.$nombre_archivo);
 			header('Content-Type: text/plain');
