@@ -2463,29 +2463,35 @@ public function get_remuneraciones_by_id($idremuneracion){
 			$query = $this->db->get();
 			$result = $query->row();
 			
-			print_r($result);
+			//print_r($personal);
 			
-			exit;	
+			//exit;	
 
 			$direccionsucursal="Américo Vespucio N º 727";
 			$nombrereemplazado="POR DEFINIR";
 			$nombrecolaborador=$personal->nombre." ".$personal->apaterno." ".$personal->amaterno;
 
+			$rut =$personal->rut."-".$personal->dv;
+
+			//print_r($nombrecolaborador);
+
+			//exit;
+
 			$html_pdf = $result->formato_pdf;
 
-			$html_pdf = str_replace("@nombrecolaborador",$nombrecolaborador,$html_pdf);
-			$html_pdf = str_replace("@fechacontrato",$fecha,$html_pdf);
-			$html_pdf = str_replace("@nacionalidad",$personal->nacionalidad,$html_pdf);	
-			$html_pdf = str_replace("@rut",$personal->rut,$html_pdf);
-			$html_pdf = str_replace("@estadocivil",$personal->idecivil,$html_pdf);
-			$html_pdf = str_replace("@fechanacimiento",$personal->fecnacimiento,$html_pdf);
-			$html_pdf = str_replace("@direccion",$personal->direccion,$html_pdf);
-			$html_pdf = str_replace("@direccionsucursal",$direccionsucursal,$html_pdf);
+			$html_pdf = str_replace("nombrecolaborador",$nombrecolaborador,$html_pdf);
+			$html_pdf = str_replace("fechacontrato",$fecha,$html_pdf);
+			$html_pdf = str_replace("nacionalidad",$personal->nacionalidad,$html_pdf);	
+			$html_pdf = str_replace("rut",$rut,$html_pdf);
+			$html_pdf = str_replace("estadocivil",$personal->idecivil,$html_pdf);
+			$html_pdf = str_replace("fechanacimiento",$personal->fecnacimiento,$html_pdf);
+			$html_pdf = str_replace("direccion",$personal->direccion,$html_pdf);
+			$html_pdf = str_replace("direccionsucursal",$direccionsucursal,$html_pdf);
 
-			$html_pdf = str_replace("@nombreremplazado",$nombreremplazado,$html_pdf);
+			//$html_pdf = str_replace("@nombreremplazado",$nombreremplazado,$html_pdf);
 
-			$html_pdf = str_replace("@sueldobase",$personal->sueldobase,$html_pdf);
-			$html_pdf = str_replace("@fechaingreso",$personal->fecingreso,$html_pdf);
+			$html_pdf = str_replace("sueldobase",$personal->sueldobase,$html_pdf);
+			$html_pdf = str_replace("fechaingreso",$personal->fecingreso,$html_pdf);
 		
 			$this->load->library("mpdf");
 			$this->mpdf->mPDF(
@@ -2510,9 +2516,14 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 			// SE ALMACENA EL ARCHIVO
 			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_sueldos_".$datos_remuneracion->id.".pdf";
+			
 			$this->mpdf->Output($nombre_archivo, "I");
 
 			//redirect('rrhh/contratos');
+
+			//redirect('rrhh/contrato_colaborador/'+$personal->id_personal);
+
+			//return;
 			
 	}
 

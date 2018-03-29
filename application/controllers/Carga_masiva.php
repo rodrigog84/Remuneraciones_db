@@ -51,7 +51,7 @@ class Carga_masiva extends CI_Controller {
 
 		$array_datos2 = array(
 			'tipo' => $tipocontrato,
-			'id_empresa' => $$idempresa
+			'id_empresa' => $idempresa
 					);
 
 		$array_datos2['updated_at'] = date("Ymd H:i:s");
@@ -75,7 +75,7 @@ class Carga_masiva extends CI_Controller {
 
 
 		//$this->session->set_flashdata('personal_result',8);
-		//redirect('configuraciones/tipos_contrato');
+		redirect('configuraciones/tipos_contrato');
 
  	
 
