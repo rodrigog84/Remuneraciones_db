@@ -68,7 +68,6 @@ class Admin extends CI_Model
 	}
 
 
-
 	public function add_estudios($array_datos){
 
 

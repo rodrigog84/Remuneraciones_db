@@ -3093,6 +3093,7 @@ public function submit_anticipos(){
 		
 	}
 
+	
 	public function submit_genera_finiquito(){
 
 		$tipo = $this->input->post("tipo");
@@ -3592,8 +3593,11 @@ public function contrato_colaborador($rut){
 						'subtitle' => 'Contratos');
 	$vars['rut'] = $rut;
 
-	$personal = $this->admin->get_personal_total($rut); 
+	$personal = $this->admin->get_personal_total($rut);
+	$tipocontrato = $this->admin->get_tipo_contrato();
+	 
 	$vars['personal'] = $personal;
+	$vars['tipocontrato'] = $tipocontrato;
 	$vars['contrato'] = 1;
 	//$vars['appaterno'] = $apaterno;
 	//$vars['amaterno'] = $amaterno;

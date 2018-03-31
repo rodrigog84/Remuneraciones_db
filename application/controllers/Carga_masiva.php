@@ -17,10 +17,37 @@ class Carga_masiva extends CI_Controller {
 			$this->load->model('rrhh_model');
 		}	
 
+	  public function graba_tipo_contratos(){
+	  	
+	  	 $nombre = $this->input->post('nombre');
+	  	 $idempresa=$this->session->userdata('empresaid');
+
+	  	 print_r($nombre);
+
+	  	 
+	  	 $array_datos2 = array(
+			'tipo' => $nombre,
+			'id_empresa' => $idempresa
+					);
+
+		$array_datos2['updated_at'] = date("Ymd H:i:s");
+		$array_datos2['created_at'] = date("Ymd H:i:s");
+				  //$array_datos['created_by'] = $createdby;
+		$this->db->insert('rem_tipo_doc_colaborador', $array_datos2);
+		
+		redirect('configuraciones/tipos_contrato_colaboradores');	     
+
+
+
+	  }
+
 
 	  public function contratos_archivos(){
 
 	  	$tipocontrato = $this->input->post('tipocontrato');
+	  	$tipo = $this->input->post("tipo");
+
+	   	
 	  	$config['upload_path'] = "./uploads/cargas/";
 
 		//VALIDA QUE CARPETA EXISTA
@@ -49,7 +76,7 @@ class Carga_masiva extends CI_Controller {
 
    		$idempresa=$this->session->userdata('empresaid');
 
-		$array_datos2 = array(
+		/*$array_datos2 = array(
 			'tipo' => $tipocontrato,
 			'id_empresa' => $idempresa
 					);
@@ -58,14 +85,17 @@ class Carga_masiva extends CI_Controller {
 		$array_datos2['created_at'] = date("Ymd H:i:s");
 				  //$array_datos['created_by'] = $createdby;
 		$this->db->insert('rem_tipo_doc_colaborador', $array_datos2);
-		$id = $this->db->insert_id();
+		$id = $this->db->insert_id();*/
+
+		
 
 		//exit;
 
 		$array_datos = array(
-			'id_tipo_doc_colaborador' => $id,
+			'id_tipo_doc_colaborador' => $tipo,
 			'id_empresa' => $idempresa,
 			'formato_pdf' => $pdf,
+			'nom_documento' => $tipocontrato, 
 					);
 
 		$array_datos['updated_at'] = date("Ymd H:i:s");

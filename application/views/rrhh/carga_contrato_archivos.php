@@ -3,27 +3,34 @@
        
         <form id="basicBootstrapForm" action="<?php echo base_url();?>Carga_masiva/contratos_archivos" id="basicBootstrapForm" method="post"   enctype="multipart/form-data">
         <div class="row">
-
          <div class="col-md-6">
-
          <table class="table table-striped">
          <thead> 
-          <tr> 
-            <th>Tipo Contrato:</th> 
-                         
+          <tr>
+            <td>
+            <label for="caja">Tipo Documento</label>    
+              <select name="tipo" id="tipocontrato" class="form-control1" required >
+              <?php foreach ($tipocontrato as $tipo) { ?>
+              <?php $paisselected = $tipo->id == $datos_form['id_tipo_doc_colaborador'] ? "selected" : "Tipo Contrato"; ?>
+              <option value="<?php echo $tipo->id_tipo_doc_colaborador;?>" <?php echo $paisselected;?> ><?php echo $tipo->tipo;?></option>
+              <?php } ?>
+              <input type="text" name="tipocontrato" id="rut"  class="form-control1"  placeholder="" title="Nombre " required size="100">
+
+              </select>
+            </td>
+            <td>            
+             <td>
+             <td>     
+                <a href="<?php echo base_url();?>configuraciones/genera_documentos" class="btn btn-info opciones" id="opciones" title="Agregar Tipo Documento"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>          
+                </td>
+            </td>
+            </td>                    
           </tr> 
          </thead>
         <tbody>
-          <td>
-            <input type="text" name="tipocontrato" id="rut"  class="form-control1"  placeholder="" title="Nombre Contrato" required size="120">
-          </td>
-          
         </tbody>  
       </table>
-
          </div>
-
-
         </div>
          <div class="row">
 
@@ -31,18 +38,11 @@
 
               <div class="panel panel-inverse">
                 <div class="panel-heading">
-                  <h4 class="panel-title">Carga Contratos </h4>
-                  <div class="pull-right box-tools">
-
-                    <h4><a href="<?php echo base_url(); ?>carga_masiva/exportarExcelanticipos" data-toggle="tooltip" title="DEscarga Ejemplo" ><i class="fa fa-file-excel-o"></i></a></h4>
-                  </div><!-- /. tools -->                                        
-                </div><!-- /.box-header -->
-                <!-- form start -->
-
-
+                  <h4 class="panel-title">Carga Documentos</h4>      
+                </div>
                   <div class="panel-body">
                         <div class="form-group">
-                              <label for="exampleInputFile">Archivo de Carga  - <a href="<?php echo base_url(); ?>rrhh/exportarExcelanticipos" data-toggle="tooltip" title="Ejemplo" target="_blank">Descargar Ejemplo</a></label>
+                              <label for="exampleInputFile">Archivo de Carga  - <a href="<?php echo base_url(); ?>rrhh/exportarExcelanticipos" data-toggle="tooltip" title="Ejemplo" target="_blank"></a></label>
                               <input type="file" id="userfile" name="userfile">
                         </div>  
                   </div><!-- /.box-body -->
@@ -52,18 +52,10 @@
                     &nbsp;&nbsp;
                     <a href="<?php echo base_url();?>rrhh/anticipos" class="btn btn-default">Volver</a>
                   </div>                  
-              </div><!-- /.box -->
-
-            </div>
-
-        
+              </div>
+            </div>       
           </div>
-
-      </form>
-
-
-
-          
+      </form>          
  <script>
 $(document).ready(function() {
     $('#basicBootstrapForm').formValidation({
