@@ -88,7 +88,7 @@
                                <select name="tipo" id="tipocontrato" class="form-control1" required>
                               <?php foreach ($tipocontrato as $tipo) { ?>
                                 <?php $paisselected = $tipo->id == $datos_form['id_tipo_doc_colaborador'] ? "selected" : "Tipo Contrato"; ?>
-                                <option value="<?php echo $tipo->id_tipo_doc_colaborador;?>" <?php echo $paisselected;?> ><?php echo $tipo->tipo;?></option>
+                                <option value="<?php echo $tipo->id_tipo_doc_colaborador;?>" <?php echo $paisselected;?> ><?php echo $tipo->nom_documento;?></option>
                               <?php } ?>
                             </select>
 

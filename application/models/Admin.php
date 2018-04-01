@@ -834,6 +834,18 @@ public function get_bonos($idtrabajador = null){
 		$tipocontrato = is_null($idtipocontrato) ? $tipocontrato : $tipocontrato->where('id_tipo_doc_colaborador',$id_tipo_doc_colaborador);  		                  
 		$query = $this->db->get();
 		return $query->result();
+	}
+	
+	public function get_tipo_documento($idtipo = null){
+
+
+		
+		$idtipo_data = $this->db->select('id_formato_doc_colaborador,id_tipo_doc_colaborador, nom_documento')	
+						  ->from('rem_formato_doc_colaborador')
+						  ->where('id_tipo_doc_colaborador',$idtipo)
+		                  ->order_by('nom_documento');
+		$query = $this->db->get();
+		return $query->result();
 	}		
 
 

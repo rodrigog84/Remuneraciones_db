@@ -3660,19 +3660,27 @@ public function finiquito_colaborador($rut){
 
 
 
-public function genera_contrato($idpersonal){
+public function genera_contrato($idpersonal,$tipo){
 
 	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+	$tipo2 = $this->input->post('tipo');
+
+
 
 	$content = array(
 						'menu' => 'Contratos',
 						'title' => 'Genera Contrato Colaborador',
 						'subtitle' => 'Contratos Colaboradores');
 	
-	$personal = $this->admin->get_personal_total($idpersonal); 
-
-	$tipocontrato = $this->admin->get_tipo_contrato();
+	$personal = $this->admin->get_personal_total($idpersonal);	
 	
+	$idtipo = 1;
+	 
+
+	$tipocontrato = $this->admin->get_tipo_documento($idtipo);
+
+		
 	$vars['personal'] = $personal;
 	$vars['tipocontrato'] = $tipocontrato;
 	$vars['contrato'] = 1;

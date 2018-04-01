@@ -19,7 +19,7 @@
                             </select>
 
                             </div>  
-                          </div><a href="<?php echo base_url();?>rrhh/genera_contrato/<?php echo $personal->id_personal?>" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Generar</a>
+                          </div><a href="<?php echo base_url();?>rrhh/genera_contrato/<?php echo $personal->id_personal?>/<?php echo $tipo->id_tipo_doc_colaborador;?>" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Generar</a>
 
 			
 			</h5>		
