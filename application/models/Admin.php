@@ -696,7 +696,7 @@ public function get_mutual_seguridad($idmutual = null){
 
 public function get_parametros_generales(){
 
-		$comunidades_data = $this->db->select('uf , sueldominimo, tasasis, topeimponible, utm')
+		$comunidades_data = $this->db->select('uf , sueldominimo, tasasis, topeimponible, topeimponibleips, topeimponibleafc, utm')
 						  ->from('rem_parametros_generales');
 		$query = $this->db->get();						  
 		return $query->row();

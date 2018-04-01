@@ -20,9 +20,17 @@
                                <input type="text" class="form-control miles" name="utm" id="utm" placeholder="Ingrese Valor UF" value="<?php echo $parametros_generales->utm; ?>">
                         </div>                         
                         <div class="form-group">
-                              <label for="uf">Tope Imponible (UF)</label>    
+                              <label for="uf">Tope Imponible AFP (UF)</label>    
                                <input type="text" class="form-control miles_decimales" name="topeimponible" id="topeimponible" placeholder="Ingrese Tope Imponible" value="<?php echo number_format($parametros_generales->topeimponible,2,",",""); ?>">
-                        </div>                         
+                        </div> 
+                        <div class="form-group">
+                              <label for="uf">Tope Imponible IPS (UF)</label>    
+                               <input type="text" class="form-control miles_decimales" name="topeimponibleips" id="topeimponibleips" placeholder="Ingrese Tope Imponible" value="<?php echo number_format($parametros_generales->topeimponibleips,2,",",""); ?>">
+                        </div>     
+                        <div class="form-group">
+                              <label for="uf">Tope Imponible AFC (UF)</label>    
+                               <input type="text" class="form-control miles_decimales" name="topeimponibleafc" id="topeimponibleafc" placeholder="Ingrese Tope Imponible" value="<?php echo number_format($parametros_generales->topeimponibleafc,2,",",""); ?>">
+                        </div>                                                                    
                         <div class="form-group">
                               <label for="uf">Tasa Seguro de Invalidez y Sobrevivencia (SIS)</label>    
                                <input type="text" class="form-control" name="tasasis" id="tasasis" placeholder="Ingrese Valor SIS" value="<?php echo $parametros_generales->tasasis; ?>">

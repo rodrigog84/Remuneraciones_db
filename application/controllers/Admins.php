@@ -729,7 +729,9 @@ public function submit_parametros_generales()
        						'utm' => str_replace(",",".",str_replace(".","",$this->input->post('utm'))),
        						'sueldominimo' => str_replace(".","",$this->input->post('sueldominimo')),
        						'tasasis' => $this->input->post('tasasis'),
-       						'topeimponible' => str_replace(",",".",str_replace(".","",$this->input->post('topeimponible')))
+       						'topeimponible' => str_replace(",",".",str_replace(".","",$this->input->post('topeimponible'))),
+       						'topeimponibleips' => str_replace(",",".",str_replace(".","",$this->input->post('topeimponibleips'))),
+       						'topeimponibleafc' => str_replace(",",".",str_replace(".","",$this->input->post('topeimponibleafc')))       						
 			       			);
 			$this->admin->edit_parametros_generales($parametros);
 			
