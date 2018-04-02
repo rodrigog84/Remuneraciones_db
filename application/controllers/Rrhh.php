@@ -3090,6 +3090,10 @@ public function submit_anticipos(){
 		$personal = $this->admin->get_personal_total($idtrabajador);
 
 		$this->rrhh_model->generar_contrato($personal,$tipo,$fecha,$idtrabajador);
+
+		redirect('rrhh/contrato_colaborador');
+
+
 		
 	}
 
@@ -3101,6 +3105,8 @@ public function submit_anticipos(){
 		$idtrabajador = $this->input->post("idtrabajador");
 
 		$personal = $this->admin->get_personal_total($idtrabajador);
+
+
 
 		
 		
@@ -3595,6 +3601,10 @@ public function contrato_colaborador($rut){
 
 	$personal = $this->admin->get_personal_total($rut);
 	$tipocontrato = $this->admin->get_tipo_contrato();
+
+	//print_r($tipocontrato);
+
+	//exit;
 	 
 	$vars['personal'] = $personal;
 	$vars['tipocontrato'] = $tipocontrato;
@@ -3660,22 +3670,21 @@ public function finiquito_colaborador($rut){
 
 
 
-public function genera_contrato($idpersonal,$tipo){
+public function genera_contrato($idpersonal){
 
 	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
-	$tipo2 = $this->input->post('tipo');
+	$idtipo = $this->input->post('tipo');
 
-
-
+	
 	$content = array(
 						'menu' => 'Contratos',
-						'title' => 'Genera Contrato Colaborador',
-						'subtitle' => 'Contratos Colaboradores');
+						'title' => 'Genera Documento Colaborador',
+						'subtitle' => 'Documento Colaboradores');
 	
 	$personal = $this->admin->get_personal_total($idpersonal);	
 	
-	$idtipo = 1;
+	//$idtipo = 1;
 	 
 
 	$tipocontrato = $this->admin->get_tipo_documento($idtipo);

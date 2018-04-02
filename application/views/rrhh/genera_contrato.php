@@ -78,13 +78,13 @@
                   </div> 
                     <div class="panel panel-inverse">                       
                       <div class="panel-heading">
-                        <h4 class="panel-title">Genera Contrato</h4>
+                        <h4 class="panel-title">Genera Documento</h4>
                       </div>
                       <div class="panel-body">
                         <div class='row'>
                           <div class='col-md-4'>
                             <div class="form-group">
-                              <label for="caja">Tipo Contrato</label>    
+                              <label for="caja">Tipo Documento</label>    
                                <select name="tipo" id="tipocontrato" class="form-control1" required>
                               <?php foreach ($tipocontrato as $tipo) { ?>
                                 <?php $paisselected = $tipo->id == $datos_form['id_tipo_doc_colaborador'] ? "selected" : "Tipo Contrato"; ?>
@@ -97,7 +97,7 @@
                            <div class='col-md-4'>
                              <thead> 
                               <tr> 
-                                <th>Fecha Contrato:</th> 
+                                <th>Fecha Documento:</th> 
                               </tr> 
                             </thead>
                             <tbody>

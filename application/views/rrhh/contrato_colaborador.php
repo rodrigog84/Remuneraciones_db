@@ -1,10 +1,11 @@
+<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/genera_contrato/<?php echo $personal->id_personal?>" method="post" role="form" enctype="multipart/form-data">
 
 <div class="sub-heard-part">
 		<td>
 		<font color="Green" face="arial">
 			<h3 align="left"><i>Nombre : <?php echo $personal->nombre." ".$personal->apaterno." ".$personal->amaterno;?> Rut : <?php echo $personal->rut == '' ? '' : number_format($personal->rut,0,".",".")."-".$personal->dv;?></i></h3>
-		</font>
-		    
+		</font>	
+			    
 			<h5 class="inner-tittle two">
 			 <div class="panel-body">
                         <div class='row'>
@@ -13,18 +14,28 @@
                               <label for="caja">Tipo Contrato      :</label>    
                                <select name="tipo" id="tipocontrato" class="form-control1" required>
                               <?php foreach ($tipocontrato as $tipo) { ?>
-                                <?php $paisselected = $tipo->id == $datos_form['id_tipo_doc_colaborador'] ? "selected" : "Tipo Contrato"; ?>
-                                <option value="<?php echo $tipo->id_tipo_doc_colaborador;?>" <?php echo $paisselected;?> ><?php echo $tipo->tipo;?></option>
+                                <?php $paisselected = $tipo->id_tipo_doc_colaborador == $datos_form['id_tipo_doc_colaborador'] ? "selected" : "Tipo Contrato"; ?>
+                                <option value="<?php echo $tipo->id_tipo_doc_colaborador;?>" <?php echo $paisselected;?> ><?php echo $tipo->tipo;?></option>                               
                               <?php } ?>
                             </select>
-
-                            </div>  
-                          </div><a href="<?php echo base_url();?>rrhh/genera_contrato/<?php echo $personal->id_personal?>/<?php echo $tipo->id_tipo_doc_colaborador;?>" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Generar</a>
-
+                              </div>  
+                          </div>                        
 			
-			</h5>		
-		<div class="graph-visual tables-main">
-											
+			</h5>
+			<td>
+			<div class="panel-body">
+			    <div class="row" id=""></div>    
+			    <div class="box-footer">
+			    <button type="submit" class="btn btn-primary">Generar</button>&nbsp;&nbsp;&nbsp;&nbsp;
+			   </div>
+			  </div>
+			</div>
+
+			</td>
+			</td>
+			
+						
+		<div class="graph-visual tables-main">											
 													
 								<h3 class="inner-tittle two">Descripción</h3>
 									  <div class="graph">							  	
@@ -66,5 +77,6 @@
 								</div>
 						</div>
 </div>
+</form>
 <!--
 
