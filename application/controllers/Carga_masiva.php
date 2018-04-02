@@ -19,14 +19,14 @@ class Carga_masiva extends CI_Controller {
 
 	  public function graba_tipo_contratos(){
 	  	
-	  	 $nombre = $this->input->post('prueba');
+	  	 $nombre = $this->input->post('nombre');
 	  	 $idempresa=$this->session->userdata('empresaid');
 
 	  	 //print_r($nombre);
 
 	  	 //exit;
 
-	  	 
+	  	 	  	 
 	  	 $array_datos2 = array(
 			'tipo' => $nombre,
 			'id_empresa' => $idempresa
