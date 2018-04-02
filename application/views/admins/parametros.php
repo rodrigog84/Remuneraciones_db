@@ -24,7 +24,7 @@
                                <input type="text" class="form-control miles_decimales" name="topeimponible" id="topeimponible" placeholder="Ingrese Tope Imponible" value="<?php echo number_format($parametros_generales->topeimponible,2,",",""); ?>">
                         </div> 
                         <div class="form-group">
-                              <label for="uf">Tope Imponible IPS (UF)</label>    
+                              <label for="uf">Tope Imponible IPS (EX - INP) (UF)</label>    
                                <input type="text" class="form-control miles_decimales" name="topeimponibleips" id="topeimponibleips" placeholder="Ingrese Tope Imponible" value="<?php echo number_format($parametros_generales->topeimponibleips,2,",",""); ?>">
                         </div>     
                         <div class="form-group">

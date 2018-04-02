@@ -1410,6 +1410,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$suma_ips = 0;
 		$suma_impuesto = 0;
 		$tope_imponible = (int)($parametros->uf*$parametros->topeimponible);
+		$tope_imponible_ips = (int)($parametros->uf*$parametros->topeimponibleips);
+		$tope_imponible_afc = (int)($parametros->uf*$parametros->topeimponibleafc);
 
 		$this->db->query('update r 
 							set r.active = 0
@@ -1492,6 +1494,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 			$datos_afp = $this->admin->get_afp($trabajador->idafp);
+
+
 			//$valor_hora = $trabajador->parttime == 1 ? ((($trabajador->sueldobase + $trabajador->bonos_fijos)/$trabajador->diastrabajo)/$trabajador->horasdiarias) : ((($trabajador->sueldobase + $trabajador->bonos_fijos)/30)*7)/45;
 			$valor_hora = $trabajador->parttime == 1 ? ((($trabajador->sueldobase)/$trabajador->diastrabajo)/$trabajador->horasdiarias) : ((($trabajador->sueldobase)/30)*7)/45;
 			$valor_hora = round($valor_hora,0);
@@ -1571,14 +1575,19 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 			#CALCULA SUELDO SOBRE EL CUAL SE CALCULARÁN LAS IMPOSICIONES, CONSIDERANDO EL TOPE LEGAL
 			$sueldo_imponible_imposiciones = $sueldo_imponible > $tope_imponible ? $tope_imponible : $sueldo_imponible;
+			$sueldo_imponible_afc = $sueldo_imponible > $tope_imponible_afc ? $tope_imponible_afc : $sueldo_imponible;
+			$sueldo_imponible_ips = $sueldo_imponible > $tope_imponible_ips ? $tope_imponible_ips : $sueldo_imponible;
 
-			$cot_obligatoria = round($sueldo_imponible_imposiciones*$porc_cot_oblig,0);
-			$comision_afp = round($sueldo_imponible_imposiciones*($porc_com_afp/100),0);
+
+			$sueldo_imponible_afp = $datos_afp->exregimen == 1 ? $sueldo_imponible_ips : $sueldo_imponible_imposiciones;
+
+			$cot_obligatoria = round($sueldo_imponible_afp*$porc_cot_oblig,0);
+			$comision_afp = round($sueldo_imponible_afp*($porc_com_afp/100),0);
 			$adic_afp = round($sueldo_imponible*($trabajador->adicafp/100),0);
 
 
 			// SOLO SE PAGA POR 11 AÑOS
-			$segcesantia = $trabajador->tipocontrato == 'I' && $trabajador->segcesantia == 1 && $trabajador->annos_afc <= 11 ? round($sueldo_imponible*0.006,0) : 0;
+			$segcesantia = $trabajador->tipocontrato == 'I' && $trabajador->segcesantia == 1 && $trabajador->annos_afc <= 11 ? round($sueldo_imponible_afc*0.006,0) : 0;
 
 
 			$cot_salud_oblig = $trabajador->idisapre != 1 ? round($sueldo_imponible_imposiciones*0.07,0) : 0;
@@ -1810,6 +1819,8 @@ limit 1		*/
 					'sueldoimponible' => $sueldo_imponible,
 					'sueldonoimponible' => $sueldo_no_imponible,
 					'sueldoimponibleimposiciones' => $sueldo_imponible_imposiciones,
+					'sueldoimponibleafc' => $sueldo_imponible_afc,
+					'sueldoimponibleips' => $sueldo_imponible_ips,
 					'cotizacionobligatoria' => $cot_obligatoria,
 					'comisionafp' => $comision_afp,
 					'porccomafp' => $porc_com_afp,
@@ -1902,7 +1913,7 @@ limit 1		*/
 
 	public function get_remuneraciones_by_periodo($idperiodo,$sinsueldo = null,$idcentrocosto = null){
 		
-		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips')
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
@@ -3351,6 +3362,7 @@ public function previred($datos_remuneracion){
 
 				$dato_afp = $this->admin->get_afp($remuneracion->idafp);
 
+
 				$codprev_apv = is_null($remuneracion->idapv) ? 0 : $this->admin->get_apv($remuneracion->idapv)->codprevired;
 				$codprev_mutual = is_null($remuneracion->idmutual) ? 0 : $this->admin->get_mutual_seguridad($remuneracion->idmutual)->codprevired;
 				$codprev_ccaf = is_null($remuneracion->idcaja) ? 0 : $this->admin->get_cajas_compensacion($remuneracion->idcaja)->codprevired;
@@ -3382,12 +3394,18 @@ public function previred($datos_remuneracion){
 				
 
 				$formapagoapv = is_null($remuneracion->formapagoapv) ? "0" : $remuneracion->formapagoapv;
-				$sueldoimponible_afp = ($remuneracion->cotizacionobligatoria+$remuneracion->comisionafp+$remuneracion->seginvalidez) > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
+
+				if($dato_afp->exregimen == 1){
+					$sueldoimponible_afp = ($remuneracion->cotizacionobligatoria+$remuneracion->comisionafp+$remuneracion->seginvalidez) > 0 ? $remuneracion->sueldoimponibleips : 0;
+				}else{
+					$sueldoimponible_afp = ($remuneracion->cotizacionobligatoria+$remuneracion->comisionafp+$remuneracion->seginvalidez) > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
+				}
+
 				$sueldoimponible_fonasa = ($remuneracion->fonasa+$remuneracion->inp) > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				$sueldoimponible_isapre = $remuneracion->cotizacionsalud > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponible : 0;
 				$sueldoimponible_ccaf = $codprev_ccaf != 0 ? $remuneracion->sueldoimponible : 0;
-				$sueldoimponible_segcesantia = $remuneracion->afilsegcesantia == 1 ? $remuneracion->sueldoimponible : 0;
+				$sueldoimponible_segcesantia = $remuneracion->afilsegcesantia == 1 ? $remuneracion->sueldoimponibleafc : 0;
 				$cotccaffon = $codprev_ccaf == 0 ? 0 : $remuneracion->inp;
 				$aportepatronal = $codprev_mutual == 0 ? 0 : $remuneracion->aportepatronal;
 				$asigfamiliar_ccaf = $codprev_ccaf != 0 ? $asigfamiliar : 0;
