@@ -4,30 +4,16 @@
 		<td>
 		<font color="Green" face="arial">
 			<h3 align="left"><i>Nombre : <?php echo $personal->nombre." ".$personal->apaterno." ".$personal->amaterno;?> Rut : <?php echo $personal->rut == '' ? '' : number_format($personal->rut,0,".",".")."-".$personal->dv;?></i></h3>
-		</font>	
-			    
-			<h5 class="inner-tittle two">
-			 <div class="panel-body">
-                        <div class='row'>
-                          <div class='col-md-4'>
-                            <div class="form-group">
-                              <label for="caja">Tipo Contrato      :</label>    
-                               <select name="tipo" id="tipocontrato" class="form-control1" required>
-                              <?php foreach ($tipocontrato as $tipo) { ?>
-                                <?php $paisselected = $tipo->id_tipo_doc_colaborador == $datos_form['id_tipo_doc_colaborador'] ? "selected" : "Tipo Contrato"; ?>
-                                <option value="<?php echo $tipo->id_tipo_doc_colaborador;?>" <?php echo $paisselected;?> ><?php echo $tipo->tipo;?></option>                               
-                              <?php } ?>
-                            </select>
-                              </div>  
-                          </div>                        
-			
-			</h5>
+		</font>			    
 			<td>
 			<div class="panel-body">
 			    <div class="row" id=""></div>    
 			    <div class="box-footer">
+			    <label for="caja">CONTRATO      :</label>
 			    <button type="submit" class="btn btn-primary">Generar</button>&nbsp;&nbsp;&nbsp;&nbsp;
+			    <a  href="<?php echo base_url();?>rrhh/contratos"  class="btn btn-default">Volver</a>
 			   </div>
+
 			  </div>
 			</div>
 
@@ -46,31 +32,28 @@
 														<th>#</th>
         												<th>Tipo Contrato</th>
         												<th>Fecha</th>
-        												<th>Estado</th>
-														<th>Ver</th>
+        												<th>Ver</th>
 
 													</tr> 
 												</thead> 
 												<tbody> 
-          										<?php //if(count($contrato) > 0 ){ ?>
-            										<?php //$i = 1; ?>
-            										<?php //foreach ($personal as $trabajador) { ?>				
-													<tr class="active" id="variable">
-						                              <td><td>
-              										  <td></small></td>
-                									  <td></small></td>
-              										  <td>
-															<a href="" class="btn btn-info opciones" id="opciones" title="Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>
-        																		<!--<a href="#" class="btn btn-info" role="button">Link Button</a>-->
-        																		
-																</td>
-															</tr> 
+	                          	<?php if(count($contratopersonal) > 0 ){ ?>
+	                            <?php $i = 1; ?>
+	                            <?php foreach ($contratopersonal as $documentos) { ?>				
+								<tr class="active" id="variable">
+	                              <td><small><?php echo $i ;?></small></td>
+									  <td><small><?php echo $documentos->documento;?></small></td>
+									  <td><small><?php echo $documentos->created_by;?></small></td>
+								<td>			
+								<a href="<?php echo base_url();?>rrhh/submit_genera_contrato_personal/<?php echo $documentos->id_doc_colaborador?>" class="btn btn-info opciones" id="opciones" title="Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>						
+								</td>
+								</tr> 
 
-								                            <?php// $i++;?>
-									                       <?php //} ?>
-              												<?php //} ?>		
-															
-														</tbody> 
+	                            <?php $i++;?>
+		                       <?php } ?>
+									<?php } ?>		
+								
+							</tbody> 
 													</table> 
 										</div>
 							
