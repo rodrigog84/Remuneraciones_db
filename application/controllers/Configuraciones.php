@@ -57,7 +57,8 @@ class Configuraciones extends CI_Controller {
 
 			
 			$tipocontrato = $this->admin->get_contratos(); 
-			
+
+						
 			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',

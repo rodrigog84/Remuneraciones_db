@@ -831,20 +831,33 @@ public function get_bonos($idtrabajador = null){
 		$tipocontrato = $this->db->select('id_tipo_doc_colaborador, tipo')	
 						  ->from('rem_tipo_doc_colaborador')
 		                  ->order_by('tipo');
-		$tipocontrato = is_null($idtipocontrato) ? $tipocontrato : $tipocontrato->where('id_tipo_doc_colaborador',$id_tipo_doc_colaborador);  		                  
+		$tipocontrato = is_null($idtipocontrato) ? $tipocontrato : $tipocontrato->where('id_tipo_doc_colaborador',$idtipocontrato);  		                  
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function get_personal_contrato($rut = null){
+
+		$this->db->select('c.id_doc_colaborador,c.id_formato_doc_colaborador, c.id_personal, c.id_empresa, c.id_tipo_doc_colaborador, c.created_by, co.nom_documento as documento')
+			->from('rem_doc_colaborador as c')
+			->join('rem_formato_doc_colaborador as co','c.id_formato_doc_colaborador = co.id_formato_doc_colaborador','left')
+		    ->where('c.id_personal', $rut)
+		    ->where('c.id_empresa', $this->session->userdata('empresaid'))
+		    ->order_by('c.created_by asc');
+
+		
 		$query = $this->db->get();
 		return $query->result();
 	}
 	
 	public function get_tipo_documento($idtipo = null){
-
-
 		
-		$idtipo_data = $this->db->select('id_formato_doc_colaborador,id_tipo_doc_colaborador, nom_documento')	
+		$idtipo_data = $this->db->select('id_formato_doc_colaborador,id_tipo_doc_colaborador, nom_documento, created_at')
 						  ->from('rem_formato_doc_colaborador')
 						  ->where('id_tipo_doc_colaborador',$idtipo)
 		                  ->order_by('nom_documento');
-		$query = $this->db->get();
+		
+   		$query = $this->db->get();   		
 		return $query->result();
 	}		
 

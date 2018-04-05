@@ -2466,17 +2466,13 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 	public function generar_contrato($personal,$tipo,$fecha,$idtrabajador){	
 	
-	       	$this->db->select('formato_pdf')
+	       	$this->db->select('id_formato_doc_colaborador,formato_pdf')
 									->from('rem_formato_doc_colaborador')
 									->where('id_tipo_doc_colaborador',$tipo)
 									->where('id_empresa',$this->session->userdata('empresaid'));
 
 			$query = $this->db->get();
-			$result = $query->row();
-			
-			//print_r($personal);
-			
-			//exit;	
+			$result = $query->row();			
 
 			$direccionsucursal="Américo Vespucio N º 727";
 			$nombrereemplazado="POR DEFINIR";
@@ -2489,6 +2485,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 			//exit;
 
 			$html_pdf = $result->formato_pdf;
+			$tipo_formato = $result->id_formato_doc_colaborador;
 
 			$html_pdf = str_replace("nombrecolaborador",$nombrecolaborador,$html_pdf);
 			$html_pdf = str_replace("fechacontrato",$fecha,$html_pdf);
@@ -2522,19 +2519,73 @@ public function get_remuneraciones_by_id($idremuneracion){
 	
 			//echo $html; exit;
 			$this->mpdf->SetTitle('Is RRHH - Contrato de Trabajo');
-			$this->mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			//$this->mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
 			$this->mpdf->WriteHTML($html_pdf);
 
 			// SE ALMACENA EL ARCHIVO
-			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_sueldos_".$datos_remuneracion->id.".pdf";
-			
+			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_contrato_".$rut.".pdf";
+
 			$this->mpdf->Output($nombre_archivo, "I");
+			
+			$array_contrato = array(
+				'pdf_documento_colaborador' => $html_pdf,
+				'id_personal' => $idtrabajador,
+				'id_empresa' => $this->session->userdata('empresaid'),
+				'id_tipo_doc_colaborador' => $tipo,
+				'id_formato_doc_colaborador' => $tipo_formato,
+				'created_by' => $fecha,	
+				'created_at' => date('Ymd H:i:s'),
+				'updated_at' => date('Ymd H:i:s')
+			);			
 
-			//redirect('rrhh/contratos');
+			$this->db->insert('rem_doc_colaborador',$array_contrato);	
 
-			//redirect('rrhh/contrato_colaborador/'+$personal->id_personal);
+			
+	}
 
-			//return;
+	public function generar_contrato_personal($tipo){
+	
+	    	
+	       	$this->db->select('pdf_documento_colaborador')
+									->from('rem_doc_colaborador')
+									->where('id_doc_colaborador',$tipo)
+									->where('id_empresa',$this->session->userdata('empresaid'));
+
+			$query = $this->db->get();
+			$result = $query->row();			
+			//print_r($nombrecolaborador);
+
+			//exit;
+
+			$html_pdf = $result->pdf_documento_colaborador;
+			
+			$this->load->library("mpdf");
+			$this->mpdf->mPDF(
+				'',    // mode - default ''
+				'',    // format - A4, for example, default ''
+				8,     // font size - default 0
+				'',    // default font family
+				10,    // margin_left
+				5,    // margin right
+				16,    // margin top
+				16,    // margin bottom
+				9,     // margin header
+				9,     // margin footer
+				'L'    // L - landscape, P - portrait
+				);
+			  
+	
+			//echo $html; exit;
+			$this->mpdf->SetTitle('Is RRHH - Contrato de Trabajo');
+			//$this->mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$this->mpdf->WriteHTML($html_pdf);
+
+			// SE ALMACENA EL ARCHIVO
+			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_contrato_".$rut.".pdf";
+
+			$this->mpdf->Output($nombre_archivo, "I");
+			
+			
 			
 	}
 

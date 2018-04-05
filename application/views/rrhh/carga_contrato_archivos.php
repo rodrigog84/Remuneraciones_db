@@ -14,17 +14,9 @@
               <?php $paisselected = $tipo->id == $datos_form['id_tipo_doc_colaborador'] ? "selected" : "Tipo Contrato"; ?>
               <option value="<?php echo $tipo->id_tipo_doc_colaborador;?>" <?php echo $paisselected;?> ><?php echo $tipo->tipo;?></option>
               <?php } ?>
-              <input type="text" name="tipocontrato" id="rut"  class="form-control1"  placeholder="" title="Nombre " required size="100">
-
+              <input type="text" name="tipocontrato" id="rut"  class="form-control1"  placeholder="Nombre Tipo Documento" title="Nombre " required size="100">
               </select>
-            </td>
-            <td>            
-             <td>
-             <td>     
-                <a href="<?php echo base_url();?>configuraciones/genera_documentos" class="btn btn-info opciones" id="opciones" title="Agregar Tipo Documento"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>          
-                </td>
-            </td>
-            </td>                    
+            </td>                             
           </tr> 
          </thead>
         <tbody>
@@ -48,9 +40,8 @@
                   </div><!-- /.box-body -->
                   <div class="panel-footer">
                     <button type="submit" class="btn btn-success" name="cargar">Cargar</button>
-
                     &nbsp;&nbsp;
-                    <a href="<?php echo base_url();?>rrhh/anticipos" class="btn btn-default">Volver</a>
+                    <a href="<?php echo base_url();?>configuraciones/tipos_contrato" class="btn btn-default">Volver</a>
                   </div>                  
               </div>
             </div>       

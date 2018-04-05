@@ -3091,7 +3091,18 @@ public function submit_anticipos(){
 
 		$this->rrhh_model->generar_contrato($personal,$tipo,$fecha,$idtrabajador);
 
-		redirect('rrhh/contrato_colaborador');
+		//redirect('rrhh/contrato_colaborador/',$idtrabajador);
+
+
+		
+	}
+
+	public function submit_genera_contrato_personal($tipo){
+
+		
+		$this->rrhh_model->generar_contrato_personal($tipo);
+
+		//redirect('rrhh/contrato_colaborador/',$idtrabajador);
 
 
 		
@@ -3602,18 +3613,62 @@ public function contrato_colaborador($rut){
 	$personal = $this->admin->get_personal_total($rut);
 	$tipocontrato = $this->admin->get_tipo_contrato();
 
-	//print_r($tipocontrato);
-
-	//exit;
+	$contratos_personal = $this->admin->get_personal_contrato($rut); 
+	
+	
 	 
 	$vars['personal'] = $personal;
+	$vars['contratopersonal'] = $contratos_personal;
 	$vars['tipocontrato'] = $tipocontrato;
 	$vars['contrato'] = 1;
-	//$vars['appaterno'] = $apaterno;
-	//$vars['amaterno'] = $amaterno;
 	$vars['content_menu'] = $content;				
 	$vars['content_view'] = 'forbidden';
 	$vars['content_view'] = 'rrhh/contrato_colaborador';
+	$this->load->view('template',$vars);
+
+	/*}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}*/
+
+
+}
+
+public function documento_colaborador($tipo){
+
+	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+	
+	$idtipo = $tipo;
+
+	$content = array(
+						'menu' => 'Documentos',
+						'title' => 'Documentos Colaborador',
+						'subtitle' => 'Documentos');
+	//$vars['rut'] = $rut;
+
+	$tipocontrato = $this->admin->get_tipo_documento($idtipo);
+
+	//print_r($tipocontrato);
+	//exit;
+
+	
+	 
+	//$vars['personal'] = $personal;
+	//$vars['contratopersonal'] = $contratos_personal;
+	$vars['tipocontrato'] = $tipocontrato;
+	$vars['contrato'] = 1;
+	$vars['content_menu'] = $content;				
+	$vars['content_view'] = 'forbidden';
+	$vars['content_view'] = 'rrhh/documentos_colaborador';
 	$this->load->view('template',$vars);
 
 	/*}else{
@@ -3674,7 +3729,7 @@ public function genera_contrato($idpersonal){
 
 	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
-	$idtipo = $this->input->post('tipo');
+	$idtipo = 1;
 
 	
 	$content = array(
@@ -3693,8 +3748,6 @@ public function genera_contrato($idpersonal){
 	$vars['personal'] = $personal;
 	$vars['tipocontrato'] = $tipocontrato;
 	$vars['contrato'] = 1;
-	//$vars['appaterno'] = $apaterno;
-	//$vars['amaterno'] = $amaterno;
 	$vars['content_menu'] = $content;				
 	$vars['content_view'] = 'forbidden';
 	$vars['content_view'] = 'rrhh/genera_contrato';
