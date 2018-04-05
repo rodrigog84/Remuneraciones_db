@@ -98,7 +98,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" required id="datepicker" type="text" value="">
+																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" required id="datepicker" type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
 															</td>
 															<td>
 																<select name="nacionalidad" id="nacionalidad" class="form-control1" required>
@@ -1252,6 +1252,27 @@ $(document).ready(function(){
 	});
 </script>
 <!--date-piker-->		
+
+
+<script language="JavaScript">
+
+		function calculaedad(Fecha){
+			var fecha_nueva = Fecha.split("/");
+
+			fecha = new Date(fecha_nueva[2],fecha_nueva[1],fecha_nueva[0])
+			hoy = new Date()
+			
+			ed = parseInt((hoy -fecha)/365/24/60/60/1000)
+			if (ed >=0){
+				$("#edad").text("Edad: "+ ed +" Año(s)");
+			}else{
+				$("#edad").text("");
+			}
+		
+		
+		}
+
+</script>
 
 <script>
 		function habilitar(value)
