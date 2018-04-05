@@ -608,7 +608,7 @@ public function get_cargo_colaborador($idtrabajador = null){
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
 						  ->where('c.id_cargos = p.idcargo')
 						  ->order_by('p.active','desc')
-		                  ->order_by('p.nombre');
+		                  ->order_by('p.apaterno');
 		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
@@ -772,7 +772,7 @@ public function get_cargos($idcargo = null){
 						  ->join('rem_cargos c2','c.id_padre = c2.id_cargos','left')
 						  ->where('(c.id_empresa = '.$this->session->userdata('empresaid') . ' or c.id_empresa is null)')
 						  ->where('c.activo = 1')
-		                  ->order_by('c2.id_cargos asc');
+		                  ->order_by('c.nombre asc');
 		$cargos_data = is_null($idcargo) ? $cargos_data : $cargos_data->where('c.id_cargos',$idcargo);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idcargo) ? $query->result() : $query->row();

@@ -76,14 +76,14 @@
 														<tbody>
 															<td >
 																<div class="form-group">
-																<input type="text" name="nombre" class="form-control1" id="nombre" placeholder="Nombre Completo" required>
+																<input type="text" name="nombre" class="form-control1" id="nombre" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
 																</div>
 															</td>
 															<td class="form-group">
-																<input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="Apellido Parterno" required>
+																<input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="Apellido Parterno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
 															</td>
 															<td class="form-group">
-																<input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="Apellido Materno" required>
+																<input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="Apellido Materno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
 															</td>
 														</tbody>
 													</table>
@@ -150,10 +150,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="Dirección" data-toggle="modal" data-target="#myModalDireccion">
+																<input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="Dirección" size ="85" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
-																<input type="text" name="email" id="email" class="form-control1" placeholder="Email">
+																<input type="text" name="email" id="email" class="form-control1" placeholder="Email" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 														</tbody>
 													</table>
@@ -222,7 +222,7 @@
 																</select>
 															</td>
 															<td>
-																<input type="text" name="titulo" id="titulo" class="form-control1" placeholder="Titulo">
+																<input type="text" name="titulo" id="titulo" class="form-control1" placeholder="Titulo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<select name="idioma" id="idioma" class="form-control1">
@@ -320,7 +320,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="tipo_documento" id="tipo_documento" class="form-control1" placeholder="Tipo de Documento">
+																<input type="text" name="tipo_documento" id="tipo_documento" class="form-control1" placeholder="Tipo de Documento" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<select name="centro_costo" id="centro_costo" class="form-control1">
@@ -344,7 +344,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="beneficio" id="beneficio" class="form-control1" placeholder="C de Beneficio">
+																<input type="text" name="beneficio" id="beneficio" class="form-control1" placeholder="C de Beneficio" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<input type="text" name="fono" id="fono" class="form-control1" placeholder="Número de Celular">
@@ -366,13 +366,13 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="clase" class="form-control1" id="clase" placeholder="Clases">
+																<input type="text" name="clase" class="form-control1" id="clase" placeholder="Clases" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<input type="text" name="sueldo_base" class="form-control1" id="sueldo_base" placeholder="Sueldo Base">
 															</td>
 															<td>
-																<input type="text" name="tipo_cc" class="form-control1" id="tipo_cc" placeholder="Tipo CC">
+																<input type="text" name="tipo_cc" class="form-control1" id="tipo_cc" placeholder="Tipo CC" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 		
 														</tbody>
@@ -500,7 +500,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="seccion" class="form-control1" id="seccion" placeholder="Sección">
+																<input type="text" name="seccion" class="form-control1" id="seccion" placeholder="Sección" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<input type="text" name="codigo_ine" class="form-control1" id="codigo_ine" placeholder="Código Ine">
@@ -543,10 +543,10 @@
 																
 															</td>
 															<td>
-																<input type="text" name="sitio_laboral" class="form-control1" id="sitio_laboral" placeholder="Sitio Laboral">
+																<input type="text" name="sitio_laboral" class="form-control1" id="sitio_laboral" placeholder="Sitio Laboral" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
-																<input type="text" name="zona_brecha" class="form-control1" id="zona_brecha" placeholder="Zona Brecha">
+																<input type="text" name="zona_brecha" class="form-control1" id="zona_brecha" placeholder="Zona Brecha" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 														</tbody>
 													</table>
@@ -608,7 +608,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="pago_cotiza" class="form-control1" id="pago_cotiza" placeholder="L. Pago Cotiz">
+																<input type="text" name="pago_cotiza" class="form-control1" id="pago_cotiza" placeholder="L. Pago Cotiz" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<select name="afp" id="afp" class="form-control1">
@@ -651,7 +651,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="cese" class="form-control1" id="cese" placeholder="Cese AFC">
+																<input type="text" name="cese" class="form-control1" id="cese" placeholder="Cese AFC" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<select name="isapre" id="isapre" class="form-control1">
@@ -851,10 +851,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="nombrefp" class="form-control1" id="nombrefp" placeholder="Nombre Completo">
+																<input type="text" name="nombrefp" class="form-control1" id="nombrefp" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
-																<input type="text" name="emailfp" class="form-control1" id="emailfp" placeholder="Email">
+																<input type="text" name="emailfp" class="form-control1" id="emailfp" placeholder="Email" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 														</tbody>
 													</table>
@@ -1144,6 +1144,13 @@ $(document).ready(function() {
 	});
 </script>
 <!--date-piker-->								
+
+<script>
+	 $(function(){
+	 	$("#nacionalidad").val('46');
+	 	$("#idioma").val('1');
+	 	$("#tiporenta").val('Mensual');
+	 })
 
 
 </script>

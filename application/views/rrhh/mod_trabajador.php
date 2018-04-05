@@ -56,7 +56,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="rut" id="rut"  class="form-control1"  placeholder="98.123.456-7" title="Escriba Rut" required >
+																<input type="text" name="rut" id="rut"  class="form-control1"  placeholder="98.123.456-7" title="Escriba Rut" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required >
 															</td>
 															<td>
 																<input type="text" name="numficha" id="numficha" class="form-control1" id="" placeholder="Número de Ficha" >
@@ -76,14 +76,14 @@
 														<tbody>
 															<td >
 																<div class="form-group">
-																<input type="text" name="nombre" class="form-control1" id="nombre" placeholder="Nombre Completo" required>
+																<input type="text" name="nombre" class="form-control1" id="nombre" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
 																</div>
 															</td>
 															<td class="form-group">
-																<input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="Apellido Parterno" required>
+																<input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="Apellido Parterno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
 															</td>
 															<td class="form-group">
-																<input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="Apellido Materno" required>
+																<input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="Apellido Materno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
 															</td>
 														</tbody>
 													</table>
@@ -150,10 +150,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="Dirección" data-toggle="modal" data-target="#myModalDireccion">
+																<input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="Dirección" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
-																<input type="text" name="email" id="email" class="form-control1" placeholder="Email">
+																<input type="text" name="email" id="email" class="form-control1" placeholder="Email" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 														</tbody>
 													</table>
@@ -222,7 +222,7 @@
 																</select>
 															</td>
 															<td>
-																<input type="text" name="titulo" id="titulo" class="form-control1" placeholder="Titulo">
+																<input type="text" name="titulo" id="titulo" class="form-control1" placeholder="Titulo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<select name="idioma" id="idioma" class="form-control1">
@@ -320,7 +320,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="tipo_documento" id="tipo_documento" class="form-control1" placeholder="Tipo de Documento">
+																<input type="text" name="tipo_documento" id="tipo_documento" class="form-control1" placeholder="Tipo de Documento" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<select name="centro_costo" id="centro_costo" class="form-control1">
@@ -344,7 +344,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="beneficio" id="beneficio" class="form-control1" placeholder="C de Beneficio">
+																<input type="text" name="beneficio" id="beneficio" class="form-control1" placeholder="C de Beneficio" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<input type="text" name="fono" id="fono" class="form-control1" placeholder="Número de Celular">
@@ -366,13 +366,13 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="clase" class="form-control1" id="clase" placeholder="Clases">
+																<input type="text" name="clase" class="form-control1" id="clase" placeholder="Clases" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<input type="text" name="sueldo_base" class="form-control1" id="sueldo_base" placeholder="Sueldo Base">
 															</td>
 															<td>
-																<input type="text" name="tipo_cc" class="form-control1" id="tipo_cc" placeholder="Tipo CC">
+																<input type="text" name="tipo_cc" class="form-control1" id="tipo_cc" placeholder="Tipo CC" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 		
 														</tbody>
@@ -504,7 +504,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="seccion" class="form-control1" id="seccion" placeholder="Sección">
+																<input type="text" name="seccion" class="form-control1" id="seccion" placeholder="Sección" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<input type="text" name="codigo_ine" class="form-control1" id="codigo_ine" placeholder="Código Ine">
@@ -547,10 +547,10 @@
 																
 															</td>
 															<td>
-																<input type="text" name="sitio_laboral" class="form-control1" id="sitio_laboral" placeholder="Sitio Laboral">
+																<input type="text" name="sitio_laboral" class="form-control1" id="sitio_laboral" placeholder="Sitio Laboral" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
-																<input type="text" name="zona_brecha" class="form-control1" id="zona_brecha" placeholder="Zona Brecha">
+																<input type="text" name="zona_brecha" class="form-control1" id="zona_brecha" placeholder="Zona Brecha" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 														</tbody>
 													</table>
@@ -655,7 +655,7 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="cese" class="form-control1" id="cese" placeholder="Cese AFC">
+																<input type="text" name="cese" class="form-control1" id="cese" placeholder="Cese AFC" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
 																<select name="isapre" id="isapre" class="form-control1">
@@ -855,10 +855,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="nombrefp" class="form-control1" id="nombrefp" placeholder="Nombre Completo">
+																<input type="text" name="nombrefp" class="form-control1" id="nombrefp" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
-																<input type="text" name="emailfp" class="form-control1" id="emailfp" placeholder="Email">
+																<input type="text" name="emailfp" class="form-control1" id="emailfp" placeholder="Email" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 														</tbody>
 													</table>
@@ -1011,14 +1011,18 @@
 													<table class="table table-striped">
     													<thead> 
 															<tr> 
-																<th>Vacaciones:</th> 
+																<th>Mostrar Vacaciones:</th> 
 																<th>Cheque Restaurante:</th>
 																<th>Licencias Médicas</th>
 															</tr> 
 														</thead>
 														<tbody>
-															<td>
-																<input type="text" name="vacaciones" class="form-control1" id="vacaciones" placeholder="Vacaciones" data-toggle="modal" data-target="#myModal12">
+															<td>		
+																Mostrar Vacaciones:
+																<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#vacaciones">
+																	 <span class="glyphicon glyphicon-plane" aria-hidden="true"></span>
+																</button>
+
 															</td>
 															<td>
 																<input type="text" name="cheque_restau" class="form-control1" id="cheque_restau" placeholder="Cheque Restaurante" data-toggle="modal" data-target="#myModal9">
@@ -1039,6 +1043,66 @@
 								</div>
 							
 							</form>
+
+
+
+<div class="modal fade bs-example-modal-lg" id="vacaciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				Vacaciones
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel"></h4>
+			</div>
+			<div class="modal-body">
+				 <div class="panel panel-inverse">                       
+				    <div class="panel-heading">
+				        <h4 class="panel-title">Detalle Vacaciones</h4>
+				    </div>  
+				    <div class="panel-body">
+					 <form id="basicBootstrapForm" action="" id="basicBootstrapForm" method="post"> 
+			            <div class="row">
+			                <div class="col-md-12">
+			                          <table  class="table table-bordered table-striped dt-responsive">
+			                          <thead>
+			                            <tr>
+			                              <th rowspan="2">#</th>
+			                              <th rowspan="2">Rut</th>
+			                              <th rowspan="2">Nombre Trabajador</th>
+			                              <th colspan="3" ><center>D&iacute;as Devengados</center></th>
+			                              <th rowspan="2">Tomados</th>
+			                              <th rowspan="2">Saldo</th>
+			                              <th rowspan="2">Solicitar</th>
+			                              <th rowspan="2">Cartola</th>
+			                              <th rowspan="2">D&iacute;as Progresivos</th>
+			                            </tr>
+			                            <tr>
+			                             <th>Legales</th>
+			                              <th>Progresivos</th>
+			                              <th>Total Devengado</th>
+			                            </tr>
+
+			                          </thead>
+			                          <tbody>
+			                          </tbody>
+			                      </table>
+							</div>
+						</div>
+						</form>
+				 </div>
+      			</div>
+			</div>
+			<div class="modal-footer">
+				 <button type="button" class="btn btn-default" data-dismiss="modal">Volver</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
 <script>
 function VerificaRut(rut) {
     if (rut.toString().trim() != '') {
