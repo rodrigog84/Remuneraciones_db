@@ -2589,6 +2589,52 @@ public function get_remuneraciones_by_id($idremuneracion){
 			
 	}
 
+	public function generar_tipo_documento($tipo){
+	
+	    	
+	       	$this->db->select('id_formato_doc_colaborador,formato_pdf')
+									->from('rem_formato_doc_colaborador')
+									->where('id_formato_doc_colaborador',$tipo)
+									->where('id_empresa',$this->session->userdata('empresaid'));
+
+			$query = $this->db->get();
+			$result = $query->row();						
+			//print_r($nombrecolaborador);
+
+			//exit;
+
+			$html_pdf = $result->formato_pdf;
+			
+			$this->load->library("mpdf");
+			$this->mpdf->mPDF(
+				'',    // mode - default ''
+				'',    // format - A4, for example, default ''
+				8,     // font size - default 0
+				'',    // default font family
+				10,    // margin_left
+				5,    // margin right
+				16,    // margin top
+				16,    // margin bottom
+				9,     // margin header
+				9,     // margin footer
+				'L'    // L - landscape, P - portrait
+				);
+			  
+	
+			//echo $html; exit;
+			$this->mpdf->SetTitle('Is RRHH - Documento Tipo');
+			//$this->mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$this->mpdf->WriteHTML($html_pdf);
+
+			// SE ALMACENA EL ARCHIVO
+			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_contrato_".$rut.".pdf";
+
+			$this->mpdf->Output($nombre_archivo, "I");
+			
+			
+			
+	}
+
 
 public function generar_contenido_comprobante($datos_remuneracion){
 

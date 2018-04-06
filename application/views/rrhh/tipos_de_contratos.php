@@ -32,7 +32,7 @@
 	                              <td><small><?php echo $i ;?></small></td>
 									  <td><small><?php echo $contrato->tipo;?></small></td>							  
 								<td>			
-								<a href="<?php echo base_url();?>rrhh/documento_colaborador/<?php echo $contrato->id_tipo_doc_colaborador?>" class="btn btn-info opciones" id="opciones" title="Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>						
+								<a href="<?php echo base_url();?>rrhh/documento_tipo/<?php echo $contrato->id_tipo_doc_colaborador?>" class="btn btn-info opciones" id="opciones" title="Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>						
 								</td>
 								</tr> 
 

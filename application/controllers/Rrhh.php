@@ -3108,6 +3108,17 @@ public function submit_anticipos(){
 		
 	}
 
+	public function submit_genera_tipo_documento($tipo){
+
+		
+		$this->rrhh_model->generar_tipo_documento($tipo);
+
+		//redirect('rrhh/contrato_colaborador/',$idtrabajador);
+
+
+		
+	}
+
 	
 	public function submit_genera_finiquito(){
 
@@ -3669,6 +3680,43 @@ public function documento_colaborador($tipo){
 	$vars['content_menu'] = $content;				
 	$vars['content_view'] = 'forbidden';
 	$vars['content_view'] = 'rrhh/documentos_colaborador';
+	$this->load->view('template',$vars);
+
+	/*}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}*/
+
+
+}
+
+public function documento_tipo($tipo){
+
+	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+	
+	$idtipo = $tipo;
+
+	$content = array(
+						'menu' => 'Documentos',
+						'title' => 'Tipos Documentos',
+						'subtitle' => 'Documentos');
+	
+	$tipocontrato = $this->admin->get_tipo_documento($idtipo);
+
+	$vars['tipocontrato'] = $tipocontrato;
+	$vars['contrato'] = 1;
+	$vars['content_menu'] = $content;				
+	$vars['content_view'] = 'forbidden';
+	$vars['content_view'] = 'rrhh/documentos_tipo';
 	$this->load->view('template',$vars);
 
 	/*}else{
