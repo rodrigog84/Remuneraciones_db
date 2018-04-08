@@ -3941,6 +3941,8 @@ public function genera_finiquito($idpersonal){
 
 	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
+	$idtipo = 2;
+
 	$content = array(
 						'menu' => 'Finiquito',
 						'title' => 'Genera Finiquito Colaborador',
@@ -3952,7 +3954,7 @@ public function genera_finiquito($idpersonal){
 
 	//exit;
 
-	$tipocontrato = $this->admin->get_tipo_contrato();
+	$tipocontrato = $this->admin->get_tipo_documento($idtipo);
 	
 	$vars['personal'] = $personal;
 	$vars['tipocontrato'] = $tipocontrato;

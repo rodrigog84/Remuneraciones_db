@@ -2487,19 +2487,23 @@ public function get_remuneraciones_by_id($idremuneracion){
 			$html_pdf = $result->formato_pdf;
 			$tipo_formato = $result->id_formato_doc_colaborador;
 
-			$html_pdf = str_replace("nombrecolaborador",$nombrecolaborador,$html_pdf);
-			$html_pdf = str_replace("fechacontrato",$fecha,$html_pdf);
-			$html_pdf = str_replace("nacionalidad",$personal->nacionalidad,$html_pdf);	
-			$html_pdf = str_replace("rut",$rut,$html_pdf);
-			$html_pdf = str_replace("estadocivil",$personal->idecivil,$html_pdf);
-			$html_pdf = str_replace("fechanacimiento",$personal->fecnacimiento,$html_pdf);
-			$html_pdf = str_replace("direccion",$personal->direccion,$html_pdf);
-			$html_pdf = str_replace("direccionsucursal",$direccionsucursal,$html_pdf);
+			$html_pdf = str_replace("NOMBRECOLABORADOR",$nombrecolaborador,$html_pdf);
+			$html_pdf = str_replace("FECHACONTRATO",$fecha,$html_pdf);
+			$html_pdf = str_replace("NACIONALIDAD",$personal->nacionalidad,$html_pdf);	
+			$html_pdf = str_replace("RUTCOLABORADOR",$rut,$html_pdf);
+			$html_pdf = str_replace("ESTADOCIVIL",$personal->idecivil,$html_pdf);
+			$html_pdf = str_replace("FECHANACIMIENTO",$personal->fecnacimiento,$html_pdf);
+			$html_pdf = str_replace("DIRECCION",$personal->direccion,$html_pdf);
+			$html_pdf = str_replace("DIRECCIONSUCURSAL",$direccionsucursal,$html_pdf);
 
 			//$html_pdf = str_replace("@nombreremplazado",$nombreremplazado,$html_pdf);
 
-			$html_pdf = str_replace("sueldobase",$personal->sueldobase,$html_pdf);
-			$html_pdf = str_replace("fechaingreso",$personal->fecingreso,$html_pdf);
+
+			$valorenletras = valorenletras($personal->sueldobase);
+
+			$html_pdf = str_replace("SUELDOBASE",$personal->sueldobase,$html_pdf);
+			$html_pdf = str_replace("FECHAINGRESO",$personal->fecingreso,$html_pdf);
+			$html_pdf = str_replace("VALORENLETRAS",$valorenletras,$html_pdf);
 		
 			$this->load->library("mpdf");
 			$this->mpdf->mPDF(
