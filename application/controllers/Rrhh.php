@@ -461,7 +461,83 @@ class Rrhh extends CI_Controller {
 			$vars['content_view'] = 'forbidden';
 			$this->load->view('template',$vars);
 
-		}	
+		}
+		
+			
+
+
+	}
+
+	public function cartas(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$vars['mantencion_personal'] = 'active';				
+			$vars['leyes_sociales'] = '';		
+			$vars['salud'] = '';	
+			$vars['otros'] = '';	
+			$vars['apv'] = '';
+			$resultid = $this->session->flashdata('personal_result');
+			if($resultid == 1){
+				$vars['message'] = "Trabajador Agregado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+				$vars['mantencion_personal'] = 'active';				
+				$vars['leyes_sociales'] = '';		
+				$vars['apv'] = '';		
+				$vars['salud'] = '';		
+				$vars['otros'] = '';	
+			}
+
+			$this->load->model('admin');
+			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
+
+
+			$this->load->model('admin');
+			$personal = $this->admin->get_personal_total(); 
+			
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Personal');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'rrhh/cartas_personal';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['formValidation'] = true;
+			$vars['gritter'] = true;
+
+			$vars['empresa'] = $empresa;
+			$vars['personal'] = $personal;
+			//$vars['afps'] = $afps;
+			//$vars['apvs'] = $apvs;
+			//$vars['isapres'] = $isapres;
+			//$vars['cajas'] = $cajas;
+			//$vars['mutuales'] = $mutuales;
+			//$vars['parametros_generales'] = $parametros_generales;
+			
+			$template = "template";
+			
+
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+		
+			
 
 
 	}
@@ -3038,7 +3114,34 @@ public function submit_anticipos(){
 		
 	}
 
+	public function submit_genera_carta(){
+
+		$tipo = $this->input->post("tipo");
+		$fecha = $this->input->post("fechacontrato");
+		$idtrabajador = $this->input->post("idtrabajador");
+
+		$personal = $this->admin->get_personal_total($idtrabajador);
+
+		$this->rrhh_model->generar_carta($personal,$tipo,$fecha,$idtrabajador);
+
+		//redirect('rrhh/contrato_colaborador/',$idtrabajador);
+
+
+		
+	}
+
 	public function submit_genera_contrato_personal($tipo){
+
+		
+		$this->rrhh_model->generar_contrato_personal($tipo);
+
+		//redirect('rrhh/contrato_colaborador/',$idtrabajador);
+
+
+		
+	}
+
+	public function submit_genera_carta_personal($tipo){
 
 		
 		$this->rrhh_model->generar_contrato_personal($tipo);
@@ -3605,6 +3708,35 @@ public function contrato_colaborador($rut){
 
 }
 
+public function carta_colaborador($rut){
+
+	
+	$content = array(
+						'menu' => 'Cartas',
+						'title' => 'Cartas Colaborador',
+						'subtitle' => 'Cartas');
+	$vars['rut'] = $rut;
+
+	$personal = $this->admin->get_personal_total($rut);
+	$tipocontrato = $this->admin->get_tipo_contrato();
+
+	$contratos_personal = $this->admin->get_personal_carta($rut); 
+	
+	
+	 
+	$vars['personal'] = $personal;
+	$vars['contratopersonal'] = $contratos_personal;
+	$vars['tipocontrato'] = $tipocontrato;
+	$vars['contrato'] = 1;
+	$vars['content_menu'] = $content;				
+	$vars['content_view'] = 'forbidden';
+	$vars['content_view'] = 'rrhh/cartas_colaborador';
+	$this->load->view('template',$vars);
+
+	
+
+}
+
 public function documento_colaborador($tipo){
 
 	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
@@ -3772,6 +3904,36 @@ public function genera_contrato($idpersonal){
 
 		}*/
 
+
+}
+
+public function genera_carta($idpersonal){
+
+	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+	$idtipo = 3;
+
+	
+	$content = array(
+						'menu' => 'Contratos',
+						'title' => 'Genera Documento Colaborador',
+						'subtitle' => 'Documento Colaboradores');
+	
+	$personal = $this->admin->get_personal_total($idpersonal);	
+	
+	//$idtipo = 1;
+	 
+
+	$tipocontrato = $this->admin->get_tipo_documento($idtipo);
+
+		
+	$vars['personal'] = $personal;
+	$vars['tipocontrato'] = $tipocontrato;
+	$vars['contrato'] = 1;
+	$vars['content_menu'] = $content;				
+	$vars['content_view'] = 'forbidden';
+	$vars['content_view'] = 'rrhh/genera_carta';
+	$this->load->view('template',$vars);	
 
 }
 

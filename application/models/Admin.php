@@ -853,6 +853,23 @@ public function get_bonos($idtrabajador = null){
 		return $query->result();
 	}
 
+	public function get_personal_carta($rut = null){
+
+		$tipo=3;
+
+		$this->db->select('c.id_doc_colaborador,c.id_formato_doc_colaborador, c.id_personal, c.id_empresa, c.id_tipo_doc_colaborador, c.created_by, co.nom_documento as documento')
+			->from('rem_doc_colaborador as c')
+			->join('rem_formato_doc_colaborador as co','c.id_formato_doc_colaborador = co.id_formato_doc_colaborador','left')
+		    ->where('c.id_personal', $rut)
+		    ->where('c.id_tipo_doc_colaborador', $tipo)
+		    ->where('c.id_empresa', $this->session->userdata('empresaid'))
+		    ->order_by('c.created_by asc');
+
+		
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	public function get_personal_finiquitos($rut = null){
 
 		$tipo=2;
