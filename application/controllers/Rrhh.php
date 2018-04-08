@@ -44,66 +44,7 @@ class Rrhh extends CI_Controller {
 				$vars['apv'] = '';		
 				$vars['salud'] = '';		
 				$vars['otros'] = '';	
-			}elseif($resultid == 2){
-				$vars['message'] = "Error al agregar Trabajador. Trabajador ya existe";
-				$vars['classmessage'] = 'danger';
-				$vars['icon'] = 'fa-ban';
-				$vars['mantencion_personal'] = 'active';				
-				$vars['leyes_sociales'] = '';		
-				$vars['apv'] = '';		
-				$vars['salud'] = '';
-				$vars['otros'] = '';							
-			}elseif($resultid == 3){
-				$vars['message'] = "Leyes sociales actualizadas correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';
-				$vars['mantencion_personal'] = '';				
-				$vars['apv'] = '';		
-				$vars['leyes_sociales'] = 'active';		
-				$vars['salud'] = '';	
-				$vars['otros'] = '';						
-			}elseif($resultid == 4){
-				$vars['message'] = "Datos de Cotizaciones de Salud actualizados correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';	
-				$vars['mantencion_personal'] = '';				
-				$vars['apv'] = '';		
-				$vars['leyes_sociales'] = '';		
-				$vars['salud'] = 'active';							
-				$vars['otros'] = '';	
-			}elseif($resultid == 5){
-				$vars['message'] = "Mutual de Seguridad/Caja de Compensaci&oacute;n actualizados correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = '';				
-				$vars['apv'] = '';		
-				$vars['leyes_sociales'] = '';		
-				$vars['salud'] = '';							
-				$vars['otros'] = 'active';											
-			}elseif($resultid == 6){
-				$vars['message'] = "Trabajador Editado correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = 'active';				
-				$vars['apv'] = '';		
-				$vars['leyes_sociales'] = '';		
-				$vars['salud'] = '';	
-				$vars['otros'] = '';							
-			}elseif($resultid == 7){
-				$vars['message'] = "A.P.V. Editado correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = '';				
-				$vars['apv'] = 'active';		
-				$vars['leyes_sociales'] = '';		
-				$vars['salud'] = '';	
-				$vars['otros'] = '';							
-			}elseif($resultid == 8){
-				$vars['message'] = "Colaboradores Cargados correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';		
 			}
-
 			$this->load->model('admin');
 			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
 
@@ -3108,6 +3049,17 @@ public function submit_anticipos(){
 		
 	}
 
+	public function submit_genera_finiquito_personal($tipo){
+
+		
+		$this->rrhh_model->generar_contrato_personal($tipo);
+
+		//redirect('rrhh/contrato_colaborador/',$idtrabajador);
+
+
+		
+	}
+
 	public function submit_genera_tipo_documento($tipo){
 
 		
@@ -3745,11 +3697,17 @@ public function finiquito_colaborador($rut){
 						'subtitle' => 'Finiquitos');
 	$vars['rut'] = $rut;
 
-	$personal = $this->admin->get_personal_total($rut); 
+	$personal = $this->admin->get_personal_total($rut);
+	$tipocontrato = $this->admin->get_tipo_contrato();
+
+	$contratos_personal = $this->admin->get_personal_finiquitos($rut); 
+	
+	
+	 
 	$vars['personal'] = $personal;
+	$vars['contratopersonal'] = $contratos_personal;
+	$vars['tipocontrato'] = $tipocontrato;
 	$vars['contrato'] = 1;
-	//$vars['appaterno'] = $apaterno;
-	//$vars['amaterno'] = $amaterno;
 	$vars['content_menu'] = $content;				
 	$vars['content_view'] = 'forbidden';
 	$vars['content_view'] = 'rrhh/finiquito_colaborador';

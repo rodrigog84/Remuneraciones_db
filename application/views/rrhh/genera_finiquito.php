@@ -181,6 +181,7 @@
                         <div class="row" id=""></div>    
                         <div class="box-footer">
                         <button type="submit" class="btn btn-primary">Generar</button>&nbsp;&nbsp;
+                        <a  href="<?php echo base_url();?>rrhh/finiquitos"  class="btn btn-default">Volver</a>
                       </div>
                       </div><!-- /.box-body -->
 
