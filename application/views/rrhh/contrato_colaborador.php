@@ -45,7 +45,7 @@
 									  <td><small><?php echo $documentos->documento;?></small></td>
 									  <td><small><?php echo $documentos->created_by;?></small></td>
 								<td>			
-								<a href="<?php echo base_url();?>rrhh/submit_genera_contrato_personal/<?php echo $documentos->id_doc_colaborador?>" class="btn btn-info opciones" id="opciones" title="Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>						
+								<a target="_blank" href="<?php echo base_url();?>rrhh/submit_genera_contrato_personal/<?php echo $documentos->id_doc_colaborador?>" class="btn btn-info opciones" id="opciones" title="Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>						
 								</td>
 								</tr> 
 

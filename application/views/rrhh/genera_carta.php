@@ -1,4 +1,4 @@
-<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_genera_carta" method="post" role="form" enctype="multipart/form-data">
+<form target="_blank" id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_genera_carta" method="post" role="form" enctype="multipart/form-data">
 
                       <div class="panel panel-inverse">                       
                           <div class="panel-heading">

@@ -3108,7 +3108,7 @@ public function submit_anticipos(){
 
 		$this->rrhh_model->generar_contrato($personal,$tipo,$fecha,$idtrabajador);
 
-		//redirect('rrhh/contrato_colaborador/',$idtrabajador);
+		redirect('rrhh/contrato_colaborador/',$idtrabajador);
 
 
 		
