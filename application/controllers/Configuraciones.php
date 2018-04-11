@@ -201,6 +201,69 @@ class Configuraciones extends CI_Controller {
 
 	}
 
+	public function centrocosto(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			
+			$resultid = $this->session->flashdata('centro_costo_result');
+			if($resultid == 1){
+				$vars['message'] = "Centro de costo Agregado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}else if($resultid == 2){
+				$vars['message'] = "Centro de Costo editado Correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+
+			}else if($resultid == 3){
+				$vars['message'] = "Centro de Costo Ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
+			}
+
+			$centrocosto = $this->configuracion->centro_costo();
+			
+			//print_r($centrocosto);
+			//exit; 
+
+
+			$content = array(
+						'menu' => 'Configuraciones Generales',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Centro de Costos');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'configuraciones/Centro_costo';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+
+			$vars['centro_costo'] = $centrocosto;
+			
+			$template = "template";
+			
+
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}	
+
+
+	}
+
 	
 
 	public function hab_descto(){
@@ -299,10 +362,7 @@ public function add_haber_descuento($idhaberdescto = null){
 			$vars['haberes_descuentos'] = $haberes_descuentos;
 			$vars['gritter'] = true;
 
-			$template = "template";
-			
-
-			
+			$template = "template";			
 
 			$this->load->view($template,$vars);	
 
@@ -318,6 +378,64 @@ public function add_haber_descuento($idhaberdescto = null){
 			$this->load->view('template',$vars);
 
 		}	
+
+
+	}
+	
+	public function add_centro_costo($idcentrocosto = null){
+		//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+						
+			$resultid = $this->session->flashdata('centro_costo');
+			if($resultid == 1){
+				$vars['message'] = "Trabajador Agregado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+				$vars['mantencion_personal'] = 'active';				
+				$vars['leyes_sociales'] = '';		
+				$vars['apv'] = '';		
+				$vars['salud'] = '';		
+				$vars['otros'] = '';	
+			}
+
+			$centro_costo = array();
+			if(!is_null($idcentrocosto)){
+					$centro_costo = $this->configuracion->centro_costo($idcentrocosto); 	
+			}
+			
+			//print_r($centro_costo);
+			//exit;			
+
+			$content = array(
+						'menu' => 'Configuraciones Generales',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Centro de Costos');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'configuraciones/add_centro_de_costos';
+			$vars['formValidation'] = true;
+			$vars['centro_costo'] = $centro_costo;
+			$vars['gritter'] = true;
+
+			$template = "template";			
+
+			$this->load->view($template,$vars);	
+
+		/*}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+		
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+			}*/
+
+		
 
 
 	}		
@@ -376,5 +494,31 @@ public function submit_haber_descuento(){
 		}		
 
 
-	}		
+	}
+	
+	public function submit_centro_costo(){
+		
+			$codigo = $this->input->post('codigo');
+			$descripcion = $this->input->post('nombre');
+			$idcentro = $this->input->post('idcentro');
+
+						
+			$datos = array();
+			$datos['codigo'] = $codigo;
+			$datos['nombre'] = $descripcion;
+			
+			$haberes_descuentos = $this->configuracion->add_centro_costo($datos,$idcentro);
+
+			if($idcentro==0){
+				$this->session->set_flashdata('centro_costo_result', 1);
+			redirect('configuraciones/centrocosto');
+				
+			}else{
+				$this->session->set_flashdata('centro_costo_result', 2);
+			redirect('configuraciones/centrocosto');	
+				
+			}
+
+	}
+			
 }

@@ -57,6 +57,20 @@ class Configuracion extends CI_Model
 
 	}
 
+	public function centro_costo($idcentrocosto = null){
+
+		$centrocosto_data = $this->db->select('d.id_centro_costo, d.codigo, d.id_empresa, d.created_at, d.nombre')
+			  ->from('rem_centro_costo d')
+			  ->where('valido = 1')
+			  ->where('(d.id_empresa = ' . $this->session->userdata('empresaid') . ')')
+			  ->order_by('nombre');
+		$centrocosto_data = is_null($idcentrocosto) ? $centrocosto_data : $centrocosto_data->where('id_centro_costo',$idcentrocosto);  		
+		$query = $this->db->get();
+		$datos = is_null($idcentrocosto) ? $query->result() : $query->row();
+		return $datos;
+
+	}
+
 
 	public function add_haberes_descuentos($datos,$idhab){
 
@@ -92,6 +106,45 @@ class Configuracion extends CI_Model
 			$this->db->where('id',$idhab);
 			$this->db->update('rem_conf_haber_descuento',$array_datos);
 		}
+
+	}
+
+	public function add_centro_costo($datos,$idcentro){
+
+		var_dump($idcentro); 
+		if($idcentro == 0){
+
+			       
+	        $array_datos = array(
+			'nombre' => $datos['nombre'],
+			'codigo' => $datos['codigo'],
+			'valido' => 1,
+			'id_empresa' => $this->session->userdata('empresaid'),
+			'created_at' => date('Ymd H:i:s'),
+			'updated_at' => date('Ymd H:i:s')			
+			);
+
+			$this->db->insert('rem_centro_costo',$array_datos);
+	        	
+
+	  
+
+		}else{
+
+			$array_datos = array(
+			'nombre' => $datos['nombre'],
+			'codigo' => $datos['codigo'],
+			'id_empresa' => $this->session->userdata('empresaid'),
+			'updated_at' => date('Ymd H:i:s'),
+					
+		     );
+
+			$this->db->where('id_centro_costo',$idcentro);
+			$this->db->update('rem_centro_costo',$array_datos);
+			
+		}
+
+
 
 	}
 }
