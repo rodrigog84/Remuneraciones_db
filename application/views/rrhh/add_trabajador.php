@@ -153,7 +153,7 @@
 																<input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="Dirección" size ="85" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
-																<input type="text" name="email" id="email" class="form-control1" placeholder="Email" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+																<input type="text" name="email" id="email" class="form-control1" placeholder="Email" size="40" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 														</tbody>
 													</table>
@@ -161,12 +161,21 @@
 													<table class="table table-striped">
 														<thead> 
 															<tr> 
+																<th>Región</th>
 																<th>Tipo de Renta:</th> 
 																<th>Cargo:</th>
 																		
 															</tr> 
 														</thead>
 														<tbody>
+															<td>
+																<select name="region" id="region" class="form-control1">
+																	<?php foreach ($regiones as $region) { ?>
+								                                      <?php $regionselected = $region->id == $datos_form['idregion'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $region->id_region;?>" <?php echo $regionselected;?> ><?php echo $region->nombre;?></option>
+								                                    <?php } ?>
+																</select>
+															</td>
 															<td>
 																<select name="tiporenta" id="tiporenta" class="form-control1">
 																	<option value="">Seleccione Tipo Renta</option>
@@ -744,6 +753,29 @@
 															<td>
 																<input type="text" name="trabajo_pesado" class="form-control1" id="trabajo_pesado" placeholder="Trabajo Pesado/Insalub">
 															</td>
+														</tbody>
+													</table>
+
+													<table class="table table-striped">
+														<thead>
+															<tr>
+																<th>Asignación Familiar Individual </th>
+																<th>Asignación Familiar por Invalidez</th>
+																<th>Asignación Familiar Maternal</th>
+																
+															</tr>
+														</thead>
+														<tbody>
+															<td>
+																<input type="number" name="asig_individual" class="form-control1" id="asig_individual" placeholder="">
+															</td>
+															<td>
+																<input type="number" name="asig_por_invalidez" class="form-control1" id="asig_por_invalidez" placeholder="">
+															</td>
+															<td>
+																<input type="number" name="asig_maternal" class="form-control1" id="asig_maternal" placeholder="">
+															</td>
+															
 														</tbody>
 													</table>
 

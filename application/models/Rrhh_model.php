@@ -40,7 +40,9 @@ class Rrhh_model extends CI_Model
 		$this->load->helper('format');
 	}
 
-	public function get_centro_costo(){
+
+
+public function get_centro_costo(){
 		$this->db->select('id_centro_costo, id_empresa, nombre')
 						  ->from('rem_centro_costo')
 						  ->where('id_empresa', $this->session->userdata('empresaid'))
@@ -49,6 +51,7 @@ class Rrhh_model extends CI_Model
 		 return $query->result();
 
 	}
+
 
 	public function get_centro_costo_periodo_abierto($idperiodo = null){
 		$data_periodo = $this->db->select('cc.nombre, pr.id_periodo, pr.id_empresa, pr.id_centro_costo')

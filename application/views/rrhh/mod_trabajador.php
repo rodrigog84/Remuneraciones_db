@@ -150,10 +150,10 @@
 														</thead>
 														<tbody>
 															<td>
-																<input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="Dirección" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+																<input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="Dirección" size ="85"  onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 															<td>
-																<input type="text" name="email" id="email" class="form-control1" placeholder="Email" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+																<input type="text" name="email" id="email" class="form-control1" placeholder="Email" size="40" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 															</td>
 														</tbody>
 													</table>
@@ -161,12 +161,22 @@
 													<table class="table table-striped">
 														<thead> 
 															<tr> 
+																<th>Región</th>
 																<th>Tipo de Renta:</th> 
 																<th>Cargo:</th>
 																		
 															</tr> 
 														</thead>
 														<tbody>
+															<td>
+																<select name="region" id="region" class="form-control1">
+																	<?php foreach ($regiones as $region) { ?>
+								                                      <?php $regionselected = $region->id == $datos_form['idregion'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $region->id_region;?>" <?php echo $regionselected;?> ><?php echo $region->nombre;?></option>
+								                                    <?php } ?>
+																</select>
+															</td>
+
 															<td>
 																<select name="tiporenta" id="tiporenta" class="form-control1">
 																	<option value="">Seleccione Tipo Renta</option>
@@ -754,6 +764,29 @@
 													<table class="table table-striped">
 														<thead>
 															<tr>
+																<th>Asignación Familiar Individual </th>
+																<th>Asignación Familiar por Invalidez</th>
+																<th>Asignación Familiar Maternal</th>
+																
+															</tr>
+														</thead>
+														<tbody>
+															<td>
+																<input type="number" name="asig_individual" class="form-control1" id="asig_individual" placeholder="">
+															</td>
+															<td>
+																<input type="number" name="asig_por_invalidez" class="form-control1" id="asig_por_invalidez" placeholder="">
+															</td>
+															<td>
+																<input type="number" name="asig_maternal" class="form-control1" id="asig_maternal" placeholder="">
+															</td>
+															
+														</tbody>
+													</table>
+
+													<table class="table table-striped">
+														<thead>
+															<tr>
 																<th>Estado APVC:</th>
 																<th>Fecha APVC:</th>
 																<th>Término de Subsidio:</th>
@@ -1171,7 +1204,25 @@ $(document).ready(function(){
 
 
 </script>
+<script language="JavaScript">
 
+		function calculaedad(Fecha){
+			var fecha_nueva = Fecha.split("/");
+
+			fecha = new Date(fecha_nueva[2],fecha_nueva[1],fecha_nueva[0])
+			hoy = new Date()
+			
+			ed = parseInt((hoy -fecha)/365/24/60/60/1000)
+			if (ed >=0){
+				$("#edad").text("Edad: "+ ed +" Año(s)");
+			}else{
+				$("#edad").text("");
+			}
+		
+		
+		}
+
+</script>
 
 
 <script>
@@ -1225,6 +1276,11 @@ $(document).ready(function(){
         				$("#numficha").val(this.numficha);
         				$("#datepicker5").val(this.fecafp);
         				$("#datepicker6").val(this.fecafc);
+        				$("#region").val(this.idregion);
+        				$("#asig_individual").val(this.cargassimples);
+        				$("#asig_por_invalidez").val(this.cargasinvalidas);
+        				$("#asig_maternal").val(this.cargasmaternales);
+
         				if (this.segcesantia ==1){
         					$("#seguro_cesantia").val(this.segcesantia)
         					document.getElementById("seguro_cesantia").checked = true;
@@ -1254,25 +1310,7 @@ $(document).ready(function(){
 <!--date-piker-->		
 
 
-<script language="JavaScript">
 
-		function calculaedad(Fecha){
-			var fecha_nueva = Fecha.split("/");
-
-			fecha = new Date(fecha_nueva[2],fecha_nueva[1],fecha_nueva[0])
-			hoy = new Date()
-			
-			ed = parseInt((hoy -fecha)/365/24/60/60/1000)
-			if (ed >=0){
-				$("#edad").text("Edad: "+ ed +" Año(s)");
-			}else{
-				$("#edad").text("");
-			}
-		
-		
-		}
-
-</script>
 
 <script>
 		function habilitar(value)

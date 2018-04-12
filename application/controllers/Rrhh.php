@@ -884,6 +884,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$jornada_trabajo = $this->admin->get_jornada_trabajo();
 			$categoria = $this->admin->get_categoria();
 			$lugar_pago= $this->admin->get_lugar_pago();
+			
 
 
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
@@ -1027,6 +1028,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$apv = $this->admin->get_apv();
 			$categoria = $this->admin->get_categoria();
 			$lugar_pago= $this->admin->get_lugar_pago();
+
 
 			/**** CARGA DE DATOS TRABAJADOR ****/
 			$trabajador = is_null($idtrabajador) ?  array() : $this->admin->get_personal_total($idtrabajador); 
@@ -1212,6 +1214,10 @@ public function editar_trabajador(){
 			$fecafp = $this->input->post('datepicker5');
 			$fecafc = $this->input->post('datepicker6');
 			$seguro_cesantia = $this->input->post('seguro_cesantia');
+			$region = $this->input->post('region');
+			$asig_individual = $this->input->post('asig_individual');
+			$asig_por_invalidez = $this->input->post('asig_por_invalidez');
+			$asig_maternal = $this->input->post('asig_maternal');
 			
 
 			
@@ -1281,11 +1287,7 @@ public function editar_trabajador(){
 								'tallapolera' => $tallapolera,
 								'idasigfamiliar' => $tramo,
 								'valorpactado' => $monto_pactado,
-
-								/*'fecinicvacaciones' => $fecinicvacaciones,
-								'saldoinicvacaciones' => $saldoinicvacaciones,
-								'saldoinicvacprog' => $saldoinicvacprog,*/
-
+								'segcesantia' => $seguro_cesantia,
 								'fecinicvacaciones' => $fecingreso,
 								'fecingreso' => $fecingreso,
 								'id_lugar_pago' => $lugar_pago,
@@ -1296,20 +1298,22 @@ public function editar_trabajador(){
 								'semana_corrida' => $semana_corrida,
 								'fecafp' => $fecafp,
 								'fecafc' => $fecafc,
-								'saldoinicvacaciones' => 0,
-								'saldoinicvacprog' => 0,	
-
+								'idregion' => $region,
+								'cargassimples' => $asig_individual,
+								'cargasinvalidas' => $asig_por_invalidez,
+								'cargasmaternales' => $asig_maternal,
 								
+																							
 								
 								//DATOS POR DEFECTO
-								'idregion' => 1,
+								'saldoinicvacaciones' => 0,
+								'saldoinicvacprog' => 0,	
 								'idcomuna' => 1,								
 								'diasprogresivos' => 0,
 								'diasvactomados' => 0,
 								'diasprogtomados' => 0,
 								'tipocontrato' => 'I',
 								'parttime' => 0,
-								'segcesantia' => $seguro_cesantia,
 								'pensionado' => 0,
 								'diastrabajo' => 30,
 								'horasdiarias' => 8,
@@ -1317,9 +1321,7 @@ public function editar_trabajador(){
 								//'sueldobase' => 250000,
 								'tipogratificacion' => 'TL',
 								'gratificacion' => 0,
-								'cargassimples' => 0,
-								'cargasinvalidas' => 0,
-								'cargasmaternales' => 0,
+								
 								'cargasretroactivas' => 0,
 								
 								'asigfamiliar' => 0,
@@ -1412,7 +1414,10 @@ public function editar_trabajador(){
 			$semana_corrida = $this->input->post('semana_corrida');
 			$fecafp = $this->input->post('datepicker5');
 			$seguro_cesantia = $this->input->post('seguro_cesantia');
-			
+			$region = $this->input->post('region');
+			$asig_individual = $this->input->post('asig_individual');
+			$asig_por_invalidez = $this->input->post('asig_por_invalidez');
+			$asig_maternal = $this->input->post('asig_maternal');
 
 			// SE REGULARIZA LOS CAMPOS FECHA DEL FORMATO dd/mm/yyyy A yyyy/mm/dd DE LA BD	
 
@@ -1509,11 +1514,6 @@ public function editar_trabajador(){
 								'cotapv' => $cotapv,
 								'tallapantalon' => $tallapantalon,
 								'tallapolera' => $tallapolera,
-
-								//'fecinicvacaciones' => $fecinicvacaciones,
-								//'saldoinicvacaciones' => $saldoinicvacaciones,
-								//'saldoinicvacprog' => $saldoinicvacprog,
-
 								'fecinicvacaciones' => $fecingreso,
 								'id_lugar_pago' => $lugar_pago,
 								'id_categoria' => $categoria,
@@ -1521,19 +1521,23 @@ public function editar_trabajador(){
 								'rol_privado' => $regimen_pago,
 								'sindicato' => $sindicato,
 								'semana_corrida' => $semana_corrida,
+								'segcesantia' => $seguro_cesantia,
 								'fecafp' => $fecafp,
-								'saldoinicvacaciones' => 0,
-								'saldoinicvacprog' => 0,								
+								'idregion' => $region,
+								'cargassimples' => $asig_individual,
+								'cargasinvalidas' => $asig_por_invalidez,
+								'cargasmaternales' => $asig_maternal,
+															
 								
 								//DATOS POR DEFECTO
-								'idregion' => 1,
+								'saldoinicvacaciones' => 0,
+								'saldoinicvacprog' => 0,	
 								'idcomuna' => 1,
 								'diasprogresivos' => 0,
 								'diasvactomados' => 0,
 								'diasprogtomados' => 0,
 								'tipocontrato' => 'I',
 								'parttime' => 0,
-								'segcesantia' => $seguro_cesantia,
 								'pensionado' => 0,
 								'diastrabajo' => 30,
 								'horasdiarias' => 8,
@@ -1541,9 +1545,6 @@ public function editar_trabajador(){
 								//'sueldobase' => 250000,
 								'tipogratificacion' => 'TL',
 								'gratificacion' => 0,
-								'cargassimples' => 0,
-								'cargasinvalidas' => 0,
-								'cargasmaternales' => 0,
 								'cargasretroactivas' => 0,
 								'idasigfamiliar' => NULL,
 								'asigfamiliar' => 0,
