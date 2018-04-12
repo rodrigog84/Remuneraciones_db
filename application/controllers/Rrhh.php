@@ -188,6 +188,36 @@ class Rrhh extends CI_Controller {
 
     }
 
+    public function exportarHaberesDescto(){
+            	
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=haberesdescuentos.xls"); 
+            
+            $personal = $this->rrhh_model->get_personal();
+
+            echo '<table>';
+            echo "<tr>";
+                echo "<td>RUT</td>";               
+                echo "<td>DV</td>";
+                echo "<td>NOMBRE</td>";
+                echo "<td>CODIGO HAB/DESC</td>";
+                echo "<td>MONTO</td>";
+                echo "<td>MES</td>";
+                echo "<td>ANO</td>";   
+              echo "</tr>";
+              
+              foreach($personal as $v){
+              	echo "<tr>";
+                 echo "<td>".$v->rut."</td>";
+                 echo "<td>".$v->dv."</td>";
+                 echo "<td>".$v->nombre." ".$v->apaterno." ".$v->amaterno."</td>";
+                 echo "</tr>";
+               }	
+         echo '</table>';
+         exit;
+
+    }
+
 
 
 
@@ -775,6 +805,46 @@ class Rrhh extends CI_Controller {
 		
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'rrhh/carga_masiva_horas_extras';
+			$vars['formValidation'] = true;
+			$vars['dataTables'] = true;
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+	public function carga_masiva_haberes_descuentos()
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$mes  = $this->input->post('mes');
+			$anno  = $this->input->post('anno');
+
+			//echo $mes." -- ".$anno; exit;
+			$content = array(
+						'menu' => 'Administraci&oacute;n',
+						'title' => 'Administraci&oacute;n',
+						'subtitle' => 'Carga Masiva Haberes y Descuentos');
+
+       
+		
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'rrhh/carga_masiva_haberes_descuentos';
 			$vars['formValidation'] = true;
 			$vars['dataTables'] = true;
 			$template = "template";

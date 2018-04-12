@@ -385,6 +385,62 @@ public function add_personal($array_datos,$idtrabajador){
 
 	}
 
+	public function save_hab_descto_variable2($array_datos_hab_descto,$mes,$anno){
+
+		$this->db->trans_start();
+
+		
+		//$lista_montos = $array_datos_hab_descto['lista_montos'];
+		
+	// evaluar si existe periodo
+		$this->db->select('p.id_periodo')
+						  ->from('rem_periodo as p')
+		                  ->where('p.mes', $mes)
+		                  ->where('p.anno', $anno);
+		$query = $this->db->get();
+		$datos_periodo = $query->row();
+		$idperiodo = 0;
+		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+				$data = array(
+			      	'mes' => $mes,
+			      	'anno' =>  $anno
+				);
+				$this->db->insert('rem_periodo', $data);
+				$idperiodo = $this->db->insert_id();
+		}else{
+				$idperiodo = $datos_periodo->id_periodo;
+		}
+
+		//print_r($array_datos_hab_descto);
+		//exit;
+
+
+			
+
+		//$listado_col = $array_datos_hab_descto['listado_col'];
+		foreach ($array_datos_hab_descto as $idpersonal) {
+			
+			$array_datos = array(
+				'idconf' => $idpersonal['id_hab_descto'],
+				'idpersonal' => $idpersonal['idtrabajador'],
+				'descripcion' => $idpersonal['nombre'],
+				'monto' => $idpersonal['lista_montos'],
+				'idperiodo' => $idperiodo,
+				'created_at' => date('Ymd H:i:s'),
+				'updated_at' => date('Ymd H:i:s')
+			);
+			$this->db->insert('rem_bonos_personal',$array_datos);
+			//print_r($array_datos);
+		}
+
+		
+        //exit;
+
+		$this->db->trans_complete();
+		return 1;
+
+	}
+
 	public function get_datos_remuneracion($mes,$anno,$idtrabajador = null){
 
 		$personal_data = $this->db->select('r.idpersonal, r.id_periodo, r.diastrabajo, r.horasdescuento, r.montodescuento, r.valorhorasextras50, r.horasextras50, r.montohorasextras50, r.valorhorasextras100, r.horasextras100, r.montohorasextras100, r.anticipo, r.aguinaldo, r.sueldobase, r.gratificacion, r.movilizacion, r.valorhora')

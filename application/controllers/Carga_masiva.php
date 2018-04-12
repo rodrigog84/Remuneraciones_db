@@ -562,4 +562,101 @@ class Carga_masiva extends CI_Controller {
 
 	}
 
+	public function haberes_descuentos(){
+
+		//LUEGO DE SUBIR EL ARCHIVO	
+		$config['upload_path'] = "./uploads/cargas/";
+
+		//VALIDA QUE CARPETA EXISTA
+		if(!file_exists($config['upload_path'])){
+			mkdir($config['upload_path'],0777,true);
+		}
+
+        $config['file_name'] = date("Ymd")."_".date("His")."_";
+        $config['allowed_types'] = "*";
+        $config['max_size'] = "10240";
+
+        //carga libreria para cargar archivos
+        $this->load->library('upload', $config);
+
+        //Campo a leer
+        $this->upload->do_upload("userfile");
+   		$dataupload = $this->upload->data();
+
+   		
+		//cargamos el archivo
+   		$archivotmp = $dataupload['file_ext'];	  	
+		//obtenemos el archivo .csv
+
+
+    	$gestor = fopen("./uploads/cargas/" . $dataupload['file_name'], "r");
+    	$i = 0;
+
+    	$array_datos_hab_descto = array();
+	    while (($datos = fgetcsv($gestor, 10000, ";")) !== FALSE) {
+
+
+			if($i != 0){ 
+	       
+			       $rut = $datos[0];
+			       $dv = utf8_encode($datos[1]);
+			       $nombre = $datos[2];
+			       $codigo = strval($datos[3]);
+			       $monto = $datos[4];
+			       $mes = $datos[5];
+			       $anno = $datos[6];
+
+			        $idempresa = $this->session->userdata('empresaid');
+
+					$this->db->select('id_personal')
+									  ->from('rem_personal')
+					                  ->where('rut', $rut)
+					                  ->where('id_empresa', $idempresa);
+					$query = $this->db->get();
+
+					if(isset($query->row()->id_personal)){
+					
+					$id_personal = $query->row()->id_personal;
+
+				    };
+
+					$this->db->select('id, nombre')
+									  ->from('rem_conf_haber_descuento')
+					                  ->where('codigo', $codigo);
+					$query = $this->db->get();
+
+					if(isset($query->row()->id)){
+					
+					$id_hab_descto = $query->row()->id;
+					$nombre_desc = $query->row()->nombre;
+				
+
+				     }
+
+				 $array_datos_hab_descto[$i]['idtrabajador'] = $id_personal;
+		         $array_datos_hab_descto[$i]['lista_montos'] = $monto;
+			     $array_datos_hab_descto[$i]['id_hab_descto'] = $id_hab_descto;
+			     $array_datos_hab_descto[$i]['nombre'] = $nombre_desc;
+									
+								     
+	   		 }
+	   		 $i++;
+
+	   		
+			 
+		}
+
+		//print_r($array_datos_hab_descto);
+		//exit;
+
+
+
+		
+		$this->rrhh_model->save_hab_descto_variable2($array_datos_hab_descto,$mes,$anno);
+
+		$this->session->set_flashdata('hab_descto_variable_result',1);
+		redirect('rrhh/listado_hab_descto_variable');
+
+	}
+   
 }

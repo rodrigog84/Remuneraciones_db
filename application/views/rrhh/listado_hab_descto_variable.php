@@ -4,6 +4,7 @@
 									<div class="graph-visual tables-main">
 											
 													<a href="<?php echo base_url();?>rrhh/hab_descto_variable" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Haber / Descuento Variable</a>
+                          <a href="<?php echo base_url();?>rrhh/carga_masiva_haberes_descuentos" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a> 
 													<h3 class="inner-tittle two">Descripción</h3>
 														  <div class="graph">
 
@@ -45,6 +46,7 @@
 															</div>
 												
 													</div>
+
 											</div>
 
 
