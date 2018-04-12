@@ -892,6 +892,8 @@ public function get_bonos($idtrabajador = null){
 		$idtipo_data = $this->db->select('id_formato_doc_colaborador,id_tipo_doc_colaborador, nom_documento, created_at')
 						  ->from('rem_formato_doc_colaborador')
 						  ->where('id_tipo_doc_colaborador',$idtipo)
+						    ->where('id_empresa', $this->session->userdata('empresaid'))
+
 		                  ->order_by('nom_documento');
 		
    		$query = $this->db->get();   		

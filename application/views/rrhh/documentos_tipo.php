@@ -29,7 +29,7 @@
 									  <td><small><?php echo $documentos->nom_documento;?></small></td>
 									  <td><small><?php echo $documentos->created_at;?></small></td>
 								<td>			
-								<a href="<?php echo base_url();?>rrhh/submit_genera_tipo_documento/<?php echo $documentos->id_formato_doc_colaborador?>" class="btn btn-info opciones" id="opciones" title="Ver Documento"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>						
+								<a target="_blank" href="<?php echo base_url();?>rrhh/submit_genera_tipo_documento/<?php echo $documentos->id_formato_doc_colaborador?>" class="btn btn-info opciones" id="opciones" title="Ver Documento"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>						
 								</td>
 								</tr> 
 
