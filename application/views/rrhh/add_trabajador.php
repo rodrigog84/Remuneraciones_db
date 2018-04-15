@@ -581,38 +581,14 @@
 
 											<div class="tab-pane" id="datosllss">
 												<section class="llss">
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Código Regimen:</th> 
-																<th>Jubilados:</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<select name="selector1" id="selector1" class="form-control1">
-																	<option>Seleccione.</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum min</option>
-																</select>
-															</td>
-															<td>
-																<select name="jubilado" id="jubilado" class="form-control1">
-																	<option value="SI">SI</option>
-																	<option value="NO">NO</option>
-																
-																</select>
-																
-															</td>
-														</tbody>
-													</table>
+													
 
 													<table class="table table-striped">
     													<thead> 
 															<tr> 
 																<th>L. Pago Cotiz:</th> 
 																<th>A.F.P:</th>
+																<th>Jubilados:</th>
 															</tr> 
 														</thead>
 														<tbody>
@@ -627,6 +603,14 @@
 								                                      <option value="<?php echo $afp->id_afp;?>" <?php echo $afpselected;?> ><?php echo $afp->nombre;?></option>
 								                                    <?php } ?>
 								                                   </select>
+															</td>
+															<td>
+																<select name="jubilado" id="jubilado" class="form-control1">
+																	<option value="SI">SI</option>
+																	<option value="NO">NO</option>
+																
+																</select>
+																
 															</td>
 														</tbody>
 													</table>
