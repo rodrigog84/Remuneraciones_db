@@ -153,6 +153,7 @@ class Carga_masiva extends CI_Controller {
 	       
 			       //$datos = explode(";",$linea); 
 			       //print_r($datos);
+			       $idempresa = $this->session->userdata('empresaid');
 			       $rut = (int)$datos[0];
 			       $dv = utf8_encode($datos[1]);
 			       $nombres = utf8_encode($datos[2]);			       
@@ -225,8 +226,14 @@ class Carga_masiva extends CI_Controller {
 			       $idreemplazo = $datos[69];
 			       $createdby = $datos[70];
 			       $idbanco = $datos[71];
-			       $nrocuentabanco = $datos[72];
-			       $idempresa = $this->session->userdata('empresaid');
+			       $numbanco = $datos[72];
+			       $semanacorrida = $datos[73];
+				   $idcategoria = $datos[74];
+				   $lugarpago = $datos[75];
+				   $sindicato = $datos[76];
+				   $rolprovado = $datos[77];
+				   $jubilado = $datos[78];
+				   $fecafp = $datos[79];		      
 
 			       $array_datos = array(
 						'id_empresa' => $idempresa,
@@ -299,22 +306,31 @@ class Carga_masiva extends CI_Controller {
 						'cbeneficio' => $cbeneficio,
 						'idreemplazo' => $idreemplazo,
 						'created_by' => $createdby,
-						//'idbanco' => $idbanco,
-						//'nrocuentabanco' => $nrocuentabanco,					
+						'idbanco' => $idbanco,
+						'nrocuentabanco' => $numbanco,
+						'semana_corrida' => $semanacorrida,
+						'id_categoria' => $idcategoria,
+						'id_lugar_pago' => $lugarpago,
+						'sindicato' => $sindicato,
+						'rol_privado' => $rolprovado,
+						'jubilado' => $jubilado,
+						'fecafp' => $fecafp,
+			
 					);
 		       	   //guardamos en base de datos la línea leida
 		       	  //qprint_r($array_datos);
 		       	  $array_datos['updated_at'] = date("Ymd H:i:s");
 				  $array_datos['created_at'] = date("Ymd H:i:s");
+				  $array_datos['created_by'] = "";
 				  //$array_datos['created_by'] = $createdby;
-				  $this->db->insert('rem_personal_paso', $array_datos);
+				  $this->db->insert('rem_personal', $array_datos);
 			     
 	   		 }
 	   		 $i++;
 		}
 
 		$this->session->set_flashdata('personal_result',8);
-		redirect('rrhh/carga_masiva_paso');
+		redirect('rrhh/mantencion_personal');
 
 	}
 
