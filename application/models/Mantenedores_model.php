@@ -72,6 +72,68 @@ class Mantenedores_model extends CI_Model
 
 	}
 
+	public function get_lugarpago(){
+		$this->db->select('id_lugar_pago, nombre, activo')
+						  ->from('rem_lugar_pago')
+						  ->where('activo = 1')
+						  ->order_by('nombre','asc');
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
+	public function get_formadepago(){
+		$this->db->select('id_forma_pago, descripcion, activo')
+						  ->from('rem_formas_pago')
+						  ->where('activo = 1')
+						  ->order_by('descripcion','asc');
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
+	public function get_estudios(){
+		$this->db->select('id_estudios, nombre, valido')
+						  ->from('rem_estudios')
+						  ->where('valido = 1')
+						  ->order_by('nombre','asc');
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
+	public function get_estadocivil(){
+		$this->db->select('id_estado_civil, nombre, activo')
+						  ->from('rem_estado_civil')
+						  ->where('activo = 1')
+						  ->order_by('nombre','asc');
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
+	public function get_licenciaconducir(){
+		$this->db->select('id_licencia_conducir, nombre, valido')
+						  ->from('rem_licencia_conducir')
+						  ->where('valido = 1')
+						  ->order_by('nombre','asc');
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
+	public function get_empresa(){
+		$this->db->select('d.id_empresa, d.nombre, d.rut, d.dv, d.direccion , d.active, c2.nombre as nombrecomuna, c3.nombre as nombreregion')
+			  ->from('rem_empresa d')
+			  ->join('rem_comuna c2','d.idcomuna = c2.idcomuna','left')
+			  ->join('rem_region c3','d.idregion = c3.id_region','left')
+			  ->where('d.active = 1')
+			  ->order_by('nombre');
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
 	public function get_comuna(){
 		$this->db->select('d.idcomuna, d.idprovincia, d.nombre, c2.nombre as provincia')
 			  ->from('rem_comuna d')
@@ -157,6 +219,90 @@ class Mantenedores_model extends CI_Model
 		return $datos;
 
 	}
+
+	public function lugarpago($idlugarpago = null){
+
+
+		$lugarpago_data = $this->db->select('d.id_lugar_pago, d.updated_at, d.nombre, d.activo')
+			  ->from('rem_lugar_pago d')
+			  ->where('d.activo = 1')
+			  ->order_by('nombre');
+		$lugarpago_data = is_null($idlugarpago) ? $lugarpago_data : $lugarpago_data->where('id_lugar_pago',$idlugarpago);  		
+		$query = $this->db->get();
+		$datos = is_null($idlugarpago) ? $query->result() : $query->row();
+		return $datos;
+
+	}
+
+	public function formapago($idformapago = null){
+
+
+		$formapago_data = $this->db->select('d.id_forma_pago, d.updated_at, d.descripcion, d.activo')
+			  ->from('rem_formas_pago d')
+			  ->where('d.activo = 1')
+			  ->order_by('descripcion');
+		$formapago_data = is_null($idformapago) ? $formapago_data : $formapago_data->where('id_forma_pago',$idformapago);  		
+		$query = $this->db->get();
+		$datos = is_null($idformapago) ? $query->result() : $query->row();
+		return $datos;
+
+	}
+
+	public function estudios($idestudios = null){
+
+		$estudios_data = $this->db->select('d.id_estudios, d.nombre, d.valido')
+			  ->from('rem_estudios d')
+			  ->where('d.valido = 1')
+			  ->order_by('nombre');
+		$estudios_data = is_null($idestudios) ? $estudios_data : $estudios_data->where('id_estudios',$idestudios);  		
+		$query = $this->db->get();
+		$datos = is_null($idestudios) ? $query->result() : $query->row();
+		return $datos;
+
+	}
+
+	public function estadocivil($idestadocivil = null){
+
+		$estadocivil_data = $this->db->select('d.id_estado_civil, d.nombre, d.activo')
+			  ->from('rem_estado_civil d')
+			  ->where('d.activo = 1')
+			  ->order_by('nombre');
+		$estadocivil_data = is_null($idestadocivil) ? $estadocivil_data : $estadocivil_data->where('id_estado_civil',$idestadocivil);  		
+		$query = $this->db->get();
+		$datos = is_null($idestadocivil) ? $query->result() : $query->row();
+		return $datos;
+
+	}
+
+	public function licenciaconducir($idlicenciaconducir = null){
+
+		$licenciaconducir_data = $this->db->select('d.id_licencia_conducir, d.nombre, d.valido')
+			  ->from('rem_licencia_conducir d')
+			  ->where('d.valido = 1')
+			  ->order_by('nombre');
+		$licenciaconducir_data = is_null($idlicenciaconducir) ? $licenciaconducir_data : $licenciaconducir_data->where('id_licencia_conducir',$idlicenciaconducir);  		
+		$query = $this->db->get();
+		$datos = is_null($idlicenciaconducir) ? $query->result() : $query->row();
+		return $datos;
+
+	}
+
+	public function empresa($idempresa = null){
+
+		$empresa_data = $this->db->select('d.id_empresa, d.nombre, d.rut, d.dv, d.direccion , d.active, c2.nombre as nombrecomuna, c3.nombre as nombreregion')
+			  ->from('rem_empresa d')
+			  ->join('rem_comuna c2','d.idcomuna = c2.idcomuna','left')
+			  ->join('rem_region c3','d.region = c3.id_region','left')
+			  ->where('d.active = 1')
+			  ->order_by('nombre');
+		$empresa_data = is_null($idempresa) ? $empresa_data : $empresa_data->where('id_empresa',$idempresa);  		
+		$query = $this->db->get();
+		$datos = is_null($idempresa) ? $query->result() : $query->row();
+		return $datos;
+
+	}
+
+
 
 
 	public function comuna($idcomuna = null){
@@ -274,8 +420,7 @@ class Mantenedores_model extends CI_Model
 		var_dump($idcategoria); 
 		if($idcategoria == 0){			       
 	        $array_datos = array(
-	        'id_categoria' => 1,	
-			'nombre' => $datos['nombre'],
+	        'nombre' => $datos['nombre'],
 			'created_at' => date('Ymd H:i:s'),
 			'update_at' => date('Ymd H:i:s')			
 			);
@@ -348,6 +493,140 @@ class Mantenedores_model extends CI_Model
 
 			$this->db->where('id_banco',$idbanco);
 			$this->db->update('rem_banco',$array_datos);
+			
+		}
+	}
+
+	public function add_lugarpago($datos,$idlugarpago){
+
+		var_dump($idlugarpago); 
+		if($idlugarpago == 0){			       
+	        $array_datos = array(
+	        'nombre' => $datos['nombre'],
+	        'activo' => 1,
+			'created_at' => date('Ymd H:i:s'),
+			'created_by' => date('Ymd H:i:s'),
+			'updated_at' => date('Ymd H:i:s')			
+			);
+
+			$this->db->insert('rem_lugar_pago',$array_datos);	  
+
+		}else{
+
+			$array_datos = array(
+			'nombre' => $datos['nombre'],
+			'updated_at' => date('Ymd H:i:s'),
+					
+		     );
+
+			$this->db->where('id_lugar_pago',$idlugarpago);
+			$this->db->update('rem_lugar_pago',$array_datos);
+			
+		}
+	}
+
+	public function add_formapago($datos,$idformapago){
+
+		var_dump($idformapago); 
+		if($idformapago == 0){			       
+	        $array_datos = array(
+	        'descripcion' => $datos['descripcion'],
+	        'activo' => 1,
+			
+			);
+
+			$this->db->insert('rem_formas_pago',$array_datos);	  
+
+		}else{
+
+			$array_datos = array(
+			'descripcion' => $datos['descripcion']
+					
+		     );
+
+			$this->db->where('id_forma_pago',$idformapago);
+			$this->db->update('rem_formas_pago',$array_datos);
+			
+		}
+	}
+
+	public function add_estudios($datos,$idestudios){
+
+		var_dump($idestudios); 
+		if($idestudios == 0){			       
+	        $array_datos = array(
+	        'nombre' => $datos['nombre'],
+	        'valido' => 1,
+	        'created_at' => date('Ymd H:i:s'),
+			'updated_at' => date('Ymd H:i:s')	
+			
+			);
+
+			$this->db->insert('rem_estudios',$array_datos);	  
+
+		}else{
+
+			$array_datos = array(
+			'nombre' => $datos['nombre'],
+			'updated_at' => date('Ymd H:i:s')					
+		     );
+
+			$this->db->where('id_estudios',$idestudios);
+			$this->db->update('rem_estudios',$array_datos);
+			
+		}
+	}
+
+	public function add_estadocivil($datos,$idestadocivil){
+
+		var_dump($idestadocivil); 
+		if($idestadocivil == 0){			       
+	        $array_datos = array(
+	        'nombre' => $datos['nombre'],
+	        'activo' => 1,
+	        'created_at' => date('Ymd H:i:s'),
+			'updated_at' => date('Ymd H:i:s')	
+			
+			);
+
+			$this->db->insert('rem_estado_civil',$array_datos);	  
+
+		}else{
+
+			$array_datos = array(
+			'nombre' => $datos['nombre'],
+			'updated_at' => date('Ymd H:i:s')					
+		     );
+
+			$this->db->where('id_estado_civil',$idestadocivil);
+			$this->db->update('rem_estado_civil',$array_datos);
+			
+		}
+	}
+
+	public function add_licenciaconducir($datos,$idlicenciaconducir){
+
+		var_dump($idlicenciaconducir); 
+		if($idlicenciaconducir == 0){			       
+	        $array_datos = array(
+	        'nombre' => $datos['nombre'],
+	        'valido' => 1,
+	        'created_at' => date('Ymd H:i:s'),
+			'updated_at' => date('Ymd H:i:s')	
+			
+			);
+
+			$this->db->insert('rem_licencia_conducir',$array_datos);	  
+
+		}else{
+
+			$array_datos = array(
+			'nombre' => $datos['nombre'],
+			'updated_at' => date('Ymd H:i:s')					
+		     );
+
+			$this->db->where('id_licencia_conducir',$idlicenciaconducir);
+			$this->db->update('rem_licencia_conducir',$array_datos);
 			
 		}
 	}
@@ -484,6 +763,91 @@ class Mantenedores_model extends CI_Model
 	}
 
 	public function delete_bancos($idbanco){
+
+
+		//$this->db->where('id_paises', $idpais);
+		//$this->db->update('rem_paises',array('active' => '0')); 
+
+		return 1;
+		/*if($this->db->affected_rows() > 0){ // se eliminó proveedor correctamente
+			return 1;
+		}else{ // no hubo eliminación de proveedor
+			return -1;
+		}*/
+
+
+
+	}
+
+	public function delete_lugardepago($idlugardepago){
+
+
+		//$this->db->where('id_paises', $idpais);
+		//$this->db->update('rem_paises',array('active' => '0')); 
+
+		return 1;
+		/*if($this->db->affected_rows() > 0){ // se eliminó proveedor correctamente
+			return 1;
+		}else{ // no hubo eliminación de proveedor
+			return -1;
+		}*/
+
+
+
+	}
+
+	public function delete_formadepago($idformapago){
+
+
+		//$this->db->where('id_paises', $idpais);
+		//$this->db->update('rem_paises',array('active' => '0')); 
+
+		return 1;
+		/*if($this->db->affected_rows() > 0){ // se eliminó proveedor correctamente
+			return 1;
+		}else{ // no hubo eliminación de proveedor
+			return -1;
+		}*/
+
+
+
+	}
+
+	public function delete_estudio($idestudio){
+
+
+		//$this->db->where('id_paises', $idpais);
+		//$this->db->update('rem_paises',array('active' => '0')); 
+
+		return 1;
+		/*if($this->db->affected_rows() > 0){ // se eliminó proveedor correctamente
+			return 1;
+		}else{ // no hubo eliminación de proveedor
+			return -1;
+		}*/
+
+
+
+	}
+
+	public function delete_estadocivil($idestadocivil){
+
+
+		//$this->db->where('id_paises', $idpais);
+		//$this->db->update('rem_paises',array('active' => '0')); 
+
+		return 1;
+		/*if($this->db->affected_rows() > 0){ // se eliminó proveedor correctamente
+			return 1;
+		}else{ // no hubo eliminación de proveedor
+			return -1;
+		}*/
+
+
+
+	}
+
+	public function delete_licenciaconducir($idlicenciaconducir){
 
 
 		//$this->db->where('id_paises', $idpais);

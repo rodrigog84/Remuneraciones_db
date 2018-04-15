@@ -433,6 +433,386 @@ class Mantenedores extends CI_Controller {
 
 	}
 
+	public function lugardepago(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			
+			$resultid = $this->session->flashdata('lugardepago_result');
+			if($resultid == 1){
+				$vars['message'] = "Lugar de Pago Agregado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}else if($resultid == 2){
+				$vars['message'] = "Lugar de Pago editado Correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+
+			}else if($resultid == 3){
+				$vars['message'] = "Lugar de Pago Ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
+			}elseif($resultid == 4){
+				$vars['message'] = "Error al eliminar Lugar de Pago. Pais no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';				
+			}elseif($resultid == 5){
+				$vars['message'] = "Lugar de Pago Eliminado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';								
+			}
+
+			$lugardepago = $this->Mantenedores_model->get_lugarpago();
+
+			$content = array(
+						'menu' => 'Configuraciones Generales',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Lugares de Pago');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/lugarpago';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+
+			$vars['lugardepago'] = $lugardepago;
+			
+			$template = "template";
+			
+
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+	public function formadepago(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			
+			$resultid = $this->session->flashdata('formadepago_result');
+			if($resultid == 1){
+				$vars['message'] = "Forma de Pago Agregado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}else if($resultid == 2){
+				$vars['message'] = "Forma de Pago editado Correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+
+			}else if($resultid == 3){
+				$vars['message'] = "Forma de Pago Ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
+			}elseif($resultid == 4){
+				$vars['message'] = "Error al eliminar Forma de Pago. Pais no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';				
+			}elseif($resultid == 5){
+				$vars['message'] = "Forma de Pago Eliminado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';								
+			}
+
+			$formadepago = $this->Mantenedores_model->get_formadepago();
+
+			$content = array(
+						'menu' => 'Configuraciones Generales',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Formas de Pago');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/formaspago';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+
+			$vars['formadepago'] = $formadepago;
+			
+			$template = "template";
+			
+
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+	public function estudios(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			
+			$resultid = $this->session->flashdata('estudios_result');
+			if($resultid == 1){
+				$vars['message'] = "Estudios correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}else if($resultid == 2){
+				$vars['message'] = "Estudios editado Correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+
+			}else if($resultid == 3){
+				$vars['message'] = "Estudios Ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
+			}elseif($resultid == 4){
+				$vars['message'] = "Error al eliminar Estudios. Pais no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';				
+			}elseif($resultid == 5){
+				$vars['message'] = "Estudios Eliminado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';								
+			}
+
+			$estudios = $this->Mantenedores_model->get_estudios();
+
+			$content = array(
+						'menu' => 'Configuraciones Generales',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Estudios');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/estudios';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+
+			$vars['estudios'] = $estudios;
+			
+			$template = "template";		
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+	public function estadocivil(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			
+			$resultid = $this->session->flashdata('estadocivil_result');
+			if($resultid == 1){
+				$vars['message'] = "Estado Civil correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}else if($resultid == 2){
+				$vars['message'] = "Estado Civil editado Correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+
+			}else if($resultid == 3){
+				$vars['message'] = "Estado Civil Ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
+			}elseif($resultid == 4){
+				$vars['message'] = "Error al eliminar Estado Civil. Pais no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';				
+			}elseif($resultid == 5){
+				$vars['message'] = "Estado Civil Eliminado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';								
+			}
+
+			$estadocivil = $this->Mantenedores_model->get_estadocivil();
+
+			$content = array(
+						'menu' => 'Configuraciones Generales',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Estado Civil');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/estadocivil';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+
+			$vars['estadocivil'] = $estadocivil;
+			
+			$template = "template";		
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+	public function licenciasconducir(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			
+			$resultid = $this->session->flashdata('licenciaconducir_result');
+			if($resultid == 1){
+				$vars['message'] = "Licencias de Conducir correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}else if($resultid == 2){
+				$vars['message'] = "Licencias de Conducir editado Correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+
+			}else if($resultid == 3){
+				$vars['message'] = "Licencias de Conducir Ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
+			}elseif($resultid == 4){
+				$vars['message'] = "Error al eliminar Licencias de Conducir. Pais no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';				
+			}elseif($resultid == 5){
+				$vars['message'] = "Licencias de Conducir Eliminado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';								
+			}
+
+			$licenciaconducir = $this->Mantenedores_model->get_licenciaconducir();
+
+			$content = array(
+						'menu' => 'Configuraciones Generales',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Licencias de Conducir');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/licenciaconducir';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+
+			$vars['licenciaconducir'] = $licenciaconducir;
+			
+			$template = "template";		
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+	public function empresas(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			
+			$resultid = $this->session->flashdata('empresas_result');
+			if($resultid == 1){
+				$vars['message'] = "Empresa Creada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}else if($resultid == 2){
+				$vars['message'] = "Empresa editado Correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+
+			}else if($resultid == 3){
+				$vars['message'] = "Empresa Ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
+			}elseif($resultid == 4){
+				$vars['message'] = "Error al eliminar Empresa. Pais no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';				
+			}elseif($resultid == 5){
+				$vars['message'] = "Empresa Eliminado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';								
+			}
+
+			$empresa = $this->Mantenedores_model->get_empresa();
+
+			$content = array(
+						'menu' => 'Configuraciones Generales',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Empresas');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/empresas';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+
+			$vars['empresas'] = $empresa;
+			
+			$template = "template";		
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
 	public function comuna(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){			
 			$resultid = $this->session->flashdata('comuna_result');
@@ -641,6 +1021,157 @@ class Mantenedores extends CI_Controller {
 			$this->load->view($template,$vars);	
 	}
 
+	public function add_lugardepago($idlugarpago = null){
+
+		   	   						
+			$idlugarpagos = array();
+			if(!is_null($idlugarpago)){
+					$idlugarpagos = $this->Mantenedores_model->lugarpago($idlugarpago); 	
+			}
+
+						
+			$content = array(
+				'menu' => 'Configuraciones Generales',
+				'title' => 'Configuraciones',
+				'subtitle' => 'Creaci&oacute;n Lugares de Pagos');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/add_lugardepago';
+			$vars['formValidation'] = true;
+			$vars['lugardepago'] = $idlugarpagos;
+			$vars['gritter'] = true;
+
+			$template = "template";			
+
+			$this->load->view($template,$vars);	
+	}
+
+	public function add_formasdepago($idformapago = null){
+		   	   						
+			$idformapagos = array();
+			if(!is_null($idformapagos)){
+					$idformapagos = $this->Mantenedores_model->formapago($idformapago); 	
+			}
+
+						
+			$content = array(
+				'menu' => 'Configuraciones Generales',
+				'title' => 'Configuraciones',
+				'subtitle' => 'Creaci&oacute;n Formas de Pagos');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/add_formadepago';
+			$vars['formValidation'] = true;
+			$vars['idformapago'] = $idformapagos;
+			$vars['gritter'] = true;
+
+			$template = "template";			
+
+			$this->load->view($template,$vars);	
+	}
+
+	public function add_estudios($idestudios = null){
+		   	   						
+			$estudios = array();
+			if(!is_null($idestudios)){
+					$estudios = $this->Mantenedores_model->estudios($idestudios); 	
+			}
+
+						
+			$content = array(
+				'menu' => 'Configuraciones Generales',
+				'title' => 'Configuraciones',
+				'subtitle' => 'Creaci&oacute;n Estudios');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/add_estudios';
+			$vars['formValidation'] = true;
+			$vars['idestudios'] = $estudios;
+			$vars['gritter'] = true;
+
+			$template = "template";			
+
+			$this->load->view($template,$vars);	
+	}
+
+	public function add_estadocivil($idestadocivil = null){
+		   	   						
+			$estadocivil = array();
+			if(!is_null($idestadocivil)){
+					$estadocivil = $this->Mantenedores_model->estadocivil($idestadocivil); 	
+			}
+
+						
+			$content = array(
+				'menu' => 'Configuraciones Generales',
+				'title' => 'Configuraciones',
+				'subtitle' => 'Creaci&oacute;n Estado Civil');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/add_estadocivil';
+			$vars['formValidation'] = true;
+			$vars['idestadocivil'] = $estadocivil;
+			$vars['gritter'] = true;
+
+			$template = "template";			
+
+			$this->load->view($template,$vars);	
+	}
+
+	public function add_licenciaconducir($idlicenciaconducir = null){
+		   	   						
+			$licenciaconducir = array();
+			if(!is_null($idlicenciaconducir)){
+					$licenciaconducir = $this->Mantenedores_model->licenciaconducir($idlicenciaconducir); 	
+			}
+
+						
+			$content = array(
+				'menu' => 'Configuraciones Generales',
+				'title' => 'Configuraciones',
+				'subtitle' => 'Creaci&oacute;n Licencia de Conducir');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/add_licenciaconducir';
+			$vars['formValidation'] = true;
+			$vars['licenciaconducir'] = $licenciaconducir;
+			$vars['gritter'] = true;
+
+			$template = "template";			
+
+			$this->load->view($template,$vars);	
+	}
+
+	public function add_empresas($idempresa = null){
+		   	   						
+			$empresas = array();
+			if(!is_null($idempresa)){
+					$empresas = $this->Mantenedores_model->empresa($idempresa); 	
+			}
+
+			$comuna = $this->Mantenedores_model->get_comuna();
+			$region = $this->Mantenedores_model->get_regiones();
+
+
+						
+			$content = array(
+				'menu' => 'Configuraciones Generales',
+				'title' => 'Configuraciones',
+				'subtitle' => 'Creaci&oacute;n Empresas');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/add_empresas';
+			$vars['formValidation'] = true;
+			$vars['empresa'] = $empresas;
+			$vars['comuna'] = $comuna;
+			$vars['region'] = $region;
+			$vars['gritter'] = true;
+
+			$template = "template";			
+
+			$this->load->view($template,$vars);	
+	}
+
 
 	public function add_comuna($idcomuna = null, $idprovincia = null){	
 						
@@ -652,15 +1183,13 @@ class Mantenedores extends CI_Controller {
 			$provincia = array();
 			if(!is_null($idprovincia)){
 					$provincia = $this->Mantenedores_model->provincia($idprovincia);
-					//print_r($provincia);
-					//print_r("--");
-					//exit;					
+							
 			}else{
 				$provincia = $this->Mantenedores_model->provincia();
 				
 			}		
 			
-		 			
+					 			
 			$content = array(
 				'menu' => 'Configuraciones Generales',
 				'title' => 'Configuraciones',
@@ -823,6 +1352,148 @@ class Mantenedores extends CI_Controller {
 
 	}
 
+	public function submit_lugarpago(){
+		
+			$descripcion = $this->input->post('nombre');
+			$idlugarpago = $this->input->post('idlugardepago');
+									
+			$datos = array();
+			$datos['nombre'] = $descripcion;
+			
+			$idbanco = $this->Mantenedores_model->add_lugarpago($datos,$idlugarpago);
+
+			if($idlugarpago==0){
+				$this->session->set_flashdata('lugardepago_result', 1);
+			redirect('mantenedores/lugardepago');
+				
+			}else{
+				$this->session->set_flashdata('lugardepago_result', 2);
+			redirect('mantenedores/lugardepago');	
+				
+			}
+
+	}
+
+	public function submit_formapago(){
+		
+			$descripcion = $this->input->post('nombre');
+			$idformapago = $this->input->post('idformapago');
+									
+			$datos = array();
+			$datos['descripcion'] = $descripcion;
+			
+			$idformapago = $this->Mantenedores_model->add_formapago($datos,$idformapago);
+
+			if($idformapago==0){
+				$this->session->set_flashdata('formadepago_result', 1);
+			redirect('mantenedores/formadepago');
+				
+			}else{
+				$this->session->set_flashdata('formadepago_result', 2);
+			redirect('mantenedores/formadepago');	
+				
+			}
+
+	}
+
+	public function submit_estudios(){
+		
+			$descripcion = $this->input->post('nombre');
+			$idestudios = $this->input->post('idestudios');
+												
+			$datos = array();
+			$datos['nombre'] = $descripcion;
+			
+			$idestudios = $this->Mantenedores_model->add_estudios($datos,$idestudios);
+
+			if($idformapago==0){
+				$this->session->set_flashdata('estudios_result', 1);
+			redirect('mantenedores/estudios');
+				
+			}else{
+				$this->session->set_flashdata('estudios_result', 2);
+			redirect('mantenedores/esrudios');	
+				
+			}
+
+	}
+
+	public function submit_estadocivil(){
+		
+			$descripcion = $this->input->post('nombre');
+			$idestadocivil = $this->input->post('idestadocivil');
+												
+			$datos = array();
+			$datos['nombre'] = $descripcion;
+			
+			$idestadocivil = $this->Mantenedores_model->add_estadocivil($datos,$idestadocivil);
+
+			if($idestadocivil==0){
+				$this->session->set_flashdata('estadocivil_result', 1);
+			redirect('mantenedores/estadocivil');
+				
+			}else{
+				$this->session->set_flashdata('estadocivil_result', 2);
+			redirect('mantenedores/estadocivil');	
+				
+			}
+
+	}
+
+	public function submit_licenciaconducir(){
+		
+			$descripcion = $this->input->post('nombre');
+			$idlicenciaconducir = $this->input->post('idlicenciaconducir');
+												
+			$datos = array();
+			$datos['nombre'] = $descripcion;
+			
+			$licenciaconducir = $this->Mantenedores_model->add_licenciaconducir($datos,$idlicenciaconducir);
+
+			if($licenciaconducir==0){
+				$this->session->set_flashdata('licenciaconducir_result', 1);
+			redirect('mantenedores/licenciasconducir');
+				
+			}else{
+				$this->session->set_flashdata('licenciaconducir_result', 2);
+			redirect('mantenedores/licenciasconducir');	
+				
+			}
+
+	}
+
+	public function submit_empresas(){
+		
+			$descripcion = $this->input->post('nombre');
+			$rut = $this->input->post('rut');
+			$direccion = $this->input->post('direccion');
+			$idcomuna = $this->input->post('idcomuna');
+			$idregion = $this->input->post('idregion');
+			$fono = $this->input->post('fono');
+			$idempresas = $this->input->post('idempresas');
+												
+			$datos = array();
+			$datos['nombre'] = $descripcion;
+			$datos['rut'] = $rut;
+			$datos['direccion'] = $direccion;
+			$datos['idcomuna'] = $idcomuna;
+			$datos['idregion'] = $idregion;
+			$datos['fono'] = $fono;
+			
+			$empresas = $this->Mantenedores_model->add_empresas($datos,$idempresas);
+
+			if($licenciaconducir==0){
+				$this->session->set_flashdata('empresas_result', 1);
+			redirect('mantenedores/empresas');
+				
+			}else{
+				$this->session->set_flashdata('empresas_result', 2);
+			redirect('mantenedores/empresas');	
+				
+			}
+
+	}
+
 	public function submit_comuna(){
 		
 			$descripcion = $this->input->post('nombre');
@@ -920,6 +1591,81 @@ class Mantenedores extends CI_Controller {
 			}
 
 			redirect('mantenedores/bancos');				
+		
+	}
+
+	public function delete_lugardepago($idlugardepago = 0)
+	{
+
+		$result = $this->Mantenedores_model->delete_lugardepago($idlugardepago);
+			if($result == -1){
+				$this->session->set_flashdata('lugardepago_result', 4);	
+			}else{
+				$this->session->set_flashdata('lugardepago_result', 5);	
+				
+			}
+
+			redirect('mantenedores/bancos');				
+		
+	}
+
+	public function delete_formapago($idformapago = 0)
+	{
+
+		$result = $this->Mantenedores_model->delete_formadepago($idformapago);
+			if($result == -1){
+				$this->session->set_flashdata('formadepago_result', 4);	
+			}else{
+				$this->session->set_flashdata('formadepago_result', 5);	
+				
+			}
+
+			redirect('mantenedores/formadepago');				
+		
+	}
+
+	public function delete_estudios($idestudios = 0)
+	{
+
+		$result = $this->Mantenedores_model->delete_estudios($idestudios);
+			if($result == -1){
+				$this->session->set_flashdata('estudios_result', 4);	
+			}else{
+				$this->session->set_flashdata('estudios_result', 5);	
+				
+			}
+
+			redirect('mantenedores/estudios');				
+		
+	}
+
+	public function delete_estadocivil($idestadocivil = 0)
+	{
+
+		$result = $this->Mantenedores_model->delete_estadocivil($idestadocivil);
+			if($result == -1){
+				$this->session->set_flashdata('estadocivil_result', 4);	
+			}else{
+				$this->session->set_flashdata('estadocivil_result', 5);	
+				
+			}
+
+			redirect('mantenedores/estadocivil');				
+		
+	}
+
+	public function delete_licenciaconducir($idlicenciaconducir = 0)
+	{
+
+		$result = $this->Mantenedores_model->delete_licenciaconducir($idlicenciaconducir);
+			if($result == -1){
+				$this->session->set_flashdata('licenciaconducir_result', 4);	
+			}else{
+				$this->session->set_flashdata('licenciaconducir_result', 5);	
+				
+			}
+
+			redirect('mantenedores/licenciasconducir');				
 		
 	}
 

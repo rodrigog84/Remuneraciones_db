@@ -15,7 +15,7 @@
 		<tbody> 
 		<tr class="active" id="variable">
 		<td class="form-group">
-        <select name="provincia" id="provincia" class="form-control1" required>
+        <select name="provincia" id="idprovincia" class="form-control1" required>
         <?php foreach ($provincia as $provincia) { ?>
               <?php $provinciaselected = $provincia->idprovincia == $datos_form['idprovincia'] ? "selected" : ""; ?>
               <option value="<?php echo $provincia->idprovincia;?>" <?php echo $provinciaselected;?> ><?php echo $provincia->nombre;?></option>
