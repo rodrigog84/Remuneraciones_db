@@ -421,23 +421,6 @@ public function add_haber_descuento($idhaberdescto = null){
 
 			$this->load->view($template,$vars);	
 
-		/*}else{
-			$content = array(
-						'menu' => 'Error 403',
-						'title' => 'Error 403',
-						'subtitle' => '403 error');
-		
-
-
-			$vars['content_menu'] = $content;				
-			$vars['content_view'] = 'forbidden';
-			$this->load->view('template',$vars);
-
-			}*/
-
-		
-
-
 	}		
 
 
