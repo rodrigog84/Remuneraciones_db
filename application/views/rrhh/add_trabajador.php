@@ -409,8 +409,8 @@
 																<select name="lugar_pago" id="lugar_pago" class="form-control1">
 																	<option value="">Seleccione Lugar de Pago</option>
 						                                    		<?php foreach ($lugar_pago as $lugar_pagos) { ?>
-								                                      <?php $lugarpagosselected = $lugar_pago->id == $datos_form['idlugarpago'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $lugar_pago->id_categoria;?>" <?php echo $lugarpagosselected;?> ><?php echo $lugar_pago->nombre;?></option>
+								                                      <?php $lugarpagosselected = $lugar_pagos->id == $datos_form['idlugarpago'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $lugar_pagos->id_lugar_pago;?>" <?php echo $lugarpagosselected;?> ><?php echo $lugar_pagos->nombre;?></option>
 								                                    <?php } ?>
 																</select>
 															</td>

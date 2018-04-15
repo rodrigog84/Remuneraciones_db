@@ -972,7 +972,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',
-						'subtitle' => 'Agregar Trabajador');
+						'subtitle' => 'Modificar Colaborador');
 
 
 			$datos_form = array(
@@ -1113,7 +1113,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',
-						'subtitle' => 'Agregar Trabajador');
+						'subtitle' => 'Agregar Colaborador');
 
 
 			$datos_form = array(
