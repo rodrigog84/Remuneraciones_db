@@ -605,7 +605,7 @@ class Admin extends CI_Model
 
 		$banco_data = $this->db->select("id_forma_pago, descripcion")
 						  ->from('rem_formas_pago')
-						  ->where('id_empresa',$this->session->userdata('empresaid'))
+						  //->where('id_empresa',$this->session->userdata('empresaid'))
 		                  ->order_by('descripcion asc');
 
 			                  
