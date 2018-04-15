@@ -15,14 +15,17 @@
 		<tbody> 
 		<tr class="active" id="variable">
 		<td class="form-group">
-        <select name="provincia" id="idprovincia" class="form-control1" required>
-        <?php foreach ($provincia as $provincia) { ?>
-              <?php $provinciaselected = $provincia->idprovincia == $datos_form['idprovincia'] ? "selected" : ""; ?>
-              <option value="<?php echo $provincia->idprovincia;?>" <?php echo $provinciaselected;?> ><?php echo $provincia->nombre;?></option>
-            <?php } ?>
+        <select name="idprovincia" id="idprovincia" class="form-control1" required>
+        <?php foreach ($provincia as $provincias) { ?>
+              <?php $provinciasselected = $provincias->id == $datos_form['idprovincia'] ? "selected" : ""; ?>
+              <option value="<?php echo $provincias->idprovincia;?>" <?php echo $provinciasselected;?> ><?php echo $provincias->nombre;?></option>
+        <?php } ?>
         </select>  
-        <td>                    
-		<input type="text" name="nombre" id="nombre" class="descripcion  form-control" id="nombre" placeholder="nombre" value="<?php echo isset($comuna->nombre) ? $comuna->nombre : '';?>" requiere>
+        </td> 
+        
+        
+                       
+		<input type="text" name="nombre" id="nombre" class="descripcion  form-control" id="nombre" placeholder="nombre" value="<?php echo isset($comuna->nombre) ? $comuna->nombre : '';?>" required>
 		</tr>  
 		</tbody> 
 		</table>

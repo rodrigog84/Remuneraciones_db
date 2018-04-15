@@ -1187,7 +1187,11 @@ class Mantenedores extends CI_Controller {
 			}else{
 				$provincia = $this->Mantenedores_model->provincia();
 				
-			}		
+			}	
+			
+
+			//print_r($provincia);
+			//exit;
 			
 					 			
 			$content = array(
