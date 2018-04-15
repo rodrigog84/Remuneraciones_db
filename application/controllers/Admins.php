@@ -18,9 +18,9 @@ class Admins extends CI_Controller {
       			$this->session->set_userdata('menu_list',json_decode($this->ion_auth_model->get_menu($this->session->userdata('user_id'))));
       		}
 
-      		if($this->router->fetch_class()."/".$this->router->fetch_method() != "main/dashboard" && !$this->session->userdata('comunidadid') && ($this->session->userdata('level') == 2)){
+      		/*if($this->router->fetch_class()."/".$this->router->fetch_method() != "main/dashboard" && !$this->session->userdata('comunidadid')){
       			redirect('main/dashboard');	      			
-      		}
+      		}*/
       }
       
    }
@@ -752,6 +752,413 @@ public function submit_parametros_generales()
 		}
 
 	}	
+
+
+	public function admin_users($resultid = '')
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			$resultid = $this->session->flashdata('add_user_result');
+
+			if($resultid == 1){
+				$vars['message'] = "Usuario Agregado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';				
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al agregar Usuario. Usuario ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 3){
+				$vars['message'] = "Usuario Editado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}elseif($resultid == 4){
+				$vars['message'] = "Error al eliminar Usuario. Usuario no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';				
+			}elseif($resultid == 5){
+				$vars['message'] = "Usuario Eliminado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';								
+			}elseif($resultid == 6){
+				$vars['message'] = "Datos de accesos enviados correctamente a usuarios seleccionados";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+
+			}
+
+
+			$this->load->model('admin');
+
+			$users = $this->admin->get_users();
+
+			//var_dump($users); exit;
+
+			$content = array(
+						'menu' => 'Administraci&oacute;n',
+						'title' => 'Administraci&oacute;n',
+						'subtitle' => 'Administraci&oacute;n de Usuarios');
+
+			
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'admins/admin_users';
+			$vars['users'] = $users;
+			$vars['datatable'] = true;
+			$vars['gritter'] = true;
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
+
+
+
+//create a new user
+	public function add_user($iduser = 0)
+	{
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$this->load->model('admin');
+			//$user = $this->admin->get_user_by_id($iduser);
+			$user = $this->admin->get_users($iduser);
+			$empresas = $this->admin->get_empresas();	
+
+			$idempresa = '';
+			$array_empresas = array();
+			if(count($user) > 0){
+				if(isset($user->level)){
+					if($user->level == 2){
+						$lista_empresas = $this->admin->empresas_asignadas($user->id,$user->level);
+						if(count($lista_empresas) == 1){
+							array_push($array_empresas,$lista_empresas->id_empresa);
+						}else if(count($lista_empresas) > 1){
+							foreach ($lista_empresas as $empresa) {
+								array_push($array_empresas,$empresa->id_empresa);
+							}
+							//$comunidad = $comunidad[0];
+							$idempresa = $empresa->id_empresa;
+						}
+
+
+					}
+				}
+
+			}
+
+
+			$perfiles = $this->admin->get_perfiles();
+			$content = array(
+						'menu' => 'Administraci&oacute;n',
+						'title' => 'Administraci&oacute;n',
+						'subtitle' => 'Administraci&oacute;n de Usuarios');
+
+
+			$datos_form = array(
+							'iduser' => count($user) == 0 ? 0 : $user->id,
+							'nombre' => count($user) == 0 ? '' : $user->first_name,
+							'apellido' => count($user) == 0 ? '' : $user->last_name,
+							'email' => count($user) == 0 ? '' : $user->email,
+							'perfil' => count($user) == 0 ? '' : $user->level,
+							'idempresa' => $idempresa,
+							);
+			
+			$vars['content_menu'] = $content;				
+			$vars['empresas'] = $empresas;
+
+			$vars['listado_empresas'] = $array_empresas;
+			$vars['perfiles'] = $perfiles;
+			$vars['content_view'] = 'admins/add_user';
+			$vars['titulo'] = $iduser == '' ? "Agregar Usuario" : "Editar Usuario";
+			$vars['datos_form'] = $datos_form;
+			$vars['formValidation'] = true;
+			
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+
+
+	public function validate_password_user($data = '')
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$result = $this->ion_auth->hash_password_db($this->session->userdata('user_id'),$this->input->post('password_actual'));
+
+			if(!$result){
+				$data['result'] = "error";
+				$data['fields']['password_actual'] = "Clave actual es incorrecta";	
+			}else{
+				$data['result'] = "ok";
+			}
+
+			echo json_encode($data);
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+
+public function submit_clave()
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+			// agregar guardado de cuenta asociado al monto
+
+
+			$password = $this->input->post('password_nueva');
+			$userid = $this->ion_auth->update_password($this->session->userdata('user_id'), $password); 
+
+
+			$this->session->set_flashdata('cambio_clave_result',1);
+			redirect('admins/cambio_clave');	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}		
+
+
+
+public function cambio_clave($resultid = '')
+	{	
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$resultid = $this->session->flashdata('cambio_clave_result');
+
+
+			if($resultid == 1){
+				$vars['message'] = "Clave actualizada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';				
+			}
+
+			$content = array(
+						'menu' => 'Mi Cuenta',
+						'title' => 'Mi Cuenta',
+						'subtitle' => 'Cambio de clave');
+
+
+			
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'admins/cambio_clave';
+			$vars['formValidation'] = true;
+			$vars['gritter'] = true;
+			//var_dump($vars); exit;
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
+
+	public function validate_email_user($data = '')
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$email = $this->input->post('email');
+			$iduser = $this->input->post('iduser');
+
+			$this->load->model('admin');
+			$existe = $this->admin->valida_existe_mail($email,$iduser);
+			if($existe){
+				$data['result'] = "error";
+				$data['fields']['email'] = "Email ya est&aacute; asociado a otro usuario.    Favor contactar con el administrador";	
+			}else{
+				$data['result'] = "ok";
+			}
+
+			echo json_encode($data);
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+
+
+public function submit_user()
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+			// agregar guardado de cuenta asociado al monto
+
+
+			$nombre = $this->input->post('nombre');
+			$apellido = $this->input->post('apellido');
+			$email = $this->input->post('email');
+			$perfil = $this->input->post('perfil');
+			//$idcomunidad = $this->input->post('comunidad');
+			//$idpropiedad = $this->input->post('propiedad');
+			$password = $this->input->post('password');
+			$iduser = $this->input->post('iduser');
+
+			$array_elem = $this->input->post(NULL,true);
+
+			$array_empresas = array();
+			foreach($array_elem as $elem => $value_elem){
+				$arr_el = explode("-",$elem);
+				if($perfil == 2){ // Administrador comunidad (asociar condominios)
+					if($arr_el[0] == 'comunidad'){
+						if($value_elem != 0){
+							array_push($array_empresas, $value_elem);						
+						}
+					}
+
+				}
+			}
+
+			// en caso de crear un usuario asociado a un mail ya existente, se obtiene el id de ese usuario
+			$this->load->model('admin');
+			$existe_mail = $this->admin->valida_existe_mail_user($email);
+
+			if(!$existe_mail){
+				$iduser = $iduser;
+				$activa_antiguo = false;
+			}else{
+				$iduser = $existe_mail->id;
+				$activa_antiguo = true;
+			}
+
+	
+			$additional_data = array(
+							'first_name' => $nombre,
+							'last_name'  => $apellido,
+							'company'    => '',
+							'phone'      => '',
+						);
+
+			//$this->load->model('admin');
+			$userid = $iduser == 0 ? $this->ion_auth->register($email, $password, $email, $additional_data) : $this->ion_auth->update($iduser, $additional_data); // creacion/actualizacion de usuario
+
+			$userid = $iduser == 0 ? $userid : $iduser;
+
+			$result = $this->ion_auth->update_level($userid,$perfil); //actualiza perfil
+
+			//en caso de crear un usuario asociado a un mail ya existente, aparte de activarlo, se debe actualizar password
+			if($activa_antiguo){
+				$this->ion_auth->update_password($iduser, $password); 
+				$this->ion_auth->activate($iduser);
+			}
+
+			// envio de mail
+			if($iduser == 0 || $activa_antiguo){
+				//$this->load->model('admin');
+				//$this->admin->mail_creacion_usuario($userid,$password);			
+			}
+			
+			if($perfil == 2){ // asocia comunidad
+
+						$this->ion_auth->asocia_empresa($userid,$array_empresas);
+
+			}
+
+			if(!$userid){
+				$this->session->set_flashdata('add_user_result',2);
+				redirect('admins/admin_users');	
+			}else{
+				if($iduser == 0){
+					$this->session->set_flashdata('add_user_result',1);
+					redirect('admins/admin_users');	
+				}else{
+					$this->session->set_flashdata('add_user_result',3);
+					redirect('admins/admin_users');	
+				}
+			}
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
 
 
 }

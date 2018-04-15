@@ -521,6 +521,72 @@ class Admin extends CI_Model
 	}	
 
 
+	public function get_perfiles($idperfil = null){
+
+		$perfil_data = $this->db->select('l.id, l.name, l.description')
+						  ->from('rem_level as l')
+						  ->where('l.valid = 1')
+		                  ->order_by('l.description asc');
+
+		$perfil_data = is_null($idperfil) ? $perfil_data : $perfil_data->where('l.id',$idperfil);  		                  
+		//$perfil_data = $this->session->userdata('comunidadid') == '' ? $perfil_data : $perfil_data->where('l.id <> 4');
+		$query = $this->db->get();
+		$datos = is_null($idperfil) ? $query->result() : $query->row();		
+
+		return $query->result();
+
+	}	
+
+
+
+	/*public function empresas_asignadas($userid,$levelid){
+
+			$comunidad_data = $this->db->select('c.id, c.nombre ')
+							  ->from('rem_empresa as c')
+							  ->join('rem_usuario_empresa as uc','c.id = uc.id_empresa')
+			                  ->where('uc.idusuario', $userid)
+			                  ->where('c.active = 1')
+			                  //->where("c.fecvencimiento >= '" . date("Y-m-d") . "'")
+			                  ->order_by('c.nombre asc');
+			//$comunidad_data = is_null($comunidadid) ? $comunidad_data : $comunidad_data->where('c.id_empresa',$comunidadid);  				                 
+			$query = $this->db->get();
+			$datos = $query->num_rows() == 1 ? $datos = $query->row() : $query->result();
+		return $datos;
+
+	}*/
+
+
+
+	public function valida_existe_mail($email,$iduser){
+
+			$user_data = $this->db->select('u.id ')
+							  ->from('rem_users u')
+							  ->where('u.email',$email)
+							  ->where('u.active',1);
+
+			$user_data = $iduser == 0 ? $user_data : $user_data->where('u.id <>',$iduser);  	
+			$query = $this->db->get();
+			return count($query->result()) > 0 ? true : false;
+
+	}
+
+
+	public function valida_existe_mail_user($email){
+
+			$this->db->select('u.id, u.level, u.active ')
+							  ->from('rem_users u')
+							  ->where('u.email',$email);
+
+			$query = $this->db->get();
+			$usuario = $query->row();
+
+			return count($usuario) > 0 ? $usuario : false;
+
+	}
+
+
+
+
 	public function get_bancos($id_empresa=null){
 
 		$banco_data = $this->db->select("id_banco,cod_sbif,nombre")
@@ -977,6 +1043,31 @@ public function get_bonos($idtrabajador = null){
 		return $datos;
 
 	}	
+
+
+
+	public function get_users($iduser = null){
+
+		$usuario_data = $this->db->select("distinct u.id, u.first_name, u.last_name, u.first_name+' '+u.last_name as nombre, u.email, u.level, l.description as levelname",false)
+						  ->from('rem_users as u')
+						  ->join('rem_level as l','u.level = l.id')
+						  ->join('rem_usuario_empresa as ue','u.id = ue.idusuario','left')
+						  ->where('u.active = 1')
+						  ->where('l.valid = 1')
+		                  ->order_by('u.first_name asc, u.last_name asc');
+
+		$usuario_data = is_null($iduser) ? $usuario_data : $usuario_data->where('u.id',$iduser);  	
+		//$usuario_data = $this->session->userdata('comunidadid') == '' ? $usuario_data : $usuario_data->where_in('u.level',array(1,2,3))->where('if(u.level = 3,p.idcomunidad=' . $this->session->userdata('comunidadid') . ',uc.idcomunidad= ' . $this->session->userdata('comunidadid') . ')',NULL,FALSE);  	
+
+		$query = $this->db->get();
+		//echo $this->db->last_query();
+		$datos = is_null($iduser) ? $query->result() : $query->row();		
+
+		return $datos;
+
+	}	
+
+
 
 
 }

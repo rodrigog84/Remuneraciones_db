@@ -29,7 +29,7 @@
 */
 $config['tables']['users']           = 'rem_users';
 $config['tables']['groups']          = 'rem_groups';
-$config['tables']['users_groups']    = 'users_groups';
+$config['tables']['users_groups']    = 'rem_users_groups';
 $config['tables']['login_attempts']  = 'login_attempts';
 $config['tables']['level']  = 'rem_level';
 $config['tables']['role']  = 'rem_role';

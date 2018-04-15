@@ -1398,7 +1398,7 @@ class Ion_auth_model extends CI_Model
 		$this->limit(1);
 		$this->order_by('id', 'desc');
 		$this->where($this->tables['users'].'.id', $id);
-
+		$this->select('id,id as user_id',false);
 		$this->users();
 
 		return $this;
@@ -1588,7 +1588,6 @@ class Ion_auth_model extends CI_Model
 		$this->trigger_events('pre_update_user');
 
 		$user = $this->user($id)->row();
-
 		$this->db->trans_begin();
 
 		if (array_key_exists($this->identity_column, $data) && $this->identity_check($data[$this->identity_column]) && $user->{$this->identity_column} !== $data[$this->identity_column])
@@ -2338,16 +2337,16 @@ class Ion_auth_model extends CI_Model
 		}
 	}*/
 
-	public function asocia_comunidad($userid,$array_comunidades,$elimina_anterior = true){
+	public function asocia_empresa($userid,$array_empresas,$elimina_anterior = true){
 
 		if($elimina_anterior){
 			$this->db->where('idusuario', $userid);
-			$this->db->delete('gc_usuario_comunidad');
+			$this->db->delete('rem_usuario_empresa');
 		}
 
 
-		foreach ($array_comunidades as $comunidad) {
-			$this->db->query('insert ignore into gc_usuario_comunidad (idusuario,idcomunidad) values ('.$userid.','.$comunidad.')');			
+		foreach ($array_empresas as $empresa) {
+			$this->db->query('insert into rem_usuario_empresa (idusuario,id_empresa) values ('.$userid.','.$empresa.')');			
 		}
 	}
 
@@ -2457,7 +2456,7 @@ class Ion_auth_model extends CI_Model
 		$password   = $this->hash_password($password, $salt);
 
 		$this->db->where('id', $userid);
-		$this->db->update('gc_users',array('password' => $password)); 		
+		$this->db->update('rem_users',array('password' => $password)); 		
 
 	}
 
