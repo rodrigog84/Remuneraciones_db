@@ -983,7 +983,10 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'tiporenta',
 				'ididioma',
 				'numficha',
-				'format(fecafp,\'dd/MM/yyyy\',\'en-US\') as fecafp'
+				'format(fecafp,\'dd/MM/yyyy\',\'en-US\') as fecafp',
+				'idbanco',
+				'id_forma_pago',
+				'nrocuentabanco'
 
 				
 

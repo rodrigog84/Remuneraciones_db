@@ -800,7 +800,7 @@
 															</td>
 															<td>
 																<select name="jornada_trabajo" id="jornada_trabajo" class="form-control1">
-																	<option value="">Seleccione Forma de Pago</option>
+																	<option value="">Seleccione Jornada de Trabajo</option>
 						                                    		<?php foreach ($jornada_trabajo as $jornada) { ?>
 								                                      <?php $jornadaselected = $jornada->id_jornada == $datos_form['id_jornada'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $jornada->id_jornada;?>" <?php echo $jornadaselected;?> ><?php echo $jornada->nombre;?></option>
@@ -1262,6 +1262,10 @@ $(document).ready(function(){
         				$("#asig_individual").val(this.cargassimples);
         				$("#asig_por_invalidez").val(this.cargasinvalidas);
         				$("#asig_maternal").val(this.cargasmaternales);
+        				$("#banco").val(this.idbanco);
+        				$("#forma_pago").val(this.id_forma_pago);
+        				$("#cta_bancaria").val(this.nrocuentabanco);
+        				
 
         				if (this.segcesantia ==1){
         					$("#seguro_cesantia").val(this.segcesantia)

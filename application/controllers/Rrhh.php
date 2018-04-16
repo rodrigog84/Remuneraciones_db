@@ -1288,7 +1288,9 @@ public function editar_trabajador(){
 			$asig_individual = $this->input->post('asig_individual');
 			$asig_por_invalidez = $this->input->post('asig_por_invalidez');
 			$asig_maternal = $this->input->post('asig_maternal');
-			
+			$banco = $this->input->post('banco');
+			$forma_pago = $this->input->post('forma_pago');
+			$cta_bancaria = $this->input->post('cta_bancaria');
 
 			
 
@@ -1372,6 +1374,9 @@ public function editar_trabajador(){
 								'cargassimples' => $asig_individual,
 								'cargasinvalidas' => $asig_por_invalidez,
 								'cargasmaternales' => $asig_maternal,
+								'idbanco' => $banco,
+								'id_forma_pago' => $forma_pago,
+								'nrocuentabanco' => $cta_bancaria,
 								
 																							
 								
@@ -1488,6 +1493,9 @@ public function editar_trabajador(){
 			$asig_individual = $this->input->post('asig_individual');
 			$asig_por_invalidez = $this->input->post('asig_por_invalidez');
 			$asig_maternal = $this->input->post('asig_maternal');
+			$banco = $this->input->post('banco');
+			$forma_pago = $this->input->post('forma_pago');
+			$cta_bancaria = $this->input->post('cta_bancaria');
 
 			// SE REGULARIZA LOS CAMPOS FECHA DEL FORMATO dd/mm/yyyy A yyyy/mm/dd DE LA BD	
 
@@ -1597,6 +1605,9 @@ public function editar_trabajador(){
 								'cargassimples' => $asig_individual,
 								'cargasinvalidas' => $asig_por_invalidez,
 								'cargasmaternales' => $asig_maternal,
+								'idbanco' => $banco,
+								'id_forma_pago' => $forma_pago,
+								'nrocuentabanco' => $cta_bancaria,
 															
 								
 								//DATOS POR DEFECTO
