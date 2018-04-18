@@ -435,30 +435,24 @@ public function add_personal($array_datos,$idtrabajador){
 			if(count($datos_bonos) == 0){ 
 
 		      $this->db->insert('rem_bonos_personal',$array_datos);
+		       //print_r($array_datos);	
 
 
 		    }else{	
 
 		       $array_datos['updated_at'] = date("Ymd H:i:s");
-		       $idpersonal =  $datos_bonos->idpersonal;	
-		       
-		       			  
-			   $this->db->where('idpersonal', $idpersonal);
+		       $this->db->where('idpersonal', $idpersonal['idtrabajador']);
 			   $this->db->where('idperiodo', $idperiodo);
 			   $this->db->where('idconf', $idpersonal['id_hab_descto']);
-			   $this->db->update('rem_bonos_personal', $array_datos); 
+			   $this->db->update('rem_bonos_personal', $array_datos);
 
-
-
-
-		    }		 
+			 		    }		 
 
 			//print_r($array_datos);
 		}
 
 		
-        //exit;
-
+    
 		$this->db->trans_complete();
 		return 1;
 
