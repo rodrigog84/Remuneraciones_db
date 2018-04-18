@@ -4,6 +4,7 @@
 									<div class="graph-visual tables-main">
 											
 													<a href="<?php echo base_url();?>mantenedores/add_region" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i>Nueva Region</a>
+                          <a href="<?php echo base_url();?>exportarmantenedores/exportarExcelRegion" class = "btn btn-primary" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i>Exporta Excel</a>
                           <h3 class="inner-tittle two">Descripción</h3>
 														  <div class="graph">														  	
 															<div class="tables">

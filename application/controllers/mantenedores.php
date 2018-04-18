@@ -33,6 +33,8 @@ class Mantenedores extends CI_Controller {
 		redirect('main/dashboard');	
 	}
 
+	
+
 	public function nacionalidad(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
