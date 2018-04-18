@@ -411,14 +411,17 @@ public function add_personal($array_datos,$idtrabajador){
 				$idperiodo = $datos_periodo->id_periodo;
 		}
 
-		//print_r($array_datos_hab_descto);
-		//exit;
-
+		foreach ($array_datos_hab_descto as $idpersonal) {
 
 			
-
-		//$listado_col = $array_datos_hab_descto['listado_col'];
-		foreach ($array_datos_hab_descto as $idpersonal) {
+			$this->db->select('p.idconf, p.idpersonal, p.valido, p.idperiodo')
+				  ->from('rem_bonos_personal p')
+				  ->where('p.idconf',$idpersonal['id_hab_descto'])
+				  ->where('p.idpersonal', $idpersonal['idtrabajador'])
+				  ->where('p.idperiodo', $idperiodo)
+				  ->where('p.valido',1);
+            $query = $this->db->get();
+            $datos_bonos = $query->row();
 			
 			$array_datos = array(
 				'idconf' => $idpersonal['id_hab_descto'],
@@ -427,9 +430,29 @@ public function add_personal($array_datos,$idtrabajador){
 				'monto' => $idpersonal['lista_montos'],
 				'idperiodo' => $idperiodo,
 				'created_at' => date('Ymd H:i:s'),
-				'updated_at' => date('Ymd H:i:s')
 			);
-			$this->db->insert('rem_bonos_personal',$array_datos);
+			
+			if(count($datos_bonos) == 0){ 
+
+		      $this->db->insert('rem_bonos_personal',$array_datos);
+
+
+		    }else{	
+
+		       $array_datos['updated_at'] = date("Ymd H:i:s");
+		       $idpersonal =  $datos_bonos->idpersonal;	
+		       
+		       			  
+			   $this->db->where('idpersonal', $idpersonal);
+			   $this->db->where('idperiodo', $idperiodo);
+			   $this->db->where('idconf', $idpersonal['id_hab_descto']);
+			   $this->db->update('rem_bonos_personal', $array_datos); 
+
+
+
+
+		    }		 
+
 			//print_r($array_datos);
 		}
 
@@ -1394,6 +1417,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			                  ->where('bp.valido',1);
 
 			$query = $this->db->get();
+
+			
 			//echo $this->db->last_query(); exit;
 			return $query->result();		
 	}	

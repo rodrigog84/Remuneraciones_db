@@ -233,12 +233,26 @@ class Carga_masiva extends CI_Controller {
 				   $sindicato = $datos[76];
 				   $rolprovado = $datos[77];
 				   $jubilado = $datos[78];
-				   $fecafp = $datos[79];		      
+				   $fecafp = $datos[79];
+				   
+				   
+		           $this->db->select('p.id_personal, p.id_empresa, p.active, p.dv')
+						  ->from('rem_personal p')
+						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
+						  ->where('p.rut', $rut)
+						  ->where('p.dv', strtoupper($dv))
+						  ->where('p.active is not null')
+						 // ->where_in('idcentrocosto',$centro_costo)
+		                  ->order_by('p.nombre');
+		            $query = $this->db->get();
+		            $datos_periodo = $query->row();
+		                              
+		            		      
 
 			       $array_datos = array(
 						'id_empresa' => $idempresa,
 			       		'rut' => $rut,
-			       		'dv' => $dv,			       		
+			       		'dv' => strtoupper($dv),			       		
 						'nombre' => $nombres,
 						'apaterno' => $apellidop,
 						'amaterno' => $apellidom,
@@ -319,11 +333,22 @@ class Carga_masiva extends CI_Controller {
 					);
 		       	   //guardamos en base de datos la línea leida
 		       	  //qprint_r($array_datos);
-		       	  $array_datos['updated_at'] = date("Ymd H:i:s");
-				  $array_datos['created_at'] = date("Ymd H:i:s");
+		       	  $array_datos['created_at'] = date("Ymd H:i:s");
 				  $array_datos['created_by'] = "";
 				  //$array_datos['created_by'] = $createdby;
+
+				  if(count($datos_periodo) == 0){ 
+
 				  $this->db->insert('rem_personal', $array_datos);
+
+				  }else{
+				  
+				  $array_datos['updated_at'] = date("Ymd H:i:s");
+				  $idpersonal =  $datos_periodo->id_personal;				  
+				  $this->db->where('id_personal', $idpersonal);
+				  $this->db->update('rem_personal', $array_datos); 
+				  	
+				  }
 			     
 	   		 }
 	   		 $i++;
@@ -661,11 +686,6 @@ class Carga_masiva extends CI_Controller {
 	   		
 			 
 		}
-
-		//print_r($array_datos_hab_descto);
-		//exit;
-
-
 
 		
 		$this->rrhh_model->save_hab_descto_variable2($array_datos_hab_descto,$mes,$anno);

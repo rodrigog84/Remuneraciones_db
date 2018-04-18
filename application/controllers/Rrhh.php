@@ -2251,11 +2251,7 @@ public function editar_trabajador(){
 				$vars['icon'] = 'fa-check';		
 			}
 
-
-
-
 			$haberes_descuentos = $this->rrhh_model->get_haberes_descuentos_totales_validos(); 
-
 
 			$content = array(
 						'menu' => 'Configuraciones',
