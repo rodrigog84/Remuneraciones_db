@@ -113,6 +113,141 @@ class Exportarmantenedores extends CI_Controller {
 
     }
 
+    public function exportarExcelLugarpago(){
+              
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=LugarPago.xls"); 
+            
+            $lugarpago = $this->Mantenedores_model->get_lugarpago();
+
+           
+            echo '<table>';
+            echo "<tr>";
+                echo "<td>LISTADO LUGAR DE PAGOS</td>";
+            echo "</tr>";
+            echo "<tr>";
+                echo "<td>ID</td>";               
+                echo "<td>NOMBRE</td>";
+            echo "</tr>";                          
+              foreach($lugarpago as $v){
+                 echo "<tr>";
+                 echo "<td>".$v->id_lugar_pago."</td>";
+                 echo "<td>".$v->nombre."</td>";
+                 echo "</tr>";
+               }  
+         echo '</table>';
+         exit;
+
+    }
+
+    public function exportarExcelFormaPago(){
+              
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=FormaPago.xls"); 
+            
+            $formapago = $this->Mantenedores_model->get_formadepago();
+
+           
+            echo '<table>';
+            echo "<tr>";
+                echo "<td>LISTADO FORMA DE PAGOS</td>";
+            echo "</tr>";
+            echo "<tr>";
+                echo "<td>ID</td>";               
+                echo "<td>NOMBRE</td>";
+            echo "</tr>";                          
+              foreach($formapago as $v){
+                 echo "<tr>";
+                 echo "<td>".$v->id_forma_pago."</td>";
+                 echo "<td>".$v->descripcion."</td>";
+                 echo "</tr>";
+               }  
+         echo '</table>';
+         exit;
+
+    }
+
+    public function exportarExcelEstadoCivil(){
+              
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=EstadoCivil.xls"); 
+            
+            $estadocivil = $this->Mantenedores_model->get_estadocivil();
+
+           
+            echo '<table>';
+            echo "<tr>";
+                echo "<td>LISTADO ESTADO CIVIL</td>";
+            echo "</tr>";
+            echo "<tr>";
+                echo "<td>ID</td>";               
+                echo "<td>NOMBRE</td>";
+            echo "</tr>";                          
+              foreach($estadocivil as $v){
+                 echo "<tr>";
+                 echo "<td>".$v->id_estado_civil."</td>";
+                 echo "<td>".$v->nombre."</td>";
+                 echo "</tr>";
+               }  
+         echo '</table>';
+         exit;
+
+    }
+
+    public function exportarExcelEstudio(){
+              
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=Estudio.xls"); 
+            
+            $estudio = $this->Mantenedores_model->get_estudios();
+
+           
+            echo '<table>';
+            echo "<tr>";
+                echo "<td>LISTADO ESTUDIO</td>";
+            echo "</tr>";
+            echo "<tr>";
+                echo "<td>ID</td>";               
+                echo "<td>NOMBRE</td>";
+            echo "</tr>";                          
+              foreach($estudio as $v){
+                 echo "<tr>";
+                 echo "<td>".$v->id_estudios."</td>";
+                 echo "<td>".$v->nombre."</td>";
+                 echo "</tr>";
+               }  
+         echo '</table>';
+         exit;
+
+    }
+
+    public function exportarExcelLicenciaconducir(){
+              
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=LicenciaConducir.xls"); 
+            
+            $licenciaconducir = $this->Mantenedores_model->get_licenciaconducir();
+
+           
+            echo '<table>';
+            echo "<tr>";
+                echo "<td>LISTADO LICENCIA CONDUCIR</td>";
+            echo "</tr>";
+            echo "<tr>";
+                echo "<td>ID</td>";               
+                echo "<td>NOMBRE</td>";
+            echo "</tr>";                          
+              foreach($licenciaconducir as $v){
+                 echo "<tr>";
+                 echo "<td>".$v->id_licencia_conducir."</td>";
+                 echo "<td>".$v->nombre."</td>";
+                 echo "</tr>";
+               }  
+         echo '</table>';
+         exit;
+
+    }
+
      public function exportarExcelCargos(){
             	
             header("Content-type: application/vnd.ms-excel"); 

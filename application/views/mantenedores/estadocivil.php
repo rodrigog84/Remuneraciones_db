@@ -4,6 +4,7 @@
 									<div class="graph-visual tables-main">
 											
 													<a href="<?php echo base_url();?>mantenedores/add_estadocivil" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i>Nuevo Estado Civil</a>
+                          <a href="<?php echo base_url();?>exportarmantenedores/exportarExcelEstadoCivil" class = "btn btn-primary" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i>Exporta Excel</a>
                           <h3 class="inner-tittle two">Descripción</h3>
 														  <div class="graph">														  	
 															<div class="tables">
