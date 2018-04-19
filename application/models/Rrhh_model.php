@@ -206,6 +206,9 @@ public function edit_personal($array_datos,$idtrabajador){
 
 		$this->db->trans_start();
 
+		//echo "<pre>";
+		//var_dump($array_datos); exit;
+
 		$this->db->select('p.id_personal, p.active')
 						  ->from('rem_personal as p')
 		                  ->where('p.rut', $array_datos['rut'])
@@ -1668,8 +1671,12 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 			// SOLO SE PAGA POR 11 AÑOS
-			$segcesantia = $trabajador->tipocontrato == 'I' && $trabajador->segcesantia == 1 && $trabajador->annos_afc <= 11 ? round($sueldo_imponible_afc*0.006,0) : 0;
 
+			if($trabajador->pensionado == 1){
+				$segcesantia = 0;
+			}else{
+				$segcesantia = $trabajador->tipocontrato == 'I' && $trabajador->segcesantia == 1 && $trabajador->annos_afc <= 11 ? round($sueldo_imponible_afc*0.006,0) : 0;
+			}
 
 			$cot_salud_oblig = $trabajador->idisapre != 1 ? round($sueldo_imponible_imposiciones*0.07,0) : 0;
 

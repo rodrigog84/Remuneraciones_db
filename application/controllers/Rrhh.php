@@ -1278,6 +1278,7 @@ public function editar_trabajador(){
 			$lugar_pago = $this->input->post('lugar_pago');
 
 			$jubilado = $this->input->post('jubilado');
+			$pensionado = $this->input->post('pensionado') == 'on' ? 1 : 0;
 			$regimen_pago = $this->input->post('regimen_pago');
 			$sindicato = $this->input->post('sindicato');
 			$semana_corrida = $this->input->post('semana_corrida');
@@ -1360,6 +1361,7 @@ public function editar_trabajador(){
 								'idasigfamiliar' => $tramo,
 								'valorpactado' => $monto_pactado,
 								'segcesantia' => $seguro_cesantia,
+								'pensionado' => $pensionado,
 								'fecinicvacaciones' => $fecingreso,
 								'fecingreso' => $fecingreso,
 								'id_lugar_pago' => $lugar_pago,
@@ -1389,7 +1391,7 @@ public function editar_trabajador(){
 								'diasprogtomados' => 0,
 								'tipocontrato' => 'I',
 								'parttime' => 0,
-								'pensionado' => 0,
+								//'pensionado' => 0,
 								'diastrabajo' => 30,
 								'horasdiarias' => 8,
 								'horassemanales' => 45,
@@ -1484,6 +1486,7 @@ public function editar_trabajador(){
 			$categoria = $this->input->post('categoria');
 			$lugar_pago = $this->input->post('lugar_pago');
 			$jubilado = $this->input->post('jubilado');
+			$pensionado = $this->input->post('pensionado') == 'on' ? 1 : 0;
 			$regimen_pago = $this->input->post('regimen_pago');
 			$sindicato = $this->input->post('sindicato');
 			$semana_corrida = $this->input->post('semana_corrida');
@@ -1608,7 +1611,7 @@ public function editar_trabajador(){
 								'idbanco' => $banco,
 								'id_forma_pago' => $forma_pago,
 								'nrocuentabanco' => $cta_bancaria,
-															
+														
 								
 								//DATOS POR DEFECTO
 								'saldoinicvacaciones' => 0,
@@ -1619,7 +1622,7 @@ public function editar_trabajador(){
 								'diasprogtomados' => 0,
 								'tipocontrato' => 'I',
 								'parttime' => 0,
-								'pensionado' => 0,
+								'pensionado' => $pensionado,
 								'diastrabajo' => 30,
 								'horasdiarias' => 8,
 								'horassemanales' => 45,

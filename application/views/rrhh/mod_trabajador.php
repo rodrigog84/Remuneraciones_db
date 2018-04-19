@@ -26,7 +26,6 @@
 								<!--//sub-heard-part-->
 								
 								<div class="graph-visual tables-main">
-									<h3 class="inner-tittle two">Modificar Colaborador </h3>
 									<div class="graph">
 										<div class="tab-content">
 											<div class="tab-pane active" id="datospersonales">
@@ -46,149 +45,144 @@
 							                          </div>   
 							                        </div-->
 
-													<table class="table table-striped">
-														<thead> 
-															<tr> 
-																<th>Rut:</th> 
-																<th>Número de Ficha:</th>
-																		
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="rut" id="rut"  class="form-control1"  placeholder="98123456-7" title="Escriba Rut" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required oninput="checkRut(this)"" >
-															</td>
-															<td>
-																<input type="text" name="numficha" id="numficha" class="form-control1" id="" placeholder="Número de Ficha" >
-															</td>
-														</tbody>	
-													</table>
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Rut Trabajador</label>
+								                             	<input type="text" name="rut" id="rut"  class="form-control"  placeholder="98123456-7" title="Escriba Rut" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required oninput="checkRut(this)"" >
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Número de Ficha</label>  
+								                                 <input type="text" name="numficha" id="numficha" class="form-control" id="" placeholder="Número de Ficha" >
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead> 
-															<tr> 
-																<th>Nombre Completo:</th> 
-																<th>Apellido Parterno:</th>
-																<th>Apellido Materno:</th>
-																		
-															</tr> 
-														</thead>
-														<tbody>
-															<td >
-																<div class="form-group">
-																<input type="text" name="nombre" class="form-control1" id="nombre" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
-																</div>
-															</td>
-															<td class="form-group">
-																<input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="Apellido Parterno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
-															</td>
-															<td class="form-group">
-																<input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="Apellido Materno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
-															</td>
-														</tbody>
-													</table>
+							                        </div>
 
-													<table class="table table-striped">
-														<thead> 
-															<tr> 
-																<th>Fecha de Nacimiento:</th> 
-																<th>Nacionalidad:</th>
-																		
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control1" required id="datepicker" type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
-															</td>
-															<td>
-																<select name="nacionalidad" id="nacionalidad" class="form-control1" required>
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Nombre Completo</label>
+								                             	<input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Apellido Parterno</label>  
+								                                 <input type="text" name="apaterno" class="form-control" id="apaterno" placeholder="Apellido Parterno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
+								                            </div>
+								                          </div>
+
+							                        </div>							                        
+
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Apellido Materno</label>
+								                             	<input type="text" name="amaterno" class="form-control" id="amaterno" placeholder="Apellido Materno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Fecha de Nacimiento</label> 
+								                                <div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div> 
+								                                 <input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control" required id="datepicker" type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
+								                                 </div>
+								                            </div>
+								                          </div>
+
+							                        </div>	
+
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Nacionalidad</label>
+								                             	<select name="nacionalidad" id="nacionalidad" class="form-control" required>
 																	<option value="">Seleccione Nacionalidad</option>
 						                                    		<?php foreach ($paises as $pais) { ?>
 								                                      <?php $paisselected = $pais->id == $datos_form['id_nacionalidad'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $pais->id_paises;?>" <?php echo $paisselected;?> ><?php echo $pais->nombre;?></option>
 								                                    <?php } ?>
 																</select>
-															</td>
-														</tbody>
-													</table>
-
-													<table class="table table-striped">
-														<thead> 
-															<tr> 
-																<th>Estado Civil:</th> 
-																<th>Sexo:</th>
-																		
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<select name="ecivil" id="ecivil" class="form-control1" required>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Estado Civil</label> 
+								                                <select name="ecivil" id="ecivil" class="form-control" required>
 							                                   <option value="">Seleccione Estado Civil</option>
 								                                    <?php foreach ($estados_civiles as $estado_civil) { ?>
 								                                      <?php $ecivilselected = $estado_civil->id == $datos_form['idecivil'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $estado_civil->id_estado_civil;?>" <?php echo $ecivilselected;?> ><?php echo $estado_civil->nombre;?></option>
 								                                    <?php } ?>
 																</select>
-															</td>
-															<td>
-								                                <select name="sexo" id="sexo"  class="form-control1" required>
+								                            </div>
+								                          </div>
+
+							                        </div>
+
+
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Sexo</label>
+								                             	<select name="sexo" id="sexo"  class="form-control" required>
 								                                    <option value="">Seleccione Sexo</option>
 								                                    <option value="M" <?php echo $datos_form['sexo'] == 'M' ? 'selected' : ''; ?>>Masculino</option>
 								                                    <option value="F" <?php echo $datos_form['sexo'] == 'F' ? 'selected' : ''; ?>>Femenino</option>
 								                                </select> 
-															</td>
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Dirección</label> 
+								                                <input type="text" name="direccion" id="direccion" class="form-control required" placeholder="Dirección" size ="85"  onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead> 
-															<tr> 
-																<th>Dirección:</th> 
-																<th>Email:</th>
-																		
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="Dirección" size ="85"  onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-															<td>
-																<input type="text" name="email" id="email" class="form-control1" placeholder="Email" size="40" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-														</tbody>
-													</table>
-
-													<table class="table table-striped">
-														<thead> 
-															<tr> 
-																<th>Región</th>
-																<th>Tipo de Renta:</th> 
-																<th>Cargo:</th>
-																		
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<select name="region" id="region" class="form-control1">
+							                        </div>	
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Email</label>
+								                             	<input type="text" name="email" id="email" class="form-control" placeholder="Email" size="40" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Región</label> 
+								                                <select name="region" id="region" class="form-control">
 																	<?php foreach ($regiones as $region) { ?>
 								                                      <?php $regionselected = $region->id == $datos_form['idregion'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $region->id_region;?>" <?php echo $regionselected;?> ><?php echo $region->nombre;?></option>
 								                                    <?php } ?>
 																</select>
-															</td>
+								                            </div>
+								                          </div>
 
-															<td>
-																<select name="tiporenta" id="tiporenta" class="form-control1">
+							                        </div>	
+
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Tipo de Renta</label>
+								                             	<select name="tiporenta" id="tiporenta" class="form-control">
 																	<option value="">Seleccione Tipo Renta</option>
 																	<option value="Mensual">Mensual</option>
 																	<option value="Diaria">Diaria</option>
 																	<option value="Semanal">Semanal</option>
 																</select>
-															</td>
-															<td>
-														 <?php $label_cargo = ""; ?>
-
-							                              <select name="cargo" id="cargo"  class="form-control1"  >
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Cargo</label> 
+								                                <select name="cargo" id="cargo"  class="form-control"  >
 							                                  <option value="">Seleccione un Cargo</option>
 							                                  <?php foreach ($cargos as $cargo) { ?>
 							                                      <?php if($cargo->idpadre != $label_cargo){
@@ -208,159 +202,157 @@
 							                                        }
 							                                        ?>                                
 							                              </select>
-															</td>
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead> 
-															<tr> 
-																<th>Estudios:</th> 
-																<th>Titulo:</th>
-																<th>Idioma:</th>
-																		
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<select name="estudios" id="estudios" class="form-control1">
+							                        </div>	
+
+
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Estudios</label>
+								                             	<select name="estudios" id="estudios" class="form-control">
 																	<option value="">Seleccione Nivel Educacional</option>
 						                                    		<?php foreach ($estudios as $estudio) { ?>
 								                                      <?php $estudioselected = $estudio->id == $datos_form['idestudio'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $estudio->id_estudios;?>" <?php echo $estudioselected;?> ><?php echo $estudio->nombre;?></option>
 								                                    <?php } ?>
 																</select>
-															</td>
-															<td>
-																<input type="text" name="titulo" id="titulo" class="form-control1" placeholder="Titulo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-															<td>
-																<select name="idioma" id="idioma" class="form-control1">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Titulo</label> 
+								                                <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Titulo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+								                            </div>
+								                          </div>
+
+							                        </div>	
+
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Idioma</label>
+								                             	<select name="idioma" id="idioma" class="form-control">
 																	<option value="">Seleccione Idioma</option>
 						                                    		<?php foreach ($idiomas as $idioma) { ?>
 								                                      <?php $idiomaselected = $idioma->id == $datos_form['ididioma'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $idioma->id_idioma;?>" <?php echo $idiomaselected;?> ><?php echo $idioma->nombre;?></option>
 								                                    <?php } ?>
 																</select>
-															</td>
-														</tbody>
-													</table>
-
-													<table class="table table-striped">
-														<thead> 
-															<tr> 
-																<th>Jefe o Supervisor:</th> 
-																<th>Reemplazo de:</th>
-																		
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<select name="jefe" id="jefe" class="form-control1">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Jefe o Supervisor</label> 
+								                                <select name="jefe" id="jefe" class="form-control">
 																	<option value="">Seleccione Jefe o Supervisor</option>
 						                                    		<?php foreach ($personal as $trabajador) { ?>
 								                                      <?php $jefeselected = $trabajador->id == $datos_form['idjefe'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
 								                                    <?php } ?>
 																</select>
-															</td>
-															<td>
-																<select name="reemplazo" id="reemplazo" class="form-control1">
+								                            </div>
+								                          </div>
+
+							                        </div>
+
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Reemplazo de</label>
+								                             	<select name="reemplazo" id="reemplazo" class="form-control">
 																	<option value="">Seleccione Reemplazo</option>
 						                                    		<?php foreach ($personal as $trabajador) { ?>
 								                                      <?php $jefeselected = $trabajador->id == $datos_form['idjefe'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
 								                                    <?php } ?>
 																</select>
-															</td>
-														</tbody>
-													</table>
-
-													<table class="table table-striped">
-														<thead> 
-															<tr> 
-																<th>Licencia:</th> 
-																<th>Talla de Polera:</th>
-																<th>Talla de Pantalón:</th>
-																		
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<select name="licencia" id="licencia" class="form-control1">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Licencia</label> 
+								                                <select name="licencia" id="licencia" class="form-control">
 																	<option value="">Seleccione Tipo Licencia</option>
 						                                    		<?php foreach ($licencias as $licencia) { ?>
 								                                      <?php $licenciaselected = $licencia->id == $datos_form['idlicencia'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $licencia->id_licencia_conducir;?>" <?php echo $licenciaselected;?> ><?php echo $licencia->nombre;?></option>
 								                                    <?php } ?>
 																</select>
-															</td>
-															<td>
-																<select name="polera" id="polera" class="form-control1">
+								                            </div>
+								                          </div>
+
+							                        </div>	
+
+
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Talla de Polera</label>
+								                             	<select name="polera" id="polera" class="form-control">
 																	<option  value="">Seleccione Talla</option>
 						                                    		<?php foreach ($polera as $tpolera) { ?>
 								                                      <?php $poleraselected = $tpolera->id_vestuario == $datos_form['idvestuario'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $tpolera->id_vestuario;?>" <?php echo $poleraselected;?>><?php echo $tpolera->talla;?></option>
 								                                    <?php } ?>
 																</select>
-
-																<!--<input type="text" name="polera" id="polera" class="form-control1" placeholder="Talla de Polera">-->
-															</td>
-															<td>
-																<select name="pantalon" id="pantalon" class="form-control1">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Talla de Pantal&oacute;n</label> 
+								                                <select name="pantalon" id="pantalon" class="form-control">
 																	<option value="">Seleccione Talla</option>
 						                                    		<?php foreach ($pantalon as $tpantalon) { ?>
 								                                      <?php $pantalonselected = $tpantalon->id_vestuario == $datos_form['idvestuario'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $tpantalon->id_vestuario;?>" <?php echo $pantalonselected;?>><?php echo $tpantalon->talla;?></option>
 								                                    <?php } ?>
 																</select>
-														
-																<!--<input type="text" name="pantalon" id="pantalon" class="form-control1" placeholder="Talla de Pantalón">-->
-															</td>
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead> 
-															<tr> 
-																<th>Tipo de Documento:</th> 
-																<th>Centro de Costo:</th>
-																		
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="tipo_documento" id="tipo_documento" class="form-control1" placeholder="Tipo de Documento" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-															<td>
-																<select name="centro_costo" id="centro_costo" class="form-control1">
+							                        </div>								                        						   
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Tipo de Documento</label>
+								                             	<input type="text" name="tipo_documento" id="tipo_documento" class="form-control" placeholder="Tipo de Documento" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Centro de Costo</label> 
+								                                <select name="centro_costo" id="centro_costo" class="form-control">
 																	<option value="">Seleccione Centro Costo</option>
 						                                    		<?php foreach ($centros_costo as $centro_costo) { ?>
 								                                      <?php $centrocostoselected = $centro_costo->id == $datos_form['idcentrocosto'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
 								                                    <?php } ?>
 																</select>
-															</td>
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead> 
-															<tr> 
-																<th>C de Beneficio:</th> 
-																<th>Número de Celular:</th>
-																		
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="beneficio" id="beneficio" class="form-control1" placeholder="C de Beneficio" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-															<td>
-																<input type="text" name="fono" id="fono" class="form-control1" placeholder="Número de Celular">
-															</td>
-														</tbody>
-													</table>
+							                        </div>
+
+
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">C de Beneficio</label>
+								                             	<input type="text" name="beneficio" id="beneficio" class="form-control" placeholder="C de Beneficio" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">N&uacute;mero de Celular</label> 
+								                                <input type="text" name="fono" id="fono" class="form-control" placeholder="Número de Celular">
+								                            </div>
+								                          </div>
+
+							                        </div>								                        								                                             								
+												
 												</section>
 											</div>
 											<!--Datos de la Empresa-->
@@ -591,7 +583,7 @@
 															<tr> 
 																<th>L. Pago Cotiz:</th> 
 																<th>A.F.P:</th>
-																<th>Jubilados:</th>
+																<th>Pensionado:</th>
 															</tr> 
 														</thead>
 														<tbody>
@@ -608,11 +600,14 @@
 								                                   </select>
 															</td>
 															<td>
-																<select name="jubilado" id="jubilado" class="form-control1">
+
+																 <input type="checkbox" name="pensionado" id="pensionado" class="minimal" />   
+
+																<!--select name="jubilado" id="jubilado" class="form-control1">
 																	<option value="SI">SI</option>
 																	<option value="NO">NO</option>
 																
-																</select>
+																</select-->
 																
 															</td>
 														</tbody>
@@ -1265,7 +1260,15 @@ $(document).ready(function(){
         				$("#banco").val(this.idbanco);
         				$("#forma_pago").val(this.id_forma_pago);
         				$("#cta_bancaria").val(this.nrocuentabanco);
+
         				
+        				if (this.pensionado ==1){
+        					//$("#pensionado").val(this.pensionado)
+        					$("#pensionado").attr('checked','checked');
+
+        				}else{
+        					$("#pensionado").attr('checked',false);
+        				}        				
 
         				if (this.segcesantia ==1){
         					$("#seguro_cesantia").val(this.segcesantia)

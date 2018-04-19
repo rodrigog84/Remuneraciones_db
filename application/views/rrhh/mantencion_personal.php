@@ -97,11 +97,11 @@ $(function () {
     $(document).ready(function() {
         <?php if(isset($message)){ ?>
 
-        $.gritter.add({
+          $.gritter.add({
             title: 'Atención',
             text: '<?php echo $message;?>',
             sticky: false,
-            image: '<?php echo base_url();?>images/logos/alert-icon.png',
+            image: '<?php echo base_url();?>images/logos/<?php echo $classmessage == 'success' ? 'check_ok_accept_apply_1582.png' : 'alert-icon.png';?>',
             time: 5000,
             class_name: 'my-sticky-class'
         });

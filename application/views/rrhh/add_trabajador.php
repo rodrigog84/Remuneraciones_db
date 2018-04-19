@@ -588,7 +588,7 @@
 															<tr> 
 																<th>L. Pago Cotiz:</th> 
 																<th>A.F.P:</th>
-																<th>Jubilados:</th>
+																<th>Pensionado:</th>
 															</tr> 
 														</thead>
 														<tbody>
@@ -605,11 +605,7 @@
 								                                   </select>
 															</td>
 															<td>
-																<select name="jubilado" id="jubilado" class="form-control1">
-																	<option value="SI">SI</option>
-																	<option value="NO">NO</option>
-																
-																</select>
+																<input type="checkbox" name="pensionado" id="pensionado" class="minimal" /> 
 																
 															</td>
 														</tbody>
