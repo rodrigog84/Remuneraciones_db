@@ -187,11 +187,11 @@
 							</div>
 							<div class="form-group col-md-1">
 								<label for="horas">Horas</label>
-								    <input type="text" class="form-control" id="horas" name="horas" placeholder="HH">
+								    <input type="number" class="form-control" id="horas" name="horas" placeholder="HH">
 							</div>
 							<div class="form-group col-md-1">
 								<label for="minutos">Minutos</label>    
-									<input type="text" class="form-control" id="minutos" name="minutos" placeholder="MM">
+									<input type="number" class="form-control" id="minutos" name="minutos" placeholder="MM">
 							</div>
 						</div>
 					
