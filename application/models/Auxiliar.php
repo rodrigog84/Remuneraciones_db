@@ -497,6 +497,18 @@ public function solicita_vacaciones($array_datos){
 
 
 
+	public function add_licencia($array_datos){
+
+		$this->db->trans_start();
+		$array_datos['updated_at'] = date('Ymd H:i:s');
+		$array_datos['created_at'] = date('Ymd H:i:s');
+		$this->db->insert('rem_licencias_medicas', $array_datos);
+		$this->db->trans_complete();
+		return 1;
+		
+	}
+
+
 }
 
 
