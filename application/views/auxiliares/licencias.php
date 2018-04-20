@@ -27,6 +27,32 @@
 	</form>
 </div>
 
+
+<div class="container">
+
+	<div class="row">
+	    <div class="form-group col-md-4">
+	      Nombre:
+	    </div>
+	    <div class="form-group col-md-6">
+	      RUT:
+	    </div>
+  	</div>
+
+  	<div class="row">
+	    <div class="form-group col-md-4">
+	      Apellido Materno:
+	    </div>
+	    <div class="form-group col-md-4">
+	      Apellido Paterno:
+	    </div>
+	    <div class="form-group col-md-4">
+	      Edad:
+	    </div>
+  	</div>
+
+</div>
+
 <div class="container">
 	<form  class="form" role="form" id="ingresar_licencia2" name="ingresar_licencia2"  method="post" action="<?php echo base_url();?>auxiliares/submit_licencia">
 		
@@ -46,35 +72,23 @@
 				<div class="tab-content">
 				    <div id="A1" class="tab-pane fade in active">
 				      	<div class="row">	
-					      	<div class="form-group col-md-3">
-								<label  for="nombre">Nombre Completo</label>
-									<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Introducir Nombre" required>	
+				      		<input type="hidden" class="form-control" id="id_trabajador" name="id_trabajador">	
+					   		<div class="form-group col-md-4">
+								<label  for="numero_licencia">Numero de Licencia</label>
+									<input type="number" class="form-control" id="numero_licencia" name="numero_licencia" placeholder="Introducir Numero de Licencia" required>	
 							</div>
-							<div class="form-group col-md-3">
-							    <label  for="apaterno">Apellido Paterno</label>
-								    <input type="text" class="form-control" id="apaterno" placeholder="Introducir Apellido Paterno">
-							</div>
-							
-							<div class="form-group col-md-3">
-							    <label  for="apaterno">Apellido Materno</label>
-								    <input type="text" class="form-control" id="amaterno" name="amaterno" placeholder="Introducir Apellido Materno">
-							 </div>						
-							 <div class="form-group col-md-3">
-							    <label  for="rut">Rut</label>
-								    <input type="text" class="form-control" id="rut" name="rut" placeholder="12345678-9" oninput="checkRut(this)">
-							 </div>	
-						 </div> 	  
-						 <div class="form-group">
+					      	<div class="form-group col-md-4">
 						    <label  for="fec_emision_licencia">Fecha Emisión Licencia</label>
 							    <input type="text" class="form-control" id="fec_emision_licencia" name="fec_emision_licencia" placeholder="Introducir Apellido Paterno">
-						</div>
+							</div>
+							<div class="form-group col-md-4">
+							    <label  for="fec_inicio_reposo">Fecha Inicio de Reposo</label>
+								    <input type="text" class="form-control" id="fec_inicio_reposo" name="fec_inicio_reposo" placeholder="Introducir Fecha Inicio de Reposo">
+							</div>
+						 </div> 	  
+						 
 						<div class="form-group">
-						    <label  for="fec_inicio_reposo">Fecha Inicio de Reposo</label>
-							    <input type="text" class="form-control" id="fec_inicio_reposo" name="fec_inicio_reposo" placeholder="Introducir Fecha Inicio de Reposo">
-						</div>
-						<div class="form-group">
-						    <label  for="Edad">Edad</label>
-							    <input type="number" class="form-control" id="edad" name="edad" placeholder="Introducir Apellido Paterno">
+							    <input type="hidden" class="form-control" id="edad" name="edad">
 						</div>
 						<div class="form-group">
 						    <label  for="sexo">Sexo</label>
@@ -99,177 +113,200 @@
 				     <!--   A2 Identificación del Hijo  -->
 				    <div id="A2" class="tab-pane fade">
 						
-						<div class="form-group">
-						    <label  for="nombre_hijo">Nombre Completo</label>
-							    <input type="text" class="form-control" id="nombre_hijo" name="nombre_hijo" placeholder="Introducir Nombre Completo del Hijo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+						<div class="row">	
+							<div class="form-group col-md-5">
+							    <label  for="nombre_hijo">Nombre Completo</label>
+								    <input type="text" class="form-control" id="nombre_hijo" name="nombre_hijo" placeholder="Introducir Nombre Completo del Hijo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+							</div>
+							<div class="form-group col-md-5">
+							    <label  for="rut_hijo">RUT</label>
+								    <input type="text" class="form-control" id="rut_hijo" name="rut_hijo" placeholder="Introducir RUT del Hijo" oninput="checkRut(this)">
+							</div>
 						</div>
-				      	<div class="form-group">
-						    <label  for="apaterno_hijo">Apellido Paterno</label>
-							    <input type="text" class="form-control" id="apaterno_hijo" name="apaterno_hijo" placeholder="Introducir Apellido Paterno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-						</div>
-						<div class="form-group">
-						    <label  for="amaterno_hijo">Apellido Materno</label>
-							    <input type="text" class="form-control" id="amaterno_hijo" name="amaterno_hijo" placeholder="Introducir Apellido Materno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-						</div>					  	
-						<div class="form-group">
-						    <label  for="fecnachijo">Fecha Nacimiento</label>
-							    <input type="text" class="form-control" id="fecnachijo" name="fecnachijo" placeholder="Introducir Fecha de Nacimiento del Hijo">
-						</div>
-						<div class="form-group">
-						    <label  for="rut_hijo">RUT</label>
-							    <input type="text" class="form-control" id="rut_hijo" name="rut_hijo" placeholder="Introducir RUT del Hijo" oninput="checkRut(this)">
+						<div class="row">
+					      	<div class="form-group col-md-4">
+							    <label  for="apaterno_hijo">Apellido Paterno</label>
+								    <input type="text" class="form-control" id="apaterno_hijo" name="apaterno_hijo" placeholder="Introducir Apellido Paterno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+							</div>
+							<div class="form-group col-md-4">
+							    <label  for="amaterno_hijo">Apellido Materno</label>
+								    <input type="text" class="form-control" id="amaterno_hijo" name="amaterno_hijo" placeholder="Introducir Apellido Materno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+							</div>					  	
+							<div class="form-group col-md-4">
+							    <label  for="fecnachijo">Fecha Nacimiento</label>
+								    <input type="text" class="form-control" id="fecnachijo" name="fecnachijo" placeholder="Introducir Fecha de Nacimiento del Hijo">
+							</div>
 						</div>
 				    
 				    </div>
 
 				    <!--   A3 TIPO DE LICENCIA  -->
 				    <div id="A3" class="tab-pane fade">
-				    	<div class="form-group">
-						    <label  for="tipo_licencia">Tipo de Licencia</label>
-							    <select name="tipo_licencia" id="tipo_licencia" class="form-control1">
-									<option value="1">1. ENFERMEDAD O ACCIDENTE COMUN</option>
-									<option value="2">2. PRORROGA MEDICINA PREVENTIVA</option>
-									<option value="3">3. LICENCIA MATERNAL PRE Y POST NATAL</option>
-									<option value="4">4. ENFERMEDAD GRAVE HIJO MENOR DE 1 AÑO</option>
-									<option value="5">5. ACCIDENTE DEL TRABAJO DEL TRAYECTO</option>
-									<option value="6">6. ENFERMEDAD PROFESIONAL</option>
-									<option value="7">7. PATOLOGIAS DEL EMBARAZO</option>
-								</select>
-						 </div>
+				    	
+				    	<div class="row">
+					    	<div class="form-group col-md-5" >
+							    <label  for="tipo_licencia">Tipo de Licencia</label>
+								    <select name="tipo_licencia" id="tipo_licencia" class="form-control1">
+										<option value="1">1. ENFERMEDAD O ACCIDENTE COMUN</option>
+										<option value="2">2. PRORROGA MEDICINA PREVENTIVA</option>
+										<option value="3">3. LICENCIA MATERNAL PRE Y POST NATAL</option>
+										<option value="4">4. ENFERMEDAD GRAVE HIJO MENOR DE 1 AÑO</option>
+										<option value="5">5. ACCIDENTE DEL TRABAJO DEL TRAYECTO</option>
+										<option value="6">6. ENFERMEDAD PROFESIONAL</option>
+										<option value="7">7. PATOLOGIAS DEL EMBARAZO</option>
+									</select>
+							 </div>
 
-						 <div class="form-group">
-						    <label  for="responsabilidad_laboral">Responsabilidad Laboral</label>
-						    <select name="responsabilidad_laboral" id="responsabilidad_laboral" class="form-control1">
-								<option value="SI">1. SI</option>
-								<option value="NO">2. NO</option>
-							</select>
-						 </div>
+							 <div class="form-group col-md-3">
+							    <label  for="responsabilidad_laboral">Responsabilidad Laboral</label>
+								    <select name="responsabilidad_laboral" id="responsabilidad_laboral" class="form-control1">
+										<option value="SI">1. SI</option>
+										<option value="NO">2. NO</option>
+									</select>
+							 </div>
 
-						 <div class="form-group">
-						    <label  for="inicio_tramite_invalidez">Inicio Tramite de Invalidez</label>
-						    <select name="inicio_tramite_invalidez" id="inicio_tramite_invalidez" class="form-control1">
-								<option value="SI">1. SI</option>
-								<option value="NO">2. NO</option>
-							</select>
-						 </div>
-
-
-						 <div class="form-group">
-							    <label  for="fecha_accidente_trabajo">Fecha Accidente del Trabajo o del Trayecto</label>
-							    <input type="text" class="form-control" id="fecha_accidente_trabajo" name="fecha_accidente_trabajo" placeholder="Fecha Accidente del Trabajo o del Trayecto">
+							 <div class="form-group col-md-4">
+							    <label  for="inicio_tramite_invalidez">Inicio Tramite de Invalidez</label>
+								    <select name="inicio_tramite_invalidez" id="inicio_tramite_invalidez" class="form-control1">
+										<option value="SI">1. SI</option>
+										<option value="NO">2. NO</option>
+									</select>
+							 </div>
 						</div>
 
-						 <div class="form-group">
-							<div class="col-8">
-							    <label for="horas">Horas Minutos</label>
-							    <input type="text" class="form-control" id="horas" name="horas" placeholder="Fecha Accidente del Trabajo o del Trayecto">
-							</div>    
-							 <div class="col-4">
-							    <input type="text" class="form-control" id="minutos" name="minutos" placeholder="Fecha Accidente del Trabajo o del Trayecto">
+						<div class="row">
+							<div class="form-group col-md-4">
+								 <label  for="fecha_accidente_trabajo">Fecha Accidente del Trabajo o del Trayecto</label>
+								    <input type="text" class="form-control" id="fecha_accidente_trabajo" name="fecha_accidente_trabajo" placeholder="Fecha Accidente del Trabajo o del Trayecto">
+							</div>
+							<div class="form-group col-md-1">
+								<label for="horas">Horas</label>
+								    <input type="text" class="form-control" id="horas" name="horas" placeholder="HH">
+							</div>
+							<div class="form-group col-md-1">
+								<label for="minutos">Minutos</label>    
+									<input type="text" class="form-control" id="minutos" name="minutos" placeholder="MM">
 							</div>
 						</div>
 					
 						<div class="form-group">
 						    <label  for="trayecto">Trayecto</label>
-						    <select name="trayecto" id="trayecto" class="form-control1">
-								<option value="SI">1. SI</option>
-								<option value="NO">2. NO</option>
-							</select>
-						 </div>			 
+							    <select name="trayecto" id="trayecto" class="form-control1">
+									<option value="SI">1. SI</option>
+									<option value="NO">2. NO</option>
+								</select>
+						</div>			 
 				    </div>
 
 				    <!--   A4 CARACTERISTICAS DEL REPOSO  -->
-				    <div id="A4" class="tab-pane fade">
-				     	<div class="form-group">
-						    <label  for="tipo_reposo">Tipo de Reposo</label>
-						    <select name="tipo_reposo" id="tipo_reposo" class="form-control1">
-								<option value="1">1. REPOSO LABORAL TOTAL</option>
-								<option value="2">2. REPOSO LABORAL PARCIAL</option>
-							</select>
-						 </div>						 
-						 <div class="form-group">
-						    <label  for="lugar_reposo">Lugar de Reposo</label>
-						    <select name="lugar_reposo" id="lugar_reposo" class="form-control1">
-								<option value="A">A. MAÑANA</option>
-								<option value="B">B. TARDE</option>
-								<option value="C">C. NOCHE</option>
-							</select>
-						 </div>
-						 <div class="form-group">
-						    <label  for="tipo_reposo_parcial">Tipo de Reposo Parcial</label>
-						    <select name="tipo_reposo_parcial" id="tipo_reposo_parcial" class="form-control1">
-								<option value="1">1. SU DOMICILIO</option>
-								<option value="2">2. HOSPITAL</option>
-								<option value="3">3. OTRO DOMICILIO</option>
-							</select>
-						 </div>
-						 <div class="form-group">
-							    <label  for="justificar_otro_domicilio">Justificar si es Otro(3)</label>
+				    <div id="A4" class="tab-pane fade">			     	
+
+					    <div class="row">	
+					     	<div class="form-group col-md-4">
+							    <label  for="tipo_reposo">Tipo de Reposo</label>
+							    <select name="tipo_reposo" id="tipo_reposo" class="form-control1">
+									<option value="1">1. REPOSO LABORAL TOTAL</option>
+									<option value="2">2. REPOSO LABORAL PARCIAL</option>
+								</select>
+							 </div>						 
+							 <div class="form-group col-md-3">
+							    <label  for="lugar_reposo">Lugar de Reposo</label>
+							    <select name="lugar_reposo" id="lugar_reposo" class="form-control1">
+									<option value="A">A. MAÑANA</option>
+									<option value="B">B. TARDE</option>
+									<option value="C">C. NOCHE</option>
+								</select>
+							 </div>
+							 <div class="form-group col-md-4">
+							    <label  for="tipo_reposo_parcial">Tipo de Reposo Parcial</label>
+							    <select name="tipo_reposo_parcial" id="tipo_reposo_parcial" class="form-control1">
+									<option value="1">1. SU DOMICILIO</option>
+									<option value="2">2. HOSPITAL</option>
+									<option value="3">3. OTRO DOMICILIO</option>
+								</select>
+							 </div>
+						</div>
+						<div class="form-group">
+							<label  for="justificar_otro_domicilio">Justificar si es Otro(3)</label>
 							    <input type="text" class="form-control" id="justificar_otro_domicilio" name="justificar_otro_domicilio" placeholder="Justificar si es Otro Domicilio" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-						 </div>
-						 <div class="form-group"> 
-							    <label  for="direccion_otro_domicilio">Direccion, Calle, N° Dpto, Comuna</label>
+						</div>
+						<div class="form-group"> 
+							<label  for="direccion_otro_domicilio">Direccion, Calle, N° Dpto, Comuna</label>
 							    <input type="text" class="form-control" id="direccion_otro_domicilio" name="direccion_otro_domicilio" placeholder="Direccion, Calle, N° Dpto, Comuna" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-						 </div>
-						 <div class="form-group"> 
-							    <label  for="telefono_contacto">Telefono Personal o de Contacto</label>
+						</div>
+						<div class="form-group"> 
+							<label  for="telefono_contacto">Telefono Personal o de Contacto</label>
 							    <input type="number" class="form-control" id="telefono_contacto" name="telefono_contacto" placeholder="Ingrese Numero de 9 digitos">
-						 </div>
+						</div>
 
-				    </div>
-				    
+				    </div>			    
 
 
-				    <!--   A5 CARACTERISTICAS DEL PROFESIONAL  -->
+				    <!--   A5 IDENTIFICACION DEL PROFESIONAL  -->
 				    <div id="A5" class="tab-pane fade">
-				    	<div class="form-group">
-							<label  for="nombre_profesional">Nombre Profesional</label>
-								<input type="text" class="form-control" id="nombre_profesional" name="nombre_profesional" placeholder="Introducir Nombre del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">	
+				    	
+				    	<div class="row">
+					    	<div class="form-group col-md-7">
+								<label  for="nombre_profesional">Nombre Profesional</label>
+									<input type="text" class="form-control" id="nombre_profesional" name="nombre_profesional" placeholder="Introducir Nombre del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">	
+							</div>
+
+							<div class="form-group col-md-5">
+							    <label  for="rut_profesional">Rut Profesional</label>
+								    <input type="text" class="form-control" id="rut_profesional"  name="rut_profesional" placeholder="12345678-9" oninput="checkRut(this)">
+						 	</div>
 						</div>
-						<div class="form-group">
-						    <label  for="apaterno_profesional">Apellido Paterno Profesional</label>
-							    <input type="text" class="form-control" id="apaterno_profesional" name="apaterno_profesional" placeholder="Introducir Apellido Paterno del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+						<div class="row">
+
+							<div class="form-group col-md-6">
+							    <label  for="apaterno_profesional">Apellido Paterno Profesional</label>
+								    <input type="text" class="form-control" id="apaterno_profesional" name="apaterno_profesional" placeholder="Introducir Apellido Paterno del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+							</div>
+							<div class="form-group col-md-6">
+							    <label  for="amaterno_profesional">Apellido Materno Profesional</label>
+								    <input type="text" class="form-control" id="amaterno_profesional"  name="amaterno_profesional" placeholder="Introducir Apellido Materno del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+							</div>
 						</div>
-						<div class="form-group">
-						    <label  for="amaterno_profesional">Apellido Materno Profesional</label>
-							    <input type="text" class="form-control" id="amaterno_profesional"  name="amaterno_profesional" placeholder="Introducir Apellido Materno del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-						 </div>
-						 <div class="form-group">
-						    <label  for="rut_profesional">Rut Profesional</label>
-							    <input type="text" class="form-control" id="rut_profesional"  name="rut_profesional" placeholder="Introducir Rut del Profesional" oninput="checkRut(this)">
-						 </div>
-						 <div class="form-group">
-						    <label  for="especialidad_profesional">Especialidad</label>
-							    <input type="text" class="form-control" id="especialidad_profesional"  name="especialidad_profesional" placeholder="Introducir especialidad del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-						 </div>
-						 <div class="form-group">
-						    <label  for="tipo_profesional">Tipo de Reposo Parcial</label>
-						    <select name="tipo_profesional" id="tipo_profesional" class="form-control1">
-								<option value="1">1. MEDICO</option>
-								<option value="2">2. DENTISTA</option>
-								<option value="3">3. MATRONA</option>
-							</select>
-						 </div>
-						 <div class="form-group">
-						    <label  for="registro_profesional">Registro colegio Profesional</label>
-							    <input type="text" class="form-control" id="registro_profesional"  name="registro_profesional" placeholder="Introducir Registro colegio Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()"> 
-						 </div>
-						 <div class="form-group">
-						    <label  for="correo_profesional">Correo Electronico Profesional</label>
-							    <input type="email" class="form-control" id="correo_profesional"  name="correo_profesional" placeholder="Introducir Correo del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-						 </div>
-						 <div class="form-group">
-						    <label  for="telefono_profesional">Telefono Profesional</label>
-							    <input type="number" class="form-control" id="telefono_profesional"  name="telefono_profesional" placeholder="Introducir Telefono del Profesional">
-						 </div>
-						 <div class="form-group">
-						    <label  for="direccion_profesional">Dirección del Profesional</label>
-							    <input type="text" class="form-control" id="direccion_profesional"  name="direccion_profesional" placeholder="Introducir Dirección del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-						 </div>
-						 <div class="form-group">
-						    <label  for="fax_profesional">Fax del Profesional</label>
-							    <input type="number" class="form-control" id="fax_profesional"  name="fax_profesional" placeholder="Introducir Fax del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-						 </div>				      
+						
+						<div class="row"> 
+							<div class="form-group col-md-6">
+							    <label  for="especialidad_profesional">Especialidad</label>
+								    <input type="text" class="form-control" id="especialidad_profesional"  name="especialidad_profesional" placeholder="Introducir especialidad del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+							</div>
+							<div class="form-group col-md-2">
+							    <label  for="tipo_profesional">Tipo de Profesional</label>
+								    <select name="tipo_profesional" id="tipo_profesional" class="form-control1">
+										<option value="1">1. MEDICO</option>
+										<option value="2">2. DENTISTA</option>
+										<option value="3">3. MATRONA</option>
+									</select>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="form-group col-md-4">
+							    <label  for="registro_profesional">Registro colegio Profesional</label>
+								    <input type="text" class="form-control" id="registro_profesional"  name="registro_profesional" placeholder="Introducir Registro colegio Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()"> 
+							</div>
+							<div class="form-group col-md-4">
+							    <label  for="correo_profesional">Correo Electronico Profesional</label>
+								    <input type="email" class="form-control" id="correo_profesional"  name="correo_profesional" placeholder="Introducir Correo del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+							</div>
+							<div class="form-group col-md-4">
+							    <label  for="telefono_profesional">Telefono Profesional</label>
+								    <input type="number" class="form-control" id="telefono_profesional"  name="telefono_profesional" placeholder="Introducir Telefono del Profesional">
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-md-8">
+							    <label  for="direccion_profesional">Dirección del Profesional</label>
+								    <input type="text" class="form-control" id="direccion_profesional"  name="direccion_profesional" placeholder="Introducir Dirección del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+							</div>
+							<div class="form-group col-md-4">
+							    <label  for="fax_profesional">Fax del Profesional</label>
+								    <input type="number" class="form-control" id="fax_profesional"  name="fax_profesional" placeholder="Introducir Fax del Profesional" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+							</div>
+						</div>				      
 				    </div>
 
 				    <!--   A6 DIAGNOSTICO PRINCIPAL  -->
@@ -368,3 +405,6 @@ function checkRut(rut) {
     rut.setCustomValidity('');
 }
 </script>
+
+
+

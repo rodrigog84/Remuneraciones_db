@@ -676,7 +676,8 @@ public function submit_solicita_vacaciones(){
 
 
 		// A1
-		$idtrabajador = $this->input->post("idtrabajador");
+		$numero_licencia = $this->input->post("numero_licencia");
+		$idtrabajador = $this->input->post("id_trabajador");
 		$fec_emision_licencia = $this->input->post("fec_emision_licencia");
 		$fec_inicio_reposo = $this->input->post("fec_inicio_reposo");
 		$edad = $this->input->post("edad");
@@ -739,9 +740,10 @@ public function submit_solicita_vacaciones(){
 
 
 		$array_datos = array( 'estado' => 'I',
-							//A1			
+							//A1
+								'numero_licencia' => $numero_licencia,			
 								'id_empresa' => $this->session->userdata('empresaid'),
-	       						'id_personal' => 17,//$idtrabajador,
+	       						'id_personal' => $id_trabajador,
 								'fec_emision_licencia' => $fec_emision_licencia,
 								'fec_inicio_reposo' => $fec_inicio_reposo,
 								'edad' => $edad,
