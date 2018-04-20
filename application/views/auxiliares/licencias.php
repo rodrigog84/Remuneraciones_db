@@ -29,29 +29,35 @@
 
 
 <div class="container">
+	<div class="panel panel-default">
+		<div class="panel-heading">Identificación del Colaborador
+		</div>
+		<div class="panel-body">
+			<div class="row">
+			    <div class="form-group col-md-4">
+			      Nombre:
+			    </div>
+			    <div class="form-group col-md-6">
+			      RUT:
+			    </div>
+		  	</div>
 
-	<div class="row">
-	    <div class="form-group col-md-4">
-	      Nombre:
-	    </div>
-	    <div class="form-group col-md-6">
-	      RUT:
-	    </div>
-  	</div>
-
-  	<div class="row">
-	    <div class="form-group col-md-4">
-	      Apellido Materno:
-	    </div>
-	    <div class="form-group col-md-4">
-	      Apellido Paterno:
-	    </div>
-	    <div class="form-group col-md-4">
-	      Edad:
-	    </div>
-  	</div>
-
+		  	<div class="row">
+			    <div class="form-group col-md-4">
+			      Apellido Materno:
+			    </div>
+			    <div class="form-group col-md-4">
+			      Apellido Paterno:
+			    </div>
+			    <div class="form-group col-md-4">
+			      Edad:
+			    </div>
+		  	</div>
+	          
+		</div>
+	</div>
 </div>
+
 
 <div class="container">
 	<form  class="form" role="form" id="ingresar_licencia2" name="ingresar_licencia2"  method="post" action="<?php echo base_url();?>auxiliares/submit_licencia">
@@ -114,7 +120,7 @@
 				    <div id="A2" class="tab-pane fade">
 						
 						<div class="row">	
-							<div class="form-group col-md-5">
+							<div class="form-group col-md-7">
 							    <label  for="nombre_hijo">Nombre Completo</label>
 								    <input type="text" class="form-control" id="nombre_hijo" name="nombre_hijo" placeholder="Introducir Nombre Completo del Hijo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 							</div>
@@ -252,7 +258,7 @@
 							</div>
 
 							<div class="form-group col-md-5">
-							    <label  for="rut_profesional">Rut Profesional</label>
+							    <label  for="rut_profesional">RUT Profesional</label>
 								    <input type="text" class="form-control" id="rut_profesional"  name="rut_profesional" placeholder="12345678-9" oninput="checkRut(this)">
 						 	</div>
 						</div>
