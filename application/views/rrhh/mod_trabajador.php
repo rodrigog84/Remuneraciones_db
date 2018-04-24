@@ -358,51 +358,50 @@
 											<!--Datos de la Empresa-->
 											<div class="tab-pane" id="datosempresa">
 												<section class="empresa">
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Clase:</th>
-																<th>Sueldo Base:</th> 
-																<th>Tipo C.C:</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="clase" class="form-control1" id="clase" placeholder="Clases" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-															<td>
-																<input type="text" name="sueldo_base" class="form-control1" id="sueldo_base" placeholder="Sueldo Base">
-															</td>
-															<td>
-																<input type="text" name="tipo_cc" class="form-control1" id="tipo_cc" placeholder="Tipo CC" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-		
-														</tbody>
-													</table>
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Clase</label>
+								                             	<input type="text" name="clase" class="form-control" id="clase" placeholder="Clases" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Categoria:</th> 
-																<th>Lugar de Pago:</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<!--<input type="text" name="categoria" class="form-control1" id="categoria" placeholder="Categoria">-->
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Sueldo Base</label>  
+								                                 <input type="text" name="sueldo_base" class="form-control" id="sueldo_base" placeholder="Sueldo Base">
+								                            </div>
+								                          </div>
 
-																<select name="categoria" id="categoria" class="form-control1">
+							                        </div>
+
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Tipo C.C</label>
+								                             	<input type="text" name="tipo_cc" class="form-control" id="tipo_cc" placeholder="Tipo CC" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Categoria</label>  
+								                                 <select name="categoria" id="categoria" class="form-control">
 																	<option value="">Seleccione Categoria</option>
 						                                    		<?php foreach ($categorias as $categoria) { ?>
 								                                      <?php $categoriaselected = $categoria->id == $datos_form['idcategoria'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $categoria->id_categoria;?>" <?php echo $categoriaselected;?> ><?php echo $categoria->nombre;?></option>
 								                                    <?php } ?>
 																</select>
+								                            </div>
+								                          </div>
 
-															</td>
-															<td>
-																<!--<input type="text" name="lugar_pago" class="form-control1" id="lugar_pago" placeholder="Lugar de Pago" data-toggle="modal" data-target="#myModalPago">-->
-																<select name="lugar_pago" id="lugar_pago" class="form-control1">
+							                        </div>
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Lugar de Pago</label>
+								                             	<select name="lugar_pago" id="lugar_pago" class="form-control">
 																	<option value="">Seleccione Lugar de Pago</option>
 						                                    		<?php foreach ($lugar_pago as $lugar_pagos) { ?>
 								                                      <?php $lugarpagosselected = $lugar_pagos->id == $datos_form['idlugarpago'] ? "selected" : ""; ?>
@@ -410,638 +409,679 @@
 								                                    <?php } ?>
 																</select>
 
-															</td>
-		
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Fecha de Ingreso</label>  
+								                                 <input placeholder="Fecha Ingreso" class="form-control" id="datepicker2" name="datepicker2" type="text" value="" required>
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Fecha de Ingreso:</th> 
-																<th>Fecha de Retiro:</th>
-																<th>Fecha de Finiquito:</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input placeholder="Fecha Ingreso" class="form-control1" id="datepicker2" name="datepicker2" type="text" value="" required>
-															</td>
-															<td>
-																<input placeholder="Fecha Retiro" class="form-control1" id="datepicker3" type="text" value="">
-															</td>
-															<td>
-																<input placeholder="Fecha de Finiquito" class="form-control1" id="datepicker4" type="text" value="">
-															</td>
-		
-														</tbody>
-													</table>
+							                        </div>
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Fecha de Retiro</label>
+								                             	<input placeholder="Fecha Ingreso" class="form-control" id="datepicker2" name="datepicker2" type="text" value="" required>
 
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Fecha Inicio Cálculo Vacaciones:</th> 
-																<th>Saldo Inicial Días Vacaciones Legales:</th>
-																<th>Saldo Inicial Días Vacaciones Progresivas:</th>
-																
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input placeholder="Fecha Inicio Vacaciones" class="form-control1" id="fecha_inicio_vacaciones"  size="30" type="text" value="" >
-															</td>
-															<td>
-																<input type="text" name="seccion" class="form-control1" id="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30" value="0">
-															</td>
-															<td>
-																<input type="text" name="seccion" class="form-control1" id="vacaciones_progresivas" placeholder="Saldo Inicial Vacaciones Progresivas" size="30" value="0">
-															</td>
-		
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Fecha de Finiquito</label>  
+								                                 <input placeholder="Fecha de Finiquito" class="form-control" id="datepicker4" type="text" value="">
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Motivo de Egreso:</th> 
-																<th>Tipo de Contrato:</th>
-																<th>Jornada de Trabajo:</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<select name="selector1" id="selector1" class="form-control1">
+							                        </div>
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Fecha Inicio Cálculo Vacaciones</label>
+								                             	<input placeholder="Fecha Inicio Vacaciones" class="form-control" id="fecha_inicio_vacaciones"  size="30" type="text" value="" >
+
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                            	<label for="rut">Saldo Inicial Días Vacaciones Legales</label>
+								                                <input type="text" name="seccion" class="form-control" id="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30" value="0">
+								                            </div>
+								                          </div>
+
+							                        </div>
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Saldo Inicial Días Vacaciones Progresivas</label>
+								                             	<input type="text" name="seccion" class="form-control" id="vacaciones_progresivas" placeholder="Saldo Inicial Vacaciones Progresivas" size="30" value="0">
+
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                            	<label for="rut">Motivo de Egreso</label>
+																<select name="selector1" id="selector1" class="form-control">
 																	<option>Seleccione</option>
 																	<option>Dolore, ab unde modi est!</option>
 																	<option>Illum, fuga minus sit eaque.</option>
 																	<option>Consequatur ducimus maiores voluptatum minima.</option>
 																</select>
-															</td>
-															<td>
-																<select name="selector1" id="selector1" class="form-control1">
+								                            </div>
+								                          </div>
+
+							                        </div>
+
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Tipo de Contrato</label>
+																<select name="selector1" id="selector1" class="form-control">
 																	<option>Seleccione</option>
 																	<option>Dolore, ab unde modi est!</option>
 																	<option>Illum, fuga minus sit eaque.</option>
 																	<option>Consequatur ducimus maiores voluptatum minima.</option>
 																</select>
-															</td>
-															<td>
-																<select name="selector1" id="selector1" class="form-control1">
+
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                            	<label for="rut">Jornada de Trabajo</label>
+																<select name="selector1" id="selector1" class="form-control">
 																	<option>Seleccione</option>
 																	<option>Dolore, ab unde modi est!</option>
 																	<option>Illum, fuga minus sit eaque.</option>
 																	<option>Consequatur ducimus maiores voluptatum minima.</option>
 																</select>
-															</td>
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Sección:</th> 
-																<th>Código Ine:</th>
-																<th>Sindicato:</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="seccion" class="form-control1" id="seccion" placeholder="Sección" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-															<td>
-																<input type="text" name="codigo_ine" class="form-control1" id="codigo_ine" placeholder="Código Ine">
-															</td>
-															<td>
-																<select name="sindicato" id="sindicato" class="form-control1">
+							                        </div>		
+
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Sección</label>
+																<input type="text" name="seccion" class="form-control" id="seccion" placeholder="Sección" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                            	<label for="rut">Código Ine</label>
+																<input type="text" name="codigo_ine" class="form-control" id="codigo_ine" placeholder="Código Ine">
+								                            </div>
+								                          </div>
+
+							                        </div>		
+
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Sindicato</label>
+																<select name="sindicato" id="sindicato" class="form-control">
 																	<option value="SI">SI</option>
 																	<option value="NO">NO</option>
 																
 																</select>
-																
-															</td>
-														</tbody>
-													</table>
 
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Rol Privado</th>
-																<th>Semana Corrida</th>  
-																<th>Sitio Laboral:</th>
-																<th>Zona Brecha:</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<select name="regimen_pago" id="regimen_pago" class="form-control1">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                            	<label for="rut">Rol Privado</label>
+																<select name="regimen_pago" id="regimen_pago" class="form-control">
 																	<option value="SI">SI</option>
 																	<option value="NO">NO</option>
 																
 																</select>
-																
-															</td>
-															<td>
-																<select name="semana_corrida" id="semana_corrida" class="form-control1">
+								                            </div>
+								                          </div>
+
+							                        </div>			
+
+
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Semana Corrida</label>
+																<select name="semana_corrida" id="semana_corrida" class="form-control">
 																	<option value="SI">SI</option>
 																	<option value="NO">NO</option>
 																
 																</select>
-																
-															</td>
-															<td>
-																<input type="text" name="sitio_laboral" class="form-control1" id="sitio_laboral" placeholder="Sitio Laboral" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-															<td>
-																<input type="text" name="zona_brecha" class="form-control1" id="zona_brecha" placeholder="Zona Brecha" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Sitio Laboral</label>
+																<input type="text" name="sitio_laboral" class="form-control" id="sitio_laboral" placeholder="Sitio Laboral" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Fecha Real:</th> 
-																<th>1er Vencimiento:</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input placeholder="Fecha Real" class="form-control1" id="fecha_real" type="text" value="" >
-															</td>
-															<td>
-																<input placeholder="1er Vencimiento" class="form-control1" id="vencimiento_1" type="text" value="" >
-															</td>
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
+
+							                        </div>		
+
+
+							                         <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Zona Brecha</label>
+																<input type="text" name="zona_brecha" class="form-control" id="zona_brecha" placeholder="Zona Brecha" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Fecha Real</label>
+																<input placeholder="Fecha Real" class="form-control" id="fecha_real" type="text" value="" >
+
+								                            </div>
+								                          </div>
+
+							                        </div>							                        					       
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">1er Vencimiento</label>
+																<input placeholder="1er Vencimiento" class="form-control" id="vencimiento_1" type="text" value="" >
+								                            </div>
+								                          </div>
+							                        </div>	                 
+
 												</section>
 											</div>
 
 											<div class="tab-pane" id="datosllss">
 												<section class="llss">
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>L. Pago Cotiz:</th> 
-																<th>A.F.P:</th>
-																<th>Pensionado:</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="pago_cotiza" class="form-control1" id="pago_cotiza" placeholder="L. Pago Cotiz">
-															</td>
-															<td>
-																<select name="afp" id="afp" class="form-control1">
+
+													 <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">L. Pago Cotiz</label>
+																<input type="text" name="pago_cotiza" class="form-control" id="pago_cotiza" placeholder="L. Pago Cotiz">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">A.F.P</label>
+																<select name="afp" id="afp" class="form-control">
 																	<option value="">Seleccione AFP</option>
 						                                    		<?php foreach ($afps as $afp) { ?>
 								                                      <?php $afpselected = $afp->id == $datos_form['idafp'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $afp->id_afp;?>" <?php echo $afpselected;?> ><?php echo $afp->nombre;?></option>
 								                                    <?php } ?>
-								                                   </select>
-															</td>
-															<td>
+								                                   </select>																
 
-																 <input type="checkbox" name="pensionado" id="pensionado" class="minimal" />   
+								                            </div>
+								                          </div>
 
-																<!--select name="jubilado" id="jubilado" class="form-control1">
-																	<option value="SI">SI</option>
-																	<option value="NO">NO</option>
-																
-																</select-->
-																
-															</td>
-														</tbody>
-													</table>
+							                        </div>
 
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Fecha Incorporación AFP:</th> 																	
+													 <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Pensionado</label>
+																<input type="checkbox" name="pensionado" id="pensionado" class="minimal" />   
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Fecha Incorporación AFP</label>
+																<input placeholder="Fecha Incorp.AFP" class="form-control" id="datepicker5" name="datepicker5" type="text" value="" >															
 
-																<th><input class="form-control1" id="seguro_cesantia" name="seguro_cesantia" type="checkbox" onchange="habilitar(this.checked);" > Seguro Cesantia:</th>
-																<!--<th>Fecha Seguro Cesantia:</th>-->
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input placeholder="Fecha Incorp.AFP" class="form-control1" id="datepicker5" name="datepicker5" type="text" value="" >
-															</td>
-															<td>
-																<input placeholder="Fecha Ingreso AFC" class="form-control1" id="datepicker6" name="datepicker6" type="text" value="" disabled >
-															</td>
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>Cese AFC:</th>
-																<th>Isapre:</th>
-																<th>Monto Pactado Plan Isapre (UF):</th>
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="cese" class="form-control1" id="cese" placeholder="Cese AFC" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-															<td>
-																<select name="isapre" id="isapre" class="form-control1">
+							                        </div>
+
+
+
+													 <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Seguro Cesantia</label>
+																<input class="form-control1" id="seguro_cesantia" name="seguro_cesantia" type="checkbox" onchange="habilitar(this.checked);" > 
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Fecha Ingreso AFC</label>
+																<input placeholder="Fecha Ingreso AFC" class="form-control" id="datepicker6" name="datepicker6" type="text" value="" disabled >														
+
+								                            </div>
+								                          </div>
+
+							                        </div>
+
+ 													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Cese AFC</label>
+																<input type="text" name="cese" class="form-control" id="cese" placeholder="Cese AFC" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()"> 
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Isapre</label>
+																<select name="isapre" id="isapre" class="form-control">
 																	<option value="">Seleccione Isapre</option>
 						                                    		<?php foreach ($isapres as $isapre) { ?>
 								                                      <?php $isapreselected = $isapre->id == $datos_form['idisapre'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $isapre->id_isapre;?>" <?php echo $isapreselected;?> ><?php echo $isapre->nombre;?></option>
 								                                    <?php } ?>
-								                                   </select>
-															</td>
-															<td>
-																<input type="number" min="0" max="99" minlength="1" maxlength="2" step="0.01" name="monto_pactado"  class="form-control1" id="monto_pactado" placeholder="">
-															</td>
-														</tbody>
-													</table>
+								                                   </select>									
 
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>Número FUN:</th>
-																<th>Vencimiento de Plan:</th>
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="numero_fun" class="form-control1" id="numero_fun" placeholder="Número FUN">
-															</td>
+								                            </div>
+								                          </div>
 
-															<td>
-																<input placeholder="Vencimiento Plan" class="form-control1" id="datepicker9" type="text" value="" >
-															</td>
-														</tbody>
-													</table>
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>A.P.V.</th>
-																<th>Numero Contrato A.P.V.:</th>
-																<th>Tipo Cotización A.P.V:</th>
-																<th>Monto Cotización A.P.V:</th>
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<select name="apv" id="apv" class="form-control1" >
+							                        </div>	
+
+							                     	<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Monto Pactado Plan Isapre (UF)</label>
+																<input type="number" min="0" max="99" minlength="1" maxlength="2" step="0.01" name="monto_pactado"  class="form-control" id="monto_pactado" placeholder="">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Número FUN</label>
+																<input type="text" name="numero_fun" class="form-control" id="numero_fun" placeholder="Número FUN">								
+
+								                            </div>
+								                          </div>
+
+							                        </div>
+							                     	<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Vencimiento de Plan</label>
+																<input placeholder="Vencimiento Plan" class="form-control" id="datepicker9" type="text" value="" >
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">A.P.V.</label>
+																<select name="apv" id="apv" class="form-control" >
 																	<option value="">Seleccione APV</option>
 						                                    		<?php foreach ($apv as $apvs) { ?>
 								                                      <?php $apvselected = $apvs->id_apv == $datos_form['idapv'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $apvs->id_apv;?>" <?php echo $apvselected;?> ><?php echo $apvs->nombre;?></option>
 								                                    <?php } ?>
-								                                   </select>
-																
-															</td>
-															<td>
-																<input type="number" name="numero_contrato_apv" class="form-control1" id="numero_contrato_apv" placeholder="Numero Contrato">
-															</td>
-															<td>
-																<select name="tipo_cotizacion" id="tipo_cotizacion" class="form-control1">
+								                                   </select>								
+
+								                            </div>
+								                          </div>
+
+							                        </div>
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Numero Contrato A.P.V.</label>
+																<input type="number" name="numero_contrato_apv" class="form-control" id="numero_contrato_apv" placeholder="Numero Contrato">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Tipo Cotización A.P.V.</label>
+																<select name="tipo_cotizacion" id="tipo_cotizacion" class="form-control">
 																	<option value="pesos">PESO</option>
 																	<option value="uf">UF</option>
 																	<option value="porcentaje">PORCENTAJE</option>
-																</select>
-																
-															</td>
-															<td>
-																<input type="text" name="monto_cotizacion_apv" maxlength="2" class="form-control1" id="monto_cotizacion_apv" placeholder="Monto Cotizacion">
-															</td>
-														</tbody>
-													</table>
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>Tramo p/Asig. Fami:</th>
-																<th>Trabajo Pesado/Insalub:</th>
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<select name="tramo" id="tramo" class="form-control1">
+																</select>							
+
+								                            </div>
+								                          </div>
+
+							                        </div>	
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Monto Cotización A.P.V.</label>
+																<input type="text" name="monto_cotizacion_apv" maxlength="2" class="form-control" id="monto_cotizacion_apv" placeholder="Monto Cotizacion">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Tramo p/Asig. Fami</label>
+																<select name="tramo" id="tramo" class="form-control">
 																	<option value="">Seleccione tramo</option>
 						                                    		<?php foreach ($tramos_asig_familiar as $tramo) { ?>
 								                                      <?php $tramoselected = $tramo->id_tabla_asig_familiar == $datos_form['id_tabla_asig_familiar'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $tramo->id_tabla_asig_familiar;?>" <?php echo $tramoselected;?> ><?php echo 'TRAMO '.$tramo->tramo;?></option>
 								                                    <?php } ?>																
-								                                </select>
+								                                </select>							
 
-																
-																<!--<input type="text" name="tramo" class="form-control1" id="tramo" placeholder="Tramo p/Asig. Familiar">-->
-															</td>
-															<td>
-																<input type="text" name="trabajo_pesado" class="form-control1" id="trabajo_pesado" placeholder="Trabajo Pesado/Insalub">
-															</td>
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>Asignación Familiar Individual </th>
-																<th>Asignación Familiar por Invalidez</th>
-																<th>Asignación Familiar Maternal</th>
-																
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<input type="number" name="asig_individual" class="form-control1" id="asig_individual" placeholder="">
-															</td>
-															<td>
-																<input type="number" name="asig_por_invalidez" class="form-control1" id="asig_por_invalidez" placeholder="">
-															</td>
-															<td>
-																<input type="number" name="asig_maternal" class="form-control1" id="asig_maternal" placeholder="">
-															</td>
-															
-														</tbody>
-													</table>
+							                        </div>							                        
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Trabajo Pesado/Insalub</label>
+																<input type="text" name="trabajo_pesado" class="form-control" id="trabajo_pesado" placeholder="Trabajo Pesado/Insalub">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Asignación Familiar Individual</label>
+																<input type="number" name="asig_individual" class="form-control" id="asig_individual" placeholder="">
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>Estado APVC:</th>
-																<th>Fecha APVC:</th>
-																<th>Término de Subsidio:</th>
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="estado_apvc" class="form-control1" id="estado_apvc" placeholder="Estado APVC">
-															</td>
-															<td>
-																<input placeholder="Fecha APVC" class="form-control1" id="datepicker10" type="text" value="" >
-															</td>
-															<td>
-																<input placeholder="Término de Subsidio" class="form-control1" id="datepicker11" type="text" value="" >
-															</td>
-														</tbody>
-													</table>
+							                        </div>	
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Asignación Familiar por Invalidez</label>
+																<input type="number" name="asig_por_invalidez" class="form-control" id="asig_por_invalidez" placeholder="">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Asignación Familiar Maternal</label>
+																<input type="number" name="asig_maternal" class="form-control" id="asig_maternal" placeholder="">
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead>
-															<tr>																
-																<th>Zona A. Familiar:</th>
-																<th>Jornada de Trabajo:</th>
-															</tr>
-														</thead>
-														<tbody>															
-															<td>
-																<input type="text" name="zona_familiar" class="form-control1" id="zona_familiar" placeholder="Zona A. Familiar">
-															</td>
-															<td>
-																<select name="jornada_trabajo" id="jornada_trabajo" class="form-control1">
+							                        </div>	
+
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Estado APVC</label>
+																<input type="text" name="estado_apvc" class="form-control" id="estado_apvc" placeholder="Estado APVC">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Fecha APVC</label>
+																<input placeholder="Fecha APVC" class="form-control" id="datepicker10" type="text" value="" >
+								                            </div>
+								                          </div>
+
+							                        </div>
+
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Término de Subsidio</label>
+																<input placeholder="Término de Subsidio" class="form-control" id="datepicker11" type="text" value="" >
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Zona A. Familiar</label>
+																<input type="text" name="zona_familiar" class="form-control" id="zona_familiar" placeholder="Zona A. Familiar">
+								                            </div>
+								                          </div>
+
+							                        </div>
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Jornada de Trabajo</label>
+																<select name="jornada_trabajo" id="jornada_trabajo" class="form-control">
 																	<option value="">Seleccione Jornada de Trabajo</option>
 						                                    		<?php foreach ($jornada_trabajo as $jornada) { ?>
 								                                      <?php $jornadaselected = $jornada->id_jornada == $datos_form['id_jornada'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $jornada->id_jornada;?>" <?php echo $jornadaselected;?> ><?php echo $jornada->nombre;?></option>
 								                                    <?php } ?>
-																</select>
+																</select>																
+								                            </div>
+								                          </div>
 
-															</td>
-														</tbody>
-													</table>
+							                        </div>
+
 												</section>
 											</div>
 
 											<div class="tab-pane" id="pago">
 												<section class="formapago">
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Forma de Pago:</th> 
-																<th>Banco:</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<select name="forma_pago" id="forma_pago" class="form-control1">
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Forma de Pago</label>
+																<select name="forma_pago" id="forma_pago" class="form-control">
 																	<option value="">Seleccione Forma de Pago</option>
 						                                    		<?php foreach ($forma_pago as $pago) { ?>
 								                                      <?php $pagoselected = $pago->id_forma_pago == $datos_form['id_forma_pago'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $pago->id_forma_pago;?>" <?php echo $pagoselected;?> ><?php echo $pago->descripcion;?></option>
 								                                    <?php } ?>
 																</select>
-															</td>
-															<td>
-																<select name="banco" id="banco" class="form-control1">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Banco</label>
+																<select name="banco" id="banco" class="form-control">
 																	<option value="">Seleccione Banco</option>
 						                                    		<?php foreach ($bancos as $banco) { ?>
 								                                      <?php $bancoselected = $banco->id_banco == $datos_form['id_banco'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $banco->id_banco;?>" <?php echo $bancoselected;?> ><?php echo $banco->cod_sbif.' - '.$banco->nombre;?></option>
 								                                    <?php } ?>																
 								                                </select>
-															</td>
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Número de Cuenta:</th> 
-																<th>Rut:</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="cta_bancaria" class="form-control1" id="cta_bancaria" placeholder="Nº Cuenta Bancaria">
-															</td>
-															<td>
-																<input type="text" name="rutfp" class="form-control1" id="rutfp" placeholder="Rut">
-															</td>
-														</tbody>
-													</table>
+							                        </div>
 
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Nombre Completo:</th> 
-																<th>Email:</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="nombrefp" class="form-control1" id="nombrefp" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-															<td>
-																<input type="text" name="emailfp" class="form-control1" id="emailfp" placeholder="Email" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
-															</td>
-														</tbody>
-													</table>
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Número de Cuenta</label>
+																<input type="text" name="cta_bancaria" class="form-control" id="cta_bancaria" placeholder="Nº Cuenta Bancaria">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Rut</label>
+																<input type="text" name="rutfp" class="form-control" id="rutfp" placeholder="Rut">
+								                            </div>
+								                          </div>
+
+							                        </div>
+													
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Nombre Completo</label>
+																<input type="text" name="nombrefp" class="form-control" id="nombrefp" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Email</label>
+																<input type="text" name="emailfp" class="form-control" id="emailfp" placeholder="Email" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+								                            </div>
+								                          </div>
+
+							                        </div>
+													
+
+													
 												</section>
 											</div>
 
 											<div class="tab-pane" id="otros">
 												<section class="otros">
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>Número Funcionario SAP:</th>
-																<th>Número de Tarjeta:</th>
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="funcionario" class="form-control1" id="funcionario" placeholder="Número Funcionario SAP">
-															</td>
-															<td>
-																<input type="text" name="tarjeta" class="form-control1" id="tarjeta" placeholder="Número de Tarjeta">
-															</td>
-														</tbody>
-													</table>
 
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>Imprime Tickets:</th>
-																<th>Horas de Trabajo:</th>
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<select name="selector1" id="selector1" class="form-control1">
+												<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Número Funcionario SAP</label>
+																<input type="text" name="funcionario" class="form-control" id="funcionario" placeholder="Número Funcionario SAP">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Número de Tarjeta</label>
+																<input type="text" name="tarjeta" class="form-control" id="tarjeta" placeholder="Número de Tarjeta">
+								                            </div>
+								                          </div>
+
+							                        </div>
+
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Imprime Tickets</label>
+																<select name="selector1" id="selector1" class="form-control">
 																	<option>Seleccione.</option>
 																	<option>Dolore, ab unde modi est!</option>
 																	<option>Illum, fuga minus sit eaque.</option>
 																	<option>Consequatur ducimus maiores voluptatum min</option>
 																</select>
-															</td>
-															<td>
-																<input type="text" name="horas_trabajo" class="form-control1" id="horas_trabajo" placeholder="Horas de Trabajo">
-															</td>
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Horas de Trabajo</label>
+																<input type="text" name="horas_trabajo" class="form-control" id="horas_trabajo" placeholder="Horas de Trabajo">
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>Código de Anexo:</th>
-																<th>2do Vencimiento:</th>
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="codigo_anexo" class="form-control1" id="codigo_anexo" placeholder="Código de Anexo">
-															</td>
-															<td>
-																<input placeholder="2do Vencimiento" class="form-control1" id="datepicker12" type="text" value="" >
-															</td>
-														</tbody>
-													</table>
+							                        </div>
+													
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Código de Anexo</label>
+																<input type="text" name="codigo_anexo" class="form-control" id="codigo_anexo" placeholder="Código de Anexo">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">2do Vencimiento</label>
+																<input placeholder="2do Vencimiento" class="form-control" id="datepicker12" type="text" value="" >
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>Anticipo Ind Monto:</th>
-																<th>Anticipo Ind Días:</th>
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="anticipo_monto" class="form-control1" id="anticipo_monto" placeholder="0">
-															</td>
-															<td>
-																<input type="text" name="anticipo_dias" class="form-control1" id="anticipo_dias" placeholder="0">
-															</td>
-														</tbody>
-													</table>
+							                        </div>
+													
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Anticipo Ind Monto</label>
+																<input type="text" name="anticipo_monto" class="form-control" id="anticipo_monto" placeholder="0">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Anticipo Ind Días</label>
+																<input type="text" name="anticipo_dias" class="form-control" id="anticipo_dias" placeholder="0">
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>Autoriz Firma Doc:</th>
-																<th>Sucursal Entrenam:</th>
-																<th>Código Ocupación:</th>
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<select name="selector1" id="selector1" class="form-control1">
+							                        </div>
+
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Autoriz Firma Doc</label>
+																<select name="selector1" id="selector1" class="form-control">
 																	<option>Seleccione.</option>
 																	<option>Dolore, ab unde modi est!</option>
 																	<option>Illum, fuga minus sit eaque.</option>
 																	<option>Consequatur ducimus maiores voluptatum min</option>
 																</select>
-															</td>
-															<td>
-																<input type="text" name="sucursal_entrenamiento" class="form-control1" id="sucursal_entrenamiento" placeholder="Sucursal Entrenamiento">
-															</td>
-															<td>
-																<input type="text" name="codigo_ocupacion" class="form-control1" id="codigo_ocupacion" placeholder="0">
-															</td>
-														</tbody>
-													</table>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Sucursal Entrenam</label>
+																<input type="text" name="sucursal_entrenamiento" class="form-control" id="sucursal_entrenamiento" placeholder="Sucursal Entrenamiento">
+								                            </div>
+								                          </div>
 
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>Evaluador:</th>
-																<th>Usuario Windows:</th>
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="evaluador" class="form-control1" id="evaluador" placeholder="Evaluador">
-															</td>
-															<td>
-																<input type="text" name="usuario_windows" class="form-control1" id="usuario_windows" placeholder="Usuario Windows">
-															</td>
-														</tbody>
-													</table>
+							                        </div>
 
-													<table class="table table-striped">
-														<thead>
-															<tr>
-																<th>Cuenta Contable:</th>
-																<th>Nivel de Sence:</th>
-																<th>Franquicia Sence %:</th>
-															</tr>
-														</thead>
-														<tbody>
-															<td>
-																<input type="text" name="cuenta_contable" class="form-control1" id="cuenta_contable" placeholder="0">
-															</td>
-															<td>
-																<input type="text" name="nivel_sence" class="form-control1" id="nivel_sence" placeholder="0">
-															</td>
-															<td>
-																<input type="text" name="franquicia" class="form-control1" id="franquicia" placeholder="0,00 %">
-															</td>
-														</tbody>
-													</table>
+							                         <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Código Ocupación</label>
+																<input type="text" name="codigo_ocupacion" class="form-control" id="codigo_ocupacion" placeholder="0">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Evaluador</label>
+																<input type="text" name="evaluador" class="form-control" id="evaluador" placeholder="Evaluador">
+								                            </div>
+								                          </div>
+
+							                        </div>
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Usuario Windows</label>
+																<input type="text" name="usuario_windows" class="form-control" id="usuario_windows" placeholder="Usuario Windows">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Cuenta Contable</label>
+																<input type="text" name="cuenta_contable" class="form-control" id="cuenta_contable" placeholder="0">
+								                            </div>
+								                          </div>
+
+							                        </div>
+
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Nivel de Sence</label>
+																<input type="text" name="nivel_sence" class="form-control" id="nivel_sence" placeholder="0">
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Franquicia Sence %</label>
+																<input type="text" name="franquicia" class="form-control" id="franquicia" placeholder="0,00 %">
+								                            </div>
+								                          </div>
+
+							                        </div>
+													
+													
 												</section>
 											</div>
 
 											<div class="tab-pane" id="configuracion">
 												<section class="configuracion">
-													<table class="table table-striped">
-    													<thead> 
-															<tr> 
-																<th>Mostrar Vacaciones:</th> 
-																<th>Cheque Restaurante:</th>
-																<th>Licencias Médicas</th>
-															</tr> 
-														</thead>
-														<tbody>
-															<td>		
-																Mostrar Vacaciones:
+
+													<div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Mostrar Vacaciones</label>
 																<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#vacaciones">
 																	 <span class="glyphicon glyphicon-plane" aria-hidden="true"></span>
 																</button>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Cheque Restaurante</label>
+																<input type="text" name="cheque_restau" class="form-control" id="cheque_restau" placeholder="Cheque Restaurante" data-toggle="modal" data-target="#myModal9">
+								                            </div>
+								                          </div>
 
-															</td>
-															<td>
-																<input type="text" name="cheque_restau" class="form-control1" id="cheque_restau" placeholder="Cheque Restaurante" data-toggle="modal" data-target="#myModal9">
-															</td>
-															<td>
-																<input type="text" name="licencia_medica" class="form-control1" id="licencia" placeholder="Licencias Médicas" data-toggle="modal" data-target="#myModal10">
-															</td>
-														</tbody>
-													</table>
+							                        </div>
+
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Licencias Médicas</label>
+																<input type="text" name="licencia_medica" class="form-control" id="licencia" placeholder="Licencias Médicas" data-toggle="modal" data-target="#myModal10">
+								                            </div>
+								                          </div>
+								                          
+
+							                        </div>
+
 												</section>
 											</div>
 										</div>		<br>
