@@ -91,7 +91,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div> 
-								                                 <input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control" required id="datepicker" type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
+								                                 <input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control" required type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
 								                                 </div>
 								                            </div>
 								                          </div>
@@ -414,7 +414,12 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Fecha de Ingreso</label>  
+								                                <div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div> 
 								                                 <input placeholder="Fecha Ingreso" class="form-control" id="datepicker2" name="datepicker2" type="text" value="" required>
+								                                 </div>
 								                            </div>
 								                          </div>
 
@@ -423,14 +428,23 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Fecha de Retiro</label>
-								                             	<input placeholder="Fecha Ingreso" class="form-control" id="datepicker2" name="datepicker2" type="text" value="" required>
-
+								                              <div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div>
+								                             	<input placeholder="Fecha Retiro" class="form-control" id="fecha_retiro" name="fecha_retiro" type="text" value="" required>
+								                             	</div>
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Fecha de Finiquito</label>  
+								                                <div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div>
 								                                 <input placeholder="Fecha de Finiquito" class="form-control" id="datepicker4" type="text" value="">
+								                                 </div>
 								                            </div>
 								                          </div>
 
@@ -439,8 +453,12 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Fecha Inicio Cálculo Vacaciones</label>
+								                              <div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div>
 								                             	<input placeholder="Fecha Inicio Vacaciones" class="form-control" id="fecha_inicio_vacaciones"  size="30" type="text" value="" >
-
+								                             	</div>
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -575,7 +593,12 @@
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Fecha Real</label>
+								                              <div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div>
 																<input placeholder="Fecha Real" class="form-control" id="fecha_real" type="text" value="" >
+																</div>
 
 								                            </div>
 								                          </div>
@@ -585,7 +608,12 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">1er Vencimiento</label>
+								                              <div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div>
 																<input placeholder="1er Vencimiento" class="form-control" id="vencimiento_1" type="text" value="" >
+																</div>
 								                            </div>
 								                          </div>
 							                        </div>	                 
@@ -629,7 +657,12 @@
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Fecha Incorporación AFP</label>
-																<input placeholder="Fecha Incorp.AFP" class="form-control" id="datepicker5" name="datepicker5" type="text" value="" >															
+								                              <div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div>
+																<input placeholder="Fecha Incorp.AFP" class="form-control" id="datepicker5" name="datepicker5" type="text" value="" >		
+															</div>										
 
 								                            </div>
 								                          </div>
@@ -697,8 +730,13 @@
 							                     	<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
+								                            <div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div>
 								                              <label for="rut">Vencimiento de Plan</label>
 																<input placeholder="Vencimiento Plan" class="form-control" id="datepicker9" type="text" value="" >
+															</div>
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -799,7 +837,12 @@
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Fecha APVC</label>
+								                              <div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div>
 																<input placeholder="Fecha APVC" class="form-control" id="datepicker10" type="text" value="" >
+																</div>
 								                            </div>
 								                          </div>
 
@@ -809,7 +852,12 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Término de Subsidio</label>
+								                              <div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div>
 																<input placeholder="Término de Subsidio" class="form-control" id="datepicker11" type="text" value="" >
+																</div>
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -1300,7 +1348,7 @@ $(document).ready(function(){
         				$("#banco").val(this.idbanco);
         				$("#forma_pago").val(this.id_forma_pago);
         				$("#cta_bancaria").val(this.nrocuentabanco);
-
+        				$('#sueldo_base').mask('000.000.000.000.000', {reverse: true});
         				
         				if (this.pensionado ==1){
         					//$("#pensionado").val(this.pensionado)
@@ -1333,8 +1381,20 @@ $(document).ready(function(){
 <script src="js/jquery-ui.js"></script>
 <script>
 	$(function() {
-		$( "#datepicker,#datepicker2,#datepicker3,#datepicker4,#datepicker5,#datepicker6,#datepicker7,#datepicker8,#datepicker9,#datepicker10,#datepicker11,#datepicker12,#feriados,#fecha_real,#vencimiento_1,#fechanacimiento,#fecha_inicio_vacaciones").datepicker( {dateFormat: "dd/mm/yy"});
+		$( "#datepicker,#datepicker2,#datepicker3,#datepicker4,#datepicker5,#datepicker6,#datepicker7,#datepicker8,#datepicker9,#datepicker10,#datepicker11,#datepicker12,#feriados,#fecha_real,#vencimiento_1,#fecha_inicio_vacaciones,#fecha_retiro").datepicker( {dateFormat: "dd/mm/yy"});
 	});
+
+
+	$(function() {
+		$( "#fechanacimiento").datepicker( {
+				dateFormat: "dd/mm/yy",
+				changeMonth: true,
+      			changeYear: true
+		});
+	});	
+
+
+
 </script>
 <!--date-piker-->		
 

@@ -1265,7 +1265,7 @@ public function editar_trabajador(){
 			$fono = $this->input->post('fono');
 			$afp = $this->input->post('afp');
 			$isapre = $this->input->post('isapre');
-			$sueldo_base = $this->input->post('sueldo_base');
+			$sueldo_base = str_replace(".","",$this->input->post('sueldo_base'));
 			$fecinicvacaciones = $this->input->post('fecha_inicio_vacaciones');
 			$saldoinicvacaciones = $this->input->post('vacaciones_legales');
 			$saldoinicvacprog = $this->input->post('vacaciones_progresivas');
