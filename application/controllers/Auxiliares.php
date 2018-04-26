@@ -653,6 +653,9 @@ public function submit_solicita_vacaciones(){
 	public function licencias(){
 		
 			
+
+			$licencia = $this->auxiliar->get_licencias();
+
 			$content = array(
 						'menu' => 'Licencias Medicas',
 						'title' => 'Licencias Medicas',
@@ -661,6 +664,7 @@ public function submit_solicita_vacaciones(){
 
 			$vars['content_menu'] = $content;	
 			$vars['content_view'] = 'auxiliares/licencias';
+			$vars['licencia'] = $licencia;
 
 			$template = "template";
 			
@@ -668,9 +672,29 @@ public function submit_solicita_vacaciones(){
 			$this->load->view($template,$vars);	
 
 
+	}
+
+
+
+	public function add_licencias(){
+		
+			
+			$content = array(
+						'menu' => 'Licencias Medicas',
+						'title' => 'Licencias Medicas',
+						'subtitle' => 'Licencias Medicas');
+
+			$vars['content_menu'] = $content;	
+			$vars['content_view'] = 'auxiliares/add_licencias';
+
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
 
 
 	}
+
 
 	public function submit_licencia(){
 

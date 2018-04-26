@@ -509,6 +509,29 @@ public function solicita_vacaciones($array_datos){
 	}
 
 
+	public function get_licencias(){
+
+		$array_datos=array(	'p.id_personal',
+							'p.nombre', 
+							'p.apaterno', 
+							'p.amaterno',
+							'concat(cast(p.rut as varchar),\'-\',p.dv) as rut',
+							'lic.numero_licencia',
+							'lic.id_licencia_medica',
+							'format(lic.fec_emision_licencia,\'dd/MM/yyyy\',\'en-US\') as fec_emision_licencia',
+							'lic.estado');
+		$this->db->select($array_datos)
+						  ->from('rem_personal p, rem_licencias_medicas lic')
+						  ->where('lic.id_empresa', $this->session->userdata('empresaid'))
+						  ->where('lic.id_empresa = p.id_empresa')
+						  ->where('lic.id_personal = p.id_personal')
+		                  ->order_by('p.apaterno','asc');
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
+
 }
 
 
