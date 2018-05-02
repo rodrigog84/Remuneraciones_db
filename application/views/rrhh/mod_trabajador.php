@@ -150,7 +150,10 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Email</label>
+								                                <div class="input-group">
+                                    							<span class="input-group-addon">@</span>
 								                             	<input type="text" name="email" id="email" class="form-control" placeholder="Email" size="40" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+								                             	</div>
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -170,6 +173,16 @@
 													<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
+								                              
+								                              <label for="comuna">Comuna</label> 
+								                                <select name="comuna" id="comuna"  class="form-control">
+								                                  <option value="">Seleccione Comuna</option>
+								                                </select>
+								                                <input type="hidden" id="idcomuna" value="<?php echo $datos_form['idcomuna']; ?>" >
+								                            </div> 
+								                          </div>														
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
 								                              <label for="rut">Tipo de Renta</label>
 								                             	<select name="tiporenta" id="tiporenta" class="form-control">
 																	<option value="">Seleccione Tipo Renta</option>
@@ -179,7 +192,13 @@
 																</select>
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+								                          
+
+							                        </div>	
+
+
+							                        <div class='row'>
+														<div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Cargo</label> 
 								                                <select name="cargo" id="cargo"  class="form-control"  >
@@ -203,12 +222,7 @@
 							                                        ?>                                
 							                              </select>
 								                            </div>
-								                          </div>
-
-							                        </div>	
-
-
-							                        <div class='row'>
+								                          </div>							                        	
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Estudios</label>
@@ -221,16 +235,17 @@
 																</select>
 								                            </div>
 								                          </div>
+
+
+							                        </div>	
+
+													<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Titulo</label> 
 								                                <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Titulo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 								                            </div>
-								                          </div>
-
-							                        </div>	
-
-													<div class='row'>
+								                          </div>														
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Idioma</label>
@@ -243,6 +258,11 @@
 																</select>
 								                            </div>
 								                          </div>
+
+
+							                        </div>
+
+													<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Jefe o Supervisor</label> 
@@ -254,11 +274,7 @@
 								                                    <?php } ?>
 																</select>
 								                            </div>
-								                          </div>
-
-							                        </div>
-
-													<div class='row'>
+								                          </div>														
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Reemplazo de</label>
@@ -271,6 +287,12 @@
 																</select>
 								                            </div>
 								                          </div>
+
+
+							                        </div>	
+
+
+													<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Licencia</label> 
@@ -282,12 +304,7 @@
 								                                    <?php } ?>
 																</select>
 								                            </div>
-								                          </div>
-
-							                        </div>	
-
-
-													<div class='row'>
+								                          </div>														
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Talla de Polera</label>
@@ -300,6 +317,10 @@
 																</select>
 								                            </div>
 								                          </div>
+
+
+							                        </div>								                        						   
+													<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Talla de Pantal&oacute;n</label> 
@@ -311,16 +332,19 @@
 								                                    <?php } ?>
 																</select>
 								                            </div>
-								                          </div>
-
-							                        </div>								                        						   
-													<div class='row'>
+								                          </div>														
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Tipo de Documento</label>
 								                             	<input type="text" name="tipo_documento" id="tipo_documento" class="form-control" placeholder="Tipo de Documento" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 								                            </div>
 								                          </div>
+
+
+							                        </div>
+
+
+													<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Centro de Costo</label> 
@@ -332,26 +356,29 @@
 								                                    <?php } ?>
 																</select>
 								                            </div>
-								                          </div>
-
-							                        </div>
-
-
-													<div class='row'>
+								                          </div>														
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">C de Beneficio</label>
 								                             	<input type="text" name="beneficio" id="beneficio" class="form-control" placeholder="C de Beneficio" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 								                            </div>
 								                          </div>
+								                         
+							                        </div>								                        					
+
+														<div class='row'>
+								                          
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">N&uacute;mero de Celular</label> 
+							                                    <div class="input-group">
+							                                      <span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>  								                                
 								                                <input type="text" name="fono" id="fono" class="form-control" placeholder="Número de Celular">
+								                            	</div>
 								                            </div>
 								                          </div>
 
-							                        </div>								                        								                                             								
+							                        </div>								                        			                                             								
 												
 												</section>
 											</div>
@@ -374,6 +401,41 @@
 								                          </div>
 
 							                        </div>
+
+												<div class='row'>
+						                          <div class='col-md-6'>
+						                            <div class="form-group">
+						                                <label for="tipogratificacion">Tipo Gratificaci&oacute;n</label>   
+						                                <select name="tipogratificacion" id="tipogratificacion"  class="form-control">
+						                                    <option value="">Seleccione Tipo de Gratificaci&oacute;n</option>
+						                                    <option value="SG" <?php echo $datos_form['tipogratificacion'] == 'SG' ? 'selected' : ''; ?>>Sin Gratificaci&oacute;n</option>
+						                                    <option value="TL" <?php echo $datos_form['tipogratificacion'] == 'TL' ? 'selected' : ''; ?>>Tope Legal</option>
+						                                    <option value="MF" <?php echo $datos_form['tipogratificacion'] == 'MF' ? 'selected' : ''; ?>>Monto Fijo</option>
+						                                </select> 
+						                            </div> 
+						                          </div>
+						                          <div class='col-md-6'>
+						                            <div class="form-group">
+						                              <label for="gratificacion">Monto Gratificaci&oacute;n</label>
+						                              <input type="text" class="form-control miles" name="gratificacion" id="gratificacion" placeholder="Ingrese Monto Gratificaci&oacute;n" value="<?php echo $datos_form['gratificacion'] == 0 ? '' : $datos_form['gratificacion']; ?>" <?php echo $datos_form['tipogratificacion'] == 'MF' ? '' : 'disabled'; ?> >                            
+						                            </div> 
+						                          </div>
+						                        </div>                        
+
+						                        <div class='row'>
+						                          <div class='col-md-6'>
+						                            <div class="form-group">
+						                                <label for="movilizacion">Valor Movilizaci&oacute;n</label>   
+						                                <input type="text" class="form-control miles" name="movilizacion" id="movilizacion" placeholder="Ingrese Valor Movilizaci&oacute;n" value="<?php echo $datos_form['movilizacion']; ?>" >                            
+						                            </div> 
+						                          </div>
+						                          <div class='col-md-6'>
+						                            <div class="form-group">
+						                                <label for="colacion">Valor Colaci&oacute;n</label>   
+						                                <input type="text" class="form-control miles" name="colacion" id="colacion" placeholder="Ingrese Valor Colaci&oacute;n" value="<?php echo $datos_form['colacion']; ?>" >                            
+						                            </div> 
+						                          </div>
+						                        </div>
 
 													<div class='row'>
 								                          <div class='col-md-6'>
@@ -432,7 +494,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-								                             	<input placeholder="Fecha Retiro" class="form-control" id="fecha_retiro" name="fecha_retiro" type="text" value="" required>
+								                             	<input placeholder="Fecha Retiro" class="form-control" id="fecha_retiro" name="fecha_retiro" type="text" value="" >
 								                             	</div>
 								                            </div>
 								                          </div>
@@ -457,14 +519,14 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-								                             	<input placeholder="Fecha Inicio Vacaciones" class="form-control" id="fecha_inicio_vacaciones"  size="30" type="text" value="" >
+								                             	<input placeholder="Fecha Inicio Vacaciones" class="form-control" id="fecha_inicio_vacaciones" name="fecha_inicio_vacaciones"   size="30" type="text" value="" >
 								                             	</div>
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Saldo Inicial Días Vacaciones Legales</label>
-								                                <input type="text" name="seccion" class="form-control" id="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30" value="0">
+								                                <input type="text" class="form-control" id="vacaciones_legales" name="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30" value="0">
 								                            </div>
 								                          </div>
 
@@ -473,7 +535,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Saldo Inicial Días Vacaciones Progresivas</label>
-								                             	<input type="text" name="seccion" class="form-control" id="vacaciones_progresivas" placeholder="Saldo Inicial Vacaciones Progresivas" size="30" value="0">
+								                             	<input type="text" name="vacaciones_progresivas" class="form-control" id="vacaciones_progresivas" placeholder="Saldo Inicial Vacaciones Progresivas" size="30" value="0">
 
 								                            </div>
 								                          </div>
@@ -495,11 +557,11 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Tipo de Contrato</label>
-																<select name="selector1" id="selector1" class="form-control">
-																	<option>Seleccione</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum minima.</option>
+																<select name="tipocontrato" id="tipocontrato" class="form-control">
+																	<option value="">Seleccione Tipo de Contrato</option>
+																	<option  value="F">Plazo Fijo</option>
+																	<option  value="I">Indefinido</option>
+																	
 																</select>
 
 								                            </div>
@@ -650,7 +712,7 @@
 													 <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
-								                              <label for="rut">Pensionado</label>
+								                              <label for="rut">Pensionado</label><br>
 																<input type="checkbox" name="pensionado" id="pensionado" class="minimal" />   
 								                            </div>
 								                          </div>
@@ -674,8 +736,8 @@
 													 <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
-								                              <label for="rut">Seguro Cesantia</label>
-																<input class="form-control1" id="seguro_cesantia" name="seguro_cesantia" type="checkbox" onchange="habilitar(this.checked);" > 
+								                              <label for="rut">Seguro Cesantia</label><br>
+																<input class="minimal" id="seguro_cesantia" name="seguro_cesantia" type="checkbox" onchange="habilitar(this.checked);" > 
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -730,11 +792,11 @@
 							                     	<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
+								                              <label for="rut">Vencimiento de Plan</label>
 								                            <div class="input-group">
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-								                              <label for="rut">Vencimiento de Plan</label>
 																<input placeholder="Vencimiento Plan" class="form-control" id="datepicker9" type="text" value="" >
 															</div>
 								                            </div>
@@ -943,7 +1005,10 @@
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Email</label>
+								                                <div class="input-group">
+                                    							<span class="input-group-addon">@</span>
 																<input type="text" name="emailfp" class="form-control" id="emailfp" placeholder="Email" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+																</div>
 								                            </div>
 								                          </div>
 
@@ -986,15 +1051,31 @@
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
-									                           <div class="form-group">
-								                              <label for="rut">Horas de Trabajo</label>
-																<input type="text" name="horas_trabajo" class="form-control" id="horas_trabajo" placeholder="Horas de Trabajo">
-								                            </div>
-								                          </div>
-
+								                            <div class="form-group">
+								                              <label for="diastrabajo">D&iacute;as de Trabajo</label>
+								                              <input type="text" class="form-control" name="diastrabajo" id="diastrabajo" placeholder="Ingrese D&iacute;as de Trabajo" value="<?php echo $datos_form['diastrabajo']; ?>" >                            
+								                            </div> 
+								                          </div>								                          
+								                          
 							                        </div>
 													
 							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="horasdiarias">Horas Diarias</label>
+								                              <input type="text" class="form-control" name="horasdiarias" id="horasdiarias" placeholder="Ingrese Horas Diarias" value="<?php echo $datos_form['horasdiarias']; ?>" >                            
+								                            </div> 
+								                          </div>	
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="horassemanales">Horas Semanales</label>
+								                              <input type="text" class="form-control" name="horassemanales" id="horassemanales" placeholder="Ingrese Horas Semanales" value="<?php echo $datos_form['horassemanales']; ?>" >   
+								                            </div> 
+								                          </div>								                          
+							                        </div>
+													
+							                        <div class='row'>
+
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Código de Anexo</label>
@@ -1257,6 +1338,22 @@ function VerificaRut(rut) {
 
 $(document).ready(function(){
 
+
+    if($('#region').val() != ''){
+      $.get("<?php echo base_url();?>admins/get_comunas/"+$('#region').val(),function(data){
+               // Limpiamos el select
+                    $('#comuna option').remove();
+                    var_json = $.parseJSON(data);
+                    $('#comuna').append('<option value="">Seleccione Comuna</option>');
+                    for(i=0;i<var_json.length;i++){
+                      $('#comuna').append('<option value="' + var_json[i].idcomuna + '">' + var_json[i].nombre + '</option>');
+                    }
+                    $("#comuna").val($('#idcomuna').val()); 
+      });
+      // seleccionar comuna
+
+    }	
+
   $('.numeros').keypress(function(event){
     if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
       event.preventDefault();
@@ -1292,6 +1389,41 @@ $(document).ready(function(){
 
 <script>
     
+
+$('#region').change(function(){
+
+    if($(this).val() != ''){
+
+      $.get("<?php echo base_url();?>admins/get_comunas/"+$(this).val(),function(data){
+               // Limpiamos el select
+                    $('#comuna option').remove();
+                    var_json = $.parseJSON(data);
+                    $('#comuna').append('<option value="">Seleccione Comuna</option>');
+                    for(i=0;i<var_json.length;i++){
+                      $('#comuna').append('<option value="' + var_json[i].idcomuna + '">' + var_json[i].nombre + '</option>');
+                    }
+                    $('#basicBootstrapForm').formValidation('revalidateField', 'comuna');
+      });
+      
+    }
+});
+
+$('#tipogratificacion').on('change',function(){
+  if($(this).val() == 'MF'){
+    $('#gratificacion').attr('disabled',false);
+    $('#gratificacion').val('');
+  }else{
+    $('#basicBootstrapForm').formValidation('updateStatus', 'gratificacion','NOT_VALIDATED');     
+    $('#gratificacion').val('');
+
+    $('#gratificacion').attr('disabled','disabled');
+    
+
+  }
+
+
+});
+
     $(function(){
         
     	$.ajax({type: "GET",
@@ -1377,8 +1509,8 @@ $(document).ready(function(){
 
 
 <!--date-piker-->
-<link rel="stylesheet" href="css/jquery-ui.css" />
-<script src="js/jquery-ui.js"></script>
+<!--link rel="stylesheet" href="css/jquery-ui.css" /-->
+<!--script src="js/jquery-ui.js"></script-->
 <script>
 	$(function() {
 		$( "#datepicker,#datepicker2,#datepicker3,#datepicker4,#datepicker5,#datepicker6,#datepicker7,#datepicker8,#datepicker9,#datepicker10,#datepicker11,#datepicker12,#feriados,#fecha_real,#vencimiento_1,#fecha_inicio_vacaciones,#fecha_retiro").datepicker( {dateFormat: "dd/mm/yy"});
@@ -1393,6 +1525,11 @@ $(document).ready(function(){
 		});
 	});	
 
+
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
 
 
 </script>

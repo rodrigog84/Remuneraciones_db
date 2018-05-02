@@ -33,6 +33,21 @@ class Admins extends CI_Controller {
 		redirect('main/dashboard');	
 	}
 
+
+	public function get_comunas($idregion){
+
+		$this->load->model('admin');
+		$comunas = $this->admin->get_comunas_by_region($idregion);
+		//$arrayComunas = array();
+		//$arrayComunas[''] = "Seleccione Comuna";
+		//foreach ($comunas as $comuna) {
+		//	$arrayComunas[$comuna->idcomuna] = $comuna->nombre;
+		//}
+		echo json_encode($comunas);
+		//echo form_dropdown('comuna',$arrayComunas ,'',"class='form-control' id='comuna'"); 
+
+	}	
+
 	public function submit_personal_afp(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 

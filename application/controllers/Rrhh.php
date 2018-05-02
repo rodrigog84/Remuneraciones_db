@@ -1050,7 +1050,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['tramos_asig_familiar'] = $tramos_asig_familiar;
 			$vars['jornada_trabajo'] = $jornada_trabajo;
 
-			//$vars['icheck'] = true;
+			$vars['icheck'] = true;
 			$vars['jqueryRut'] = true;
 			$vars['mask'] = true;
 			$vars['inputmask'] = true;
@@ -1267,9 +1267,15 @@ public function editar_trabajador(){
 			$isapre = $this->input->post('isapre');
 			$sueldo_base = str_replace(".","",$this->input->post('sueldo_base'));
 			$fecinicvacaciones = $this->input->post('fecha_inicio_vacaciones');
+			$tipogratificacion = $this->input->post('tipogratificacion');
+			$gratificacion = str_replace(".","",$this->input->post('gratificacion'));
+			$movilizacion = str_replace(".","",$this->input->post('movilizacion'));
+			$colacion = str_replace(".","",$this->input->post('colacion'));
 			$saldoinicvacaciones = $this->input->post('vacaciones_legales');
 			$saldoinicvacprog = $this->input->post('vacaciones_progresivas');
 			$fecingreso = $this->input->post('datepicker2');
+			$fecha_inicio_vacaciones = $this->input->post('fecha_inicio_vacaciones');
+			$tipocontrato = $this->input->post('tipocontrato');
 			$tallapantalon = $this->input->post('pantalon');
 			$tallapolera = $this->input->post('polera');
 			$tramo = $this->input->post('tramo');
@@ -1286,6 +1292,7 @@ public function editar_trabajador(){
 			$fecafc = $this->input->post('datepicker6');
 			$seguro_cesantia = $this->input->post('seguro_cesantia');
 			$region = $this->input->post('region');
+			$comuna = $this->input->post('comuna');
 			$asig_individual = $this->input->post('asig_individual');
 			$asig_por_invalidez = $this->input->post('asig_por_invalidez');
 			$asig_maternal = $this->input->post('asig_maternal');
@@ -1302,7 +1309,8 @@ public function editar_trabajador(){
 			$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
 			$fecnacimiento = $date->format('Ymd');
 			
-			
+			$date = DateTime::createFromFormat('d/m/Y', $fecha_inicio_vacaciones);
+			$fecha_inicio_vacaciones = $date->format('Ymd');			
 
 			if($fecafp !=null){
 
@@ -1356,13 +1364,18 @@ public function editar_trabajador(){
 								'idafp' => $afp,
 								'idisapre' => $isapre,
 								'sueldobase' => $sueldo_base,
-								'tallapantalon' => $tallapantalon,
-								'tallapolera' => $tallapolera,
+								'tipogratificacion' => $tipogratificacion,
+								'gratificacion' => $gratificacion,
+								'movilizacion' => $movilizacion,
+								'colacion' => $colacion,
 								'idasigfamiliar' => $tramo,
 								'valorpactado' => $monto_pactado,
 								'segcesantia' => $seguro_cesantia,
 								'pensionado' => $pensionado,
-								'fecinicvacaciones' => $fecingreso,
+								'fecinicvacaciones' => $fecha_inicio_vacaciones,
+								'saldoinicvacaciones' => $saldoinicvacaciones,
+								'saldoinicvacprog' => $saldoinicvacprog,
+								'tipocontrato' => $tipocontrato,
 								'fecingreso' => $fecingreso,
 								'id_lugar_pago' => $lugar_pago,
 								'id_categoria' => $categoria,
@@ -1373,6 +1386,7 @@ public function editar_trabajador(){
 								'fecafp' => $fecafp,
 								'fecafc' => $fecafc,
 								'idregion' => $region,
+								'idcomuna' => $comuna,
 								'cargassimples' => $asig_individual,
 								'cargasinvalidas' => $asig_por_invalidez,
 								'cargasmaternales' => $asig_maternal,
@@ -1383,27 +1397,26 @@ public function editar_trabajador(){
 																							
 								
 								//DATOS POR DEFECTO
-								'saldoinicvacaciones' => 0,
-								'saldoinicvacprog' => 0,	
-								'idcomuna' => 1,								
+								
+									
 								'diasprogresivos' => 0,
 								'diasvactomados' => 0,
 								'diasprogtomados' => 0,
-								'tipocontrato' => 'I',
+								
 								'parttime' => 0,
 								//'pensionado' => 0,
 								'diastrabajo' => 30,
 								'horasdiarias' => 8,
 								'horassemanales' => 45,
 								//'sueldobase' => 250000,
-								'tipogratificacion' => 'TL',
-								'gratificacion' => 0,
+								
+								
 								
 								'cargasretroactivas' => 0,
 								
 								'asigfamiliar' => 0,
-								'movilizacion' => 0,
-								'colacion' => 0,
+								
+								
 								'active' => 1,
 
 								//OTROS

@@ -56,6 +56,23 @@ class Admin extends CI_Model
 	}
 
 
+	public function get_comunas_by_region($idregion){
+
+		$this->db->select('c.idcomuna , c.nombre ')
+						  ->from('rem_comuna as c')
+						  ->join('rem_provincia as p','c.idprovincia = p.idprovincia')
+						  ->join('rem_region as r','p.idregion = r.id_region')
+						  ->where('r.id_region', $idregion)
+		                  ->order_by('c.nombre asc');
+		$query = $this->db->get();
+		$datos = $query->result_array();
+
+
+		return $datos;
+
+	}		
+
+
 	public function get_periodo_by_mes($mes,$anno){
 
 			$this->db->select('id_periodo ')
