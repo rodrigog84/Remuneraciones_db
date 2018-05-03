@@ -845,8 +845,34 @@
 								                          </div>
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
+								                              <label for="rut">Nro. Cargas Simles</label>
+																<input type="number" name="asig_individual" class="form-control cargas_familiares" id="asig_individual" placeholder="">
+								                            </div>
+								                          </div>								                          
+								                         
+
+							                        </div>							                        
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Nro. Cargas Inv&aacute;lidas</label>
+																<input type="number" name="asig_por_invalidez" class="form-control" id="asig_por_invalidez" placeholder="">
+								                            </div>
+								                          </div>							                        	
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Nro. Cargas Maternales</label>
+																<input type="number" name="asig_maternal" class="form-control cargas_familiares" id="asig_maternal" placeholder="">
+								                            </div>
+								                          </div>								                          
+
+
+							                        </div>	
+							                        <div class='row'>
+ 														<div class='col-md-6'>
+									                           <div class="form-group">
 								                              <label for="rut">Tramo p/Asig. Fami</label>
-																<select name="tramo" id="tramo" class="form-control">
+																<select name="tramo" id="tramo" class="form-control" disabled>
 																	<option value="">Seleccione tramo</option>
 						                                    		<?php foreach ($tramos_asig_familiar as $tramo) { ?>
 								                                      <?php $tramoselected = $tramo->id_tabla_asig_familiar == $datos_form['id_tabla_asig_familiar'] ? "selected" : ""; ?>
@@ -857,36 +883,12 @@
 								                            </div>
 								                          </div>
 
-							                        </div>							                        
-							                        <div class='row'>
-								                          <div class='col-md-6'>
+														<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Trabajo Pesado/Insalub</label>
 																<input type="text" name="trabajo_pesado" class="form-control" id="trabajo_pesado" placeholder="Trabajo Pesado/Insalub">
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
-									                           <div class="form-group">
-								                              <label for="rut">Asignación Familiar Individual</label>
-																<input type="number" name="asig_individual" class="form-control" id="asig_individual" placeholder="">
-								                            </div>
-								                          </div>
-
-							                        </div>	
-							                        <div class='row'>
-								                          <div class='col-md-6'>
-								                            <div class="form-group">
-								                              <label for="rut">Asignación Familiar por Invalidez</label>
-																<input type="number" name="asig_por_invalidez" class="form-control" id="asig_por_invalidez" placeholder="">
-								                            </div>
-								                          </div>
-								                          <div class='col-md-6'>
-									                           <div class="form-group">
-								                              <label for="rut">Asignación Familiar Maternal</label>
-																<input type="number" name="asig_maternal" class="form-control" id="asig_maternal" placeholder="">
-								                            </div>
-								                          </div>
-
 							                        </div>	
 
 							                        <div class='row'>
@@ -1390,6 +1392,24 @@ $(document).ready(function(){
 <script>
     
 
+
+$('.cargas_familiares').on('input',function(){
+  var num_cargas_familiares = 0;
+  $(".cargas_familiares").each(function() {
+    var cargas = $(this).val() == "" ? 0 : parseInt($(this).val());
+    num_cargas_familiares += cargas;
+    //console.log($(this).attr('id'));
+  });
+  console.log(num_cargas_familiares);
+  if(num_cargas_familiares > 0){
+    $('#tramo').attr('disabled',false);
+  }else{
+    $("#tramo").prop('selectedIndex', 0);
+    $('#tramo').attr('disabled',true);
+  }
+
+});    
+
 $('#region').change(function(){
 
     if($(this).val() != ''){
@@ -1504,6 +1524,21 @@ $('#tipogratificacion').on('change',function(){
         				)}
         				});
     	});
+
+
+
+$("#seguro_cesantia").on('ifChecked',function(event){
+  $("#datepicker6").attr('disabled',false);
+  $("#datepicker6").val($("#datepicker2").val());
+});
+
+
+$("#seguro_cesantia").on('ifUnchecked',function(event){
+  $('#basicBootstrapForm').formValidation('updateStatus', 'fechaafc','NOT_VALIDATED');
+  $("#datepicker6").val('');
+  $("#datepicker6").attr('disabled',true);
+
+});    
 
 </script>
 

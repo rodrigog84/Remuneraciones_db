@@ -1290,7 +1290,7 @@ public function editar_trabajador(){
 			$semana_corrida = $this->input->post('semana_corrida');
 			$fecafp = $this->input->post('datepicker5');
 			$fecafc = $this->input->post('datepicker6');
-			$seguro_cesantia = $this->input->post('seguro_cesantia');
+			$seguro_cesantia = $this->input->post('seguro_cesantia') == 'on' ? 1 : 0;;
 			$region = $this->input->post('region');
 			$comuna = $this->input->post('comuna');
 			$asig_individual = $this->input->post('asig_individual');
@@ -1299,6 +1299,14 @@ public function editar_trabajador(){
 			$banco = $this->input->post('banco');
 			$forma_pago = $this->input->post('forma_pago');
 			$cta_bancaria = $this->input->post('cta_bancaria');
+			$apv = $this->input->post('apv');
+			$numero_contrato_apv = $this->input->post('numero_contrato_apv');
+			$tipo_cotizacion = $this->input->post('tipo_cotizacion');
+			$cotapv = $this->input->post('monto_cotizacion_apv');
+			$diastrabajo = $this->input->post('diastrabajo');
+			$horasdiarias = $this->input->post('horasdiarias');
+			$horassemanales = $this->input->post('horassemanales');
+			
 
 			
 
@@ -1327,7 +1335,7 @@ public function editar_trabajador(){
 				$fecafc = $date->format('Ymd');
 			}else{
 				$fecafc = null;
-				$seguro_cesantia =0;
+				//$seguro_cesantia =0;
 			}
 			
 					
@@ -1393,6 +1401,14 @@ public function editar_trabajador(){
 								'idbanco' => $banco,
 								'id_forma_pago' => $forma_pago,
 								'nrocuentabanco' => $cta_bancaria,
+								'instapv' => $apv,
+								'nrocontratoapv' => $numero_contrato_apv,
+								'tipocotapv' => $tipo_cotizacion,
+								'cotapv' => $cotapv,
+
+								
+
+								
 								
 																							
 								
@@ -1405,9 +1421,9 @@ public function editar_trabajador(){
 								
 								'parttime' => 0,
 								//'pensionado' => 0,
-								'diastrabajo' => 30,
-								'horasdiarias' => 8,
-								'horassemanales' => 45,
+								'diastrabajo' => $diastrabajo,
+								'horasdiarias' => $horasdiarias,
+								'horassemanales' => $horassemanales,
 								//'sueldobase' => 250000,
 								
 								
@@ -1422,7 +1438,7 @@ public function editar_trabajador(){
 								//OTROS
 								'adicafp' => 0,);
 
-
+			//var_dump($array_datos); exit;
 
 
 			$result = $this->rrhh_model->edit_personal($array_datos,$idtrabajador);
@@ -1684,6 +1700,9 @@ public function editar_trabajador(){
 								*/
 
 								);
+
+
+
 			$result = $this->rrhh_model->add_personal($array_datos,$idtrabajador);
 			//EXIT;
 			if($result == -1){
