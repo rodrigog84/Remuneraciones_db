@@ -47,11 +47,17 @@
 
 $active_group = 'default';
 $active_record = TRUE;
-
+/*
 $db['default']['hostname'] = '190.162.170.155';   // BD Remota
+//$db['default']['hostname'] = '192.168.10.121';   // BD Local
 $db['default']['port'] = 1433; 
 $db['default']['username'] = 'test'; 
 $db['default']['password'] = '1234';
+*/
+$db['default']['hostname'] = '190.162.170.155,1434';   // BD Remota
+//$db['default']['port'] = 1434; 
+$db['default']['username'] = 'usuario_remuneraciones'; 
+$db['default']['password'] = '1Qazxsw2';
 
 
 //$db['default']['hostname'] = 'DESKTOP-LEUD44H\SQLEXPRESS';
