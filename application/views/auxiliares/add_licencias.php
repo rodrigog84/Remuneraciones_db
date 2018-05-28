@@ -17,7 +17,7 @@
 			<thead> 
 				<tr> 
 					<th>Rut:   <input type="text" name="rut_buscar" id="rut_buscar"  class="form-control1"  placeholder="98123456-7" title="Escriba Rut" required oninput="checkRut(this)">
-						<a id='b1'class="btn btn-danger-sm"> Buscar <span class="glyphicon glyphicon-search"></span></button>	
+						<a id='b1' class="btn btn-danger-sm" onclick="buscar_trabajador()" > Buscar <span class="glyphicon glyphicon-search"></span></button>	
 					</th> 
 				</tr> 
 			</thead>
@@ -35,22 +35,22 @@
 		<div class="panel-body">
 			<div class="row">
 			    <div class="form-group col-md-4">
-			      Nombre:
+			      Nombre:<span id="nombre_span"></span>
 			    </div>
 			    <div class="form-group col-md-6">
-			      RUT:
+			      RUT: <span id="rut_span"></span>
 			    </div>
 		  	</div>
 
 		  	<div class="row">
 			    <div class="form-group col-md-4">
-			      Apellido Materno:
+			      Apellido Paterno: <span id="apaterno_span"></span>
 			    </div>
 			    <div class="form-group col-md-4">
-			      Apellido Paterno:
+			      Apellido Materno: <span id="amaterno_span"></span>
 			    </div>
 			    <div class="form-group col-md-4">
-			      Edad:
+			      Edad:<span id="edad_span"></span>
 			    </div>
 		  	</div>
 	          
@@ -74,11 +74,15 @@
 				</ul>
 			</div>
 
+				<!-- CAMPOS OCULTOS -->
+				<input type="hidden" class="form-control" id="id_trabajador" name="id_trabajador">
+				<input type="hidden" class="form-control" id="edad" name="edad">
+
+
 				<!--   A1 Identificación del Trabajador  -->
 				<div class="tab-content">
 				    <div id="A1" class="tab-pane fade in active">
-				      	<div class="row">	
-				      		<input type="hidden" class="form-control" id="id_trabajador" name="id_trabajador">	
+				      	<div class="row">					      			
 					   		<div class="form-group col-md-4">
 								<label  for="numero_licencia">Numero de Licencia</label>
 									<input type="number" class="form-control" id="numero_licencia" name="numero_licencia" placeholder="Introducir Numero de Licencia" required>	
@@ -93,9 +97,6 @@
 							</div>
 						 </div> 	  
 						 
-						<div class="form-group">
-							    <input type="hidden" class="form-control" id="edad" name="edad">
-						</div>
 						<div class="form-group">
 						    <label  for="sexo">Sexo</label>
 							    <select name="sexo" id="sexo" class="form-control1">
@@ -405,23 +406,83 @@ function checkRut(rut) {
     dv = (dv == 0)?11:dv;
     
     // Validar que el Cuerpo coincide con su Dígito Verificador
-    if(dvEsperado != dv) { rut.setCustomValidity("RUT Inválido"); return false; }
+    if(dvEsperado != dv) { 
+    	rut.setCustomValidity("RUT Inválido"); 
+    	return false; }
     
     // Si todo sale bien, eliminar errores (decretar que es válido)
     rut.setCustomValidity('');
+    return true;
 }
 </script>
 
+
+<!--
 <script>
         $('#b1').click(function(){  
         		
         		var valor = document.getElementById("rut_buscar").value;
-        		valor2 =2;
-        		alert(valor);
+        		
+
+        		cuerpo = valor.slice(0,-1);
+        		alert(cuerpo);
        			
         	
         });
 
 
- </script>
+ </script>-->
 
+
+<script>
+    
+    function buscar_trabajador(){
+        
+    	//checkRut(rut_colaborador);
+    	//alert(rut_colabora= dor);
+    	var rut_colaborador = $('#rut_buscar').val();
+    	var r = checkRut(document.getElementById('rut_buscar'));
+    	if (!r){ 
+    		bootbox.alert("Debe ingresar un RUT Valido");
+    		return;
+    	}
+    	rut_colaborador = rut_colaborador.substring(0, rut_colaborador.length - 2)
+    	$.ajax({type: "GET",
+		    		url: "<?php echo base_url();?>rrhh/datos_personal/" + rut_colaborador, 
+		    		dataType: "json",
+		    		success: function(datos_personal2){
+		      			$.each(datos_personal2,function(nombre) {
+		      			$("#id_trabajador").val(this.id_personal);
+		      			$("#sexo").val(this.sexo);
+						calculaedad(this.fecnacimiento);
+		      			$("#nombre_span").text(this.nombre);
+		      			$("#rut_span").text(this.rut);
+		      			$("#apaterno_span").text(this.apaterno);
+		      			$("#amaterno_span").text(this.amaterno);
+        				
+        				}
+        				)}
+        				});
+    	};
+
+</script>
+<script language="JavaScript">
+
+		function calculaedad(Fecha){
+			var fecha_nueva = Fecha.split("/");
+
+			fecha = new Date(fecha_nueva[2],fecha_nueva[1],fecha_nueva[0])
+			hoy = new Date()
+			
+			ed = parseInt((hoy -fecha)/365/24/60/60/1000)
+			if (ed >=0){
+				$("#edad_span").text(" "+ ed +" Año(s)");
+				$("#edad").val(ed);
+			}else{
+				$("#edad_span").text("");
+			}
+		
+		
+		}
+
+</script>

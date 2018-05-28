@@ -764,10 +764,11 @@ public function submit_solicita_vacaciones(){
 
 
 		$array_datos = array( 'estado' => 'I',
+							//CAMPOS OCULTOS
+								'id_personal' => $idtrabajador,
 							//A1
 								'numero_licencia' => $numero_licencia,			
-								'id_empresa' => $this->session->userdata('empresaid'),
-	       						'id_personal' => $id_trabajador,
+								'id_empresa' => $this->session->userdata('empresaid'),	       						
 								'fec_emision_licencia' => $fec_emision_licencia,
 								'fec_inicio_reposo' => $fec_inicio_reposo,
 								'edad' => $edad,

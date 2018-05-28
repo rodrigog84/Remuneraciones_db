@@ -25,9 +25,9 @@
 	                                <td><small><?php echo $licencias->rut;?></small></td>
 	                              	<td><small><?php echo $licencias->numero_licencia;?></small></td>
 	                              	<td><small><?php echo $licencias->fec_emision_licencia;?></small></td>
-	                              	<td><small><?php if ($licencias->estado == 'i'){
+	                              	<td><small><?php if ($licencias->estado == 'I'){
 	                              			echo 'INGRESADA';
-	                              	}elseif($licencias->estado == 'a'){
+	                              	}elseif($licencias->estado == 'A'){
 	                              			echo 'APROBADA';
 	                              	}?></small></td>
 								</tr> 
