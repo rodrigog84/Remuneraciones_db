@@ -525,7 +525,7 @@ public function solicita_vacaciones($array_datos){
 						  ->where('lic.id_empresa', $this->session->userdata('empresaid'))
 						  ->where('lic.id_empresa = p.id_empresa')
 						  ->where('lic.id_personal = p.id_personal')
-		                  ->order_by('p.apaterno','asc');
+		                  ->order_by('lic.fec_emision_licencia','desc');
 		 $query = $this->db->get();
 		 return $query->result();
 

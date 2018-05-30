@@ -751,16 +751,34 @@ public function submit_solicita_vacaciones(){
 	
 		
 		// SE REGULARIZA LOS CAMPOS FECHA DEL FORMATO dd/mm/yyyy A yyyy/mm/dd DE LA BD	
+		if($fec_emision_licencia != NULL){
+			$date = DateTime::createFromFormat('d/m/Y', $fec_emision_licencia);
+			$fec_emision_licencia = $date->format('Ymd');
+		}else{
+			$fec_emision_licencia = NULL;
+		}
+		
+		if($fec_inicio_reposo != NULL){
+			$date = DateTime::createFromFormat('d/m/Y', $fec_inicio_reposo);
+			$fec_inicio_reposo = $date->format('Ymd');
+		}else{
+			$fec_inicio_reposo =NULL;
+		}
+		
+		if ($fecnachijo != NULL){
+			$date = DateTime::createFromFormat('d/m/Y', $fecnachijo);
+			$fecnachijo = $date->format('Ymd');
+		}else{
+			$fecnachijo = NULL;
 
-		$date = DateTime::createFromFormat('d/m/Y', $fec_emision_licencia);
-		$fec_emision_licencia = $date->format('Ymd');
-		$date = DateTime::createFromFormat('d/m/Y', $fec_inicio_reposo);
-		$fec_inicio_reposo = $date->format('Ymd');
-		$date = DateTime::createFromFormat('d/m/Y', $fecnachijo);
-		$fecnachijo = $date->format('Ymd');
-		$date = DateTime::createFromFormat('d/m/Y', $fecha_accidente_trabajo);
-		$fecha_accidente_trabajo = $date->format('Ymd');
-			
+		}
+		if ($fecha_accidente_trabajo != NULL){
+			$date = DateTime::createFromFormat('d/m/Y', $fecha_accidente_trabajo);
+			$fecha_accidente_trabajo = $date->format('Ymd');
+		}else{
+			$fecha_accidente_trabajo =NULL;
+		}
+		
 
 
 		$array_datos = array( 'estado' => 'I',
