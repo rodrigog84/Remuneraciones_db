@@ -954,8 +954,15 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$jornada_trabajo = $this->admin->get_jornada_trabajo();
 			$categoria = $this->admin->get_categoria();
 			$lugar_pago= $this->admin->get_lugar_pago();
+			$motivo_egreso= $this->admin->get_motivo_egreso();
+			$tipo_cc= $this->admin->get_tipo_cc();
+			$secciones= $this->admin->get_seccion();
+			$situacion_laboral= $this->admin->get_situacion_laboral();
+			$clases= $this->admin->get_clases();
+			$cod_ine= $this->admin->get_ine();
+			$zonas_brechas= $this->admin->get_zona_brecha();
 			
-
+			//var_dump($motivo_egreso); exit;
 
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 
@@ -1047,8 +1054,15 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['lugar_pago'] = $lugar_pago;
 			$vars['bancos'] = $bancos;
 			$vars['forma_pago'] = $forma_pago;
+			$vars['motivo_egreso'] = $motivo_egreso;
+			$vars['tipo_cc'] = $tipo_cc;
+			$vars['secciones'] = $secciones;
+			$vars['situacion_laboral'] = $situacion_laboral;
+			$vars['clases'] = $clases;
 			$vars['tramos_asig_familiar'] = $tramos_asig_familiar;
 			$vars['jornada_trabajo'] = $jornada_trabajo;
+			$vars['cod_ine'] = $cod_ine;
+			$vars['zonas_brechas'] = $zonas_brechas;
 
 			$vars['icheck'] = true;
 			$vars['jqueryRut'] = true;
@@ -1067,6 +1081,51 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 		//}*/
 
 	}
+
+
+	public function validate_sueldo_minimo($data = '')
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			$sueldobase = str_replace(".","",$this->input->post('sueldobase'));
+			$horassemanales = $this->input->post('horassemanales');
+			
+			$parttime = $this->input->post('parttime');
+
+			$this->load->model('admin');
+			$parametros_generales = $this->admin->get_parametros_generales(); 
+
+			$valor_hora = $parametros_generales->sueldominimo/45;
+			$sueldominimo_proporcional = (int)($valor_hora*$horassemanales);
+
+			if($parttime == 'on'){
+				$data['result'] = "ok";
+			}else{
+				//if($sueldobase < $parametros_generales->sueldominimo){
+				if($sueldobase < $sueldominimo_proporcional){
+					$data['result'] = "error";
+					$data['fields']['sueldobase'] = "Sueldo Base no puede ser menor a Sueldo M&iacute;nimo";	
+				}else{
+					$data['result'] = "ok";
+				}
+			}
+
+			echo json_encode($data);
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
 
 
 	public function add_trabajador($idtrabajador = null)
@@ -1098,6 +1157,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$apv = $this->admin->get_apv();
 			$categoria = $this->admin->get_categoria();
 			$lugar_pago= $this->admin->get_lugar_pago();
+			//$zonas_brechas= $this->admin->get_zona_brecha();
+
 
 
 			/**** CARGA DE DATOS TRABAJADOR ****/
@@ -1184,6 +1245,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['datetimepicker'] = true;
 			$vars['categorias'] = $categoria;
 			$vars['lugar_pago'] = $lugar_pago;
+			//$vars['zonas_brechas'] = $zonas_brechas;
 			//$vars['icheck'] = true;
 			$vars['jqueryRut'] = true;
 			$vars['mask'] = true;
@@ -1274,6 +1336,13 @@ public function editar_trabajador(){
 			$saldoinicvacaciones = $this->input->post('vacaciones_legales');
 			$saldoinicvacprog = $this->input->post('vacaciones_progresivas');
 			$fecingreso = $this->input->post('datepicker2');
+			$fecha_retiro = $this->input->post('fecha_retiro');
+			$fecha_finiquito = $this->input->post('datepicker4');
+			$fecrealcontrato = $this->input->post('fecha_real');
+			$primervenc = $this->input->post('vencimiento_1');
+
+			
+
 			$fecha_inicio_vacaciones = $this->input->post('fecha_inicio_vacaciones');
 			$tipocontrato = $this->input->post('tipocontrato');
 			$tallapantalon = $this->input->post('pantalon');
@@ -1290,9 +1359,21 @@ public function editar_trabajador(){
 			$semana_corrida = $this->input->post('semana_corrida');
 			$fecafp = $this->input->post('datepicker5');
 			$fecafc = $this->input->post('datepicker6');
-			$seguro_cesantia = $this->input->post('seguro_cesantia') == 'on' ? 1 : 0;;
+			$fecvencplan = $this->input->post('datepicker9');
+			$fecapvc = $this->input->post('datepicker10');
+			$fectermsubsidio = $this->input->post('datepicker11');
+
+			
+			//var_dump($fecvencplan); exit;
+			
+			$seguro_cesantia = $this->input->post('seguro_cesantia') == 'on' ? 1 : 0;
+			$parttime = $this->input->post('parttime') == 'on' ? 1 : 0;
+
+			
 			$region = $this->input->post('region');
 			$comuna = $this->input->post('comuna');
+
+
 			$asig_individual = $this->input->post('asig_individual');
 			$asig_por_invalidez = $this->input->post('asig_por_invalidez');
 			$asig_maternal = $this->input->post('asig_maternal');
@@ -1306,19 +1387,125 @@ public function editar_trabajador(){
 			$diastrabajo = $this->input->post('diastrabajo');
 			$horasdiarias = $this->input->post('horasdiarias');
 			$horassemanales = $this->input->post('horassemanales');
+
+			$motivo_egreso = $this->input->post('motivo_egreso');
+			$tipo_cc = $this->input->post('tipo_cc');
+			$seccion = $this->input->post('seccion');
+			$situacion_laboral = $this->input->post('situacion_laboral');
+			$clase = $this->input->post('clase');
+			$codigo_ine = $this->input->post('codigo_ine');
+			$zona_brecha = $this->input->post('zona_brecha');
+			$numero_fun = $this->input->post('numero_fun');
+
+
+
+			$rut_pago = str_replace(".","",$this->input->post("rutfp"));
+			$arrayRutPago = explode("-",$rut_pago);
+			$nombre_pago = $this->input->post('nombrefp');
+			$email_pago = $this->input->post('emailfp');
+			$usuario_windows = $this->input->post('usuario_windows');
+
+			
+			
 			
 
 			
 
 			
 
-			$date = DateTime::createFromFormat('d/m/Y', $fecingreso);
-			$fecingreso = $date->format('Ymd');
-			$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
-			$fecnacimiento = $date->format('Ymd');
 			
-			$date = DateTime::createFromFormat('d/m/Y', $fecha_inicio_vacaciones);
-			$fecha_inicio_vacaciones = $date->format('Ymd');			
+			if($fecingreso !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecingreso);
+				$fecingreso = $date->format('Ymd');
+			}else{
+				$fecingreso = null;
+				//$seguro_cesantia =0;
+			}
+
+			if($fecha_retiro !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecha_retiro);
+				$fecha_retiro = $date->format('Ymd');
+			}else{
+				$fecha_retiro = null;
+				//$seguro_cesantia =0;
+			}
+
+			if($fecha_finiquito !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecha_finiquito);
+				$fecha_finiquito = $date->format('Ymd');
+			}else{
+				$fecha_finiquito = null;
+				//$seguro_cesantia =0;
+			}
+
+			if($fecnacimiento !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
+				$fecnacimiento = $date->format('Ymd');
+			}else{
+				$fecnacimiento = null;
+				//$seguro_cesantia =0;
+			}
+
+
+			if($fecha_inicio_vacaciones !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecha_inicio_vacaciones);
+				$fecha_inicio_vacaciones = $date->format('Ymd');			
+			}else{
+				$fecha_inicio_vacaciones = null;
+				//$seguro_cesantia =0;
+			}
+
+
+			if($fecrealcontrato !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecrealcontrato);
+				$fecrealcontrato = $date->format('Ymd');			
+			}else{
+				$fecrealcontrato = null;
+				//$seguro_cesantia =0;
+			}
+
+
+
+			if($primervenc !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $primervenc);
+				$primervenc = $date->format('Ymd');			
+			}else{
+				$primervenc = null;
+				//$seguro_cesantia =0;
+			}
+
+
+
+			if($fecvencplan !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecvencplan);
+				$fecvencplan = $date->format('Ymd');			
+			}else{
+				$fecvencplan = null;
+				//$seguro_cesantia =0;
+			}
+
+
+
+			if($fecapvc !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecapvc);
+				$fecapvc = $date->format('Ymd');			
+			}else{
+				$fecapvc = null;
+				//$seguro_cesantia =0;
+			}
+
+
+
+
+			if($fectermsubsidio !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fectermsubsidio);
+				$fectermsubsidio = $date->format('Ymd');			
+			}else{
+				$fectermsubsidio = null;
+				//$seguro_cesantia =0;
+			}
+
+
 
 			if($fecafp !=null){
 
@@ -1338,7 +1525,6 @@ public function editar_trabajador(){
 				//$seguro_cesantia =0;
 			}
 			
-					
 
 			$array_datos = array(
 								'id_empresa' => $this->session->userdata('empresaid'),
@@ -1385,6 +1571,9 @@ public function editar_trabajador(){
 								'saldoinicvacprog' => $saldoinicvacprog,
 								'tipocontrato' => $tipocontrato,
 								'fecingreso' => $fecingreso,
+								'fecha_retiro' => $fecha_retiro,
+								'fecha_finiquito' => $fecha_finiquito,
+								
 								'id_lugar_pago' => $lugar_pago,
 								'id_categoria' => $categoria,
 								'jubilado' => $jubilado,
@@ -1405,7 +1594,26 @@ public function editar_trabajador(){
 								'nrocontratoapv' => $numero_contrato_apv,
 								'tipocotapv' => $tipo_cotizacion,
 								'cotapv' => $cotapv,
+								'id_motivo_egreso' => $motivo_egreso,
+								'id_tipocc' => $tipo_cc,
+								'id_seccion' => $seccion,
+								'id_situacion' => $situacion_laboral,
+								'id_clase' => $clase,
+								'id_ine' => $codigo_ine,
+								'id_zona' => $zona_brecha,
+								'fecrealcontrato' => $fecrealcontrato,
+								'primervenc' => $primervenc,
+								'fun' => $numero_fun,
+								'fecvencplan' => $fecvencplan,
+								'fecapvc' => $fecapvc,
+								'fectermsubsidio' => $fectermsubsidio,
+	       						'rut_pago' => $idtrabajador == 0 ? $arrayRutPago[0] : "",
+	       						'dv_pago' => $idtrabajador == 0 ? $arrayRutPago[1] : "",								
+								'nombre_pago' => $nombre_pago,
+								'email_pago' => $email_pago,
+								'usuario_windows' => $usuario_windows,
 
+								
 								
 
 								
@@ -1419,7 +1627,7 @@ public function editar_trabajador(){
 								'diasvactomados' => 0,
 								'diasprogtomados' => 0,
 								
-								'parttime' => 0,
+								'parttime' => $parttime,
 								//'pensionado' => 0,
 								'diastrabajo' => $diastrabajo,
 								'horasdiarias' => $horasdiarias,
