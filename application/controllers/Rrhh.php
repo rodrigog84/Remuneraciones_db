@@ -1068,6 +1068,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['jqueryRut'] = true;
 			$vars['mask'] = true;
 			$vars['inputmask'] = true;
+			$vars['maleta'] = true;
 			$vars['idrut'] = $rut;
 
 			$template = "template";
@@ -1087,7 +1088,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 	{
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-			$sueldobase = str_replace(".","",$this->input->post('sueldobase'));
+			$sueldobase = str_replace(".","",$this->input->post('sueldo_base'));
 			$horassemanales = $this->input->post('horassemanales');
 			
 			$parttime = $this->input->post('parttime');
@@ -1104,7 +1105,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 				//if($sueldobase < $parametros_generales->sueldominimo){
 				if($sueldobase < $sueldominimo_proporcional){
 					$data['result'] = "error";
-					$data['fields']['sueldobase'] = "Sueldo Base no puede ser menor a Sueldo M&iacute;nimo";	
+					$data['fields']['sueldo_base'] = "Sueldo Base no puede ser menor a Sueldo M&iacute;nimo";	
 				}else{
 					$data['result'] = "ok";
 				}

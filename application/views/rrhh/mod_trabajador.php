@@ -49,7 +49,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Rut Trabajador</label>
-								                             	<input type="text" name="rut" id="rut"  class="form-control"  placeholder="98123456-7" title="Escriba Rut" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" oninput="checkRut(this)"" >
+								                             	<input type="text" name="rut" id="rut"  class="form-control"  placeholder="98123456-7" title="Escriba Rut" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" >
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -91,7 +91,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div> 
-								                                 <input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control" required type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
+								                                 <input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control mask_date" required type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
 								                                 </div>
 								                            </div>
 								                          </div>
@@ -405,16 +405,58 @@
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+														<div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="parttime">Part Time</label> <br>
+								                              <input type="checkbox" name="parttime" id="parttime" class="minimal" <?php echo $datos_form['parttime'] == 1 ? "checked" : ""; ?> />   
+
+								                            </div>  
+								                          </div>								                          
+								                          
+
+							                        </div>
+
+												<div class='row'>
+												 <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Sueldo Base</label>  
 								                                 <input type="text" name="sueldo_base" class="form-control" id="sueldo_base" placeholder="Sueldo Base">
 								                            </div>
 								                          </div>
 
-							                        </div>
+						                          <div class='col-md-6'>
+						                            <div class="form-group">
+						                              <label for="diastrabajo">D&iacute;as de Trabajo</label>
+						                              <input type="text" class="form-control" name="diastrabajo" id="diastrabajo" placeholder="Ingrese D&iacute;as de Trabajo" value="<?php echo $datos_form['diastrabajo']; ?>" >                            
+						                            </div> 
+						                          </div>	
 
-												<div class='row'>
+						                          						                          
+						                        </div>
+
+						                        <div class='row'>
+
+						                          <div class='col-md-6'>
+						                            <div class="form-group">
+						                              <label for="horasdiarias">Horas Diarias</label>
+						                              <input type="text" class="form-control" name="horasdiarias" id="horasdiarias" placeholder="Ingrese Horas Diarias" value="<?php echo $datos_form['horasdiarias']; ?>" >                            
+						                            </div> 
+						                          </div>
+
+
+						                          <div class='col-md-6'>
+						                            <div class="form-group">
+						                              <label for="horassemanales">Horas Semanales</label>
+						                              <input type="text" class="form-control" name="horassemanales" id="horassemanales" placeholder="Ingrese Horas Semanales" value="<?php echo $datos_form['horassemanales']; ?>" >   
+						                            </div> 
+						                          </div>
+
+						                          
+
+						                        </div>                        
+
+						                        <div class='row'>
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
 						                                <label for="tipogratificacion">Tipo Gratificaci&oacute;n</label>   
@@ -426,31 +468,44 @@
 						                                </select> 
 						                            </div> 
 						                          </div>
+
+
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
 						                              <label for="gratificacion">Monto Gratificaci&oacute;n</label>
 						                              <input type="text" class="form-control miles" name="gratificacion" id="gratificacion" placeholder="Ingrese Monto Gratificaci&oacute;n" value="<?php echo $datos_form['gratificacion'] == 0 ? '' : $datos_form['gratificacion']; ?>" <?php echo $datos_form['tipogratificacion'] == 'MF' ? '' : 'disabled'; ?> >                            
 						                            </div> 
 						                          </div>
-						                        </div>                        
 
-						                        <div class='row'>
-						                          <div class='col-md-6'>
+
+						                         
+						                          
+						                        </div>
+
+													<div class='row'>
+														 <div class='col-md-6'>
 						                            <div class="form-group">
 						                                <label for="movilizacion">Valor Movilizaci&oacute;n</label>   
 						                                <input type="text" class="form-control miles" name="movilizacion" id="movilizacion" placeholder="Ingrese Valor Movilizaci&oacute;n" value="<?php echo $datos_form['movilizacion']; ?>" >                            
 						                            </div> 
 						                          </div>
-						                          <div class='col-md-6'>
-						                            <div class="form-group">
-						                                <label for="colacion">Valor Colaci&oacute;n</label>   
-						                                <input type="text" class="form-control miles" name="colacion" id="colacion" placeholder="Ingrese Valor Colaci&oacute;n" value="<?php echo $datos_form['colacion']; ?>" >                            
-						                            </div> 
-						                          </div>
-						                        </div>
 
+
+														<div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="colacion">Valor Colaci&oacute;n</label>   
+								                                <input type="text" class="form-control miles" name="colacion" id="colacion" placeholder="Ingrese Valor Colaci&oacute;n" value="<?php echo $datos_form['colacion']; ?>" >                            
+								                            </div> 
+								                         </div>
+
+
+								                          
+								                          
+
+							                        </div>
 													<div class='row'>
-								                          <div class='col-md-6'>
+
+														<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Tipo C.C</label>
 																	<select name="tipo_cc" id="tipo_cc" class="form-control">
@@ -463,7 +518,8 @@
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+														<div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Categoria</label>  
 								                                 <select name="categoria" id="categoria" class="form-control">
@@ -476,9 +532,14 @@
 								                            </div>
 								                          </div>
 
+
+								                          
+								                          
+
 							                        </div>
-													<div class='row'>
-								                          <div class='col-md-6'>
+							                        <div class='row'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Lugar de Pago</label>
 								                             	<select name="lugar_pago" id="lugar_pago" class="form-control">
@@ -491,7 +552,9 @@
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Fecha de Ingreso</label>  
 								                                <div class="input-group">
@@ -502,10 +565,13 @@
 								                                 </div>
 								                            </div>
 								                          </div>
+								                          
+								                          
 
 							                        </div>
 							                        <div class='row'>
-								                          <div class='col-md-6'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Fecha de Retiro</label>
 								                              <div class="input-group">
@@ -516,7 +582,8 @@
 								                             	</div>
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Fecha de Finiquito</label>  
 								                                <div class="input-group">
@@ -528,9 +595,14 @@
 								                            </div>
 								                          </div>
 
+
+								                          
+								                          
+
 							                        </div>
 							                        <div class='row'>
-								                          <div class='col-md-6'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Fecha Inicio Cálculo Vacaciones</label>
 								                              <div class="input-group">
@@ -541,23 +613,31 @@
 								                             	</div>
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Saldo Inicial Días Vacaciones Legales</label>
 								                                <input type="text" class="form-control" id="vacaciones_legales" name="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30" value="0">
 								                            </div>
 								                          </div>
 
+
+								                          
+								                          
+
 							                        </div>
+
 							                        <div class='row'>
-								                          <div class='col-md-6'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Saldo Inicial Días Vacaciones Progresivas</label>
 								                             	<input type="text" name="vacaciones_progresivas" class="form-control" id="vacaciones_progresivas" placeholder="Saldo Inicial Vacaciones Progresivas" size="30" value="0">
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Motivo de Egreso</label>
 																<select name="motivo_egreso" id="motivo_egreso" class="form-control">
@@ -570,10 +650,16 @@
 								                            </div>
 								                          </div>
 
-							                        </div>
 
-							                        <div class='row'>
-								                          <div class='col-md-6'>
+								                          
+								                          
+
+							                        </div>		
+
+													<div class='row'>
+
+
+														<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Tipo de Contrato</label>
 																<select name="tipocontrato" id="tipocontrato" class="form-control">
@@ -585,7 +671,8 @@
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+														<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Sección</label>
 																<select name="seccion" id="seccion" class="form-control">
@@ -599,11 +686,12 @@
 								                            </div>
 								                          </div>
 
+								                         
+								                          
 							                        </div>		
 
-													<div class='row'>
-
-								                          <div class='col-md-6'>
+							                        <div class='row'>
+							                        	 <div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Código Ine</label>
 																<select name="codigo_ine" id="codigo_ine" class="form-control">
@@ -615,7 +703,7 @@
 								                                   </select>																
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Sindicato</label>
 																<select name="sindicato" id="sindicato" class="form-control">
@@ -626,11 +714,16 @@
 
 								                            </div>
 								                          </div>
-							                        </div>		
+
+
+								                          
+								                          
+							                        </div>			
+
 
 							                        <div class='row'>
 
-								                          <div class='col-md-6'>
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Rol Privado</label>
 																<select name="regimen_pago" id="regimen_pago" class="form-control">
@@ -640,7 +733,7 @@
 																</select>
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Semana Corrida</label>
 																<select name="semana_corrida" id="semana_corrida" class="form-control">
@@ -650,12 +743,16 @@
 																</select>
 								                            </div>
 								                          </div>
-							                        </div>			
+
+								                          
+								                          
+							                        </div>		
 
 
-							                        <div class='row'>
+							                         <div class='row'>
 
-								                          <div class='col-md-6'>
+
+							                         	<div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Situaci&oacute;n Laboral</label>
 																<select name="situacion_laboral" id="situacion_laboral" class="form-control">
@@ -667,6 +764,7 @@
 								                                   </select>
 								                            </div>
 								                          </div>
+								                          
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Zona Brecha</label>
@@ -679,12 +777,13 @@
 								                                   </select>
 								                            </div>
 								                          </div>
-							                        </div>		
 
 
-							                         <div class='row'>
 								                          
-								                          <div class='col-md-6'>
+								                          
+							                        </div>							                        					       
+							                        <div class='row'>
+							                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Fecha Real Contrato</label>
 								                              <div class="input-group">
@@ -696,7 +795,7 @@
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+							                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">1er Vencimiento</label>
 								                              <div class="input-group">
@@ -706,17 +805,10 @@
 																<input placeholder="1er Vencimiento" class="form-control mask_date" id="vencimiento_1" name="vencimiento_1" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
 																</div>
 								                            </div>
-								                          </div>
-							                        </div>							                        					       
-							                        <div class='row'>
-							                          
-							                          <div class='col-md-6'>
-							                            <div class="form-group">
-							                              <label for="parttime">Part Time</label> <br>
-							                              <input type="checkbox" name="parttime" id="parttime" class="minimal" <?php echo $datos_form['parttime'] == 1 ? "checked" : ""; ?> />   
+								                      </div>
 
-							                            </div>  
-							                          </div>
+
+							                          
 							                        </div>                
 
 												</section>
@@ -1101,36 +1193,17 @@
 								                          </div>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
-								                              <label for="diastrabajo">D&iacute;as de Trabajo</label>
-								                              <input type="text" class="form-control" name="diastrabajo" id="diastrabajo" placeholder="Ingrese D&iacute;as de Trabajo" value="<?php echo $datos_form['diastrabajo']; ?>" >                            
-								                            </div> 
-								                          </div>								                          
-								                          
-							                        </div>
-													
-							                        <div class='row'>
-								                          <div class='col-md-6'>
-								                            <div class="form-group">
-								                              <label for="horasdiarias">Horas Diarias</label>
-								                              <input type="text" class="form-control" name="horasdiarias" id="horasdiarias" placeholder="Ingrese Horas Diarias" value="<?php echo $datos_form['horasdiarias']; ?>" >                            
-								                            </div> 
-								                          </div>	
-								                          <div class='col-md-6'>
-								                            <div class="form-group">
-								                              <label for="horassemanales">Horas Semanales</label>
-								                              <input type="text" class="form-control" name="horassemanales" id="horassemanales" placeholder="Ingrese Horas Semanales" value="<?php echo $datos_form['horassemanales']; ?>" >   
-								                            </div> 
-								                          </div>								                          
-							                        </div>
-													
-							                        <div class='row'>
-
-								                          <div class='col-md-6'>
-								                            <div class="form-group">
 								                              <label for="rut">Código de Anexo</label>
 																<input type="text" name="codigo_anexo" class="form-control" id="codigo_anexo" placeholder="Código de Anexo">
 								                            </div>
-								                          </div>
+								                          </div>							                          
+								                          
+							                        </div>
+													
+							                        													
+							                        <div class='row'>
+
+								                          
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">2do Vencimiento</label>
@@ -1138,15 +1211,18 @@
 								                            </div>
 								                          </div>
 
-							                        </div>
-													
-													<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Anticipo Ind Monto</label>
 																<input type="text" name="anticipo_monto" class="form-control" id="anticipo_monto" placeholder="0">
 								                            </div>
 								                          </div>
+
+
+							                        </div>
+													
+													<div class='row'>
+								                          
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Anticipo Ind Días</label>
@@ -1154,9 +1230,6 @@
 								                            </div>
 								                          </div>
 
-							                        </div>
-
-							                        <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Autoriz Firma Doc</label>
@@ -1168,22 +1241,27 @@
 																</select>
 								                            </div>
 								                          </div>
+
+							                        </div>
+
+							                        <div class='row'>
+								                          
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Sucursal Entrenam</label>
 																<input type="text" name="sucursal_entrenamiento" class="form-control" id="sucursal_entrenamiento" placeholder="Sucursal Entrenamiento">
 								                            </div>
 								                          </div>
-
-							                        </div>
-
-							                         <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Código Ocupación</label>
 																<input type="text" name="codigo_ocupacion" class="form-control" id="codigo_ocupacion" placeholder="0">
 								                            </div>
 								                          </div>
+							                        </div>
+
+							                         <div class='row'>
+								                          
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Evaluador</label>
@@ -1191,14 +1269,16 @@
 								                            </div>
 								                          </div>
 
-							                        </div>
-							                        <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Usuario Windows</label>
 																<input type="text" name="usuario_windows" class="form-control" id="usuario_windows" placeholder="Usuario Windows">
 								                            </div>
 								                          </div>
+
+							                        </div>
+							                        <div class='row'>
+								                          
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Cuenta Contable</label>
@@ -1206,15 +1286,18 @@
 								                            </div>
 								                          </div>
 
-							                        </div>
-
-							                        <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Nivel de Sence</label>
 																<input type="text" name="nivel_sence" class="form-control" id="nivel_sence" placeholder="0">
 								                            </div>
 								                          </div>
+
+
+							                        </div>
+
+							                        <div class='row'>
+								                          
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Franquicia Sence %</label>
@@ -1332,48 +1415,7 @@
 
 
 <script>
-function VerificaRut(rut) {
-    if (rut.toString().trim() != '') {
-      
-        var caracteres = new Array();
-        var serie = new Array(2, 3, 4, 5, 6, 7);
-        var dig = rut.toString().substr(rut.toString().length - 1, 1);
-        rut = rut.toString().substr(0, rut.toString().length - 1);
-        for (var i = 0; i < rut.length; i++) {
-            caracteres[i] = parseInt(rut.charAt((rut.length - (i + 1))));
-        }
- 
-        var sumatoria = 0;
-        var k = 0;
-        var resto = 0;
- 
-        for (var j = 0; j < caracteres.length; j++) {
-            if (k == 6) {
-                k = 0;
-            }
-            sumatoria += parseInt(caracteres[j]) * parseInt(serie[k]);
-            k++;
-        }
- 
-        resto = sumatoria % 11;
-        dv = 11 - resto;
- 
-        if (dv == 10) {
-            dv = "K";
-        }
-        else if (dv == 11) {
-            dv = 0;
-        }
 
-        if (dv.toString().trim().toUpperCase() == dig.toString().trim().toUpperCase())
-            return true;
-        else
-            return false;
-    }
-    else {
-        return false;
-    }
-  }
 
 
   function replaceAll( text, busca, reemplaza ){
@@ -1746,20 +1788,6 @@ $('#tipogratificacion').on('change',function(){
 
 
 
-
-$("#seguro_cesantia").on('ifChecked',function(event){
-  $("#datepicker6").attr('disabled',false);
-  $("#datepicker6").val($("#datepicker2").val());
-});
-
-
-$("#seguro_cesantia").on('ifUnchecked',function(event){
-  $('#basicBootstrapForm').formValidation('updateStatus', 'fechaafc','NOT_VALIDATED');
-  $("#datepicker6").val('');
-  $("#datepicker6").attr('disabled',true);
-
-});    
-
 </script>
 
 
@@ -1772,14 +1800,14 @@ $("#seguro_cesantia").on('ifUnchecked',function(event){
 	});
 
 
-	$(function() {
+	/*$(function() {
 		$( "#fechanacimiento").datepicker( {
 				dateFormat: "dd/mm/yy",
 				changeMonth: true,
       			changeYear: true
 		});
 	});	
-
+*/
 
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
           checkboxClass: 'icheckbox_minimal-blue',
@@ -1859,6 +1887,71 @@ function checkRut(rut) {
     rut.setCustomValidity('');
 }
 
+FormValidation.Validator.validateRut = {
+        validate: function(validator, $field, options) {
+          var validador = true;
+          $field.Rut();
+          var rut = $field.val();
+          var cleanRut = replaceAll(rut,".","");
+          var cleanRut = replaceAll(cleanRut,"-","");
+          if(VerificaRut(cleanRut)){
+              return true;
+
+          }else{
+              return {
+                  valid : false
+              }
+
+          }
+
+
+        }
+    };
+
+
+function VerificaRut(rut) {
+    if (rut.toString().trim() != '') {
+      
+        var caracteres = new Array();
+        var serie = new Array(2, 3, 4, 5, 6, 7);
+        var dig = rut.toString().substr(rut.toString().length - 1, 1);
+        rut = rut.toString().substr(0, rut.toString().length - 1);
+        for (var i = 0; i < rut.length; i++) {
+            caracteres[i] = parseInt(rut.charAt((rut.length - (i + 1))));
+        }
+ 
+        var sumatoria = 0;
+        var k = 0;
+        var resto = 0;
+ 
+        for (var j = 0; j < caracteres.length; j++) {
+            if (k == 6) {
+                k = 0;
+            }
+            sumatoria += parseInt(caracteres[j]) * parseInt(serie[k]);
+            k++;
+        }
+ 
+        resto = sumatoria % 11;
+        dv = 11 - resto;
+ 
+        if (dv == 10) {
+            dv = "K";
+        }
+        else if (dv == 11) {
+            dv = 0;
+        }
+
+        if (dv.toString().trim().toUpperCase() == dig.toString().trim().toUpperCase())
+            return true;
+        else
+            return false;
+    }
+    else {
+        return false;
+    }
+  }
+
 
 
 $(document).ready(function() {
@@ -1883,9 +1976,9 @@ $(document).ready(function() {
                         max: 12,
                         message: 'El largo del Rut es Incorrecto'
                     },
-                   /* validateRut: {
+                    validateRut: {
                       message: 'Rut Incorrecto'
-                    }*/
+                    }
 
                 }
             },
@@ -1990,6 +2083,16 @@ $(document).ready(function() {
                 }
             },
 
+
+            email: {
+                row: '.form-group',
+                validators: {
+                    emailAddress: {
+                        message: 'El valor ingresado no es una direcci&oacute; de email valida'
+                    }                    
+                }
+            },                   
+
             tiporenta: {
                 row: '.form-group',
                 validators: {
@@ -2019,13 +2122,25 @@ $(document).ready(function() {
             // FIN VALIDACIONES PRIMERA PESTAÑA
 
 
-            sueldo_base: {
+            /*sueldo_base: {
                 row: '.form-group',
                 validators: {
                     notEmpty: {
                         message: 'Sueldo Base es requerido'
                     }
                 }
+            },*/
+
+  			sueldo_base: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Sueldo Base es requerido'
+                    },
+                    // The bank validator doesn't have any option
+                    blank: {}  
+                }
+                                  
             },
 
 			tipogratificacion: {
@@ -2566,13 +2681,86 @@ $(document).ready(function() {
                 $icon.addClass(isValidTab ? 'fa-check' : 'fa-times');
             }
         })
+        .on('success.form.fv', function(e) { /**** VALIDAR EN SERVIDOR VIA AJAX ******/
+        // Prevent default form submission
+        e.preventDefault();
+
+        var $form = $(e.target),                    // The form instance
+            fv    = $form.data('formValidation');   // FormValidation instance
+
+        // Send data to back-end
+        $.ajax({
+            type: "POST",
+            url: '<?php echo base_url();?>rrhh/validate_sueldo_minimo',
+            data: $form.serialize(),
+            dataType: 'json'
+        }).success(function(response) {
+            // We will display the messages from server if they're available
+
+            // If there is error returned from server
+              if (response.result === 'error') {
+                  //console.log(response.fields);
+                  for (var field in response.fields) {
+
+                      fv
+                          // Show the custom message
+                          .updateMessage(field, 'blank', response.fields[field])
+                          // Set the field as invalid
+                          .updateStatus(field, 'INVALID', 'blank');
+                  }
+              } else {
+                  // Do whatever you want here
+                  // such as showing a modal ...
+                  fv.defaultSubmit();
+              }            
+        });
+        
+    }) 
+	       
    
+        $(".mask_date").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
 
 
-	$(".mask_date").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+$(".mask_date").on('blur',function(event){
+    //if($(this).val() == ''){
+      $('#basicBootstrapForm').formValidation('revalidateField', 'fechanacimiento');
+      $('#basicBootstrapForm').formValidation('revalidateField', 'datepicker2');
+      //$('#basicBootstrapForm').formValidation('revalidateField', 'fecha_retiro');
+      $('#basicBootstrapForm').formValidation('revalidateField', 'datepicker6');
+      //console.log( $("#fechaafc").attr('disabled'));
+      if($(this).attr('id') == 'datepicker2' && $("#datepicker6").attr('disabled') != 'disabled' && $("#datepicker6").val() == ''){ //si ingresamos fecha ingreso y aun no ingresamos fecha AFC, se copia
+        $("#datepicker6").val($(this).val());
+        $('#basicBootstrapForm').formValidation('updateStatus', 'datepicker6','NOT_VALIDATED');
+      }
+    //}
+
+  });
+
+
+
+$("#parttime").on('ifToggled',function(event){
+   $('#basicBootstrapForm').formValidation('updateStatus', 'sueldo_base','NOT_VALIDATED'); //quita validacion
+});
+
+
+$("#seguro_cesantia").on('ifChecked',function(event){
+  $("#datepicker6").attr('disabled',false);
+  $("#datepicker6").val($("#datepicker2").val());
+});
+
+
+$("#seguro_cesantia").on('ifUnchecked',function(event){
+  $('#basicBootstrapForm').formValidation('updateStatus', 'datepicker6','NOT_VALIDATED');
+  $("#datepicker6").val('');
+  $("#datepicker6").attr('disabled',true);
+
+});    
 
 
    }); 
 
+
+	
 </script>
+
 
