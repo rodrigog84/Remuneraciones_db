@@ -1151,13 +1151,22 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$isapres = $this->admin->get_isapre();
 			$pantalon = $this->admin->get_vestuario_pantalon();			
 			$polera = $this->admin->get_vestuario_polera();
+			$apv = $this->admin->get_apv();
 			$bancos = $this->admin->get_bancos();
 			$forma_pago = $this->admin->get_forma_pago();
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 			$jornada_trabajo = $this->admin->get_jornada_trabajo();
-			$apv = $this->admin->get_apv();
 			$categoria = $this->admin->get_categoria();
 			$lugar_pago= $this->admin->get_lugar_pago();
+			$motivo_egreso= $this->admin->get_motivo_egreso();
+			$tipo_cc= $this->admin->get_tipo_cc();
+			$secciones= $this->admin->get_seccion();
+			$situacion_laboral= $this->admin->get_situacion_laboral();
+			$clases= $this->admin->get_clases();
+			$cod_ine= $this->admin->get_ine();
+			$zonas_brechas= $this->admin->get_zona_brecha();
+			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
+
 			//$zonas_brechas= $this->admin->get_zona_brecha();
 
 
@@ -1246,16 +1255,25 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['datetimepicker'] = true;
 			$vars['categorias'] = $categoria;
 			$vars['lugar_pago'] = $lugar_pago;
+			$vars['bancos'] = $bancos;
+			$vars['forma_pago'] = $forma_pago;
+			$vars['motivo_egreso'] = $motivo_egreso;
+			$vars['tipo_cc'] = $tipo_cc;
+			$vars['secciones'] = $secciones;
+			$vars['situacion_laboral'] = $situacion_laboral;
+			$vars['clases'] = $clases;
+			$vars['tramos_asig_familiar'] = $tramos_asig_familiar;
+			$vars['jornada_trabajo'] = $jornada_trabajo;
+			$vars['cod_ine'] = $cod_ine;
+			$vars['zonas_brechas'] = $zonas_brechas;
 			//$vars['zonas_brechas'] = $zonas_brechas;
-			//$vars['icheck'] = true;
+			$vars['icheck'] = true;
 			$vars['jqueryRut'] = true;
 			$vars['mask'] = true;
 			$vars['inputmask'] = true;
+			$vars['maleta'] = true;
 			$vars['pantalon'] = $pantalon;
 			$vars['polera'] = $polera;
-			$vars['bancos'] = $bancos;
-			$vars['forma_pago'] = $forma_pago;
-			$vars['jornada_trabajo'] =$jornada_trabajo;
 
 			$template = "template";
 			$this->load->view($template,$vars);	
@@ -1708,43 +1726,186 @@ public function editar_trabajador(){
 			$fono = $this->input->post('fono');
 			$afp = $this->input->post('afp');
 			$isapre = $this->input->post('isapre');
-			$sueldo_base = $this->input->post('sueldo_base');
+			$sueldo_base = str_replace(".","",$this->input->post('sueldo_base'));
 			$fecinicvacaciones = $this->input->post('fecha_inicio_vacaciones');
+			$tipogratificacion = $this->input->post('tipogratificacion');
+			$gratificacion = str_replace(".","",$this->input->post('gratificacion'));
+			$movilizacion = str_replace(".","",$this->input->post('movilizacion'));
+			$colacion = str_replace(".","",$this->input->post('colacion'));
 			$saldoinicvacaciones = $this->input->post('vacaciones_legales');
 			$saldoinicvacprog = $this->input->post('vacaciones_progresivas');
 			$fecingreso = $this->input->post('datepicker2');
-			$apv = $this->input->post('apv');
-			$numero_contrato_apv = $this->input->post('numero_contrato_apv');
-			$tipo_cotizacion = $this->input->post('tipo_cotizacion');
-			$monto_pactado = $this->input->post('monto_pactado');
-			$fecafc = $this->input->post('datepicker6');
-			$cotapv = $this->input->post('monto_cotizacion_apv');
+			$fecha_retiro = $this->input->post('fecha_retiro');
+			$fecha_finiquito = $this->input->post('datepicker4');
+			$fecrealcontrato = $this->input->post('fecha_real');
+			$primervenc = $this->input->post('vencimiento_1');
+
+			
+
+			$fecha_inicio_vacaciones = $this->input->post('fecha_inicio_vacaciones');
+			$tipocontrato = $this->input->post('tipocontrato');
 			$tallapantalon = $this->input->post('pantalon');
 			$tallapolera = $this->input->post('polera');
+			$tramo = $this->input->post('tramo');
+			$monto_pactado = $this->input->post('monto_pactado');
 			$categoria = $this->input->post('categoria');
 			$lugar_pago = $this->input->post('lugar_pago');
+
 			$jubilado = $this->input->post('jubilado');
 			$pensionado = $this->input->post('pensionado') == 'on' ? 1 : 0;
 			$regimen_pago = $this->input->post('regimen_pago');
 			$sindicato = $this->input->post('sindicato');
 			$semana_corrida = $this->input->post('semana_corrida');
 			$fecafp = $this->input->post('datepicker5');
-			$seguro_cesantia = $this->input->post('seguro_cesantia');
+			$fecafc = $this->input->post('datepicker6');
+			$fecvencplan = $this->input->post('datepicker9');
+			$fecapvc = $this->input->post('datepicker10');
+			$fectermsubsidio = $this->input->post('datepicker11');
+
+			
+			//var_dump($fecvencplan); exit;
+			
+			$seguro_cesantia = $this->input->post('seguro_cesantia') == 'on' ? 1 : 0;
+			$parttime = $this->input->post('parttime') == 'on' ? 1 : 0;
+
+			
 			$region = $this->input->post('region');
+			$comuna = $this->input->post('comuna');
+
+
 			$asig_individual = $this->input->post('asig_individual');
 			$asig_por_invalidez = $this->input->post('asig_por_invalidez');
 			$asig_maternal = $this->input->post('asig_maternal');
 			$banco = $this->input->post('banco');
 			$forma_pago = $this->input->post('forma_pago');
 			$cta_bancaria = $this->input->post('cta_bancaria');
+			$apv = $this->input->post('apv');
+			$numero_contrato_apv = $this->input->post('numero_contrato_apv');
+			$tipo_cotizacion = $this->input->post('tipo_cotizacion');
+			$cotapv = $this->input->post('monto_cotizacion_apv');
+			$diastrabajo = $this->input->post('diastrabajo');
+			$horasdiarias = $this->input->post('horasdiarias');
+			$horassemanales = $this->input->post('horassemanales');
 
-			// SE REGULARIZA LOS CAMPOS FECHA DEL FORMATO dd/mm/yyyy A yyyy/mm/dd DE LA BD	
+			$motivo_egreso = $this->input->post('motivo_egreso');
+			$tipo_cc = $this->input->post('tipo_cc');
+			$seccion = $this->input->post('seccion');
+			$situacion_laboral = $this->input->post('situacion_laboral');
+			$clase = $this->input->post('clase');
+			$codigo_ine = $this->input->post('codigo_ine');
+			$zona_brecha = $this->input->post('zona_brecha');
+			$numero_fun = $this->input->post('numero_fun');
 
-			$date = DateTime::createFromFormat('d/m/Y', $fecingreso);
-			$fecingreso = $date->format('Ymd');
-			$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
-			$fecnacimiento = $date->format('Ymd');
+
+
+			$rut_pago = str_replace(".","",$this->input->post("rutfp"));
+			$arrayRutPago = explode("-",$rut_pago);
+			$nombre_pago = $this->input->post('nombrefp');
+			$email_pago = $this->input->post('emailfp');
+			$usuario_windows = $this->input->post('usuario_windows');
+
 			
+			
+			
+
+			
+
+			
+
+			
+			if($fecingreso !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecingreso);
+				$fecingreso = $date->format('Ymd');
+			}else{
+				$fecingreso = null;
+				//$seguro_cesantia =0;
+			}
+
+			if($fecha_retiro !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecha_retiro);
+				$fecha_retiro = $date->format('Ymd');
+			}else{
+				$fecha_retiro = null;
+				//$seguro_cesantia =0;
+			}
+
+			if($fecha_finiquito !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecha_finiquito);
+				$fecha_finiquito = $date->format('Ymd');
+			}else{
+				$fecha_finiquito = null;
+				//$seguro_cesantia =0;
+			}
+
+			if($fecnacimiento !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
+				$fecnacimiento = $date->format('Ymd');
+			}else{
+				$fecnacimiento = null;
+				//$seguro_cesantia =0;
+			}
+
+
+			if($fecha_inicio_vacaciones !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecha_inicio_vacaciones);
+				$fecha_inicio_vacaciones = $date->format('Ymd');			
+			}else{
+				$fecha_inicio_vacaciones = null;
+				//$seguro_cesantia =0;
+			}
+
+
+			if($fecrealcontrato !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecrealcontrato);
+				$fecrealcontrato = $date->format('Ymd');			
+			}else{
+				$fecrealcontrato = null;
+				//$seguro_cesantia =0;
+			}
+
+
+
+			if($primervenc !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $primervenc);
+				$primervenc = $date->format('Ymd');			
+			}else{
+				$primervenc = null;
+				//$seguro_cesantia =0;
+			}
+
+
+
+			if($fecvencplan !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecvencplan);
+				$fecvencplan = $date->format('Ymd');			
+			}else{
+				$fecvencplan = null;
+				//$seguro_cesantia =0;
+			}
+
+
+
+			if($fecapvc !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fecapvc);
+				$fecapvc = $date->format('Ymd');			
+			}else{
+				$fecapvc = null;
+				//$seguro_cesantia =0;
+			}
+
+
+
+
+			if($fectermsubsidio !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $fectermsubsidio);
+				$fectermsubsidio = $date->format('Ymd');			
+			}else{
+				$fectermsubsidio = null;
+				//$seguro_cesantia =0;
+			}
+
+
+
 			if($fecafp !=null){
 
 				$date = DateTime::createFromFormat('d/m/Y', $fecafp);
@@ -1753,44 +1914,15 @@ public function editar_trabajador(){
 				$fecafp = null;
 				
 			}
-			
+
 			if($fecafc !=null){
 
 				$date = DateTime::createFromFormat('d/m/Y', $fecafc);
 				$fecafc = $date->format('Ymd');
 			}else{
 				$fecafc = null;
-				$seguro_cesantia =0;
+				//$seguro_cesantia =0;
 			}
-			
-
-			//$fecingreso = '20180301';
-			/*$idregion = $this->input->post('region');
-			$idcomuna = $this->input->post('comuna');
-			$fecingreso = $this->input->post('fechaingreso');
-			$fecafc = $this->input->post('fechaafc');
-			$fecinicvacaciones = $this->input->post('fecinicvacaciones');
-			$saldoinicvacaciones = $this->input->post('saldoinicvacaciones');
-			$saldoinicvacprog = $this->input->post('saldoinicvacprog');			
-			$pensionado = $this->input->post('pensionado') == 'on' ? 1 : 0;
-			$tipocontrato = $this->input->post('tipocontrato');
-			$parttime = $this->input->post('parttime') == 'on' ? 1 : 0;
-			$segcesantia = $this->input->post('segcesantia') == 'on' ? 1 : 0;
-			$diastrabajo = $this->input->post('diastrabajo');
-			$horasdiarias = $this->input->post('horasdiarias');
-			$horassemanales = $this->input->post('horassemanales');
-			$sueldobase = str_replace(".","",$this->input->post('sueldobase'));
-			$tipogratificacion = $this->input->post('tipogratificacion');
-			$gratificacion = str_replace(".","",$this->input->post('gratificacion'));
-			$cargassimples = $this->input->post('cargassimples');
-			$cargasinvalidas = $this->input->post('cargasinvalidas');
-			$cargasmaternales = $this->input->post('cargasmaternales');
-			$cargasretroactivas = $this->input->post('cargasretroactivas');
-			$tramo_asigfamiliar = $this->input->post('tramo_asigfamiliar') == '' ? null : $this->input->post('tramo_asigfamiliar');
-			$asigfamiliar = str_replace(".","",$this->input->post('asigfamiliar'));
-			$movilizacion = str_replace(".","",$this->input->post('movilizacion'));
-			$colacion = str_replace(".","",$this->input->post('colacion'));
-			$activo = $this->input->post('activo') == 'on' ? 1 : 0;*/
 
 			$array_datos = array(
 								'id_empresa' => $this->session->userdata('empresaid'),
@@ -1824,89 +1956,93 @@ public function editar_trabajador(){
 								'idafp' => $afp,
 								'idisapre' => $isapre,
 								'sueldobase' => $sueldo_base,
-								'fecingreso' => $fecingreso,
-								'instapv' => $apv,
-								'nrocontratoapv' => $numero_contrato_apv,
-								'tipocotapv' => $tipo_cotizacion,
+								'tipogratificacion' => $tipogratificacion,
+								'gratificacion' => $gratificacion,
+								'movilizacion' => $movilizacion,
+								'colacion' => $colacion,
+								'idasigfamiliar' => $tramo,
 								'valorpactado' => $monto_pactado,
-								'fecafc' => $fecafc,
-								'cotapv' => $cotapv,
-								'tallapantalon' => $tallapantalon,
-								'tallapolera' => $tallapolera,
-								'fecinicvacaciones' => $fecingreso,
+								'segcesantia' => $seguro_cesantia,
+								'pensionado' => $pensionado,
+								'fecinicvacaciones' => $fecha_inicio_vacaciones,
+								'saldoinicvacaciones' => $saldoinicvacaciones,
+								'saldoinicvacprog' => $saldoinicvacprog,
+								'tipocontrato' => $tipocontrato,
+								'fecingreso' => $fecingreso,
+								'fecha_retiro' => $fecha_retiro,
+								'fecha_finiquito' => $fecha_finiquito,
+								
 								'id_lugar_pago' => $lugar_pago,
 								'id_categoria' => $categoria,
 								'jubilado' => $jubilado,
 								'rol_privado' => $regimen_pago,
 								'sindicato' => $sindicato,
 								'semana_corrida' => $semana_corrida,
-								'segcesantia' => $seguro_cesantia,
 								'fecafp' => $fecafp,
+								'fecafc' => $fecafc,
 								'idregion' => $region,
+								'idcomuna' => $comuna,
 								'cargassimples' => $asig_individual,
 								'cargasinvalidas' => $asig_por_invalidez,
 								'cargasmaternales' => $asig_maternal,
 								'idbanco' => $banco,
 								'id_forma_pago' => $forma_pago,
 								'nrocuentabanco' => $cta_bancaria,
-														
+								'instapv' => $apv,
+								'nrocontratoapv' => $numero_contrato_apv,
+								'tipocotapv' => $tipo_cotizacion,
+								'cotapv' => $cotapv,
+								'id_motivo_egreso' => $motivo_egreso,
+								'id_tipocc' => $tipo_cc,
+								'id_seccion' => $seccion,
+								'id_situacion' => $situacion_laboral,
+								'id_clase' => $clase,
+								'id_ine' => $codigo_ine,
+								'id_zona' => $zona_brecha,
+								'fecrealcontrato' => $fecrealcontrato,
+								'primervenc' => $primervenc,
+								'fun' => $numero_fun,
+								'fecvencplan' => $fecvencplan,
+								'fecapvc' => $fecapvc,
+								'fectermsubsidio' => $fectermsubsidio,
+	       						'rut_pago' => $idtrabajador == 0 ? $arrayRutPago[0] : "",
+	       						'dv_pago' => $idtrabajador == 0 ? $arrayRutPago[1] : "",								
+								'nombre_pago' => $nombre_pago,
+								'email_pago' => $email_pago,
+								'usuario_windows' => $usuario_windows,
+
+								
+								
+
+								
+								
+																							
 								
 								//DATOS POR DEFECTO
-								'saldoinicvacaciones' => 0,
-								'saldoinicvacprog' => 0,	
-								'idcomuna' => 1,
+								
+									
 								'diasprogresivos' => 0,
 								'diasvactomados' => 0,
 								'diasprogtomados' => 0,
-								'tipocontrato' => 'I',
-								'parttime' => 0,
-								'pensionado' => $pensionado,
-								'diastrabajo' => 30,
-								'horasdiarias' => 8,
-								'horassemanales' => 45,
-								//'sueldobase' => 250000,
-								'tipogratificacion' => 'TL',
-								'gratificacion' => 0,
-								'cargasretroactivas' => 0,
-								'idasigfamiliar' => NULL,
-								'asigfamiliar' => 0,
-								'movilizacion' => 0,
-								'colacion' => 0,
-								'active' => 1,
-
-								//OTROS
-								'adicafp' => 0,
-
-
-
-								/*'idregion' => $idregion,
-								'idcomuna' => $idcomuna,
-								'fono' => $fono,
-								'fecingreso' => substr($fecingreso,6,4)."-".substr($fecingreso,3,2)."-".substr($fecingreso,0,2),
-								'fecafc' => $segcesantia == 1 ? substr($fecafc,6,4)."-".substr($fecafc,3,2)."-".substr($fecafc,0,2) : null,
-								'fecinicvacaciones' => substr($fecinicvacaciones,6,4)."-".substr($fecinicvacaciones,3,2)."-".substr($fecinicvacaciones,0,2),
-								'saldoinicvacaciones' => $saldoinicvacaciones,
-								'saldoinicvacprog' => $saldoinicvacprog,
-								'tipocontrato' => $tipocontrato,
+								
 								'parttime' => $parttime,
-								'segcesantia' => $segcesantia,
-								'pensionado' => $pensionado,
+								//'pensionado' => 0,
 								'diastrabajo' => $diastrabajo,
 								'horasdiarias' => $horasdiarias,
 								'horassemanales' => $horassemanales,
-								'sueldobase' => $sueldobase,
-								'tipogratificacion' => $tipogratificacion,
-								'gratificacion' => $gratificacion,
-								'cargassimples' => $cargassimples,
-								'cargasinvalidas' => $cargasinvalidas,
-								'cargasmaternales' => $cargasmaternales,
-								'cargasretroactivas' => $cargasretroactivas,
-								'idasigfamiliar' => $tramo_asigfamiliar,
-								'asigfamiliar' => $asigfamiliar,
-								'movilizacion' => $movilizacion,
-								'colacion' => $colacion,
-								'active' => $activo
-								*/
+								//'sueldobase' => 250000,
+								
+								
+								
+								'cargasretroactivas' => 0,
+								
+								'asigfamiliar' => 0,
+								
+								
+								'active' => 1,
+
+								//OTROS
+								'adicafp' => 0
 
 								);
 

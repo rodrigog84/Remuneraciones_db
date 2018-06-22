@@ -19,7 +19,7 @@
   										<li><a href="#datosempresa" data-toggle="tab"> Datos Empresa&nbsp;&nbsp;<i class="fa"></i></a></li>
   										<li><a href="#datosllss" data-toggle="tab">L.L.S.S&nbsp;&nbsp;<i class="fa"></i></a></li>
   										<li><a href="#pago" data-toggle="tab">Forma Pago&nbsp;&nbsp;<i class="fa"></i></a></li>
-  										<li><a href="#otros" data-toggle="tab">Otros&nbsp;&nbsp;<i class="fa"></i></a></li>
+  										<!--li><a href="#otros" data-toggle="tab">Otros&nbsp;&nbsp;<i class="fa"></i></a></li-->
   										<li><a href="#configuracion" data-toggle="tab">Configuraciones&nbsp;&nbsp;<i class="fa"></i></a></li>
 									</ul>
 								</div>
@@ -152,6 +152,7 @@
 								                            <div class="form-group">
 								                                <label for="nombre">Región</label> 
 								                                <select name="region" id="region" class="form-control">
+								                                	<option value="">Seleccione Regi&oacute;n</option>
 																	<?php foreach ($regiones as $region) { ?>
 								                                      <?php $regionselected = $region->id == $datos_form['idregion'] ? "selected" : ""; ?>
 								                                      <option value="<?php echo $region->id_region;?>" <?php echo $regionselected;?> ><?php echo $region->nombre;?></option>
