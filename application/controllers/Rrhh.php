@@ -922,6 +922,13 @@ public function datos_personal($rut=null){
 
 }
 
+public function datos_personal_lic($idpersonal=null){
+
+	$datos_personal2 = $this->rrhh_model->get_personal($idpersonal);
+	echo json_encode($datos_personal2);
+		
+}
+
 
 public function mod_trabajador($rut = null,$idtrabajador = null)
 	{
