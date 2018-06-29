@@ -124,6 +124,11 @@
         <link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>plugins/bootstrap-daterangepicker-master/daterangepicker.css" />
       <?php } ?>
 
+       <?php if(isset($inputmask)){ ?>
+          <script src="<?php echo base_url(); ?>plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
+          <script src="<?php echo base_url(); ?>plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
+          <script src="<?php echo base_url(); ?>plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>      
+      <?php } ?>
 
       <?php if(isset($datetimepicker_advance)){ ?>
         <link href="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />

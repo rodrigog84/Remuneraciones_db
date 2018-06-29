@@ -15,12 +15,12 @@
 <!--sub-heard-part-->	
 								<div class="sub-heard-part">
 									<ul class="nav nav-tabs">
-  										<li class="active"><a href="#datospersonales" data-toggle="tab">Datos Personales </a></li>
-  										<li><a href="#datosempresa" data-toggle="tab"> Datos Empresa</a></li>
-  										<li><a href="#datosllss" data-toggle="tab">L.L.S.S</a></li>
-  										<li><a href="#pago" data-toggle="tab">Forma Pago</a></li>
-  										<li><a href="#otros" data-toggle="tab">Otros</a></li>
-  										<li><a href="#configuracion" data-toggle="tab">Configuraciones</a></li>
+  										<li class="active"><a href="#datospersonales" data-toggle="tab">Datos Personales&nbsp;&nbsp;<i class="fa"></i> </a></li>
+  										<li><a href="#datosempresa" data-toggle="tab"> Datos Empresa&nbsp;&nbsp;<i class="fa"></i></a></li>
+  										<li><a href="#datosllss" data-toggle="tab">L.L.S.S&nbsp;&nbsp;<i class="fa"></i></a></li>
+  										<li><a href="#pago" data-toggle="tab">Forma Pago&nbsp;&nbsp;<i class="fa"></i></a></li>
+  										<!--li><a href="#otros" data-toggle="tab">Otros&nbsp;&nbsp;<i class="fa"></i></a></li-->
+  										<li><a href="#configuracion" data-toggle="tab">Configuraciones&nbsp;&nbsp;<i class="fa"></i></a></li>
 									</ul>
 								</div>
 								<!--//sub-heard-part-->
@@ -49,7 +49,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Rut Trabajador</label>
-								                             	<input type="text" name="rut" id="rut"  class="form-control"  placeholder="98123456-7" title="Escriba Rut" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required oninput="checkRut(this)"" >
+								                             	<input type="text" name="rut" id="rut"  class="form-control"  placeholder="98123456-7" title="Escriba Rut" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" >
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -65,13 +65,13 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Nombre Completo</label>
-								                             	<input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
+								                             	<input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" >
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Apellido Parterno</label>  
-								                                 <input type="text" name="apaterno" class="form-control" id="apaterno" placeholder="Apellido Parterno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
+								                                 <input type="text" name="apaterno" class="form-control" id="apaterno" placeholder="Apellido Parterno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" >
 								                            </div>
 								                          </div>
 
@@ -81,7 +81,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Apellido Materno</label>
-								                             	<input type="text" name="amaterno" class="form-control" id="amaterno" placeholder="Apellido Materno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" required>
+								                             	<input type="text" name="amaterno" class="form-control" id="amaterno" placeholder="Apellido Materno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" >
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -91,7 +91,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div> 
-								                                 <input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control" required type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
+								                                 <input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control mask_date" required type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
 								                                 </div>
 								                            </div>
 								                          </div>
@@ -147,7 +147,38 @@
 
 							                        </div>	
 													<div class='row'>
+
 								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Región</label> 
+								                                <select name="region" id="region" class="form-control">
+								                                	<option value="">Seleccione Regi&oacute;n</option>
+																	<?php foreach ($regiones as $region) { ?>
+								                                      <?php $regionselected = $region->id == $datos_form['idregion'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $region->id_region;?>" <?php echo $regionselected;?> ><?php echo $region->nombre;?></option>
+								                                    <?php } ?>
+																</select>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              
+								                              <label for="comuna">Comuna</label> 
+								                                <select name="comuna" id="comuna"  class="form-control">
+								                                  <option value="">Seleccione Comuna</option>
+								                                </select>
+								                                <input type="hidden" id="idcomuna"  >
+								                            </div> 
+								                          </div>
+
+								                          
+
+
+							                        </div>	
+
+													<div class='row'>
+								                          				
+														<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Email</label>
 								                                <div class="input-group">
@@ -156,31 +187,7 @@
 								                             	</div>
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
-								                            <div class="form-group">
-								                                <label for="nombre">Región</label> 
-								                                <select name="region" id="region" class="form-control">
-																	<?php foreach ($regiones as $region) { ?>
-								                                      <?php $regionselected = $region->id == $datos_form['idregion'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $region->id_region;?>" <?php echo $regionselected;?> ><?php echo $region->nombre;?></option>
-								                                    <?php } ?>
-																</select>
-								                            </div>
-								                          </div>
 
-							                        </div>	
-
-													<div class='row'>
-								                          <div class='col-md-6'>
-								                            <div class="form-group">
-								                              
-								                              <label for="comuna">Comuna</label> 
-								                                <select name="comuna" id="comuna"  class="form-control">
-								                                  <option value="">Seleccione Comuna</option>
-								                                </select>
-								                                <input type="hidden" id="idcomuna" value="<?php echo $datos_form['idcomuna']; ?>" >
-								                            </div> 
-								                          </div>														
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Tipo de Renta</label>
@@ -389,20 +396,68 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Clase</label>
-								                             	<input type="text" name="clase" class="form-control" id="clase" placeholder="Clases" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+																<select name="clase" id="clase" class="form-control">
+																	<option value="">Seleccione Clase</option>
+						                                    		<?php foreach ($clases as $clase) { ?>
+								                                      <?php $claseselected = $clase->id_clase == $datos_form['id_clase'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $clase->id_clase;?>" <?php echo $claseselected;?> ><?php echo $clase->nombre;?></option>
+								                                    <?php } ?>
+								                                   </select>
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+														<div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="parttime">Part Time</label> <br>
+								                              <input type="checkbox" name="parttime" id="parttime" class="minimal" <?php echo $datos_form['parttime'] == 1 ? "checked" : ""; ?> />   
+
+								                            </div>  
+								                          </div>								                          
+								                          
+
+							                        </div>
+
+												<div class='row'>
+												 <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Sueldo Base</label>  
 								                                 <input type="text" name="sueldo_base" class="form-control" id="sueldo_base" placeholder="Sueldo Base">
 								                            </div>
 								                          </div>
 
-							                        </div>
+						                          <div class='col-md-6'>
+						                            <div class="form-group">
+						                              <label for="diastrabajo">D&iacute;as de Trabajo</label>
+						                              <input type="text" class="form-control" name="diastrabajo" id="diastrabajo" placeholder="Ingrese D&iacute;as de Trabajo" value="<?php echo $datos_form['diastrabajo']; ?>" >                            
+						                            </div> 
+						                          </div>	
 
-												<div class='row'>
+						                          						                          
+						                        </div>
+
+						                        <div class='row'>
+
+						                          <div class='col-md-6'>
+						                            <div class="form-group">
+						                              <label for="horasdiarias">Horas Diarias</label>
+						                              <input type="text" class="form-control" name="horasdiarias" id="horasdiarias" placeholder="Ingrese Horas Diarias" value="<?php echo $datos_form['horasdiarias']; ?>" >                            
+						                            </div> 
+						                          </div>
+
+
+						                          <div class='col-md-6'>
+						                            <div class="form-group">
+						                              <label for="horassemanales">Horas Semanales</label>
+						                              <input type="text" class="form-control" name="horassemanales" id="horassemanales" placeholder="Ingrese Horas Semanales" value="<?php echo $datos_form['horassemanales']; ?>" >   
+						                            </div> 
+						                          </div>
+
+						                          
+
+						                        </div>                        
+
+						                        <div class='row'>
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
 						                                <label for="tipogratificacion">Tipo Gratificaci&oacute;n</label>   
@@ -414,38 +469,58 @@
 						                                </select> 
 						                            </div> 
 						                          </div>
+
+
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
 						                              <label for="gratificacion">Monto Gratificaci&oacute;n</label>
 						                              <input type="text" class="form-control miles" name="gratificacion" id="gratificacion" placeholder="Ingrese Monto Gratificaci&oacute;n" value="<?php echo $datos_form['gratificacion'] == 0 ? '' : $datos_form['gratificacion']; ?>" <?php echo $datos_form['tipogratificacion'] == 'MF' ? '' : 'disabled'; ?> >                            
 						                            </div> 
 						                          </div>
-						                        </div>                        
 
-						                        <div class='row'>
-						                          <div class='col-md-6'>
+
+						                         
+						                          
+						                        </div>
+
+													<div class='row'>
+														 <div class='col-md-6'>
 						                            <div class="form-group">
 						                                <label for="movilizacion">Valor Movilizaci&oacute;n</label>   
 						                                <input type="text" class="form-control miles" name="movilizacion" id="movilizacion" placeholder="Ingrese Valor Movilizaci&oacute;n" value="<?php echo $datos_form['movilizacion']; ?>" >                            
 						                            </div> 
 						                          </div>
-						                          <div class='col-md-6'>
-						                            <div class="form-group">
-						                                <label for="colacion">Valor Colaci&oacute;n</label>   
-						                                <input type="text" class="form-control miles" name="colacion" id="colacion" placeholder="Ingrese Valor Colaci&oacute;n" value="<?php echo $datos_form['colacion']; ?>" >                            
-						                            </div> 
-						                          </div>
-						                        </div>
 
+
+														<div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="colacion">Valor Colaci&oacute;n</label>   
+								                                <input type="text" class="form-control miles" name="colacion" id="colacion" placeholder="Ingrese Valor Colaci&oacute;n" value="<?php echo $datos_form['colacion']; ?>" >                            
+								                            </div> 
+								                         </div>
+
+
+								                          
+								                          
+
+							                        </div>
 													<div class='row'>
-								                          <div class='col-md-6'>
+
+														<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Tipo C.C</label>
-								                             	<input type="text" name="tipo_cc" class="form-control" id="tipo_cc" placeholder="Tipo CC" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+																	<select name="tipo_cc" id="tipo_cc" class="form-control">
+																	<option value="">Seleccione Tipo CC</option>
+						                                    		<?php foreach ($tipo_cc as $tip_cc) { ?>
+								                                      <?php $tipoccselected = $tip_cc->id_tipocc == $datos_form['id_tipocc'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $tip_cc->id_tipocc;?>" <?php echo $tipoccselected;?> ><?php echo $tip_cc->nombre;?></option>
+								                                    <?php } ?>
+								                                   </select>	
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+														<div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Categoria</label>  
 								                                 <select name="categoria" id="categoria" class="form-control">
@@ -458,9 +533,14 @@
 								                            </div>
 								                          </div>
 
+
+								                          
+								                          
+
 							                        </div>
-													<div class='row'>
-								                          <div class='col-md-6'>
+							                        <div class='row'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Lugar de Pago</label>
 								                             	<select name="lugar_pago" id="lugar_pago" class="form-control">
@@ -473,88 +553,114 @@
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Fecha de Ingreso</label>  
 								                                <div class="input-group">
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div> 
-								                                 <input placeholder="Fecha Ingreso" class="form-control" id="datepicker2" name="datepicker2" type="text" value="" required>
+								                                 <input placeholder="Fecha Ingreso" class="form-control mask_date" id="datepicker2" name="datepicker2" type="text" value=""  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
 								                                 </div>
 								                            </div>
 								                          </div>
+								                          
+								                          
 
 							                        </div>
 							                        <div class='row'>
-								                          <div class='col-md-6'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Fecha de Retiro</label>
 								                              <div class="input-group">
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-								                             	<input placeholder="Fecha Retiro" class="form-control" id="fecha_retiro" name="fecha_retiro" type="text" value="" >
+								                             	<input placeholder="Fecha Retiro" class="form-control mask_date" id="fecha_retiro" name="fecha_retiro" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask >
 								                             	</div>
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Fecha de Finiquito</label>  
 								                                <div class="input-group">
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-								                                 <input placeholder="Fecha de Finiquito" class="form-control" id="datepicker4" type="text" value="">
+								                                 <input placeholder="Fecha de Finiquito" class="form-control mask_date" id="datepicker4"  name="datepicker4" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
 								                                 </div>
 								                            </div>
 								                          </div>
 
+
+								                          
+								                          
+
 							                        </div>
 							                        <div class='row'>
-								                          <div class='col-md-6'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Fecha Inicio Cálculo Vacaciones</label>
 								                              <div class="input-group">
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-								                             	<input placeholder="Fecha Inicio Vacaciones" class="form-control" id="fecha_inicio_vacaciones" name="fecha_inicio_vacaciones"   size="30" type="text" value="" >
+								                             	<input placeholder="Fecha Inicio Vacaciones" class="form-control mask_date" id="fecha_inicio_vacaciones" name="fecha_inicio_vacaciones"   size="30" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
 								                             	</div>
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Saldo Inicial Días Vacaciones Legales</label>
 								                                <input type="text" class="form-control" id="vacaciones_legales" name="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30" value="0">
 								                            </div>
 								                          </div>
 
+
+								                          
+								                          
+
 							                        </div>
+
 							                        <div class='row'>
-								                          <div class='col-md-6'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Saldo Inicial Días Vacaciones Progresivas</label>
 								                             	<input type="text" name="vacaciones_progresivas" class="form-control" id="vacaciones_progresivas" placeholder="Saldo Inicial Vacaciones Progresivas" size="30" value="0">
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Motivo de Egreso</label>
-																<select name="selector1" id="selector1" class="form-control">
-																	<option>Seleccione</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum minima.</option>
+																<select name="motivo_egreso" id="motivo_egreso" class="form-control">
+																	<option value="">Seleccione Motivo Egreso</option>
+						                                    		<?php foreach ($motivo_egreso as $motivo) { ?>
+								                                      <?php $motivoselected = $motivo->id_motivo == $datos_form['id_motivo'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $motivo->id_motivo;?>" <?php echo $motivoselected;?> ><?php echo $motivo->nombre;?></option>
+								                                    <?php } ?>
 																</select>
 								                            </div>
 								                          </div>
 
-							                        </div>
 
-							                        <div class='row'>
-								                          <div class='col-md-6'>
+								                          
+								                          
+
+							                        </div>		
+
+													<div class='row'>
+
+
+														<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Tipo de Contrato</label>
 																<select name="tipocontrato" id="tipocontrato" class="form-control">
@@ -566,39 +672,39 @@
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
-								                            <div class="form-group">
-								                            	<label for="rut">Jornada de Trabajo</label>
-																<select name="selector1" id="selector1" class="form-control">
-																	<option>Seleccione</option>
-																	<option>Dolore, ab unde modi est!</option>
-																	<option>Illum, fuga minus sit eaque.</option>
-																	<option>Consequatur ducimus maiores voluptatum minima.</option>
-																</select>
-								                            </div>
-								                          </div>
 
-							                        </div>		
-
-													<div class='row'>
-								                          <div class='col-md-6'>
+														<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Sección</label>
-																<input type="text" name="seccion" class="form-control" id="seccion" placeholder="Sección" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+																<select name="seccion" id="seccion" class="form-control">
+																	<option value="">Seleccione Secci&oacute;n</option>
+						                                    		<?php foreach ($secciones as $seccion) { ?>
+								                                      <?php $seccionselected = $seccion->id_seccion == $datos_form['id_seccion'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $seccion->id_seccion;?>" <?php echo $seccionselected;?> ><?php echo $seccion->nombre;?></option>
+								                                    <?php } ?>
+								                                   </select>	
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
-								                            <div class="form-group">
-								                            	<label for="rut">Código Ine</label>
-																<input type="text" name="codigo_ine" class="form-control" id="codigo_ine" placeholder="Código Ine">
-								                            </div>
-								                          </div>
 
+								                         
+								                          
 							                        </div>		
 
 							                        <div class='row'>
-								                          <div class='col-md-6'>
+							                        	 <div class='col-md-6'>
+								                            <div class="form-group">
+								                            	<label for="rut">Código Ine</label>
+																<select name="codigo_ine" id="codigo_ine" class="form-control">
+																	<option value="">Seleccione C&oacute;digo INE</option>
+						                                    		<?php foreach ($cod_ine as $ine) { ?>
+								                                      <?php $ineselected = $ine->id_ine == $datos_form['id_ine'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $ine->id_ine;?>" <?php echo $ineselected;?> ><?php echo $ine->nombre;?></option>
+								                                    <?php } ?>
+								                                   </select>																
+								                            </div>
+								                          </div>
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Sindicato</label>
 																<select name="sindicato" id="sindicato" class="form-control">
@@ -609,7 +715,16 @@
 
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+
+								                          
+								                          
+							                        </div>			
+
+
+							                        <div class='row'>
+
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Rol Privado</label>
 																<select name="regimen_pago" id="regimen_pago" class="form-control">
@@ -619,12 +734,7 @@
 																</select>
 								                            </div>
 								                          </div>
-
-							                        </div>			
-
-
-							                        <div class='row'>
-								                          <div class='col-md-6'>
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Semana Corrida</label>
 																<select name="semana_corrida" id="semana_corrida" class="form-control">
@@ -634,51 +744,73 @@
 																</select>
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
-									                           <div class="form-group">
-								                              <label for="rut">Sitio Laboral</label>
-																<input type="text" name="sitio_laboral" class="form-control" id="sitio_laboral" placeholder="Sitio Laboral" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 
-								                            </div>
-								                          </div>
-
+								                          
+								                          
 							                        </div>		
 
 
 							                         <div class='row'>
+
+
+							                         	<div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Situaci&oacute;n Laboral</label>
+																<select name="situacion_laboral" id="situacion_laboral" class="form-control">
+																	<option value="">Seleccione Situaci&oacute;n Laboral</option>
+						                                    		<?php foreach ($situacion_laboral as $situacion) { ?>
+								                                      <?php $situacionselected = $situacion->id_situacion == $datos_form['id_situacion'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $situacion->id_situacion;?>" <?php echo $situacionselected;?> ><?php echo $situacion->nombre;?></option>
+								                                    <?php } ?>
+								                                   </select>
+								                            </div>
+								                          </div>
+								                          
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Zona Brecha</label>
-																<input type="text" name="zona_brecha" class="form-control" id="zona_brecha" placeholder="Zona Brecha" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+																<select name="zona_brecha" id="zona_brecha" class="form-control">
+																	<option value="">Seleccione Zona Brecha</option>
+						                                    		<?php foreach ($zonas_brechas as $zona_brecha) { ?>
+								                                      <?php $zonabrechaselected = $zona_brecha->id_zona == $datos_form['id_zona'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $zona_brecha->id_zona;?>" <?php echo $zonabrechaselected;?> ><?php echo $zona_brecha->nombre;?></option>
+								                                    <?php } ?>
+								                                   </select>
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+
+
+								                          
+								                          
+							                        </div>							                        					       
+							                        <div class='row'>
+							                          <div class='col-md-6'>
 									                           <div class="form-group">
-								                              <label for="rut">Fecha Real</label>
+								                              <label for="rut">Fecha Real Contrato</label>
 								                              <div class="input-group">
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-																<input placeholder="Fecha Real" class="form-control" id="fecha_real" type="text" value="" >
+																<input placeholder="Fecha Real" class="form-control mask_date" id="fecha_real" name="fecha_real" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
 																</div>
 
 								                            </div>
 								                          </div>
-
-							                        </div>							                        					       
-							                        <div class='row'>
-								                          <div class='col-md-6'>
+							                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">1er Vencimiento</label>
 								                              <div class="input-group">
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-																<input placeholder="1er Vencimiento" class="form-control" id="vencimiento_1" type="text" value="" >
+																<input placeholder="1er Vencimiento" class="form-control mask_date" id="vencimiento_1" name="vencimiento_1" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
 																</div>
 								                            </div>
-								                          </div>
-							                        </div>	                 
+								                      </div>
+
+
+							                          
+							                        </div>                
 
 												</section>
 											</div>
@@ -723,7 +855,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-																<input placeholder="Fecha Incorp.AFP" class="form-control" id="datepicker5" name="datepicker5" type="text" value="" >		
+																<input placeholder="Fecha Incorp.AFP" class="form-control mask_date" id="datepicker5" name="datepicker5" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>		
 															</div>										
 
 								                            </div>
@@ -743,7 +875,15 @@
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Fecha Ingreso AFC</label>
-																<input placeholder="Fecha Ingreso AFC" class="form-control" id="datepicker6" name="datepicker6" type="text" value="" disabled >														
+								                              <div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div>
+																<input placeholder="Fecha Ingreso AFC" class="form-control  mask_date" id="datepicker6" name="datepicker6" type="text" value="" disabled data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>		
+															</div>	
+
+
+																													
 
 								                            </div>
 								                          </div>
@@ -797,7 +937,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-																<input placeholder="Vencimiento Plan" class="form-control" id="datepicker9" type="text" value="" >
+																<input placeholder="Vencimiento Plan" class="form-control mask_date" id="datepicker9" name="datepicker9" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
 															</div>
 								                            </div>
 								                          </div>
@@ -845,7 +985,7 @@
 								                          </div>
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
-								                              <label for="rut">Nro. Cargas Simles</label>
+								                              <label for="rut">Nro. Cargas Simples</label>
 																<input type="number" name="asig_individual" class="form-control cargas_familiares" id="asig_individual" placeholder="">
 								                            </div>
 								                          </div>								                          
@@ -895,7 +1035,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Estado APVC</label>
-																<input type="text" name="estado_apvc" class="form-control" id="estado_apvc" placeholder="Estado APVC">
+																<input type="text" name="estado_apvc" class="form-control" id="estado_apvc" placeholder="Estado APVC" >
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -905,7 +1045,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-																<input placeholder="Fecha APVC" class="form-control" id="datepicker10" type="text" value="" >
+																<input placeholder="Fecha APVC" class="form-control mask_date" id="datepicker10" name="datepicker10" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask >
 																</div>
 								                            </div>
 								                          </div>
@@ -920,7 +1060,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-																<input placeholder="Término de Subsidio" class="form-control" id="datepicker11" type="text" value="" >
+																<input placeholder="Término de Subsidio" class="form-control mask_date" id="datepicker11" name="datepicker11" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
 																</div>
 								                            </div>
 								                          </div>
@@ -932,7 +1072,7 @@
 								                          </div>
 
 							                        </div>
-							                        <div class='row'>
+							                        <!--div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Jornada de Trabajo</label>
@@ -946,7 +1086,7 @@
 								                            </div>
 								                          </div>
 
-							                        </div>
+							                        </div-->
 
 												</section>
 											</div>
@@ -1054,36 +1194,17 @@
 								                          </div>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
-								                              <label for="diastrabajo">D&iacute;as de Trabajo</label>
-								                              <input type="text" class="form-control" name="diastrabajo" id="diastrabajo" placeholder="Ingrese D&iacute;as de Trabajo" value="<?php echo $datos_form['diastrabajo']; ?>" >                            
-								                            </div> 
-								                          </div>								                          
-								                          
-							                        </div>
-													
-							                        <div class='row'>
-								                          <div class='col-md-6'>
-								                            <div class="form-group">
-								                              <label for="horasdiarias">Horas Diarias</label>
-								                              <input type="text" class="form-control" name="horasdiarias" id="horasdiarias" placeholder="Ingrese Horas Diarias" value="<?php echo $datos_form['horasdiarias']; ?>" >                            
-								                            </div> 
-								                          </div>	
-								                          <div class='col-md-6'>
-								                            <div class="form-group">
-								                              <label for="horassemanales">Horas Semanales</label>
-								                              <input type="text" class="form-control" name="horassemanales" id="horassemanales" placeholder="Ingrese Horas Semanales" value="<?php echo $datos_form['horassemanales']; ?>" >   
-								                            </div> 
-								                          </div>								                          
-							                        </div>
-													
-							                        <div class='row'>
-
-								                          <div class='col-md-6'>
-								                            <div class="form-group">
 								                              <label for="rut">Código de Anexo</label>
 																<input type="text" name="codigo_anexo" class="form-control" id="codigo_anexo" placeholder="Código de Anexo">
 								                            </div>
-								                          </div>
+								                          </div>							                          
+								                          
+							                        </div>
+													
+							                        													
+							                        <div class='row'>
+
+								                          
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">2do Vencimiento</label>
@@ -1091,15 +1212,18 @@
 								                            </div>
 								                          </div>
 
-							                        </div>
-													
-													<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Anticipo Ind Monto</label>
 																<input type="text" name="anticipo_monto" class="form-control" id="anticipo_monto" placeholder="0">
 								                            </div>
 								                          </div>
+
+
+							                        </div>
+													
+													<div class='row'>
+								                          
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Anticipo Ind Días</label>
@@ -1107,9 +1231,6 @@
 								                            </div>
 								                          </div>
 
-							                        </div>
-
-							                        <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Autoriz Firma Doc</label>
@@ -1121,22 +1242,27 @@
 																</select>
 								                            </div>
 								                          </div>
+
+							                        </div>
+
+							                        <div class='row'>
+								                          
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Sucursal Entrenam</label>
 																<input type="text" name="sucursal_entrenamiento" class="form-control" id="sucursal_entrenamiento" placeholder="Sucursal Entrenamiento">
 								                            </div>
 								                          </div>
-
-							                        </div>
-
-							                         <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Código Ocupación</label>
 																<input type="text" name="codigo_ocupacion" class="form-control" id="codigo_ocupacion" placeholder="0">
 								                            </div>
 								                          </div>
+							                        </div>
+
+							                         <div class='row'>
+								                          
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Evaluador</label>
@@ -1144,14 +1270,16 @@
 								                            </div>
 								                          </div>
 
-							                        </div>
-							                        <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Usuario Windows</label>
 																<input type="text" name="usuario_windows" class="form-control" id="usuario_windows" placeholder="Usuario Windows">
 								                            </div>
 								                          </div>
+
+							                        </div>
+							                        <div class='row'>
+								                          
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Cuenta Contable</label>
@@ -1159,15 +1287,18 @@
 								                            </div>
 								                          </div>
 
-							                        </div>
-
-							                        <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Nivel de Sence</label>
 																<input type="text" name="nivel_sence" class="form-control" id="nivel_sence" placeholder="0">
 								                            </div>
 								                          </div>
+
+
+							                        </div>
+
+							                        <div class='row'>
+								                          
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Franquicia Sence %</label>
@@ -1285,48 +1416,7 @@
 
 
 <script>
-function VerificaRut(rut) {
-    if (rut.toString().trim() != '') {
-      
-        var caracteres = new Array();
-        var serie = new Array(2, 3, 4, 5, 6, 7);
-        var dig = rut.toString().substr(rut.toString().length - 1, 1);
-        rut = rut.toString().substr(0, rut.toString().length - 1);
-        for (var i = 0; i < rut.length; i++) {
-            caracteres[i] = parseInt(rut.charAt((rut.length - (i + 1))));
-        }
- 
-        var sumatoria = 0;
-        var k = 0;
-        var resto = 0;
- 
-        for (var j = 0; j < caracteres.length; j++) {
-            if (k == 6) {
-                k = 0;
-            }
-            sumatoria += parseInt(caracteres[j]) * parseInt(serie[k]);
-            k++;
-        }
- 
-        resto = sumatoria % 11;
-        dv = 11 - resto;
- 
-        if (dv == 10) {
-            dv = "K";
-        }
-        else if (dv == 11) {
-            dv = 0;
-        }
 
-        if (dv.toString().trim().toUpperCase() == dig.toString().trim().toUpperCase())
-            return true;
-        else
-            return false;
-    }
-    else {
-        return false;
-    }
-  }
 
 
   function replaceAll( text, busca, reemplaza ){
@@ -1339,7 +1429,255 @@ function VerificaRut(rut) {
 
 
 $(document).ready(function(){
+	$.ajax({type: "GET",
+		    		url: "<?php echo base_url();?>rrhh/datos_personal/<?php echo $idrut;?>", 
+		    		dataType: "json",
+		    		async: false,
+		    		success: function(datos_personal2){
+		      			$.each(datos_personal2,function(nombre) {
+		      			$("#nombre").val(this.nombre);
+		      			$("#rut").val(this.rut);
+		      			$("#apaterno").val(this.apaterno);
+		      			$("#amaterno").val(this.amaterno);
+		      			$("#direccion").val(this.direccion);
+		      			$("#email").val(this.email);	
+        				$("#nacionalidad").val(this.idnacionalidad);
+        				$("#sueldo_base").val(this.sueldobase);
+        				
 
+
+        				$("#ecivil").val(this.idecivil);
+        				$("#sexo").val(this.sexo);
+        				$("#fechanacimiento").val(this.fecnacimiento);
+        				$("#cargo").val(this.idcargo);
+        				$("#isapre").val(this.idisapre);
+        				$("#centro_costo").val(this.idcentrocosto);
+        				$("#afp").val(this.idafp);
+        				$("#datepicker2").val(this.fecingreso);
+        				$("#fecha_real").val(this.fecrealcontrato);
+        				$("#vencimiento_1").val(this.primervenc);
+
+        				$("#fecha_retiro").val(this.fecha_retiro);
+        				$("#datepicker4").val(this.fecha_finiquito);
+        				$("#fecha_inicio_vacaciones").val(this.fecinicvacaciones);
+        				$("#vacaciones_legales").val(this.saldoinicvacaciones);
+        				$("#vacaciones_progresivas").val(this.saldoinicvacprog);
+        				$("#polera").val(this.tallapolera);
+        				$("#pantalon").val(this.tallapantalon);
+        				$("#titulo").val(this.titulo);
+
+        				if(this.idlicencia == 0){
+        					$("#licencia").val('');	
+        				}else{
+        					$("#licencia").val(this.idlicencia);	
+        				}
+
+
+
+        				if(this.idestudio == 0){
+        					$("#estudios").val('');	
+        				}else{
+        					$("#estudios").val(this.idestudio);	
+        				}
+
+        				$("#fono").val(this.fono);
+        				$("#numero_contrato_apv").val(this.nrocontratoapv);
+
+        				if(this.instapv == 0){
+        					$("#apv").val('');	
+        				}else{
+        					$("#apv").val(this.instapv);	
+        				}
+
+
+        				$("#tipo_cotizacion").val(this.tipocotapv);
+        				$("#monto_cotizacion_apv").val(this.cotapv);
+        				$("#monto_pactado").val(this.valorpactado);
+
+        				if(this.id_categoria == 0){
+        					$("#categoria").val('');	
+        				}else{
+        					$("#categoria").val(this.id_categoria);	
+        				}
+
+        				if(this.id_lugar_pago == 0){
+        					$("#lugar_pago").val('');	
+        				}else{
+        					$("#lugar_pago").val(this.id_lugar_pago);	
+        				}
+        				
+        				$("#sindicato").val(this.sindicato);
+        				$("#jubilado").val(this.jubilado);
+        				$("#regimen_pago").val(this.rol_privado);
+        				$("#tramo").val(this.idasigfamiliar);
+        				$("#semana_corrida").val(this.semana_corrida);
+        				$("#tiporenta").val(this.tiporenta);
+        				$("#idioma").val(this.ididioma);
+        				$("#numficha").val(this.numficha);
+        				$("#datepicker5").val(this.fecafp);
+        				$("#datepicker6").val(this.fecafc);
+        				$("#datepicker9").val(this.fecvencplan);
+        				$("#datepicker10").val(this.fecapvc);
+        				$("#datepicker11").val(this.fectermsubsidio);
+
+        				
+        				$("#region").val(this.idregion);
+        				
+        				$("#asig_individual").val(this.cargassimples);
+        				$("#asig_por_invalidez").val(this.cargasinvalidas);
+        				$("#asig_maternal").val(this.cargasmaternales);
+
+        				var cargas = parseInt(this.cargassimples) + parseInt(this.cargasinvalidas) + parseInt(this.cargasmaternales);
+
+
+
+        				$("#banco").val(this.idbanco);
+        				$("#forma_pago").val(this.id_forma_pago);
+        				$("#cta_bancaria").val(this.nrocuentabanco);
+        				$("#tipo_documento").val(this.tipodocumento);
+        				$("#tipogratificacion").val(this.tipogratificacion);
+        				$("#beneficio").val(this.cbeneficio);
+        				$("#movilizacion").val(this.movilizacion);
+        				$("#colacion").val(this.colacion);
+        				$("#tipocontrato").val(this.tipocontrato);
+
+
+
+
+        				$("#motivo_egreso").val(this.id_motivo_egreso);
+        				if(this.id_motivo_egreso == 0){
+        					$("#motivo_egreso").val('');
+        				}else{
+        					$("#motivo_egreso").val(this.id_motivo_egreso);	
+        				}
+
+
+        				
+        				if(this.id_seccion == 0){
+        					$("#seccion").val('');
+        				}else{
+        					$("#seccion").val(this.id_seccion);	
+        				}
+
+        				if(this.id_situacion == 0){
+        					$("#situacion_laboral").val('');
+        				}else{
+        					$("#situacion_laboral").val(this.id_situacion);	
+        				}
+
+
+        				if(this.id_clase == 0){
+        					$("#clase").val('');
+        				}else{
+        					$("#clase").val(this.id_clase);	
+        				}
+
+
+        				if(this.id_tipocc == 0){
+        					$("#tipo_cc").val('');
+        				}else{
+        					$("#tipo_cc").val(this.id_tipocc);	
+        				}
+
+        				if(this.id_ine == 0){
+        					$("#codigo_ine").val('');
+        				}else{
+        					$("#codigo_ine").val(this.id_ine);	
+        				}
+
+
+        				if(this.id_zona == 0){
+        					$("#zona_brecha").val('');
+        				}else{
+        					$("#zona_brecha").val(this.id_zona);	
+        				}
+
+
+        				$("#numero_fun").val(this.fun);
+        				$("#rutfp").val(this.rut_pago);
+        				$("#nombrefp").val(this.nombre_pago);
+        				$("#emailfp").val(this.email_pago);
+        				$("#diastrabajo").val(this.diastrabajo);
+        				$("#horasdiarias").val(this.horasdiarias);
+        				$("#horassemanales").val(this.horassemanales);
+        				$("#usuario_windows").val(this.usuario_windows);
+        				if(this.idjefe == 0){
+        					$("#jefe").val('');
+        				}else{
+        					$("#jefe").val(this.idjefe);	
+        				}
+        				
+        				if(this.idreemplazo == 0){
+        					$("#reemplazo").val('');
+        				}else{
+        					$("#reemplazo").val(this.idreemplazo);	
+        				}
+        				
+        				
+
+        				
+        				
+        				$("#idcomuna").val(this.idcomuna);
+						
+        				
+        				if (this.pensionado ==1){
+        					//$("#pensionado").val(this.pensionado)
+        					//$("#pensionado").prop('checked','checked');
+        					$("#pensionado").iCheck('check');
+
+        				}else{
+        					//$("#pensionado").prop('checked',false);
+        					$("#pensionado").iCheck('uncheck');
+        				}        				
+
+						if (this.parttime ==1){
+        					//$("#pensionado").val(this.pensionado)
+        					//$("#pensionado").prop('checked','checked');
+        					$("#parttime").iCheck('check');
+
+        				}else{
+        					//$("#pensionado").prop('checked',false);
+        					$("#parttime").iCheck('uncheck');
+        				}        				
+
+        				if (this.segcesantia ==1){
+        					$("#seguro_cesantia").val(this.segcesantia)
+        					//document.getElementById("seguro_cesantia").checked = true;
+        					$("#seguro_cesantia").iCheck('check');
+        					document.getElementById("datepicker6").disabled=false;
+
+        				}else{
+        					//document.getElementById("seguro_cesantia").checked = false;
+        					$("#seguro_cesantia").iCheck('uncheck');
+        					
+        					$('#datepicker6').val('');
+        					document.getElementById("datepicker6").disabled=true;
+        				}
+
+
+        				if(this.tipogratificacion == 'MF'){
+        					$('#gratificacion').prop('disabled','');
+        					$("#gratificacion").val(this.gratificacion);
+        				}else{
+        					$('#gratificacion').prop('disabled','disabled');
+        				}
+        				
+						if(cargas > 0){
+						    $('#tramo').attr('disabled',false);
+						  }else{
+						    $("#tramo").prop('selectedIndex', 0);
+						    $('#tramo').attr('disabled',true);
+						  }        				
+        				
+        				$('#gratificacion').mask('000.000.000.000.000', {reverse: true});
+        				$('#movilizacion').mask('000.000.000.000.000', {reverse: true});
+        				$('#colacion').mask('000.000.000.000.000', {reverse: true});
+        				$('#sueldo_base').mask('000.000.000.000.000', {reverse: true});
+
+
+        				}
+        				)}
+        				});
 
     if($('#region').val() != ''){
       $.get("<?php echo base_url();?>admins/get_comunas/"+$('#region').val(),function(data){
@@ -1350,11 +1688,15 @@ $(document).ready(function(){
                     for(i=0;i<var_json.length;i++){
                       $('#comuna').append('<option value="' + var_json[i].idcomuna + '">' + var_json[i].nombre + '</option>');
                     }
-                    $("#comuna").val($('#idcomuna').val()); 
+
+
+	    			//console.log($('#idcomuna').val());
+    				$("#comuna").val($('#idcomuna').val());                     
       });
       // seleccionar comuna
 
     }	
+
 
   $('.numeros').keypress(function(event){
     if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
@@ -1400,7 +1742,7 @@ $('.cargas_familiares').on('input',function(){
     num_cargas_familiares += cargas;
     //console.log($(this).attr('id'));
   });
-  console.log(num_cargas_familiares);
+  
   if(num_cargas_familiares > 0){
     $('#tramo').attr('disabled',false);
   }else{
@@ -1444,101 +1786,8 @@ $('#tipogratificacion').on('change',function(){
 
 });
 
-    $(function(){
-        
-    	$.ajax({type: "GET",
-		    		url: "<?php echo base_url();?>rrhh/datos_personal/<?php echo $idrut;?>", 
-		    		dataType: "json",
-		    		success: function(datos_personal2){
-		      			$.each(datos_personal2,function(nombre) {
-		      			$("#nombre").val(this.nombre);
-		      			$("#rut").val(this.rut);
-		      			$("#apaterno").val(this.apaterno);
-		      			$("#amaterno").val(this.amaterno);
-		      			$("#direccion").val(this.direccion);
-		      			$("#email").val(this.email);	
-        				$("#nacionalidad").val(this.idnacionalidad);
-        				$("#sueldo_base").val(this.sueldobase);
-        				$("#ecivil").val(this.idecivil);
-        				$("#sexo").val(this.sexo);
-        				$("#fechanacimiento").val(this.fecnacimiento);
-        				$("#cargo").val(this.idcargo);
-        				$("#isapre").val(this.idisapre);
-        				$("#centro_costo").val(this.idcentrocosto);
-        				$("#afp").val(this.idafp);
-        				$("#datepicker2").val(this.fecingreso);
-        				$("#fecha_inicio_vacaciones").val(this.fecinicvacaciones);
-        				$("#vacaciones_legales").val(this.saldoinicvacaciones);
-        				$("#vacaciones_progresivas").val(this.saldoinicvacprog);
-        				$("#polera").val(this.tallapolera);
-        				$("#pantalon").val(this.tallapantalon);
-        				$("#titulo").val(this.titulo);
-        				$("#licencia").val(this.idlicencia);
-        				$("#estudios").val(this.idestudio);
-        				$("#fono").val(this.fono);
-        				$("#numero_contrato_apv").val(this.nrocontratoapv);
-        				$("#apv").val(this.instapv);
-        				$("#tipo_cotizacion").val(this.tipocotapv);
-        				$("#monto_cotizacion_apv").val(this.cotapv);
-        				$("#monto_pactado").val(this.valorpactado);
-        				$("#categoria").val(this.id_categoria);
-        				$("#lugar_pago").val(this.id_lugar_pago);
-        				$("#sindicato").val(this.sindicato);
-        				$("#jubilado").val(this.jubilado);
-        				$("#regimen_pago").val(this.rol_privado);
-        				$("#tramo").val(this.idasigfamiliar);
-        				$("#semana_corrida").val(this.semana_corrida);
-        				$("#tiporenta").val(this.tiporenta);
-        				$("#idioma").val(this.ididioma);
-        				$("#numficha").val(this.numficha);
-        				$("#datepicker5").val(this.fecafp);
-        				$("#datepicker6").val(this.fecafc);
-        				$("#region").val(this.idregion);
-        				$("#asig_individual").val(this.cargassimples);
-        				$("#asig_por_invalidez").val(this.cargasinvalidas);
-        				$("#asig_maternal").val(this.cargasmaternales);
-        				$("#banco").val(this.idbanco);
-        				$("#forma_pago").val(this.id_forma_pago);
-        				$("#cta_bancaria").val(this.nrocuentabanco);
-        				$('#sueldo_base').mask('000.000.000.000.000', {reverse: true});
-        				
-        				if (this.pensionado ==1){
-        					//$("#pensionado").val(this.pensionado)
-        					$("#pensionado").attr('checked','checked');
-
-        				}else{
-        					$("#pensionado").attr('checked',false);
-        				}        				
-
-        				if (this.segcesantia ==1){
-        					$("#seguro_cesantia").val(this.segcesantia)
-        					document.getElementById("seguro_cesantia").checked = true;
-        					document.getElementById("datepicker6").disabled=false;
-
-        				}else{
-        					document.getElementById("seguro_cesantia").checked = false;
-        					document.getElementById("datepicker6").disabled=true;
-        				}
-        				
-        				}
-        				)}
-        				});
-    	});
 
 
-
-$("#seguro_cesantia").on('ifChecked',function(event){
-  $("#datepicker6").attr('disabled',false);
-  $("#datepicker6").val($("#datepicker2").val());
-});
-
-
-$("#seguro_cesantia").on('ifUnchecked',function(event){
-  $('#basicBootstrapForm').formValidation('updateStatus', 'fechaafc','NOT_VALIDATED');
-  $("#datepicker6").val('');
-  $("#datepicker6").attr('disabled',true);
-
-});    
 
 </script>
 
@@ -1548,18 +1797,18 @@ $("#seguro_cesantia").on('ifUnchecked',function(event){
 <!--script src="js/jquery-ui.js"></script-->
 <script>
 	$(function() {
-		$( "#datepicker,#datepicker2,#datepicker3,#datepicker4,#datepicker5,#datepicker6,#datepicker7,#datepicker8,#datepicker9,#datepicker10,#datepicker11,#datepicker12,#feriados,#fecha_real,#vencimiento_1,#fecha_inicio_vacaciones,#fecha_retiro").datepicker( {dateFormat: "dd/mm/yy"});
+		$( "#datepicker,#datepicker3,#datepicker7,#datepicker8,#datepicker12,#feriados").datepicker( {dateFormat: "dd/mm/yy"});
 	});
 
 
-	$(function() {
+	/*$(function() {
 		$( "#fechanacimiento").datepicker( {
 				dateFormat: "dd/mm/yy",
 				changeMonth: true,
       			changeYear: true
 		});
 	});	
-
+*/
 
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
           checkboxClass: 'icheckbox_minimal-blue',
@@ -1638,5 +1887,881 @@ function checkRut(rut) {
     // Si todo sale bien, eliminar errores (decretar que es válido)
     rut.setCustomValidity('');
 }
+
+FormValidation.Validator.validateRut = {
+        validate: function(validator, $field, options) {
+          var validador = true;
+          $field.Rut();
+          var rut = $field.val();
+          var cleanRut = replaceAll(rut,".","");
+          var cleanRut = replaceAll(cleanRut,"-","");
+          if(VerificaRut(cleanRut)){
+              return true;
+
+          }else{
+              return {
+                  valid : false
+              }
+
+          }
+
+
+        }
+    };
+
+
+function VerificaRut(rut) {
+    if (rut.toString().trim() != '') {
+      
+        var caracteres = new Array();
+        var serie = new Array(2, 3, 4, 5, 6, 7);
+        var dig = rut.toString().substr(rut.toString().length - 1, 1);
+        rut = rut.toString().substr(0, rut.toString().length - 1);
+        for (var i = 0; i < rut.length; i++) {
+            caracteres[i] = parseInt(rut.charAt((rut.length - (i + 1))));
+        }
+ 
+        var sumatoria = 0;
+        var k = 0;
+        var resto = 0;
+ 
+        for (var j = 0; j < caracteres.length; j++) {
+            if (k == 6) {
+                k = 0;
+            }
+            sumatoria += parseInt(caracteres[j]) * parseInt(serie[k]);
+            k++;
+        }
+ 
+        resto = sumatoria % 11;
+        dv = 11 - resto;
+ 
+        if (dv == 10) {
+            dv = "K";
+        }
+        else if (dv == 11) {
+            dv = 0;
+        }
+
+        if (dv.toString().trim().toUpperCase() == dig.toString().trim().toUpperCase())
+            return true;
+        else
+            return false;
+    }
+    else {
+        return false;
+    }
+  }
+
+
+
+$(document).ready(function() {
+
+ $('#basicBootstrapForm').formValidation({
+        framework: 'bootstrap',
+        excluded: ':disabled',
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            rut: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Rut Trabajador es requerido'
+                    },
+                    stringLength: {
+                        min: 0,
+                        max: 12,
+                        message: 'El largo del Rut es Incorrecto'
+                    },
+                    validateRut: {
+                      message: 'Rut Incorrecto'
+                    }
+
+                }
+            },
+			numficha: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'N&uacute;mero de Ficha es requerido'
+                  }
+             }
+            },
+           nombre: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Nombre Trabajador es requerido'
+                    }
+                }
+            },
+
+            apaterno: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Apellido Paterno Trabajador es requerido'
+                    }
+                }
+            },
+
+            amaterno: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Apellido Materno Trabajador es requerido'
+                    }
+                }
+            },
+
+            fechanacimiento: {
+                row: '.form-group',
+                validators: {
+                    date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'El valor no es una fecha v&aacute;lida'
+                    },
+                    notEmpty: {
+                        message: 'Fecha de Nacimiento es requerido'
+                    }                    
+                }
+            },
+            nacionalidad: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Nacionalidad es requerida'
+                    }
+                }
+            },
+
+            ecivil: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Estado Civil es requerido'
+                    }
+                }
+            },
+
+            sexo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Sexo es requerido'
+                    }
+                }
+            },
+
+            direccion: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Direcci&oacute;n Trabajador es requerida'
+                    }
+                }
+            },
+
+            region: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Regi&oacute;n Comunidad es requerido'
+                    }
+                }
+            },
+
+            comuna: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Comuna es requerida'
+                    }
+                }
+            },
+
+
+            email: {
+                row: '.form-group',
+                validators: {
+                    emailAddress: {
+                        message: 'El valor ingresado no es una direcci&oacute; de email valida'
+                    }                    
+                }
+            },                   
+
+            tiporenta: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Tipo Renta es requerido'
+                    }
+                }
+            },            
+
+            cargo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Cargo es requerido'
+                    }
+                }
+            }, 
+
+            centro_costo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Centro de Costo es requerido'
+                    }
+                }
+            },
+            // FIN VALIDACIONES PRIMERA PESTAÑA
+
+
+            /*sueldo_base: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Sueldo Base es requerido'
+                    }
+                }
+            },*/
+
+  			sueldo_base: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Sueldo Base es requerido'
+                    },
+                    // The bank validator doesn't have any option
+                    blank: {}  
+                }
+                                  
+            },
+
+			tipogratificacion: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Tipo Gratificaci&oacute;n es requerido'
+                    }
+                }
+            },
+            
+            gratificacion: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Monto Gratificaci&oacute;n es requerido'
+                    }
+                }
+            },
+
+            movilizacion: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Monto Movilizaci&oacute;n es requerido'
+                    }
+                }
+            },
+
+            colacion: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Monto Colaci&oacute;n es requerido'
+                    }
+                }
+            },
+
+            datepicker2: {
+                row: '.form-group',
+                validators: {
+                    date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'El valor no es una fecha v&aacute;lida'
+                    },
+                    notEmpty: {
+                        message: 'Fecha de Ingreso es requerido'
+                    }                    
+                }
+            },
+
+
+            fecha_retiro: {
+                row: '.form-group',
+                validators: {
+                    date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'El valor no es una fecha v&aacute;lida'
+                    }                  
+                }
+            },
+
+
+            datepicker4: {
+                row: '.form-group',
+                validators: {
+                    date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'El valor no es una fecha v&aacute;lida'
+                    }                  
+                }
+            },
+
+            fecha_inicio_vacaciones: {
+                row: '.form-group',
+                validators: {
+                    date: {
+                        format: 'DD/MM/YYYY',
+                        min: 'datepicker2',
+                        message: 'El valor no es una fecha v&aacute;lida'
+                    },
+                    notEmpty: {
+                        message: 'Fecha Inicio C&aacute;lculo de vacaciones es requerido'
+                    }                    
+                }
+            },
+
+             vacaciones_legales: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Saldo inicial de vacaciones legales es requerido'
+                    },
+                    numeric: {
+                        separator: '.',
+                        message: 'Saldo inicial de vacaciones legales s&oacute;lo puede contener n&uacute;meros'
+                    }                 
+                },
+
+            },
+
+
+           vacaciones_progresivas: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Saldo inicial de vacaciones progresivas es requerido'
+                    },
+                    numeric: {
+                        separator: '.',
+                        message: 'Saldo inicial de vacaciones progresivas s&oacute;lo puede contener n&uacute;meros'
+                    }                 
+                },
+
+            },
+
+
+			tipocontrato: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Tipo de Contrato es requerido'
+                    }
+                }
+            },     
+
+
+            fecha_real: {
+                row: '.form-group',
+                validators: {
+                    date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'El valor no es una fecha v&aacute;lida'
+                    },
+                    notEmpty: {
+                        message: 'Fecha Real de Contrato es requerido'
+                    }                    
+                }
+            },         
+
+
+            vencimiento_1: {
+                row: '.form-group',
+                validators: {
+                    date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'El valor no es una fecha v&aacute;lida'
+                    }                  
+                }
+            },
+
+
+			   
+            // FIN VALIDACIONES SEGUNDA PESTAÑA
+            afp: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Afp es requerida'
+                    }
+                }
+            },   
+
+
+            datepicker5: {
+                row: '.form-group',
+                validators: {
+                    date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'El valor no es una fecha v&aacute;lida'
+                    },
+                    notEmpty: {
+                        message: 'Fecha de Ingreso AFP es requerido'
+                    }                    
+                }
+            },      
+
+
+            datepicker6: {
+                row: '.form-group',
+                validators: {
+                    date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'El valor no es una fecha v&aacute;lida'
+                    },
+                    notEmpty: {
+                        message: 'Fecha de Ingreso AFC es requerido'
+                    }                    
+                }
+            },
+
+            isapre: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Isapre es requerida'
+                    }
+                }
+            },  
+
+
+            monto_pactado: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Monto Pactado es requerido'
+                    }
+                }
+            },  
+
+            asig_individual: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Nro. Cargas Simples es requerido'
+                    }
+                }
+            }, 
+
+            asig_por_invalidez: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Nro. Cargas Inv&aacute;lidas es requerido'
+                    }
+                }
+            }, 
+
+
+            asig_maternal: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Nro. Cargas Maternales es requerido'
+                    }
+                }
+            },
+             
+
+
+            tramo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Tramo es requerido'
+                    }
+                }
+            },
+
+
+            tramo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Tramo es requerido'
+                    }
+                }
+            },
+
+            diastrabajo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'D&iacute;as de Trabajo es requerido'
+                    },
+                    between: {
+                        min: 0,
+                        max: 30,
+                        message: 'D&iacute;as de Trabajo debe estar entre 0 y 30'
+                    },
+                }
+            }, 
+
+            horasdiarias: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Horas Diarias es requerido'
+                    },
+                    integer: {
+                        message: 'El valor ingresado no es num&eacute;rico',
+                    },
+                    between: {
+                        min: 0,
+                        max: 24,
+                        message: 'Horas Diarias debe estar entre 0 y 24'
+                    },
+                }
+            }, 
+
+            horassemanales: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Horas Semanales es requerido'
+                    },
+                    integer: {
+                        message: 'El valor ingresado no es num&eacute;rico',
+                    }                    
+                }
+            }, 
+
+           /* fechaafc: {
+                row: '.form-group',
+                validators: {
+                    date: {
+                        format: 'DD/MM/YYYY',
+                        min: 'fechaingreso',
+                        message: 'El valor no es una fecha v&aacute;lida'
+                    },
+                    notEmpty: {
+                        message: 'Fecha AFC es requerido'
+                    }                    
+                }
+            },
+
+            cargo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Cargo es requerido'
+                    }
+                }
+            },
+
+            
+
+
+          
+
+
+                      
+
+
+            diastrabajo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'D&iacute;as de Trabajo es requerido'
+                    },
+                    between: {
+                        min: 0,
+                        max: 30,
+                        message: 'D&iacute;as de Trabajo debe estar entre 0 y 30'
+                    },
+                }
+            },            
+
+            horasdiarias: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Horas Diarias es requerido'
+                    },
+                    integer: {
+                        message: 'El valor ingresado no es num&eacute;rico',
+                    },
+                    between: {
+                        min: 0,
+                        max: 24,
+                        message: 'Horas Diarias debe estar entre 0 y 24'
+                    },
+                }
+            },  
+
+            horassemanales: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Horas Semanales es requerido'
+                    },
+                    integer: {
+                        message: 'El valor ingresado no es num&eacute;rico',
+                    }                    
+                }
+            },                       
+
+
+            sueldobase: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Sueldo Base es requerido'
+                    },
+                    // The bank validator doesn't have any option
+                    blank: {}  
+                }
+                                  
+            },
+
+
+            tipogratificacion: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Tipo de Gratificaci&oacute;n es requerido'
+                    }
+                }
+            },  
+
+            gratificacion: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Gratificaci&oacute;n es requerido'
+                    },
+                }
+                                  
+            },            
+
+            cargassimples: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Nro. de Cargas Simples es Requerido'
+                    },
+                    greaterThan: {
+                        value: 0,
+                        message: 'El valor debe ser mayor o igual a cero'
+                    }
+                }
+            },  
+
+
+            cargasinvalidas: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Nro. de Cargas Inv&aacute;lidas es Requerido'
+                    },
+                    greaterThan: {
+                        value: 0,
+                        message: 'El valor debe ser mayor o igual a cero'
+                    }
+                }
+            },  
+
+
+            cargasmaternales: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Nro. de Cargas Maternales es Requerido'
+                    },
+                    greaterThan: {
+                        value: 0,
+                        message: 'El valor debe ser mayor o igual a cero'
+                    }
+                }
+            },  
+
+            cargasretroactivas: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Nro. de Cargas Retroactivas es Requerido'
+                    },
+                    greaterThan: {
+                        value: 0,
+                        message: 'El valor debe ser mayor o igual a cero'
+                    }
+                }
+            },  
+
+            asigfamiliar: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Asignaci&oacute;n Familiar es requerido'
+                    },
+                }
+                                  
+            },               
+
+
+            tramo_asigfamiliar: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Tramo Asignaci&oacute;n Familiar es requerido'
+                    },
+                }
+                                  
+            },      
+
+
+            movilizacion: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Movilizaci&oacute;n es requerido'
+                    }
+                }
+            },
+
+            colacion: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Colaci&oacute;n es requerido'
+                    }
+                }
+            },
+
+
+            */
+        }
+    })
+
+       // Called when a field is invalid
+        .on('err.field.fv', function(e, data) {
+            // data.element --> The field element
+
+            var $tabPane = data.element.parents('.tab-pane'),
+                tabId    = $tabPane.attr('id');
+
+            $('a[href="#' + tabId + '"][data-toggle="tab"]')
+                .parent()
+                .find('i')
+                .removeClass('fa-check')
+                .addClass('fa-times');
+        })
+        // Called when a field is valid
+        .on('success.field.fv', function(e, data) {
+            // data.fv      --> The FormValidation instance
+            // data.element --> The field element
+
+            var $tabPane = data.element.parents('.tab-pane'),
+                tabId    = $tabPane.attr('id'),
+                $icon    = $('a[href="#' + tabId + '"][data-toggle="tab"]')
+                            .parent()
+                            .find('i')
+                            .removeClass('fa-check fa-times');
+
+            // Check if all fields in tab are valid
+            var isValidTab = data.fv.isValidContainer($tabPane);
+            if (isValidTab !== null) {
+                $icon.addClass(isValidTab ? 'fa-check' : 'fa-times');
+            }
+        })
+        .on('success.form.fv', function(e) { /**** VALIDAR EN SERVIDOR VIA AJAX ******/
+        // Prevent default form submission
+        e.preventDefault();
+
+        var $form = $(e.target),                    // The form instance
+            fv    = $form.data('formValidation');   // FormValidation instance
+
+        // Send data to back-end
+        $.ajax({
+            type: "POST",
+            url: '<?php echo base_url();?>rrhh/validate_sueldo_minimo',
+            data: $form.serialize(),
+            dataType: 'json'
+        }).success(function(response) {
+            // We will display the messages from server if they're available
+
+            // If there is error returned from server
+              if (response.result === 'error') {
+                  //console.log(response.fields);
+                  for (var field in response.fields) {
+
+                      fv
+                          // Show the custom message
+                          .updateMessage(field, 'blank', response.fields[field])
+                          // Set the field as invalid
+                          .updateStatus(field, 'INVALID', 'blank');
+                  }
+              } else {
+                  // Do whatever you want here
+                  // such as showing a modal ...
+                  fv.defaultSubmit();
+              }            
+        });
+        
+    }) 
+	       
+   
+        $(".mask_date").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+
+
+$(".mask_date").on('blur',function(event){
+    //if($(this).val() == ''){
+      $('#basicBootstrapForm').formValidation('revalidateField', 'fechanacimiento');
+      $('#basicBootstrapForm').formValidation('revalidateField', 'datepicker2');
+      //$('#basicBootstrapForm').formValidation('revalidateField', 'fecha_retiro');
+      $('#basicBootstrapForm').formValidation('revalidateField', 'datepicker6');
+      //console.log( $("#fechaafc").attr('disabled'));
+      if($(this).attr('id') == 'datepicker2' && $("#datepicker6").attr('disabled') != 'disabled' && $("#datepicker6").val() == ''){ //si ingresamos fecha ingreso y aun no ingresamos fecha AFC, se copia
+        $("#datepicker6").val($(this).val());
+        $('#basicBootstrapForm').formValidation('updateStatus', 'datepicker6','NOT_VALIDATED');
+      }
+    //}
+
+  });
+
+
+
+$("#parttime").on('ifToggled',function(event){
+   $('#basicBootstrapForm').formValidation('updateStatus', 'sueldo_base','NOT_VALIDATED'); //quita validacion
+});
+
+
+$("#seguro_cesantia").on('ifChecked',function(event){
+  $("#datepicker6").attr('disabled',false);
+  $("#datepicker6").val($("#datepicker2").val());
+});
+
+
+$("#seguro_cesantia").on('ifUnchecked',function(event){
+  $('#basicBootstrapForm').formValidation('updateStatus', 'datepicker6','NOT_VALIDATED');
+  $("#datepicker6").val('');
+  $("#datepicker6").attr('disabled',true);
+
+});    
+
+
+   }); 
+
+
+	
 </script>
+
 

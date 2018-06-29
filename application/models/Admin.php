@@ -618,6 +618,112 @@ class Admin extends CI_Model
 
 	}	
 
+
+
+	public function get_motivo_egreso($id_empresa=null){
+
+		$banco_data = $this->db->select("id_motivo,nombre")
+						  ->from('rem_motivo_egreso')
+						  ->where('activo = 1')
+		                  ->order_by('nombre asc');
+
+			                  
+		$query = $this->db->get();
+		$datos = is_null($id_empresa) ? $query->result() : $query->row();
+		return $datos;
+
+	}	
+
+
+	public function get_tipo_cc($id_empresa=null){
+
+		$banco_data = $this->db->select("id_tipocc,nombre")
+						  ->from('rem_tipo_cc')
+						  ->where('activo = 1')
+		                  ->order_by('nombre asc');
+
+			                  
+		$query = $this->db->get();
+		$datos = is_null($id_empresa) ? $query->result() : $query->row();
+		return $datos;
+
+	}			
+
+
+
+	public function get_seccion($id_empresa=null){
+
+		$banco_data = $this->db->select("id_seccion,nombre")
+						  ->from('rem_seccion')
+						  ->where('activo = 1')
+		                  ->order_by('nombre asc');
+
+			                  
+		$query = $this->db->get();
+		$datos = is_null($id_empresa) ? $query->result() : $query->row();
+		return $datos;
+
+	}	
+
+
+public function get_situacion_laboral($id_empresa=null){
+
+		$banco_data = $this->db->select("id_situacion,nombre")
+						  ->from('rem_situacion_laboral')
+						  ->where('activo = 1')
+		                  ->order_by('nombre asc');
+
+			                  
+		$query = $this->db->get();
+		$datos = is_null($id_empresa) ? $query->result() : $query->row();
+		return $datos;
+
+	}	
+
+public function get_clases($id_empresa=null){
+
+		$banco_data = $this->db->select("id_clase,nombre")
+						  ->from('rem_clase')
+						  ->where('activo = 1')
+		                  ->order_by('nombre asc');
+
+			                  
+		$query = $this->db->get();
+		$datos = is_null($id_empresa) ? $query->result() : $query->row();
+		return $datos;
+
+	}	
+
+
+public function get_ine($id_empresa=null){
+
+		$banco_data = $this->db->select("id_ine,nombre")
+						  ->from('rem_ine')
+						  ->where('activo = 1')
+		                  ->order_by('nombre asc');
+
+			                  
+		$query = $this->db->get();
+		$datos = is_null($id_empresa) ? $query->result() : $query->row();
+		return $datos;
+
+	}				
+
+
+public function get_zona_brecha($id_empresa=null){
+
+		$banco_data = $this->db->select("id_zona,nombre")
+						  ->from('rem_zona_brecha')
+						  ->where('activo = 1')
+		                  ->order_by('nombre asc');
+
+			                  
+		$query = $this->db->get();
+		$datos = is_null($id_empresa) ? $query->result() : $query->row();
+		return $datos;
+
+	}	
+
 	public function get_forma_pago($id_empresa=null){
 
 		$banco_data = $this->db->select("id_forma_pago, descripcion")

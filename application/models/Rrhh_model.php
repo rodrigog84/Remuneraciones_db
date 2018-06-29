@@ -1006,7 +1006,33 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'format(fecafp,\'dd/MM/yyyy\',\'en-US\') as fecafp',
 				'idbanco',
 				'id_forma_pago',
-				'nrocuentabanco'
+				'nrocuentabanco',
+				'tipodocumento',
+				'cbeneficio',
+				'format(fecha_retiro,\'dd/MM/yyyy\',\'en-US\') as fecha_retiro',
+				'format(fecha_finiquito,\'dd/MM/yyyy\',\'en-US\') as fecha_finiquito',
+				'id_motivo_egreso',
+				'id_tipocc',
+				'id_seccion',
+				'id_situacion',
+				'id_clase',
+				'id_ine',
+				'id_zona',
+				'format(fecrealcontrato,\'dd/MM/yyyy\',\'en-US\') as fecrealcontrato',
+				'format(primervenc,\'dd/MM/yyyy\',\'en-US\') as primervenc',
+				'fun',
+				'format(fecvencplan,\'dd/MM/yyyy\',\'en-US\') as fecvencplan',
+				'format(fecapvc,\'dd/MM/yyyy\',\'en-US\') as fecapvc',
+				'format(fectermsubsidio,\'dd/MM/yyyy\',\'en-US\') as fectermsubsidio',
+				'concat(cast(rut_pago as varchar),\'-\',dv_pago) as rut_pago', 
+				'dv_pago', 
+				'nombre_pago',
+				'email_pago',
+				'usuario_windows',
+				'idjefe',
+				'idreemplazo'
+				
+				
 
 				
 
