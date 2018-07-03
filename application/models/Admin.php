@@ -788,11 +788,11 @@ public function get_zona_brecha($id_empresa=null){
 
 public function get_cargo_colaborador($idtrabajador = null){
 
-		$personal_data = $this->db->select('p.id_personal, p.id_empresa, p.rut, p.dv, p.nombre, p.apaterno, p.amaterno, p.fecnacimiento, p.sexo, p.idecivil, p.nacionalidad, p.direccion, 
+		$personal_data = $this->db->select("p.id_personal, p.id_empresa, p.rut, p.dv, p.nombre, p.apaterno, p.amaterno, p.fecnacimiento, p.sexo, p.idecivil, p.nacionalidad, p.direccion, 
 		p.idregion, p.idcomuna, p.fono, p.email, p.fecingreso, p.idcargo, p.tipocontrato, p.parttime, p.segcesantia, p.fecafc, p.diastrabajo, p.horasdiarias, 
 		p.horassemanales, p.sueldobase, p.tipogratificacion, p.gratificacion, p.asigfamiliar, p.cargassimples, p.cargasinvalidas, p.cargasmaternales, p.cargasretroactivas, 
-		p.idasigfamiliar, p.movilizacion, p.colacion, p.pensionado,p.idafp, p.adicafp, p.tipoahorrovol, p.ahorrovol, p.instapv, p.nrocontratoapv, p.tipocotapv, 
-		p.cotapv, p.formapagoapv, p.depconvapv, p.idisapre, p.valorpactado, p.fecinicvacaciones, p.saldoinicvacaciones, p.saldoinicvacprog, p.active, c.nombre nombre_cargo')
+		p.idasigfamiliar, p.movilizacion, p.colacion, p.pensionado,p.idafp, p.adicafp, isnull(p.tipoahorrovol,'pesos') as tipoahorrovol, isnull(p.ahorrovol,0) as ahorrovol, p.instapv, p.nrocontratoapv, p.tipocotapv, 
+		p.cotapv, p.formapagoapv, p.depconvapv, p.idisapre, p.valorpactado, p.fecinicvacaciones, p.saldoinicvacaciones, p.saldoinicvacprog, p.active, c.nombre nombre_cargo")
 						  ->from('rem_personal p, rem_cargos c')
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
 						  ->where('c.id_cargos = p.idcargo')

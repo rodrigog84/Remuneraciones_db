@@ -3638,7 +3638,88 @@ public function delete_haber_descto_variable($id_hab_descto){
 
 
 
+	public function update_personal_leyes_sociales($array_trabajadores){
 
+
+		$this->db->trans_start();
+
+		foreach ($array_trabajadores as $idtrabajador => $info_trabajador) {
+
+			$trabajador_data = array(
+								'idafp' => $info_trabajador['afp'] == '' ? null : $info_trabajador['afp'],
+								'adicafp' => $info_trabajador['cotadic'],
+								'tipoahorrovol' => $info_trabajador['tipcotvol'],
+								'ahorrovol' => $info_trabajador['tipcotvol'] == 'pesos' ? str_replace(".", "", $info_trabajador['cotvol']) : $info_trabajador['cotvol']
+								);
+
+			$this->db->where('id_personal', $idtrabajador);
+			$this->db->update('rem_personal',$trabajador_data); 
+		}
+
+		$this->db->trans_complete();
+		return 1;
+	}	
+
+
+	public function update_personal_apv($array_trabajadores){
+
+
+		$this->db->trans_start();
+
+		foreach ($array_trabajadores as $idtrabajador => $info_trabajador) {
+
+			if(isset($info_trabajador['tipoapv'])){
+				if($info_trabajador['tipoapv'] == 'pesos'){
+					$info_trabajador['apv'] = str_replace(".", "", $info_trabajador['apv']);
+				}else if($info_trabajador['tipoapv'] == 'uf'){
+					$info_trabajador['apv'] = str_replace(".", "", $info_trabajador['apv']);
+					$info_trabajador['apv'] = str_replace(",", ".", $info_trabajador['apv']);
+				}
+			}
+
+			if(isset($info_trabajador['depconvapv'])){
+				$info_trabajador['depconvapv'] = str_replace(".", "", $info_trabajador['depconvapv']);	
+			}
+			
+			
+
+			$trabajador_data = array(
+								'instapv' => $info_trabajador['instapv'] != '' ?  $info_trabajador['instapv'] : null,
+								'nrocontratoapv' => isset($info_trabajador['nrocontratoapv']) ? $info_trabajador['nrocontratoapv'] : 0,
+								'tipocotapv' => isset($info_trabajador['tipoapv']) ? $info_trabajador['tipoapv'] : 'pesos',
+								'cotapv' => isset($info_trabajador['apv']) ? $info_trabajador['apv'] : 0,
+								'formapagoapv' => isset($info_trabajador['formapagoapv']) ? $info_trabajador['formapagoapv'] : null,
+								'depconvapv' => isset($info_trabajador['depconvapv']) ? $info_trabajador['depconvapv'] : 0,
+								);
+
+			$this->db->where('id_personal', $idtrabajador);
+			$this->db->update('rem_personal',$trabajador_data); 
+		}
+
+		$this->db->trans_complete();
+		return 1;
+	}
+
+
+public function update_personal_salud($array_trabajadores){
+
+
+		$this->db->trans_start();
+
+		foreach ($array_trabajadores as $idtrabajador => $info_trabajador) {
+			$info_trabajador['pactado'] = $info_trabajador['isapre'] == 1 ? 0 : str_replace(",", ".", $info_trabajador['pactado']);
+
+			$trabajador_data = array(
+								'idisapre' => $info_trabajador['isapre'] == '' ? null : $info_trabajador['isapre'],
+								'valorpactado' => $info_trabajador['pactado']
+								);
+
+			$this->db->where('id_personal', $idtrabajador);
+			$this->db->update('rem_personal',$trabajador_data); 
+		}
+		$this->db->trans_complete();
+		return 1;
+	}	
 
 public function previred($datos_remuneracion){
 

@@ -221,6 +221,103 @@ class Rrhh extends CI_Controller {
 
 
 
+	public function get_cot_obligatoria($idafp){
+
+		$this->load->model('admin');
+		$afp = $this->admin->get_afp($idafp);
+		echo json_encode($afp);
+
+	}	
+
+
+	public function submit_personal_afp(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$array_elem = $this->input->post(NULL,true);
+			$array_trabajadores = array();
+			foreach($array_elem as $elem => $value_elem){
+				$arr_el = explode("_",$elem);
+				if($arr_el[0] == 'afp' || $arr_el[0] == 'cotadic'  || $arr_el[0] == 'tipcotvol'  || $arr_el[0] == 'cotvol'){
+					$array_trabajadores[$arr_el[1]][$arr_el[0]] = $value_elem;
+				}
+			}
+
+			$this->load->model('rrhh_model');
+			$this->rrhh_model->update_personal_leyes_sociales($array_trabajadores);
+
+			$this->session->set_flashdata('personal_result', 3);
+			redirect('rrhh/mantencion_personal');	
+
+
+		}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}	
+
+	public function submit_personal_apv(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$array_elem = $this->input->post(NULL,true);
+
+			$array_trabajadores = array();
+			foreach($array_elem as $elem => $value_elem){
+				$arr_el = explode("_",$elem);
+				if($arr_el[0] == 'instapv'  || $arr_el[0] == 'nrocontratoapv'  || $arr_el[0] == 'formapagoapv'  || $arr_el[0] == 'depconvapv'  || $arr_el[0] == 'tipoapv'  || $arr_el[0] == 'apv'){
+					$array_trabajadores[$arr_el[1]][$arr_el[0]] = $value_elem;
+				}
+			}
+
+			$this->load->model('rrhh_model');
+			$this->rrhh_model->update_personal_apv($array_trabajadores);
+
+			$this->session->set_flashdata('personal_result', 7);
+			redirect('rrhh/mantencion_personal');	
+
+
+		}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}
+
+
+public function submit_salud(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$array_elem = $this->input->post(NULL,true);
+			$array_trabajadores = array();
+			foreach($array_elem as $elem => $value_elem){
+				$arr_el = explode("_",$elem);
+				if($arr_el[0] == 'isapre' || $arr_el[0] == 'pactado'){
+					$array_trabajadores[$arr_el[1]][$arr_el[0]] = $value_elem;
+				}
+			}
+
+			$this->load->model('rrhh_model');
+			$this->rrhh_model->update_personal_salud($array_trabajadores);
+
+			$this->session->set_flashdata('personal_result', 4);
+			redirect('rrhh/mantencion_personal');	
+
+
+		}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}		
+
+
+
 	public function mantencion_personal(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
@@ -307,9 +404,9 @@ class Rrhh extends CI_Controller {
 			
 			//$personal = $this->admin->get_personal_total(); 
 			$personal = $this->admin->get_cargo_colaborador();
-			//$afps = $this->admin->get_afp(); 
-			//$apvs = $this->admin->get_apv(); 
-			//$isapres = $this->admin->get_isapre(); 
+			$afps = $this->admin->get_afp(); 
+			$apvs = $this->admin->get_apv(); 
+			$isapres = $this->admin->get_isapre(); 
 			//$cajas = $this->admin->get_cajas_compensacion(); 
 			//$mutuales = $this->admin->get_mutual_seguridad(); 
 
@@ -329,9 +426,9 @@ class Rrhh extends CI_Controller {
 			$vars['gritter'] = true;
 			$vars['empresa'] = $empresa;
 			$vars['personal'] = $personal;
-			//$vars['afps'] = $afps;
-			//$vars['apvs'] = $apvs;
-			//$vars['isapres'] = $isapres;
+			$vars['afps'] = $afps;
+			$vars['apvs'] = $apvs;
+			$vars['isapres'] = $isapres;
 			//$vars['cajas'] = $cajas;
 			//$vars['mutuales'] = $mutuales;
 			//$vars['parametros_generales'] = $parametros_generales;

@@ -1,21 +1,33 @@
 <!--sub-heard-part-->
-									  <div class="sub-heard-part">
+									  <!--div class="sub-heard-part">
 									   		<ol class="breadcrumb m-b-0">
 												<li><a href="<?php echo base_url();?>main/dashboard">Inicio</a></li>
 												<li class="active">Ficha del Colaborador</li>
 											</ol>
-									   </div>
+									   </div-->
 								  <!--//sub-heard-part-->
+									<div class="sub-heard-part">
+										<ul class="nav nav-tabs">
+	  										<li class="<?php echo $mantencion_personal; ?>"><a href="#personal" data-toggle="tab">Mantenci&oacute;n de Personal&nbsp;&nbsp;<i class="fa"></i> </a></li>
+	  										<li class="<?php echo $leyes_sociales; ?>"><a href="#leyes_sociales" data-toggle="tab">Previsi&oacute;n Afp&nbsp;&nbsp;<i class="fa"></i></a></li>
+	  										<li class="<?php echo $apv; ?>"><a href="#apv" data-toggle="tab">A.P.V.&nbsp;&nbsp;<i class="fa"></i></a></li>
+	  										<li class="<?php echo $salud; ?>"><a href="#cotizacion_salud" data-toggle="tab">Cotizaci&oacute;n de Salud&nbsp;&nbsp;<i class="fa"></i></a></li>
+	  										<!--li><a href="#otros" data-toggle="tab">Otros&nbsp;&nbsp;<i class="fa"></i></a></li-->
+										</ul>
+									</div>								  
 								
 									<div class="graph-visual tables-main">
+									<div class="graph">
+										<div class="tab-content">
+											<div class="tab-pane <?php echo $mantencion_personal; ?>" id="personal">
+												<section id="personales">										
 											
 													<h3 class="inner-tittle two">Ficha Colaborador <a href="<?php echo base_url();?>rrhh/add_trabajador" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Colaborador</a>
 														&nbsp;&nbsp;
 														<a href="<?php echo base_url();?>rrhh/carga_masiva_personal" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a>
 													</h3>
 
-													<h3 class="inner-tittle two">Descripción</h3>
-														  <div class="graph">
+													  <div class="graph">
 
 														  	
 															<div class="tables">
@@ -56,9 +68,273 @@
 																	</tbody> 
 																</table> 
 															</div>
+
+															</section>
+														</div>	
+
+
+														<div class="tab-pane <?php echo $leyes_sociales; ?>" id="leyes_sociales" >
+									                      
+									                      <form id="formprevafp" action="<?php echo base_url();?>rrhh/submit_personal_afp" method="post" role="form" enctype="multipart/form-data">
+									                      <section id="new">
+									                        <h3 class="page-header">Listado de Trabajadores</h3>
+									                        <table  class="table table-bordered table-striped dt-responsive">
+									                        <thead>
+									                          <tr>
+									                            <th rowspan="2"><small>#</small></th>
+									                            <th rowspan="2"><small>Rut</small></th>
+									                            <th rowspan="2"><small>Nombre Trabajador</small></th>
+									                            <th colspan="3"><small>AFP</small></th>
+									                            <th colspan="2"><small>Ahorro Voluntario</small></th>
+									                          </tr>
+									                          <tr>
+									                            <th><small>Nombre</small></th>
+									                            <th><small>% Obligatorio&nbsp;&nbsp;&nbsp;</small></th>
+									                            <th><small>% Adicional</small></th>
+									                            <th><small>Tipo Cotizaci&oacute;n</small></th>
+									                            <th><small>Valor</small></th>
+									                          </tr>
+									                        </thead>
+									                        <tbody>
+									                          <?php if(count($personal) > 0 ){ ?>
+									                            <?php $i = 1; ?>
+									                            <?php foreach ($personal as $trabajador) { ?>
+
+									                             <tr >
+									                              <td><small><?php echo $i ;?></small></td>
+									                              <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
+									                              <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
+									                              <td class="form-group">
+									                                <?php $exregimen_afp = ""; ?>
+									                                <?php $porc_afp = 0; ?>
+
+									                                <select name="afp_<?php echo $trabajador->id_personal;?>" id="afp_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm afp_list"  >
+									                                    <option value="">Seleccione AFP</option>
+									                                    <?php foreach ($afps as $afp) { ?>
+									                                        <?php if($afp->exregimen != $exregimen_afp){
+									                                                if($exregimen_afp != ''){
+									                                                    echo "</optgroup>";
+									                                                }
+
+									                                                $tipo_sistema =  $afp->exregimen == 0 ? "Sistema Actual" : "Antiguo Sistema de Pensiones";
+									                                                if($afp->exregimen == 0){
+									                                                    $tipo_sistema = "Sistema Actual";
+									                                                }else if($afp->exregimen == 1){
+									                                                    $tipo_sistema = "Antiguo Sistema de Pensiones";
+									                                                }else if($afp->exregimen == 2){
+									                                                    $tipo_sistema = "Sin Cotizaci&oacute;n";
+									                                                }
+									                                                echo "<optgroup label='". $tipo_sistema . "'>";
+									                                                $exregimen_afp = $afp->exregimen;
+									                                        } ?>
+									                                          <?php $afpselected = $afp->id_afp == $trabajador->idafp ? "selected" : ""; ?>
+									                                          <?php $porc_afp = $afp->id_afp == $trabajador->idafp ? $afp->porc : $porc_afp; ?>
+									                                          <option value="<?php echo $afp->id_afp;?>" <?php echo $afpselected;?> ><?php echo $afp->nombre;?></option>
+									                                    <?php } 
+									                                          if($exregimen_afp != ''){
+									                                            echo "</optgroup>";
+									                                          }
+									                                          ?>                                
+									                                </select>
+									                              </td>
+									                              <td class="text-right" ><b><span id="cotobligatoria_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo $porc_afp;?>&nbsp;%</span></b></td>
+									                              <td class="form-group">
+									                                <input type="text" name="cotadic_<?php echo $trabajador->id_personal;?>" id="cotadic_<?php echo $trabajador->id_personal;?>" class="form-control input-sm cot_adic" value="<?php echo $trabajador->adicafp; ?>"  />   
+									                              </td>
+									                              <td class="form-group">
+									                                <select name="tipcotvol_<?php echo $trabajador->id_personal;?>" id="tipcotvol_<?php echo $trabajador->id_personal;?>" class="form-control  input-sm tipcotvol_list"  >
+									                                <option value="pesos" <?php echo $trabajador->tipoahorrovol == 'pesos' ? 'selected' : ''; ?> >($) Pesos</option>
+									                                <option value="porcentaje" <?php echo $trabajador->tipoahorrovol == 'porcentaje' ? 'selected' : ''; ?>>(%) Porcentaje</option>
+									                                </select>
+									                              </td>
+									                              <td class="form-group">
+
+									                                <?php if($trabajador->tipoahorrovol == 'pesos' && !is_null($trabajador->ahorrovol)){
+									                                        $ahorrovol = number_format($trabajador->ahorrovol,0,".",".");
+									                                        $class1 = "miles";
+									                                        $class2 = "cot_vol";
+									                                      }else{
+									                                        $ahorrovol = $trabajador->ahorrovol;
+									                                        $class1 = "";
+									                                        $class2 = "cot_vol";
+									                                        } ?>
+									                                <input type="text" name="cotvol_<?php echo $trabajador->id_personal;?>" id="cotvol_<?php echo $trabajador->id_personal;?>" class="form-control <?php echo $class1." ".$class2; ?> input-sm numeros" value="<?php echo $ahorrovol; ?>"  />   
+									                              </td>
+									                            </tr>
+									                            <?php $i++;?>
+									                            <?php } ?>
+									                          <?php }else{ ?>
+									                            <tr>
+									                              <td colspan="10">No existen trabajadores en la comunidad</td>
+									                            </tr>
+									                          <?php } ?>
+									                        </tbody>
+									                        </table>
+
+									                        <button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>" >Guardar</button>&nbsp;&nbsp;
+									                    </section>    
+									                    </form>                  
+									                  </div> 		
+
+
+													<div class="tab-pane <?php echo $apv; ?>" id="apv" >
+								                      
+								                      <form id="formapv" action="<?php echo base_url();?>rrhh/submit_personal_apv" method="post" role="form" enctype="multipart/form-data">
+								                      <section id="new">
+								                        <h3 class="page-header">Listado de Trabajadores</h3>
+								                        <table  class="table table-bordered table-striped dt-responsive">
+								                        <thead>
+								                          <tr>
+								                            <th style="width: 3%;"><small>#</small></th>
+								                            <th style="width: 8%;"><small>Rut</small></th>
+								                            <th style="width: 21%;"><small>Nombre Trabajador</small></th>
+								                            <th style="width: 20%;"><small>Instituci&oacute;n</small></th>
+								                            <th style="width: 9%;"><small>Nro. Contrato</small></th>
+								                            <th style="width: 9%;"><small>Tipo Cotizaci&oacute;n</small></th>
+								                            <th style="width: 10%;"><small>Valor</small></th>
+								                            <th style="width: 10%;"><small>Forma Pago</small></th>
+								                            <th style="width: 10%;"><small>Dep&oacute;sitos Convenidos ($)</small></th>
+								                          </tr>
+								                        </thead>
+								                        <tbody>
+								                          <?php if(count($personal) > 0 ){ ?>
+								                            <?php $i = 1; ?>
+								                            <?php foreach ($personal as $trabajador) { ?>
+
+								                             <tr >
+								                              <td><small><?php echo $i ;?></small></td>
+								                              <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
+								                              <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
+								                              <td class="form-group">
+								                                <select name="instapv_<?php echo $trabajador->id_personal;?>" id="instapv_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm dapv_list"  >
+								                                    <option value="">Seleccione Instituci&oacute;n</option>
+								                                    <?php foreach ($apvs as $dapv) { ?>
+								                                          <?php $apvselected = $dapv->id_apv == $trabajador->instapv ? "selected" : ""; ?>
+								                                          <option value="<?php echo $dapv->id_apv;?>" <?php echo $apvselected;?> ><?php echo $dapv->nombre;?></option>
+								                                      <?php  } ?>
+								                              
+								                                </select>
+								                              </td>  
+								                              <td class="form-group">
+								                                <input type="text" name="nrocontratoapv_<?php echo $trabajador->id_personal;?>" id="nrocontratoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros nrocontratoapv" value="<?php echo $trabajador->nrocontratoapv; ?>"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> />   
+								                              </td>                                                          
+								                              <td class="form-group ">
+								                                <select name="tipoapv_<?php echo $trabajador->id_personal;?>" id="tipoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm apv_list"  <?php echo is_null($trabajador->instapv)|| $trabajador->instapv == 0  ? 'disabled' : ''; ?> >
+								                                <option value="pesos" <?php echo $trabajador->tipocotapv == 'pesos' ? 'selected' : ''; ?>>($) Pesos</option>
+								                                <option value="uf" <?php echo $trabajador->tipocotapv == 'uf' ? 'selected' : ''; ?> >U.F.</option>
+								                                <option value="porcentaje" <?php echo $trabajador->tipocotapv == 'porcentaje' ? 'selected' : ''; ?>>(%) Porc.</option>
+								                                </select>
+								                              </td>
+								                              <td class="form-group">
+								                                <?php if($trabajador->tipocotapv == 'pesos' && !is_null($trabajador->cotapv)){
+								                                        $cotapv = number_format($trabajador->cotapv,0,".",".");
+								                                        $class1 = "miles";
+								                                        $class2 = "";
+								                                      }else if($trabajador->tipocotapv == 'uf' && !is_null($trabajador->cotapv)){
+								                                        $cotapv = number_format($trabajador->cotapv,2,",","");
+								                                        $class1 = "";
+								                                        $class2 = "miles_decimales";
+								                                      }else{
+								                                        $cotapv = $trabajador->cotapv;
+								                                        $class1 = "";
+								                                        $class2 = "";                                        
+								                                        } ?>                              
+								                                <input type="text" name="apv_<?php echo $trabajador->id_personal;?>" id="apv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros cot_apv <?php echo $class1." ".$class2; ?>" value="<?php echo $cotapv; ?>" <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0  ? 'disabled' : ''; ?> />   
+								                              </td>  
+								                              <td class="form-group">
+								                                <select name="formapagoapv_<?php echo $trabajador->id_personal;?>" id="formapagoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> >
+								                                <option value="1" <?php echo is_null($trabajador->formapagoapv) || $trabajador->formapagoapv == 1 ? 'selected' : ''; ?> >Directa</option>
+								                                <option value="2" <?php echo $trabajador->formapagoapv == 2 ? 'selected' : ''; ?> >Indirecta</option>
+								                                </select>                              
+								                              </td>       
+								                              <td class="form-group">
+								                              <?php $depconvapv = is_null($trabajador->depconvapv) ? 0 : number_format($trabajador->depconvapv,0,".","."); ?>
+								                                <input type="text" name="depconvapv_<?php echo $trabajador->id_personal;?>" id="depconvapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm miles depconvapv" value="<?php echo $depconvapv; ?>" <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0  ? 'disabled' : ''; ?> />   
+								                              </td>                                                      
+								                            </tr>
+								                            <?php $i++;?>
+								                            <?php } ?>
+								                          <?php }else{ ?>
+								                            <tr>
+								                              <td colspan="10">No existen trabajadores en la comunidad</td>
+								                            </tr>
+								                          <?php } ?>
+								                        </tbody>
+								                        </table>
+
+								                        <button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>" >Guardar</button>&nbsp;&nbsp;
+								                    </section>    
+								                    </form>                  
+								                  </div>									                  												
+
+
+								 					<div class="tab-pane <?php echo $salud; ?>" id="cotizacion_salud" >
+								                      <form id="formsalud" action="<?php echo base_url();?>rrhh/submit_salud" method="post" role="form" enctype="multipart/form-data">
+								                      <section id="new">
+								                        <h3 class="page-header">Listado de Trabajadores</h3>
+								                        <table  class="table table-bordered table-striped dt-responsive">
+								                        <thead>
+								                          <tr>
+								                            <th >#</th>
+								                            <th >Rut</th>
+								                            <th >Nombre Trabajador</th>
+								                            <th >Isapre/Fonasa</th>
+								                            <th >Sueldo Base</th>
+								                            <th >7% Imponible</th>
+								                            <th >Pactado (UF)</th>
+								                            <!--th ><small>Valor Plan</small></th>
+								                            <th ><small>Monto Descuento</small></th-->
+								                          </tr>
+								                        </thead>
+								                        <tbody>
+								                          <?php if(count($personal) > 0 ){ ?>
+								                            <?php $i = 1; ?>
+								                            <?php foreach ($personal as $trabajador) { ?>
+
+								                             <tr >
+								                              <td><?php echo $i ;?></td>
+								                              <td><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></td>
+								                              <td><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></td>
+								                              <td class="form-group">
+								                                <select name="isapre_<?php echo $trabajador->id_personal;?>" id="isapre_<?php echo $trabajador->id_personal;?>"  class="form-control isapre_list"  >
+								                                    <option value="">Seleccione Instituci&oacute;n</option>
+								                                    <?php foreach ($isapres as $isapre) { ?>
+								                                      <?php $isapreselected = $isapre->id_isapre == $trabajador->idisapre ? "selected" : ""; ?>
+								                                      <option value="<?php echo $isapre->id_isapre;?>" <?php echo $isapreselected;?> ><?php echo $isapre->nombre;?></option>
+								                                    <?php } ?>                             
+								                                </select>
+								                              </td>
+								                              <td>$&nbsp;<?php echo number_format($trabajador->sueldobase,0,".",".");?></td>
+								                              <td>$&nbsp;<?php echo number_format((int)$trabajador->sueldobase*0.07,0,".",".");?></td>
+								                              <td><input type="text" name="pactado_<?php echo $trabajador->id_personal;?>" id="pactado_<?php echo $trabajador->id_personal;?>" class="form-control valor_pactado miles_decimales_isapre" value="<?php echo !is_null($trabajador->valorpactado) && $trabajador->valorpactado != 0 ? number_format($trabajador->valorpactado,4,",","") : ""; ?>" <?php echo is_null($trabajador->idisapre) || $trabajador->idisapre == 1 ? "disabled" : ""; ?> /></td>
+								                              <!--td><b><span id="valorplan_<?php echo $trabajador->id;?>"  class="text-right input-sm" >$&nbsp;0</span></b></td>
+								                              <td><b><span id="montodescuento_<?php echo $trabajador->id;?>"  class="text-right input-sm" >$&nbsp;0</span></b></td-->
+								                            </tr>
+								                            <?php $i++;?>
+								                            <?php } ?>
+								                          <?php }else{ ?>
+								                            <tr>
+								                              <td colspan="7">No existen trabajadores en la comunidad</td>
+								                            </tr>
+								                          <?php } ?>
+								                        </tbody>
+								                        </table>
+
+								                        <button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>">Guardar</button>&nbsp;&nbsp;
+								                    </section>    
+								                    </form>  
+								                  </div>   
+
+
 												
 													</div>
+
+
+
+
+
 											</div>
+										</div>
 
 
 <script>
@@ -117,6 +393,157 @@ $(function () {
 
 
 <script>
+
+$('.afp_list').change(function(){
+    var id_elem = $(this).attr('id');
+    var array_elem = id_elem.split("_");
+    var idtrabajador = array_elem[1];
+
+    if($(this).val() != ''){
+
+
+      $.get("<?php echo base_url();?>rrhh/get_cot_obligatoria/"+$(this).val(),function(data){
+               // Limpiamos el select
+                    var_json = $.parseJSON(data);
+                    $('#cotobligatoria_'+idtrabajador).html(var_json.porc+" %")
+      });
+      
+    }else{
+      $('#cotobligatoria_'+idtrabajador).html("0 %")
+    }
+}); 
+
+
+$('.dapv_list').change(function(){
+
+  var apv_select = $(this).val();
+  var id_elem = $(this).attr('id');
+  var array_elem = id_elem.split("_");
+  var idtrabajador = array_elem[1]; 
+
+  if(apv_select != ''){ //seleccionó institución
+  
+    $('#nrocontratoapv_'+idtrabajador).attr('disabled',false);
+    $('#tipoapv_'+idtrabajador).attr('disabled',false);
+    $('#apv_'+idtrabajador).attr('disabled',false);
+    $('#formapagoapv_'+idtrabajador).attr('disabled',false);
+    $('#depconvapv_'+idtrabajador).attr('disabled',false);
+    
+    
+
+  }else{
+    $('#nrocontratoapv_'+idtrabajador).val(0);
+    $('#tipoapv_'+idtrabajador).val('pesos');
+    $('#apv_'+idtrabajador).addClass("miles");   
+    $('#apv_'+idtrabajador).removeClass("miles_decimales");   
+    $('#apv_'+idtrabajador).mask('000.000.000.000.000', {reverse: true}); // agrega mascara
+    $('#apv_'+idtrabajador).val(0);
+    $('#formapagoapv_'+idtrabajador).val(1);
+    $('#depconvapv_'+idtrabajador).val(0);
+
+    $('#nrocontratoapv_'+idtrabajador).attr('disabled',true);
+    $('#tipoapv_'+idtrabajador).attr('disabled',true);
+    $('#apv_'+idtrabajador).attr('disabled',true);
+    $('#formapagoapv_'+idtrabajador).attr('disabled',true);
+    $('#depconvapv_'+idtrabajador).attr('disabled',true);
+  }
+
+
+});
+
+
+$('.apv_list').change(function(){
+    var id_elem = $(this).attr('id');
+    var array_elem = id_elem.split("_");
+    var idtrabajador = array_elem[1];
+    $('#apv_'+idtrabajador).val("");
+
+    if($(this).val() == 'porcentaje'){
+      $('#apv_'+idtrabajador).removeClass("miles");   
+      $('#apv_'+idtrabajador).removeClass("miles_decimales");   
+      //$('#cotvol_'+idtrabajador).addClass("cot_vol");   
+      $('#apv_'+idtrabajador).unmask(); //quita mascara
+
+      //$('#formprevafp').formValidation('enableFieldValidators', 'cotvol', true, 'between'); //agregar validacion
+      //$('#formprevafp').formValidation('enableFieldValidators', 'cotvol', true, 'numeric'); //agregar validacion
+    }else if($(this).val() == 'uf'){
+      $('#apv_'+idtrabajador).removeClass("miles");   
+      $('#apv_'+idtrabajador).addClass("miles_decimales");   
+      $('#apv_'+idtrabajador).mask('#.##0,00', {reverse: true}) 
+      
+    }else{
+      $('#apv_'+idtrabajador).addClass("miles");   
+      $('#apv_'+idtrabajador).removeClass("miles_decimales");   
+      //$('#cotvol_'+idtrabajador).removeClass("cot_vol");   
+      $('#apv_'+idtrabajador).mask('000.000.000.000.000', {reverse: true}); // agrega mascara
+      //$('#formprevafp').formValidation('enableFieldValidators', 'cotvol', false, 'between'); //quitar validacion
+      //$('#formprevafp').formValidation('enableFieldValidators', 'cotvol', false, 'numeric'); //quitar validacion      
+    }
+
+    
+});  
+
+
+
+$('.tipcotvol_list').change(function(){
+    var id_elem = $(this).attr('id');
+    var array_elem = id_elem.split("_");
+    var idtrabajador = array_elem[1];
+    $('#cotvol_'+idtrabajador).val("");
+
+    if($(this).val() == 'porcentaje'){
+      $('#cotvol_'+idtrabajador).removeClass("miles");   
+      //$('#cotvol_'+idtrabajador).addClass("cot_vol");   
+      $('#cotvol_'+idtrabajador).unmask(); //quita mascara
+
+      //$('#formprevafp').formValidation('enableFieldValidators', 'cotvol', true, 'between'); //agregar validacion
+      //$('#formprevafp').formValidation('enableFieldValidators', 'cotvol', true, 'numeric'); //agregar validacion
+    }else{
+      $('#cotvol_'+idtrabajador).addClass("miles");   
+      //$('#cotvol_'+idtrabajador).removeClass("cot_vol");   
+      $('#cotvol_'+idtrabajador).mask('000.000.000.000.000', {reverse: true}); // agrega mascara
+      //$('#formprevafp').formValidation('enableFieldValidators', 'cotvol', false, 'between'); //quitar validacion
+      //$('#formprevafp').formValidation('enableFieldValidators', 'cotvol', false, 'numeric'); //quitar validacion      
+    }
+
+    //$('#formprevafp').formValidation('updateStatus', 'cotvol', 'NOT_VALIDATED').formValidation('revalidateField', 'cotvol')
+    //formValidation('revalidateField', 'cotvol');
+    
+});  
+
+
+
+$('.isapre_list').change(function(){
+    var id_elem = $(this).attr('id');
+    var array_elem = id_elem.split("_");
+    var idtrabajador = array_elem[1];
+    
+    if($(this).val() == 1 || $(this).val() == ''){ // si es fonasa o sin isapre, no se ingresa monto pactado
+      $('#pactado_'+idtrabajador).attr('disabled',true);
+      $('#pactado_'+idtrabajador).val('');
+    }else{
+      $('#pactado_'+idtrabajador).attr('disabled',false);
+    }
+    
+});    
+
+
+$(document).ready(function(){
+ $('.miles_decimales').mask('#.##0,00', {reverse: true});        
+
+ $('.miles_decimales_isapre').mask('#.####0,0000', {reverse: true});       
+
+});
+
+  $('.numeros').keypress(function(event){
+    if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
+      event.preventDefault();
+    } 
+  })  
+
+
+
+
 	function desactivar_colaborador(rut){
 
 		$.ajax({type: "GET",
@@ -181,4 +608,187 @@ $(function () {
 
 
 };
+
+
+$(document).ready(function() {
+    $('#formprevafp').formValidation({
+              framework: 'bootstrap',
+              excluded: ':disabled',
+              icon: {
+                  valid: 'glyphicon glyphicon-ok',
+                  invalid: 'glyphicon glyphicon-remove',
+                  validating: 'glyphicon glyphicon-refresh'
+              },
+              fields: {
+                afp_list: {
+                  selector: '.afp_list',
+                  row: '.form-group',
+                  validators: {
+                      notEmpty: {
+                          message: 'Selecci&oacute;n de Afp es requerida'
+                      }
+                  }
+                },
+                cotadic: {
+                    // The children's full name are inputs with class .childFullName
+                    selector: '.cot_adic',
+                    // The field is placed inside .col-xs-6 div instead of .form-group
+                    row: '.form-group',
+                    validators: {
+                        between: {
+                            min: 0,
+                            max: 100,
+                            message: 'Cotizaci&oacute;n adicional debe estar entre 0 y 100'
+                        },
+                        numeric: {
+                            separator: '.',
+                            message: 'Cotizaci&oacute;n adicional s&oacute;lo puede contener n&uacute;meros'
+                        },
+
+                    }
+                },  
+               
+                 cotvol: {
+                    // The children's full name are inputs with class .childFullName
+                    selector: '.cot_vol',
+                    // The field is placed inside .col-xs-6 div instead of .form-group
+                    row: '.form-group',
+                    validators: {
+                      numeric: {
+                          //enabled: false,
+                          separator: '.',
+                          message: 'Ahorro voluntario s&oacute;lo puede contener n&uacute;meros'
+                      },                      
+                      callback: {
+                          message: 'Ahorro voluntario debe estar entre 0 y 100',
+                          callback: function (value, validator, $field) {
+                              var id_text = $field.attr('id');
+                              var array_field = id_text.split("_");
+                              idtrabajador = array_field[1];
+                              if($('#tipcotvol_'+idtrabajador).val() == 'porcentaje'){
+                                cotvol = parseFloat(value);
+                                cotvol = parseInt(cotvol);
+                                if(cotvol > 100){
+                                  return  {
+                                        valid: false,
+                                        message: 'Ahorro voluntario debe estar entre 0 y 100'
+                                    }
+
+                                }else{
+                                  return true;
+                                }
+                              }else{
+                                return true;
+                              }                               
+                          }
+                      } 
+
+                    }
+                },   
+              }
+          })
+        .find('.miles').mask('000.000.000.000.000', {reverse: true});
+
+		$('#formapv').formValidation({
+              framework: 'bootstrap',
+              excluded: ':disabled',
+              icon: {
+                  valid: 'glyphicon glyphicon-ok',
+                  invalid: 'glyphicon glyphicon-remove',
+                  validating: 'glyphicon glyphicon-refresh'
+              },
+              fields: {
+                  nrocontratoapv: {
+                    selector: '.nrocontratoapv',
+                    row: '.form-group',
+                    validators: {
+                        notEmpty: {
+                            message: 'Nro. de contrato es requerido'
+                        }
+                    }
+                  },    
+                  depconvapv: {
+                    selector: '.depconvapv',
+                    row: '.form-group',
+                    validators: {
+                        notEmpty: {
+                            message: 'Monto Dep&oacute;sitos Convenidos es requerido'
+                        }
+                    }
+                  },                                 
+                 cot_apv: {
+                    // The children's full name are inputs with class .childFullName
+                    selector: '.cot_apv',
+                    // The field is placed inside .col-xs-6 div instead of .form-group
+                    row: '.form-group',
+                    validators: {
+                      /*numeric: {
+                          //enabled: false,
+                          separator: '.',
+                          message: 'Ahorro voluntario s&oacute;lo puede contener n&uacute;meros'
+                      },  */                    
+                      callback: {
+                          message: 'Ahorro APV debe estar entre 0 y 100',
+                          callback: function (value, validator, $field) {
+                              var id_text = $field.attr('id');
+                              var array_field = id_text.split("_");
+                              idtrabajador = array_field[1];
+                              if($('#tipoapv_'+idtrabajador).val() == 'porcentaje'){
+                                var array_value = value.split(".");
+                                if(array_value.length > 2){
+                                    return  {
+                                          valid: false,
+                                          message: 'Ahorro APV s&oacute;lo puede contener n&uacute;meros'
+                                      }
+
+                                }else{
+                                  cot_apv = parseFloat(value);
+                                  cot_apv = parseInt(cot_apv);                                  
+                                  if(cot_apv > 100){
+                                    return  {
+                                          valid: false,
+                                          message: 'Ahorro APV debe estar entre 0 y 100'
+                                      }
+
+                                  }else{
+                                    return true;
+                                  }
+
+                                }
+
+
+
+                              }else{
+                                return true;
+                              }                               
+                          }
+                      } 
+
+                    }
+                },                                
+              }
+          })
+        .find('.miles').mask('000.000.000.000.000', {reverse: true});
+
+ 		$('#formsalud').formValidation({
+              framework: 'bootstrap',
+              excluded: ':disabled',
+              icon: {
+                  valid: 'glyphicon glyphicon-ok',
+                  invalid: 'glyphicon glyphicon-remove',
+                  validating: 'glyphicon glyphicon-refresh'
+              },
+              fields: {
+                isapre_list: {
+                  selector: '.isapre_list',
+                  row: '.form-group',
+                  validators: {
+                      notEmpty: {
+                          message: 'Selecci&oacute;n de Instituci&oacute;n de Salud es requerida'
+                      }
+                  }
+                }
+              }
+          });           
+});
 </script>
