@@ -14,10 +14,10 @@
 																	<thead> 
 																		<tr>
 																			<th style="width: 10px">#</th>
-																			<th>Desde ($)</th> 
-																			<th>Hasta ($)</th> 
+																			<th>Desde (UTM)</th> 
+																			<th>Hasta (UTM)</th> 
 																			<th>Factor</th> 
-																			<th>Rebajas ($)</th> 
+																			<th>Rebajas (UTM)</th> 
 																			
 
 																		</tr> 

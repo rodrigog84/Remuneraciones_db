@@ -77,13 +77,13 @@
 									                      
 									                      <form id="formprevafp" action="<?php echo base_url();?>rrhh/submit_personal_afp" method="post" role="form" enctype="multipart/form-data">
 									                      <section id="new">
-									                        <h3 class="page-header">Listado de Trabajadores</h3>
+									                        <h3 class="page-header">Listado de Colaboradores</h3>
 									                        <table  class="table table-bordered table-striped dt-responsive">
 									                        <thead>
 									                          <tr>
 									                            <th rowspan="2"><small>#</small></th>
 									                            <th rowspan="2"><small>Rut</small></th>
-									                            <th rowspan="2"><small>Nombre Trabajador</small></th>
+									                            <th rowspan="2"><small>Nombre Colaborador</small></th>
 									                            <th colspan="3"><small>AFP</small></th>
 									                            <th colspan="2"><small>Ahorro Voluntario</small></th>
 									                          </tr>
@@ -165,7 +165,7 @@
 									                            <?php } ?>
 									                          <?php }else{ ?>
 									                            <tr>
-									                              <td colspan="10">No existen trabajadores en la comunidad</td>
+									                              <td colspan="10">No existen Colaboradores en la empresa</td>
 									                            </tr>
 									                          <?php } ?>
 									                        </tbody>
@@ -181,13 +181,13 @@
 								                      
 								                      <form id="formapv" action="<?php echo base_url();?>rrhh/submit_personal_apv" method="post" role="form" enctype="multipart/form-data">
 								                      <section id="new">
-								                        <h3 class="page-header">Listado de Trabajadores</h3>
+								                        <h3 class="page-header">Listado de Colaboradores</h3>
 								                        <table  class="table table-bordered table-striped dt-responsive">
 								                        <thead>
 								                          <tr>
 								                            <th style="width: 3%;"><small>#</small></th>
 								                            <th style="width: 8%;"><small>Rut</small></th>
-								                            <th style="width: 21%;"><small>Nombre Trabajador</small></th>
+								                            <th style="width: 21%;"><small>Nombre Colaborador</small></th>
 								                            <th style="width: 20%;"><small>Instituci&oacute;n</small></th>
 								                            <th style="width: 9%;"><small>Nro. Contrato</small></th>
 								                            <th style="width: 9%;"><small>Tipo Cotizaci&oacute;n</small></th>
@@ -256,7 +256,7 @@
 								                            <?php } ?>
 								                          <?php }else{ ?>
 								                            <tr>
-								                              <td colspan="10">No existen trabajadores en la comunidad</td>
+								                              <td colspan="10">No existen Colaboradores en la empresa</td>
 								                            </tr>
 								                          <?php } ?>
 								                        </tbody>
@@ -271,13 +271,13 @@
 								 					<div class="tab-pane <?php echo $salud; ?>" id="cotizacion_salud" >
 								                      <form id="formsalud" action="<?php echo base_url();?>rrhh/submit_salud" method="post" role="form" enctype="multipart/form-data">
 								                      <section id="new">
-								                        <h3 class="page-header">Listado de Trabajadores</h3>
+								                        <h3 class="page-header">Listado de Colaboradores</h3>
 								                        <table  class="table table-bordered table-striped dt-responsive">
 								                        <thead>
 								                          <tr>
 								                            <th >#</th>
 								                            <th >Rut</th>
-								                            <th >Nombre Trabajador</th>
+								                            <th >Nombre Colaborador</th>
 								                            <th >Isapre/Fonasa</th>
 								                            <th >Sueldo Base</th>
 								                            <th >7% Imponible</th>
@@ -314,7 +314,7 @@
 								                            <?php } ?>
 								                          <?php }else{ ?>
 								                            <tr>
-								                              <td colspan="7">No existen trabajadores en la comunidad</td>
+								                              <td colspan="7">No existen colaboradores en la empresa</td>
 								                            </tr>
 								                          <?php } ?>
 								                        </tbody>

@@ -1334,6 +1334,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 								'segcesantia' => is_null($idtrabajador) ? "" : $trabajador->segcesantia,
 								'movilizacion' => is_null($idtrabajador) ? "" : number_format($trabajador->movilizacion,0,".","."),
 								'colacion' => is_null($idtrabajador) ? "" : number_format($trabajador->colacion,0,".","."),
+								'id_nacionalidad' => is_null($idtrabajador) ? 46 : $trabajador->id_nacionalidad,
+								'ididioma' => is_null($idtrabajador) ? 1 : $trabajador->ididioma,
 								'active' => is_null($idtrabajador) ? "1" : $trabajador->active,
 								);
 			

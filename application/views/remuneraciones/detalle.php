@@ -59,7 +59,7 @@
 																			<th>#</th>
 																			<th>Mes</th> 
 																			<th>A&ntilde;o</th> 
-													                        <th>N&uacute;mero Trabajadores</th>
+													                        <th>N&uacute;mero Colaboradores</th>
 													                        <th>Remuneraci&oacute;n Total (L&iacute;quido)</th>
 													                        <th>Detalle Remuneraciones</th>
 													                        <th>Previred</th>

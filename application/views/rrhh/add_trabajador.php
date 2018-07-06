@@ -48,7 +48,7 @@
 							                        <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
-								                              <label for="rut">Rut Trabajador</label>
+								                              <label for="rut">Rut Colaborador</label>
 								                             	<input type="text" name="rut" id="rut"  class="form-control"  placeholder="98123456-7" title="Escriba Rut" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" >
 								                            </div>
 								                          </div>
