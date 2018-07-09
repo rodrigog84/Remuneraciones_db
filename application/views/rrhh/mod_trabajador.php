@@ -980,18 +980,54 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Monto Cotización A.P.V.</label>
-																<input type="text" name="monto_cotizacion_apv" maxlength="2" class="form-control" id="monto_cotizacion_apv" placeholder="Monto Cotizacion">
+																<input type="text" name="monto_cotizacion_apv" maxlength="2" class="form-control" id="monto_cotizacion_apv" placeholder="Monto Cotizacion" >
 								                            </div>
 								                          </div>
+
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">R&eacute;gimen A.P.V.</label>
+																<select name="regimen_apv" id="regimen_apv" class="form-control" disabled>
+																	<option value=""  >Seleccione Tipo de R&eacute;gimen</option>
+																	<option value="A">R&eacute;gimen A</option>
+																	<option value="B">R&eacute;gimen B</option>
+																</select>
+								                            </div>
+								                          </div>
+
+						                          
+								                         
+
+							                        </div>	
+
+							                        					                        						               
+
+							                         <div class='row'>
+
+								                       
+
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Forma de Pago A.P.V.</label>
+								                                <select name="formapago_apv" id="formapago_apv" class="form-control" disabled>
+								                                <option value=""  >Seleccione Forma de Pago</option>
+								                                <option value="1"  >Directa</option>
+								                                <option value="2" >Indirecta</option>
+								                                </select>  
+								                            </div>
+								                          </div>								                          
+								                         
+
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Nro. Cargas Simples</label>
 																<input type="number" name="asig_individual" class="form-control cargas_familiares" id="asig_individual" placeholder="">
 								                            </div>
-								                          </div>								                          
-								                         
+								                          </div>										                         
 
-							                        </div>							                        
+							                        </div>							                        						       
+
+
 							                        <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
@@ -1485,8 +1521,15 @@ $(document).ready(function(){
 
         				if(this.instapv == 0){
         					$("#apv").val('');	
+							$('#regimen_apv').attr('disabled','disabled');
+							$('#formapago_apv').attr('disabled','disabled');        					
+
         				}else{
         					$("#apv").val(this.instapv);	
+        					$('#regimen_apv').attr('disabled',false);
+							$('#formapago_apv').attr('disabled',false);
+							$('#regimen_apv').val(this.regimenapv);
+							$('#formapago_apv').val(this.formapagoapv);
         				}
 
 
@@ -1512,7 +1555,14 @@ $(document).ready(function(){
         				$("#tramo").val(this.idasigfamiliar);
         				$("#semana_corrida").val(this.semana_corrida);
         				$("#tiporenta").val(this.tiporenta);
-        				$("#idioma").val(this.ididioma);
+
+        				if(this.ididioma == 0){
+        					$("#idioma").val('');
+        				}else{
+        					$("#idioma").val(this.idioma);	
+        				}
+
+
         				$("#numficha").val(this.numficha);
         				$("#datepicker5").val(this.fecafp);
         				$("#datepicker6").val(this.fecafc);
@@ -1530,7 +1580,7 @@ $(document).ready(function(){
         				var cargas = parseInt(this.cargassimples) + parseInt(this.cargasinvalidas) + parseInt(this.cargasmaternales);
 
 
-
+        				$("#trabajo_pesado").val(this.trabajo_pesado);
         				$("#banco").val(this.idbanco);
         				$("#forma_pago").val(this.id_forma_pago);
         				$("#cta_bancaria").val(this.nrocuentabanco);
@@ -2352,6 +2402,25 @@ $(document).ready(function() {
                 }
             },  
 
+             regimen_apv: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'R&eacute;gimen es requerido'
+                    }
+                }
+            },  
+
+
+            formapago_apv: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Forma de Pago A.P.V. es requerido'
+                    }
+                }
+            }, 
+
             asig_individual: {
                 row: '.form-group',
                 validators: {
@@ -2379,6 +2448,25 @@ $(document).ready(function() {
                     }
                 }
             },
+
+
+            trabajo_pesado: {
+                    // The children's full name are inputs with class .childFullName
+                    row: '.form-group',
+                    validators: {
+                        between: {
+                            min: 0,
+                            max: 100,
+                            message: 'Trabajo Pesado/Insalub debe estar entre 0 y 100'
+                        },
+                        numeric: {
+                            separator: '.',
+                            message: 'Trabajo Pesado/Insalub s&oacute;lo puede contener n&uacute;meros'
+                        },
+
+                    }
+                },  
+               
              
 
 
@@ -2757,6 +2845,20 @@ $("#seguro_cesantia").on('ifUnchecked',function(event){
 
 });    
 
+
+$('#apv').on('change',function(){
+	if($(this).val() != ''){
+		$('#regimen_apv').attr('disabled',false);
+		$('#formapago_apv').attr('disabled',false);
+	}else{
+		$('#regimen_apv').val('');
+		$('#formapago_apv').val('');
+		$('#regimen_apv').attr('disabled','disabled');
+		$('#formapago_apv').attr('disabled','disabled');
+	}
+
+
+})
 
    }); 
 

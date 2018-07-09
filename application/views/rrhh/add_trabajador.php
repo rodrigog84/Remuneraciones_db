@@ -985,14 +985,46 @@
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">R&eacute;gimen A.P.V.</label>
+																<select name="regimen_apv" id="regimen_apv" class="form-control" disabled>
+																	<option value=""  >Seleccione Tipo de R&eacute;gimen</option>
+																	<option value="A">R&eacute;gimen A</option>
+																	<option value="B">R&eacute;gimen B</option>
+																</select>
+								                            </div>
+								                          </div>
+							                          
+								                         
+
+							                        </div>
+
+							                        <div class='row'>
+
+								                       
+
+								                          <div class='col-md-6'>
 									                           <div class="form-group">
-								                              <label for="rut">Nro. Cargas Simples</label>
-																<input type="number" name="asig_individual" class="form-control cargas_familiares" id="asig_individual" placeholder="">
+								                              <label for="rut">Forma de Pago A.P.V.</label>
+								                                <select name="formapago_apv" id="formapago_apv" class="form-control" disabled>
+								                                <option value=""  >Seleccione Forma de Pago</option>
+								                                <option value="1"  >Directa</option>
+								                                <option value="2" >Indirecta</option>
+								                                </select>  
 								                            </div>
 								                          </div>								                          
 								                         
 
-							                        </div>							                        
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Nro. Cargas Simples</label>
+																<input type="number" name="asig_individual" class="form-control cargas_familiares" id="asig_individual" placeholder="">
+								                            </div>
+								                          </div>										                         
+
+							                        </div>	
+
+
 							                        <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
@@ -2109,6 +2141,27 @@ $(document).ready(function() {
                 }
             },  
 
+
+ 			regimen_apv: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'R&eacute;gimen es requerido'
+                    }
+                }
+            },  
+
+
+            formapago_apv: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Forma de Pago A.P.V. es requerido'
+                    }
+                }
+            }, 
+
+
             asig_individual: {
                 row: '.form-group',
                 validators: {
@@ -2138,6 +2191,22 @@ $(document).ready(function() {
             },
              
 
+             trabajo_pesado: {
+                    // The children's full name are inputs with class .childFullName
+                    row: '.form-group',
+                    validators: {
+                        between: {
+                            min: 0,
+                            max: 100,
+                            message: 'Trabajo Pesado/Insalub debe estar entre 0 y 100'
+                        },
+                        numeric: {
+                            separator: '.',
+                            message: 'Trabajo Pesado/Insalub s&oacute;lo puede contener n&uacute;meros'
+                        },
+
+                    }
+                },
 
             tramo: {
                 row: '.form-group',
@@ -2522,6 +2591,24 @@ $('#gratificacion').mask('000.000.000.000.000', {reverse: true});
         				
 
    }); 
+
+
+$('#apv').on('change',function(){
+	if($(this).val() != ''){
+		$('#regimen_apv').attr('disabled',false);
+		$('#formapago_apv').attr('disabled',false);
+	}else{
+
+		$('#regimen_apv').val('');
+		$('#formapago_apv').val('');
+		$('#regimen_apv').attr('disabled','disabled');
+		$('#formapago_apv').attr('disabled','disabled');
+	}
+
+
+})
+
+
 
 
 	

@@ -1030,7 +1030,10 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'email_pago',
 				'usuario_windows',
 				'idjefe',
-				'idreemplazo'
+				'idreemplazo',
+				'formapagoapv',
+				'regimenapv',
+				'trabajo_pesado'
 				
 				
 

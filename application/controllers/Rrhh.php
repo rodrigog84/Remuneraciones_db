@@ -1509,6 +1509,13 @@ public function editar_trabajador(){
 			$numero_contrato_apv = $this->input->post('numero_contrato_apv');
 			$tipo_cotizacion = $this->input->post('tipo_cotizacion');
 			$cotapv = $this->input->post('monto_cotizacion_apv');
+
+			$regimenapv = $this->input->post('regimen_apv');
+			$formapagoapv = $this->input->post('formapago_apv');
+
+			$trabajo_pesado = $this->input->post('trabajo_pesado');
+
+
 			$diastrabajo = $this->input->post('diastrabajo');
 			$horasdiarias = $this->input->post('horasdiarias');
 			$horassemanales = $this->input->post('horassemanales');
@@ -1719,6 +1726,9 @@ public function editar_trabajador(){
 								'nrocontratoapv' => $numero_contrato_apv,
 								'tipocotapv' => $tipo_cotizacion,
 								'cotapv' => $cotapv,
+								'regimenapv' => $regimenapv,
+								'formapagoapv' => $formapagoapv,
+								'trabajo_pesado' => $trabajo_pesado,
 								'id_motivo_egreso' => $motivo_egreso,
 								'id_tipocc' => $tipo_cc,
 								'id_seccion' => $seccion,
@@ -1889,6 +1899,14 @@ public function editar_trabajador(){
 			$numero_contrato_apv = $this->input->post('numero_contrato_apv');
 			$tipo_cotizacion = $this->input->post('tipo_cotizacion');
 			$cotapv = $this->input->post('monto_cotizacion_apv');
+
+
+			$regimenapv = $this->input->post('regimen_apv');
+			$formapagoapv = $this->input->post('formapago_apv');
+
+
+			$trabajo_pesado = $this->input->post('trabajo_pesado');
+
 			$diastrabajo = $this->input->post('diastrabajo');
 			$horasdiarias = $this->input->post('horasdiarias');
 			$horassemanales = $this->input->post('horassemanales');
@@ -2098,6 +2116,10 @@ public function editar_trabajador(){
 								'nrocontratoapv' => $numero_contrato_apv,
 								'tipocotapv' => $tipo_cotizacion,
 								'cotapv' => $cotapv,
+								'regimenapv' => $regimenapv,
+								'formapagoapv' => $formapagoapv,
+								'trabajo_pesado' => $trabajo_pesado,
+
 								'id_motivo_egreso' => $motivo_egreso,
 								'id_tipocc' => $tipo_cc,
 								'id_seccion' => $seccion,
