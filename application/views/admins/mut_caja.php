@@ -59,7 +59,7 @@
             title: 'Atención',
             text: '<?php echo $message;?>',
             sticky: false,
-            image: '<?php echo base_url();?>images/logos/alert-icon.png',
+            image: '<?php echo base_url();?>images/logos/<?php echo $classmessage == 'success' ? 'check_ok_accept_apply_1582.png' : 'alert-icon.png';?>',
             time: 5000,
             class_name: 'my-sticky-class'
         });
@@ -69,6 +69,51 @@
         }*/
         <?php } ?>
 
+
+
+$('#mutual').change(function(){
+  if($(this).val() == '' || $(this).val() == 1){ // sin selección o marcó sin mutual
+    $('#porcmutual').val('');
+    $('#porcmutual').attr('disabled',true);
+  }else{
+    $('#porcmutual').attr('disabled',false);
+    $('#porcmutual').val(0);
+  }
+
+});
+
+
+
+  $('#formotros').formValidation({
+              framework: 'bootstrap',
+              excluded: ':disabled',
+              icon: {
+                  valid: 'glyphicon glyphicon-ok',
+                  invalid: 'glyphicon glyphicon-remove',
+                  validating: 'glyphicon glyphicon-refresh'
+              },
+              fields: {
+                porcmutual: {
+                    // The field is placed inside .col-xs-6 div instead of .form-group
+                    row: '.form-group',
+                    validators: {
+                        notEmpty: {
+                            message: 'Porcentaje Mutual es requerido'
+                        },                      
+                        between: {
+                            min: 0,
+                            max: 100,
+                            message: 'Porcentaje Mutual debe estar entre 0 y 100'
+                        },
+                        numeric: {
+                            separator: '.',
+                            message: 'Porcentaje Mutual s&oacute;lo puede contener n&uacute;meros'
+                        },
+
+                    }
+                },                 
+              }
+          }) 
 
     });
 </script>                  

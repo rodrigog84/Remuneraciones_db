@@ -1470,10 +1470,12 @@ public function editar_trabajador(){
 
 			$fecha_inicio_vacaciones = $this->input->post('fecha_inicio_vacaciones');
 			$tipocontrato = $this->input->post('tipocontrato');
+			$plazo_contrato = $this->input->post('plazo_contrato');
+
 			$tallapantalon = $this->input->post('pantalon');
 			$tallapolera = $this->input->post('polera');
 			$tramo = $this->input->post('tramo');
-			$monto_pactado = $this->input->post('monto_pactado');
+			$monto_pactado = str_replace(",",".",$this->input->post('monto_pactado'));
 			$categoria = $this->input->post('categoria');
 			$lugar_pago = $this->input->post('lugar_pago');
 
@@ -1562,6 +1564,16 @@ public function editar_trabajador(){
 				//$seguro_cesantia =0;
 			}
 
+
+			if($plazo_contrato !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $plazo_contrato);
+				$plazo_contrato = $date->format('Ymd');
+			}else{
+				$plazo_contrato = null;
+				//$seguro_cesantia =0;
+			}
+
+
 			if($fecha_finiquito !=null){
 				$date = DateTime::createFromFormat('d/m/Y', $fecha_finiquito);
 				$fecha_finiquito = $date->format('Ymd');
@@ -1625,7 +1637,6 @@ public function editar_trabajador(){
 				$fecapvc = null;
 				//$seguro_cesantia =0;
 			}
-
 
 
 
@@ -1702,6 +1713,7 @@ public function editar_trabajador(){
 								'saldoinicvacaciones' => $saldoinicvacaciones,
 								'saldoinicvacprog' => $saldoinicvacprog,
 								'tipocontrato' => $tipocontrato,
+								'plazo_contrato' => $plazo_contrato,
 								'fecingreso' => $fecingreso,
 								'fecha_retiro' => $fecha_retiro,
 								'fecha_finiquito' => $fecha_finiquito,
@@ -1860,10 +1872,12 @@ public function editar_trabajador(){
 
 			$fecha_inicio_vacaciones = $this->input->post('fecha_inicio_vacaciones');
 			$tipocontrato = $this->input->post('tipocontrato');
+			$plazo_contrato = $this->input->post('plazo_contrato');
 			$tallapantalon = $this->input->post('pantalon');
 			$tallapolera = $this->input->post('polera');
 			$tramo = $this->input->post('tramo');
-			$monto_pactado = $this->input->post('monto_pactado');
+			//$monto_pactado = $this->input->post('monto_pactado');
+			$monto_pactado = str_replace(",",".",$this->input->post('monto_pactado'));
 			$categoria = $this->input->post('categoria');
 			$lugar_pago = $this->input->post('lugar_pago');
 
@@ -1950,6 +1964,15 @@ public function editar_trabajador(){
 				$fecha_retiro = $date->format('Ymd');
 			}else{
 				$fecha_retiro = null;
+				//$seguro_cesantia =0;
+			}
+
+
+			if($plazo_contrato !=null){
+				$date = DateTime::createFromFormat('d/m/Y', $plazo_contrato);
+				$plazo_contrato = $date->format('Ymd');
+			}else{
+				$plazo_contrato = null;
 				//$seguro_cesantia =0;
 			}
 
@@ -2092,6 +2115,7 @@ public function editar_trabajador(){
 								'saldoinicvacaciones' => $saldoinicvacaciones,
 								'saldoinicvacprog' => $saldoinicvacprog,
 								'tipocontrato' => $tipocontrato,
+								'plazo_contrato' => $plazo_contrato,
 								'fecingreso' => $fecingreso,
 								'fecha_retiro' => $fecha_retiro,
 								'fecha_finiquito' => $fecha_finiquito,

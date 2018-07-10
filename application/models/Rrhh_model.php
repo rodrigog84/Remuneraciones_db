@@ -1033,7 +1033,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'idreemplazo',
 				'formapagoapv',
 				'regimenapv',
-				'trabajo_pesado'
+				'trabajo_pesado',
+				'format(plazo_contrato,\'dd/MM/yyyy\',\'en-US\') as plazo_contrato', 
 				
 				
 

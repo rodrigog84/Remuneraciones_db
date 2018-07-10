@@ -64,7 +64,7 @@
 													<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
-								                              <label for="rut">Nombre Completo</label>
+								                              <label for="rut">Nombres</label>
 								                             	<input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" >
 								                            </div>
 								                          </div>
@@ -675,6 +675,27 @@
 
 														<div class='col-md-6'>
 								                            <div class="form-group">
+								                              <label for="rut">Plazo Contrato</label>
+																<div class="input-group">
+								                                <div class="input-group-addon">
+								                                  <span class="glyphicon glyphicon-calendar"></span>
+								                                </div>
+																<input placeholder="Fecha Real" class="form-control mask_date" id="plazo_contrato" name="plazo_contrato" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+																</div>
+
+								                            </div>
+								                          </div>								                          
+
+														
+
+								                         
+								                          
+							                        </div>		
+
+							                        <div class='row'>
+
+							                        	<div class='col-md-6'>
+								                            <div class="form-group">
 								                              <label for="rut">Sección</label>
 																<select name="seccion" id="seccion" class="form-control">
 																	<option value="">Seleccione Secci&oacute;n</option>
@@ -687,11 +708,7 @@
 								                            </div>
 								                          </div>
 
-								                         
-								                          
-							                        </div>		
 
-							                        <div class='row'>
 							                        	 <div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Código Ine</label>
@@ -704,7 +721,16 @@
 								                                   </select>																
 								                            </div>
 								                          </div>
-							                        	<div class='col-md-6'>
+							                        	
+
+								                          
+								                          
+							                        </div>			
+
+
+							                        <div class='row'>
+
+														<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Sindicato</label>
 																<select name="sindicato" id="sindicato" class="form-control">
@@ -716,14 +742,6 @@
 								                            </div>
 								                          </div>
 
-
-								                          
-								                          
-							                        </div>			
-
-
-							                        <div class='row'>
-
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Rol Privado</label>
@@ -734,7 +752,14 @@
 																</select>
 								                            </div>
 								                          </div>
-							                        	<div class='col-md-6'>
+							                        	
+								                          
+								                          
+							                        </div>		
+
+
+							                         <div class='row'>
+							                         	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Semana Corrida</label>
 																<select name="semana_corrida" id="semana_corrida" class="form-control">
@@ -744,13 +769,6 @@
 																</select>
 								                            </div>
 								                          </div>
-
-								                          
-								                          
-							                        </div>		
-
-
-							                         <div class='row'>
 
 
 							                         	<div class='col-md-6'>
@@ -766,7 +784,14 @@
 								                            </div>
 								                          </div>
 								                          
-								                          <div class='col-md-6'>
+								                          
+
+								                          
+								                          
+							                        </div>							                        					       
+							                        <div class='row'>
+
+							                        <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Zona Brecha</label>
 																<select name="zona_brecha" id="zona_brecha" class="form-control">
@@ -779,11 +804,6 @@
 								                            </div>
 								                          </div>
 
-
-								                          
-								                          
-							                        </div>							                        					       
-							                        <div class='row'>
 							                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Fecha Real Contrato</label>
@@ -796,7 +816,12 @@
 
 								                            </div>
 								                          </div>
-							                          <div class='col-md-6'>
+							                          
+
+							                          
+							                        </div>  
+							                        <div class="row" >
+							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">1er Vencimiento</label>
 								                              <div class="input-group">
@@ -809,8 +834,7 @@
 								                      </div>
 
 
-							                          
-							                        </div>                
+							                        </div>
 
 												</section>
 											</div>
@@ -903,8 +927,8 @@
 																<select name="isapre" id="isapre" class="form-control">
 																	<option value="">Seleccione Isapre</option>
 						                                    		<?php foreach ($isapres as $isapre) { ?>
-								                                      <?php $isapreselected = $isapre->id == $datos_form['idisapre'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $isapre->id_isapre;?>" <?php echo $isapreselected;?> ><?php echo $isapre->nombre;?></option>
+								                                      <?php //$isapreselected = $isapre->id_isapre == $datos_form['id_isapre'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $isapre->id_isapre;?>" <?php //echo $isapreselected;?> ><?php echo $isapre->nombre;?></option>
 								                                    <?php } ?>
 								                                   </select>									
 
@@ -917,7 +941,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Monto Pactado Plan Isapre (UF)</label>
-																<input type="number" min="0" max="99" minlength="1" maxlength="2" step="0.01" name="monto_pactado"  class="form-control" id="monto_pactado" placeholder="">
+																<input type="text" name="monto_pactado"  class="form-control miles_decimales_isapre" id="monto_pactado" placeholder="">
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -1136,8 +1160,8 @@
 																<select name="forma_pago" id="forma_pago" class="form-control">
 																	<option value="">Seleccione Forma de Pago</option>
 						                                    		<?php foreach ($forma_pago as $pago) { ?>
-								                                      <?php $pagoselected = $pago->id_forma_pago == $datos_form['id_forma_pago'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $pago->id_forma_pago;?>" <?php echo $pagoselected;?> ><?php echo $pago->descripcion;?></option>
+								                                      <?php //$pagoselected = $pago->id_forma_pago == $datos_form['id_forma_pago'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $pago->id_forma_pago;?>" <?php //echo $pagoselected;?> ><?php echo $pago->descripcion;?></option>
 								                                    <?php } ?>
 																</select>
 								                            </div>
@@ -1148,8 +1172,9 @@
 																<select name="banco" id="banco" class="form-control">
 																	<option value="">Seleccione Banco</option>
 						                                    		<?php foreach ($bancos as $banco) { ?>
-								                                      <?php $bancoselected = $banco->id_banco == $datos_form['id_banco'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $banco->id_banco;?>" <?php echo $bancoselected;?> ><?php echo $banco->cod_sbif.' - '.$banco->nombre;?></option>
+								                                      <?php //$bancoselected = $banco->id_banco == $datos_form['id_banco'] ? "selected" : ""; ?>
+								                                      <option value="<?php echo $banco->id_banco;?>" <?php //echo $bancoselected;?> ><?php //echo $banco->cod_sbif.' - '.$banco->nombre;?>
+								                                      <?php echo $banco->nombre;?></option>
 								                                    <?php } ?>																
 								                                </select>
 								                            </div>
@@ -1167,8 +1192,9 @@
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Rut</label>
-																<input type="text" name="rutfp" class="form-control" id="rutfp" placeholder="Rut">
-								                            </div>
+																<input type="text" name="rutfp" class="form-control" id="rutfp" placeholder="98123456-7" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+
+																</div>
 								                          </div>
 
 							                        </div>
@@ -1473,6 +1499,8 @@ $(document).ready(function(){
 		      			$.each(datos_personal2,function(nombre) {
 		      			$("#nombre").val(this.nombre);
 		      			$("#rut").val(this.rut);
+		      			//$("#rutfp").val(this.rut);
+		      			
 		      			$("#apaterno").val(this.apaterno);
 		      			$("#amaterno").val(this.amaterno);
 		      			$("#direccion").val(this.direccion);
@@ -1487,6 +1515,10 @@ $(document).ready(function(){
         				$("#fechanacimiento").val(this.fecnacimiento);
         				$("#cargo").val(this.idcargo);
         				$("#isapre").val(this.idisapre);
+
+
+
+
         				$("#centro_costo").val(this.idcentrocosto);
         				$("#afp").val(this.idafp);
         				$("#datepicker2").val(this.fecingreso);
@@ -1517,25 +1549,42 @@ $(document).ready(function(){
         				}
 
         				$("#fono").val(this.fono);
-        				$("#numero_contrato_apv").val(this.nrocontratoapv);
+        				
 
         				if(this.instapv == 0){
         					$("#apv").val('');	
+        					$('#numero_contrato_apv').attr('disabled','disabled');
+        					$('#tipo_cotizacion').attr('disabled','disabled');
+        					$('#monto_cotizacion_apv').attr('disabled','disabled');
 							$('#regimen_apv').attr('disabled','disabled');
 							$('#formapago_apv').attr('disabled','disabled');        					
 
         				}else{
         					$("#apv").val(this.instapv);	
+        					$('#numero_contrato_apv').attr('disabled',false);
+        					$('#tipo_cotizacion').attr('disabled',false);
+        					$('#monto_cotizacion_apv').attr('disabled',false);
         					$('#regimen_apv').attr('disabled',false);
 							$('#formapago_apv').attr('disabled',false);
+							$("#numero_contrato_apv").val(this.nrocontratoapv);
+	        				$("#tipo_cotizacion").val(this.tipocotapv);
+	        				$("#monto_cotizacion_apv").val(this.cotapv);							
 							$('#regimen_apv').val(this.regimenapv);
 							$('#formapago_apv').val(this.formapagoapv);
         				}
 
 
-        				$("#tipo_cotizacion").val(this.tipocotapv);
-        				$("#monto_cotizacion_apv").val(this.cotapv);
-        				$("#monto_pactado").val(this.valorpactado);
+
+        				
+
+
+						  if(this.idisapre == '' || this.idisapre == 1){ // sin selección o marcó sin mutual
+						    $('#monto_pactado').val('');
+						    $('#monto_pactado').attr('disabled',true);
+						  }else{
+						    $('#monto_pactado').attr('disabled',false);
+						    $("#monto_pactado").val(this.valorpactado);
+						  }        				
 
         				if(this.id_categoria == 0){
         					$("#categoria").val('');	
@@ -1582,7 +1631,22 @@ $(document).ready(function(){
 
         				$("#trabajo_pesado").val(this.trabajo_pesado);
         				$("#banco").val(this.idbanco);
+
+        				if(this.idbanco == 0){
+        					$("#banco").val('');
+        				}else{
+        					$("#banco").val(this.idbanco);	
+        				}
+
+
         				$("#forma_pago").val(this.id_forma_pago);
+
+        				if(this.id_forma_pago == 0){
+        					$("#forma_pago").val('');
+        				}else{
+        					$("#forma_pago").val(this.id_forma_pago);	
+        				}
+
         				$("#cta_bancaria").val(this.nrocuentabanco);
         				$("#tipo_documento").val(this.tipodocumento);
         				$("#tipogratificacion").val(this.tipogratificacion);
@@ -1592,7 +1656,13 @@ $(document).ready(function(){
         				$("#tipocontrato").val(this.tipocontrato);
 
 
-
+        				if(this.tipocontrato == '' || this.tipocontrato == 'I'){
+						    $('#plazo_contrato').val('');
+						    $('#plazo_contrato').attr('disabled',true);
+						  }else{
+						    $('#plazo_contrato').attr('disabled',false);
+        					$("#plazo_contrato").val(this.plazo_contrato);
+        				}
 
         				$("#motivo_egreso").val(this.id_motivo_egreso);
         				if(this.id_motivo_egreso == 0){
@@ -2033,6 +2103,23 @@ $(document).ready(function() {
 
                 }
             },
+
+            rutfp: {
+                row: '.form-group',
+                validators: {
+                    stringLength: {
+                        min: 0,
+                        max: 12,
+                        message: 'El largo del Rut es Incorrecto'
+                    },
+                    validateRut: {
+                      message: 'Rut Incorrecto'
+                    }
+
+                }
+            },
+
+
 			numficha: {
                 row: '.form-group',
                 validators: {
@@ -2318,6 +2405,19 @@ $(document).ready(function() {
                 }
             },     
 
+
+            plazo_contrato: {
+                row: '.form-group',
+                validators: {
+                    date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'El valor no es una fecha v&aacute;lida'
+                    },
+                    notEmpty: {
+                        message: 'Fecha de Plazo de Contrato es requerido'
+                    }                    
+                }
+            },
 
             fecha_real: {
                 row: '.form-group',
@@ -2848,17 +2948,59 @@ $("#seguro_cesantia").on('ifUnchecked',function(event){
 
 $('#apv').on('change',function(){
 	if($(this).val() != ''){
+		$('#numero_contrato_apv').attr('disabled',false);
+		$('#tipo_cotizacion').attr('disabled',false);
+		$('#monto_cotizacion_apv').attr('disabled',false);
 		$('#regimen_apv').attr('disabled',false);
 		$('#formapago_apv').attr('disabled',false);
 	}else{
+		$('#numero_contrato_apv').val('');
+		$('#tipo_cotizacion').val('');	
+		$('#monto_cotizacion_apv').val('');			
 		$('#regimen_apv').val('');
 		$('#formapago_apv').val('');
+		
+		$('#numero_contrato_apv').attr('disabled','disabled');
+		$('#tipo_cotizacion').attr('disabled','disabled');
+		$('#monto_cotizacion_apv').attr('disabled','disabled');
 		$('#regimen_apv').attr('disabled','disabled');
 		$('#formapago_apv').attr('disabled','disabled');
 	}
 
 
 })
+
+
+ $('.miles_decimales_isapre').mask('#.####0,0000', {reverse: true});       
+
+
+
+$('#isapre').change(function(){
+  if($(this).val() == '' || $(this).val() == 1){ // sin selección o marcó sin mutual
+    $('#monto_pactado').val('');
+    $('#monto_pactado').attr('disabled',true);
+  }else{
+    $('#monto_pactado').attr('disabled',false);
+    $('#monto_pactado').val('');
+  }
+
+});
+
+
+$('#tipocontrato').change(function(){
+  if($(this).val() == '' || $(this).val() == 'I'){ // sin selección o marcó sin mutual
+    $('#plazo_contrato').val('');
+    $('#plazo_contrato').attr('disabled',true);
+  }else{
+    $('#plazo_contrato').attr('disabled',false);
+    $('#plazo_contrato').val('');
+  }
+
+});
+
+
+
+
 
    }); 
 
