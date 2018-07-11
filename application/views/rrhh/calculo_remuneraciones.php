@@ -139,7 +139,7 @@
 
 
                             															<!--<a href="<?php echo base_url(); ?>rrhh/rechaza_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="tooltip" title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>-->
-                            															<a href="#" onclick="mostrar_modal(<?php echo $periodo->id_periodo;?>)"  title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-check"></span></a>
+                            															<a href="#" onclick="mostrar_modal(<?php echo $periodo->id_periodo;?>)"  title="Rechazar" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>
                           														<?php }else{ ?>
                             															&nbsp;
                           														<?php } ?>																				

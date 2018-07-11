@@ -403,7 +403,7 @@ public function submit_salud(){
 
 			
 			//$personal = $this->admin->get_personal_total(); 
-			$personal = $this->admin->get_cargo_colaborador();
+			$personal = $this->admin->get_cargo_colaborador(null,true);
 			$afps = $this->admin->get_afp(); 
 			$apvs = $this->admin->get_apv(); 
 			$isapres = $this->admin->get_isapre(); 
@@ -1481,7 +1481,8 @@ public function editar_trabajador(){
 
 			$jubilado = $this->input->post('jubilado');
 			$pensionado = $this->input->post('pensionado') == 'on' ? 1 : 0;
-			$regimen_pago = $this->input->post('regimen_pago');
+			//$regimen_pago = $this->input->post('regimen_pago');
+			$regimen_pago = "NO";
 			$sindicato = $this->input->post('sindicato');
 			$semana_corrida = $this->input->post('semana_corrida');
 			$fecafp = $this->input->post('datepicker5');
@@ -1510,7 +1511,20 @@ public function editar_trabajador(){
 			$apv = $this->input->post('apv');
 			$numero_contrato_apv = $this->input->post('numero_contrato_apv');
 			$tipo_cotizacion = $this->input->post('tipo_cotizacion');
+
 			$cotapv = $this->input->post('monto_cotizacion_apv');
+
+			if(isset($tipo_cotizacion)){
+				if($tipo_cotizacion == 'pesos'){
+					$cotapv = str_replace(".", "", $cotapv);
+				}else if($tipo_cotizacion == 'uf'){
+					$cotapv = str_replace(".", "", $cotapv);
+					$cotapv = str_replace(",", ".", $cotapv);
+				}
+			}
+
+
+			
 
 			$regimenapv = $this->input->post('regimen_apv');
 			$formapagoapv = $this->input->post('formapago_apv');
@@ -1883,7 +1897,8 @@ public function editar_trabajador(){
 
 			$jubilado = $this->input->post('jubilado');
 			$pensionado = $this->input->post('pensionado') == 'on' ? 1 : 0;
-			$regimen_pago = $this->input->post('regimen_pago');
+			//$regimen_pago = $this->input->post('regimen_pago');
+			$regimen_pago = "NO";
 			$sindicato = $this->input->post('sindicato');
 			$semana_corrida = $this->input->post('semana_corrida');
 			$fecafp = $this->input->post('datepicker5');
@@ -1913,6 +1928,16 @@ public function editar_trabajador(){
 			$numero_contrato_apv = $this->input->post('numero_contrato_apv');
 			$tipo_cotizacion = $this->input->post('tipo_cotizacion');
 			$cotapv = $this->input->post('monto_cotizacion_apv');
+
+			if(isset($tipo_cotizacion)){
+				if($tipo_cotizacion == 'pesos'){
+					$cotapv = str_replace(".", "", $cotapv);
+				}else if($tipo_cotizacion == 'uf'){
+					$cotapv = str_replace(".", "", $cotapv);
+					$cotapv = str_replace(",", ".", $cotapv);
+				}
+			}
+
 
 
 			$regimenapv = $this->input->post('regimen_apv');

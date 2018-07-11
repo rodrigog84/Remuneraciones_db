@@ -786,7 +786,7 @@ public function get_zona_brecha($id_empresa=null){
 
 
 
-public function get_cargo_colaborador($idtrabajador = null){
+public function get_cargo_colaborador($idtrabajador = null,$actives = null){
 
 		$personal_data = $this->db->select("p.id_personal, p.id_empresa, p.rut, p.dv, p.nombre, p.apaterno, p.amaterno, p.fecnacimiento, p.sexo, p.idecivil, p.nacionalidad, p.direccion, 
 		p.idregion, p.idcomuna, p.fono, p.email, p.fecingreso, p.idcargo, p.tipocontrato, p.parttime, p.segcesantia, p.fecafc, p.diastrabajo, p.horasdiarias, 
@@ -798,7 +798,9 @@ public function get_cargo_colaborador($idtrabajador = null){
 						  ->where('c.id_cargos = p.idcargo')
 						  ->order_by('p.active','desc')
 		                  ->order_by('p.apaterno');
-		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);  		                  
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);  	
+		$personal_data = is_null($actives) ? $personal_data : $personal_data->where('p.active',1);  		                  
+
 		$query = $this->db->get();
 		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
 		return $datos;

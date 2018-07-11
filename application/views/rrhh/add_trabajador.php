@@ -741,25 +741,8 @@
 								                            </div>
 								                          </div>
 
-							                        	<div class='col-md-6'>
-								                            <div class="form-group">
-								                            	<label for="rut">Rol Privado</label>
-																<select name="regimen_pago" id="regimen_pago" class="form-control">
-																	<option value="SI">SI</option>
-																	<option value="NO">NO</option>
-																
-																</select>
-								                            </div>
-								                          </div>
-							                        	
-								                          
-								                          
-							                        </div>		
 
-
-							                         <div class='row'>
-
-							                         	<div class='col-md-6'>
+								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Semana Corrida</label>
 																<select name="semana_corrida" id="semana_corrida" class="form-control">
@@ -769,6 +752,25 @@
 																</select>
 								                            </div>
 								                          </div>
+							                        	<!--div class='col-md-6'>
+								                            <div class="form-group">
+								                            	<label for="rut">Rol Privado</label>
+																<select name="regimen_pago" id="regimen_pago" class="form-control">
+																	<option value="SI">SI</option>
+																	<option value="NO">NO</option>
+																
+																</select>
+								                            </div>
+								                          </div-->
+							                        	
+								                          
+								                          
+							                        </div>		
+
+
+							                         <div class='row'>
+
+							                         	
 
 							                         	<div class='col-md-6'>
 									                           <div class="form-group">
@@ -784,13 +786,7 @@
 								                          </div>
 								                          
 								                          
-
-								                          
-								                          
-							                        </div>							                        					       
-							                        <div class='row'>
-
-							                        <div class='col-md-6'>
+								                           <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Zona Brecha</label>
 																<select name="zona_brecha" id="zona_brecha" class="form-control">
@@ -802,6 +798,12 @@
 								                                   </select>
 								                            </div>
 								                          </div>
+								                          
+								                          
+							                        </div>							                        					       
+							                        <div class='row'>
+
+							                       
 
 							                          <div class='col-md-6'>
 									                           <div class="form-group">
@@ -816,12 +818,7 @@
 								                            </div>
 								                          </div>
 							                          
-
-							                          
-							                        </div>                
-
-							                        <div class="row">
-							                        	<div class='col-md-6'>
+								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">1er Vencimiento</label>
 								                              <div class="input-group">
@@ -832,10 +829,10 @@
 																</div>
 								                            </div>
 								                      </div>
+							                          
+							                        </div>                
 
-
-							                        </div>
-
+							                        
 												</section>
 											</div>
 
@@ -991,9 +988,9 @@
 									                           <div class="form-group">
 								                              <label for="rut">Tipo Cotización A.P.V.</label>
 																<select name="tipo_cotizacion" id="tipo_cotizacion" class="form-control" disabled>
-																	<option value="pesos">PESO</option>
-																	<option value="uf">UF</option>
-																	<option value="porcentaje">PORCENTAJE</option>
+																	<option value="pesos">($) Pesos</option>
+																	<option value="uf">U.F.</option>
+																	<option value="porcentaje">(%) Porc.</option>
 																</select>							
 
 								                            </div>
@@ -1004,7 +1001,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Monto Cotización A.P.V.</label>
-																<input type="text" name="monto_cotizacion_apv" maxlength="2" class="form-control" id="monto_cotizacion_apv" placeholder="Monto Cotizacion" disabled>
+																<input type="text" name="monto_cotizacion_apv" class="form-control numeros miles" id="monto_cotizacion_apv" placeholder="Monto Cotizacion" disabled>
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -2323,211 +2320,46 @@ $(document).ready(function() {
                     }                    
                 }
             }, 
+            monto_cotizacion_apv: {
+                    row: '.form-group',
+                    validators: {
+                  
+                      callback: {
+                          message: 'Ahorro APV debe estar entre 0 y 100',
+                          callback: function (value, validator, $field) {
+                              if($('#tipo_cotizacion').val() == 'porcentaje'){
+                                var array_value = value.split(".");
+                                if(array_value.length > 2){
+                                    return  {
+                                          valid: false,
+                                          message: 'Ahorro APV s&oacute;lo puede contener n&uacute;meros'
+                                      }
 
-           /* fechaafc: {
-                row: '.form-group',
-                validators: {
-                    date: {
-                        format: 'DD/MM/YYYY',
-                        min: 'fechaingreso',
-                        message: 'El valor no es una fecha v&aacute;lida'
-                    },
-                    notEmpty: {
-                        message: 'Fecha AFC es requerido'
-                    }                    
-                }
-            },
+                                }else{
+                                  cot_apv = parseFloat(value);
+                                  cot_apv = parseInt(cot_apv);                                  
+                                  if(cot_apv > 100){
+                                    return  {
+                                          valid: false,
+                                          message: 'Ahorro APV debe estar entre 0 y 100'
+                                      }
 
-            cargo: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Cargo es requerido'
+                                  }else{
+                                    return true;
+                                  }
+
+                                }
+
+
+
+                              }else{
+                                return true;
+                              }                               
+                          }
+                      } 
+
                     }
-                }
-            },
-
-            
-
-
-          
-
-
-                      
-
-
-            diastrabajo: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'D&iacute;as de Trabajo es requerido'
-                    },
-                    between: {
-                        min: 0,
-                        max: 30,
-                        message: 'D&iacute;as de Trabajo debe estar entre 0 y 30'
-                    },
-                }
-            },            
-
-            horasdiarias: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Horas Diarias es requerido'
-                    },
-                    integer: {
-                        message: 'El valor ingresado no es num&eacute;rico',
-                    },
-                    between: {
-                        min: 0,
-                        max: 24,
-                        message: 'Horas Diarias debe estar entre 0 y 24'
-                    },
-                }
-            },  
-
-            horassemanales: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Horas Semanales es requerido'
-                    },
-                    integer: {
-                        message: 'El valor ingresado no es num&eacute;rico',
-                    }                    
-                }
-            },                       
-
-
-            sueldobase: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Sueldo Base es requerido'
-                    },
-                    // The bank validator doesn't have any option
-                    blank: {}  
-                }
-                                  
-            },
-
-
-            tipogratificacion: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Tipo de Gratificaci&oacute;n es requerido'
-                    }
-                }
-            },  
-
-            gratificacion: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Gratificaci&oacute;n es requerido'
-                    },
-                }
-                                  
-            },            
-
-            cargassimples: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Nro. de Cargas Simples es Requerido'
-                    },
-                    greaterThan: {
-                        value: 0,
-                        message: 'El valor debe ser mayor o igual a cero'
-                    }
-                }
-            },  
-
-
-            cargasinvalidas: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Nro. de Cargas Inv&aacute;lidas es Requerido'
-                    },
-                    greaterThan: {
-                        value: 0,
-                        message: 'El valor debe ser mayor o igual a cero'
-                    }
-                }
-            },  
-
-
-            cargasmaternales: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Nro. de Cargas Maternales es Requerido'
-                    },
-                    greaterThan: {
-                        value: 0,
-                        message: 'El valor debe ser mayor o igual a cero'
-                    }
-                }
-            },  
-
-            cargasretroactivas: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Nro. de Cargas Retroactivas es Requerido'
-                    },
-                    greaterThan: {
-                        value: 0,
-                        message: 'El valor debe ser mayor o igual a cero'
-                    }
-                }
-            },  
-
-            asigfamiliar: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Asignaci&oacute;n Familiar es requerido'
-                    },
-                }
-                                  
-            },               
-
-
-            tramo_asigfamiliar: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Tramo Asignaci&oacute;n Familiar es requerido'
-                    },
-                }
-                                  
-            },      
-
-
-            movilizacion: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Movilizaci&oacute;n es requerido'
-                    }
-                }
-            },
-
-            colacion: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'Colaci&oacute;n es requerido'
-                    }
-                }
-            },
-
-
-            */
+                },
         }
     })
 
@@ -2671,10 +2503,36 @@ $('#apv').on('change',function(){
 
 })
 
-
+$('.miles').mask('000.000.000.000.000', {reverse: true}); 
+$('.miles_decimales').mask('#.##0,00', {reverse: true}); 
 
  $('.miles_decimales_isapre').mask('#.####0,0000', {reverse: true});       
 
+
+$('#tipo_cotizacion').change(function(){
+
+    
+    $('#monto_cotizacion_apv').val("");
+
+    if($(this).val() == 'porcentaje'){
+      $('#monto_cotizacion_apv').removeClass("miles");   
+      $('#monto_cotizacion_apv').removeClass("miles_decimales");   
+
+      $('#monto_cotizacion_apv').unmask(); //quita mascara
+
+    }else if($(this).val() == 'uf'){
+      $('#monto_cotizacion_apv').removeClass("miles");   
+      $('#monto_cotizacion_apv').addClass("miles_decimales");   
+      $('#monto_cotizacion_apv').mask('#.##0,00', {reverse: true}) 
+      
+    }else{
+      $('#monto_cotizacion_apv').addClass("miles");   
+      $('#monto_cotizacion_apv').removeClass("miles_decimales");   
+      $('#monto_cotizacion_apv').mask('000.000.000.000.000', {reverse: true}); // agrega mascara
+    }
+
+    
+});  
 
 
 $('#isapre').change(function(){
