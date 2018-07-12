@@ -31,11 +31,12 @@
 																	<thead> 
 																		<tr>
 												                        <th>#</th>
-												                        <th>Trabajador</th>
+												                        <th>Colaborador</th>
 												                        <th>Sueldo Base</th>
 												                        <th>Haberes</th>
 												                        <th>Descuentos</th>
 												                        <th>Liquido a Pagar</th>
+												                        <th>Aportes Patronales</th>
 												                        <th>Liquidaci&oacute;n</th>
 												                        
 																		</tr> 
@@ -50,6 +51,7 @@
 												                          <td>$&nbsp;<?php echo number_format($remuneracion->totalhaberes,0,".",".");?></td>
 												                          <td>$&nbsp;<?php echo number_format($remuneracion->totaldescuentos,0,".",".");?></td>
 												                          <td>$&nbsp;<?php echo number_format($remuneracion->sueldoliquido,0,".",".");?></td>
+												                          <td>$&nbsp;<?php echo number_format($remuneracion->aportesegcesantia + $remuneracion->seginvalidez + $remuneracion->aportepatronal,0,".",".");?></td>
 												                          <td><center><a href="<?php echo base_url(); ?>rrhh/liquidacion/<?php echo $remuneracion->id_remuneracion;?>" target="_blank"><span class="glyphicon glyphicon-paperclip"></span></a></center></td>
 												                          
 												                        </tr>

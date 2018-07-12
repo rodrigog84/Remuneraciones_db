@@ -2888,7 +2888,6 @@ public function editar_trabajador(){
 			set_time_limit(0);
 
 			$periodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
-			
 			if(is_null($periodo->cierre)){
 				redirect('main/dashboard/');
 			}else{
