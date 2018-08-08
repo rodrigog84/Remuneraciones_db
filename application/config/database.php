@@ -54,7 +54,8 @@ $db['default']['port'] = 1433;
 $db['default']['username'] = 'test'; 
 $db['default']['password'] = '1234';
 */
-$db['default']['hostname'] = '190.162.65.174';   // BD Remota
+//$db['default']['hostname'] = '190.162.65.174';   // BD Remota
+$db['default']['hostname'] = '201.239.216.55';   // BD Remota
 $db['default']['port'] = 1433; 
 $db['default']['username'] = 'usuarios_remuneraciones'; 
 $db['default']['password'] = '1QAZxsw2';
