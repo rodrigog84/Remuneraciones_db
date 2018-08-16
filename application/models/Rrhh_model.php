@@ -2031,7 +2031,7 @@ limit 1		*/
 
 	public function get_remuneraciones_by_periodo($idperiodo,$sinsueldo = null,$idcentrocosto = null){
 		
-		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips, pe.direccion, com.nombre as comuna')
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
@@ -2041,6 +2041,7 @@ limit 1		*/
 						  ->join('rem_cargos as c','pe.idcargo = c.id_cargos')
 						  ->join('rem_afp as a','pe.idafp = a.id_afp')
 						  ->join('rem_apv as ap','pe.instapv = ap.id_apv','left')						  
+						  ->join('rem_comuna as com','pe.idcomuna = com.idcomuna','left')
 		                  ->where('pe.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('r.id_periodo', $idperiodo)
@@ -4034,6 +4035,60 @@ public function previred($datos_remuneracion){
 					fputs($file,$linea);
 
 				}
+
+			}
+
+			
+			fclose($file);
+
+			//exit;
+
+			$data_archivo = basename($path_archivo.$nombre_archivo);
+			header('Content-Type: text/plain');
+			header('Content-Disposition: attachment; filename=' . $data_archivo);
+			header('Content-Length: ' . filesize($path_archivo.$nombre_archivo));
+			readfile($path_archivo.$nombre_archivo);		
+
+
+			unlink($path_archivo.$nombre_archivo);
+	}		
+
+
+
+
+public function pago_bancos($datos_remuneracion){
+
+			$this->load->model('admin');
+			$nombre_archivo = $this->session->userdata('empresaid')."_Pago_Bancos_".date("Ymd").".txt";
+			$path_archivo = "./uploads/tmp/";
+			$file = fopen($path_archivo.$nombre_archivo, "w");
+			$this->load->model('admin');
+
+			foreach ($datos_remuneracion as $remuneracion) {
+				//echo "<pre>";
+				//print_r($remuneracion); //exit;
+
+				$sueldo_liquido = $remuneracion->sueldoliquido < 0 ? 0 : $remuneracion->sueldoliquido;
+				// DATOS DEL TRABAJADOR
+				$linea  = str_pad($remuneracion->rut,8,"0",STR_PAD_LEFT); // rut
+				$linea .= $remuneracion->dv; // dv
+				$linea .= str_pad(substr(sanear_string($remuneracion->apaterno),0,15),15," ",STR_PAD_RIGHT); //apaterno
+				$linea .= str_pad(substr(sanear_string($remuneracion->amaterno),0,15),15," ",STR_PAD_RIGHT); //amaterno
+				$linea .= str_pad(substr(sanear_string($remuneracion->nombre),0,15),15," ",STR_PAD_RIGHT); //nombre
+				$linea .= str_pad(substr(sanear_string($remuneracion->direccion),0,35),35," ",STR_PAD_RIGHT); //dirección
+				$linea .= str_pad(substr(sanear_string($remuneracion->comuna),0,15),15," ",STR_PAD_RIGHT); //comuna
+				$linea .= '17082018'; //Fecha de Pago
+				$linea .= 'CCT'; //Forma de Pago
+				$linea .= '016'; //Código de Banco
+				$linea .= '044'; //Oficina de Pago
+				$linea .= '00000000000000000000'; //Número de cuenta(20)
+				$linea .= '00001'; //Documento (5)
+				$linea .= str_pad(abs($sueldo_liquido),10,"0",STR_PAD_LEFT); //Monto a Pagar
+
+
+				$linea .= "\r\n";
+				//$linea = $rut.$dv.$apaterno.$amaterno.$nombres."\r\n";
+				fputs($file,$linea);
 
 			}
 

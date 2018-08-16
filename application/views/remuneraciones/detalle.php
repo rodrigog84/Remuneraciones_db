@@ -63,6 +63,7 @@
 													                        <th>Remuneraci&oacute;n Total (L&iacute;quido)</th>
 													                        <th>Detalle Remuneraciones</th>
 													                        <th>Previred</th>
+													                        <th>Pago a Bancos</th>
 													                        <th>Libro Remuneraciones</th>
 													                        <th>Estado</th>
 																		</tr> 
@@ -97,6 +98,13 @@
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/previred/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
+											                              <?php } ?>
+											                              </center>
+											                              </td>
+											                              <td>
+											                              <center>
+											                              <?php if(!is_null($periodo->cierre)){ ?>
+											                              <a href="<?php echo base_url(); ?>rrhh/pago_bancos/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
 											                              <?php } ?>
 											                              </center>
 											                              </td>
