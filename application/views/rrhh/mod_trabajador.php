@@ -1597,7 +1597,8 @@ $(document).ready(function(){
 						    $('#monto_pactado').attr('disabled',true);
 						  }else{
 						    $('#monto_pactado').attr('disabled',false);
-						    $("#monto_pactado").val(this.valorpactado);
+						    $("#monto_pactado").val(number_format(this.valorpactado,4,",",""));
+						    
 						  }        				
 
         				if(this.id_categoria == 0){

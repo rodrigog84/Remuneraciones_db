@@ -1493,8 +1493,8 @@ public function editar_trabajador(){
 
 			
 			//var_dump($fecvencplan); exit;
-			
-			$seguro_cesantia = $this->input->post('seguro_cesantia') == 'on' ? 1 : 0;
+				
+			$seguro_cesantia = $this->input->post('seguro_cesantia') == 'on' || $this->input->post('seguro_cesantia') == '1' ? 1 : 0;
 			$parttime = $this->input->post('parttime') == 'on' ? 1 : 0;
 
 			
@@ -1910,7 +1910,8 @@ public function editar_trabajador(){
 			
 			//var_dump($fecvencplan); exit;
 			
-			$seguro_cesantia = $this->input->post('seguro_cesantia') == 'on' ? 1 : 0;
+			//$seguro_cesantia = $this->input->post('seguro_cesantia') == 'on' ? 1 : 0;
+			$seguro_cesantia = $this->input->post('seguro_cesantia') == 'on' || $this->input->post('seguro_cesantia') == '1' ? 1 : 0;
 			$parttime = $this->input->post('parttime') == 'on' ? 1 : 0;
 
 			

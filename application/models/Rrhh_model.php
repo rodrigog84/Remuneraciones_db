@@ -1702,12 +1702,13 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 			// SOLO SE PAGA POR 11 AÑOS
 
+
 			if($trabajador->pensionado == 1){
 				$segcesantia = 0;
 			}else{
 				$segcesantia = $trabajador->tipocontrato == 'I' && $trabajador->segcesantia == 1 && $trabajador->annos_afc <= 11 ? round($sueldo_imponible_afc*0.006,0) : 0;
 			}
-
+			//echo $segcesantia; exit;
 			$cot_salud_oblig = $trabajador->idisapre != 1 ? round($sueldo_imponible_imposiciones*0.07,0) : 0;
 
 			if($trabajador->idisapre == 1){ //FONASA
@@ -1732,6 +1733,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				$adic_salud = 0;					
 			}else{
 				$dif_isapre = round($trabajador->valorpactado*$parametros->uf,0) - $cot_salud_oblig;
+				//echo $trabajador->valorpactado; exit;
 				$adic_isapre = $dif_isapre > 0 ? $dif_isapre : 0;
 
 				if($adic_isapre > 0){
