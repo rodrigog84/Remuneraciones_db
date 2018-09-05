@@ -2392,7 +2392,7 @@ public function editar_trabajador(){
 			$anno = $this->session->flashdata('asistencia_anno') == '' ? date('Y') : $this->session->flashdata('asistencia_anno');
 			$this->load->model('admin');
 			$centros_costo = $this->admin->get_centro_costo();
-			$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos(); 
+			$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos_resumen(); 
 			//echo "<pre>";
 			//print_r($periodos_remuneracion); exit;
 			$personal = $this->rrhh_model->get_personal(); 
@@ -2747,7 +2747,7 @@ public function editar_trabajador(){
 
 
 
-			$datosperiodo = $this->rrhh_model->get_periodos_cerrados($this->session->userdata('empresaid'),null,$idcentrocosto);
+			$datosperiodo = $this->rrhh_model->get_periodos_cerrados($this->session->userdata('empresaid'),$idperiodo,$idcentrocosto);
 			$centros_costo = $this->rrhh_model->get_centro_costo();
 
 
@@ -3013,14 +3013,18 @@ public function previred($idperiodo = null)
 			$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
 
 			$content = array(
-						'menu' => 'Ver',
-						'title' => 'Ver',
-						'subtitle' => 'Propiedades');
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Ver Remuneraciones Per&iacute;odo');
 
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'remuneraciones/ver_remuneraciones_periodo';
 			$vars['remuneraciones'] = $remuneraciones;
 			$vars['datosperiodo'] = $datosperiodo;
+
+			$vars['idperiodo'] = $idperiodo;
+
+			
 
 			$vars['datatable'] = true;
 			

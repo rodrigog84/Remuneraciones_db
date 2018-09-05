@@ -99,7 +99,7 @@
 																			<th>Per&iacute;odo</th> 
 																			<th>Estado</th> 
 																			<!--th>Acci&oacute;n</th--> 
-																			<th>Ver Detalle Remunraciones</th> 
+																			<th>Ver Detalle Remuneraciones</th> 
 																			<th>Validar</th> 
 																			
 
@@ -124,14 +124,14 @@
 																			</td-->
 																			
 																			<td>
-																				<?php if($periodo->estado == 'Informaci&oacute;n Completa' && !is_null($periodo->cierre)){ ?>
+																				<?php if($periodo->estado == 'Informaci&oacute;n Completa' ){ ?>
                              														<center><a href="<?php echo base_url(); ?>rrhh/detalle/<?php echo $periodo->id_periodo; ?>" data-toggle="tooltip" title="Ver Per&iacute;odo"><span class="glyphicon glyphicon-search"></span></a></center>
                         														<?php }else{  ?>
                            															&nbsp;
                         														<?php } ?>
 																			</td> 
 																			<td>
-																				<?php if($periodo->estado == 'Informaci&oacute;n Completa' && !is_null($periodo->cierre)){ ?>
+																				<?php if($periodo->estado == 'Informaci&oacute;n Completa'){ ?>
                             															<!--<a href="#" data-href="<?php echo base_url(); ?>rrhh/aprueba_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="modal" data-target="#confirm-publish" title="Aprobar" class="btn btn-xs btn-success"><span class="fa fa-check"></span></a>-->
 
                             															<a href="#" onclick="mostrar_modal_return(<?php echo $periodo->id_periodo;?>)" title="Aprobar" class="btn btn-xs btn-success"><span class="fa fa-check"></span></a>

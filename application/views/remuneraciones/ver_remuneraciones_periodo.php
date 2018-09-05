@@ -1,11 +1,12 @@
-<!--sub-heard-part-->
-									  <div class="sub-heard-part">
-									   <ol class="breadcrumb m-b-0">
-											<li><a href="<?php echo base_url();?>main/dashboard">Inicio</a></li>
-											<li class="active">Calculo Remuneraciones</li>
-											
-										</ol>
-									   </div>
+
+								  <!--//sub-heard-part-->
+                            <div class="panel panel-inverse">                       
+                                <div class="panel-heading">
+                                      <h4 class="panel-title">Remuneraciones Per&iacute;odo</h4>
+                                  </div>
+                      <div class="panel-body">
+                        <div class='row'>
+
 								  <!--//sub-heard-part-->
 
 									<div class="graph-visual tables-main">
@@ -64,6 +65,18 @@
 													</div>
 													
 											</div>
+
+
+</div>
+
+                      </div><!-- /.box-body -->
+                      <div class="panel-footer">
+                      	<a href="<?php echo base_url(); ?>rrhh/detalle/<?php echo $idperiodo;?>" class="btn btn-success">Volver</a>
+                      </div>
+
+                 
+                  </div> 
+                  </div>											
 									<!--/charts-inner-->
 
 

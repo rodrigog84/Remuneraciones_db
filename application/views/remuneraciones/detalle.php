@@ -17,15 +17,22 @@
 
 									            <div class="row">
 
-									                <div class="col-md-6">
-									                  <div class="panel panel-primary">
+
+									            	<div class='col-md-6'>
+								                            <div class="panel panel-inverse">                       
+								                                <div class="panel-heading">
+								                                      <h4 class="panel-title">Centro de Costo</h4>
+								                                  </div>
+								                      <div class="panel-body">
+								                        <div class='row'>	
+
+
 									                  	<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/detalle" id="basicBootstrapForm" method="post"> 
 									                    <div class="panel-body" >
 
 									                      <div class='row'>
 									                          <div class='col-md-6'>
 									                            <div class="form-group">
-									                                <label for="mes">Centro de Costo</label>
 																<select name="centrocosto" id="centrocosto" class="form-control">
 																	<option value="0">Todos</option>
 																	<?php foreach ($centros_costo as $centro_costo) { ?>
@@ -46,11 +53,24 @@
                 
 									                    </div><!-- /.box-body -->
 									                    </form>
+
+
+
+
 									                  </div>
 									                </div>
-
+									            </div>
+									        </div>
 
 									            </div>
+
+
+                            <div class="panel panel-inverse">                       
+                                <div class="panel-heading">
+                                      <h4 class="panel-title">Detalle Remuneraciones</h4>
+                                  </div>
+                      <div class="panel-body">
+                        <div class='row'>									            
 
 																<div id="remuneraciones">
 																<table class="table" id="detalle_remuneracion"> 
@@ -72,8 +92,10 @@
 																	<?php $i = 1; 
 											                        $back_button = false;
 											                        ?>
+											                        <?php // echo "<pre>"; print_r($datosperiodo); exit; ?>
 											                        <?php if(count($datosperiodo) > 0){ ?>
 											                          <?php foreach ($datosperiodo as $periodo) { ?>
+
 											                            <?php if($idperiodo == $periodo->id_periodo){ 
 											                                $class_color = "class = 'success'";
 											                                $back_button = true;
@@ -126,9 +148,27 @@
 																	</tbody> 
 																</table> 
 															</div>
+
+
+
+</div>
+
+                      </div><!-- /.box-body -->
+                      <div class="panel-footer">
+                      	<a href="<?php echo base_url(); ?>rrhh/calculo_remuneraciones" class="btn btn-success">Volver</a>
+                      </div>
+
+                 
+                  </div> 
+                  </div>		
+
+
+
 												
 													</div>
 													
+
+
 											</div>
 									<!--/charts-inner-->
 
