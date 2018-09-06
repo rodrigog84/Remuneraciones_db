@@ -2535,6 +2535,7 @@ public function editar_trabajador(){
 			$vars['periodos_remuneracion'] = $periodos_remuneracion;	
 			$vars['formValidation'] = true;
 			$vars['centros_costo'] = $centros_costo;
+			//$vars['multipleSelect'] = true;
 			//$vars['centro_costo_periodo'] = $centro_costo_periodo;	
 			$vars['content_view'] = 'rrhh/calculo_remuneraciones';
 
@@ -2736,18 +2737,26 @@ public function editar_trabajador(){
 
 
 
-	public function detalle($idperiodo = null)
+	public function detalle($idperiodo = null,$idcentrocosto = null)
 	{
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 
+			if(is_null($idperiodo)){
+				redirect('main/dashboard/');
 
-			$idcentrocosto = $this->input->post('centrocosto');
+			}
 
 
+			$idcentrocosto = is_null($this->input->post('centrocosto'))  ? $idcentrocosto : $this->input->post('centrocosto');
+
+			$idcentrocosto = $idcentrocosto == 0 ? null : $idcentrocosto;
 
 			$datosperiodo = $this->rrhh_model->get_periodos_cerrados($this->session->userdata('empresaid'),$idperiodo,$idcentrocosto);
+
+
+			//var_dump($datosperiodo); exit;
 			$centros_costo = $this->rrhh_model->get_centro_costo();
 
 
@@ -3009,8 +3018,15 @@ public function previred($idperiodo = null)
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
+			$idcentrocosto = is_null($this->input->post('centrocosto'))  ? $idcentrocosto : $this->input->post('centrocosto');
+			$idcentrocosto = $idcentrocosto == 0 ? null : $idcentrocosto;
+
+
+
 			$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,null,$idcentrocosto);
 			$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+			$centros_costo = $this->rrhh_model->get_centro_costo();
+
 
 			$content = array(
 						'menu' => 'Remuneraciones',
@@ -3021,6 +3037,8 @@ public function previred($idperiodo = null)
 			$vars['content_view'] = 'remuneraciones/ver_remuneraciones_periodo';
 			$vars['remuneraciones'] = $remuneraciones;
 			$vars['datosperiodo'] = $datosperiodo;
+			$vars['idcentrocosto'] = $idcentrocosto;
+			$vars['centros_costo'] = $centros_costo;
 
 			$vars['idperiodo'] = $idperiodo;
 

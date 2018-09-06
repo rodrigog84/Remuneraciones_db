@@ -1,5 +1,56 @@
 
 								  <!--//sub-heard-part-->
+
+ <div class="row">
+
+
+									            	<div class='col-md-6'>
+								                            <div class="panel panel-inverse">                       
+								                                <div class="panel-heading">
+								                                      <h4 class="panel-title">Centro de Costo</h4>
+								                                  </div>
+								                      <div class="panel-body">
+								                        <div class='row'>	
+
+
+									                  	<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/ver_remuneraciones_periodo/<?php echo $idperiodo."/".$idcentrocosto;?>" id="basicBootstrapForm" method="post"> 
+									                    <div class="panel-body" >
+
+									                      <div class='row'>
+									                          <div class='col-md-6'>
+									                            <div class="form-group">
+																<select name="centrocosto" id="centrocosto" class="form-control">
+																	<option value="0">Todos</option>
+																	<?php foreach ($centros_costo as $centro_costo) { ?>
+																		<?php $centrocosto_selected = $centro_costo->id_centro_costo == $idcentrocosto ? 'selected' : '';?>
+																		<option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocosto_selected; ?>><?php echo $centro_costo->nombre;?></option>
+																	<?php } ?>
+																	
+																</select>
+									                            </div> 
+									                          </div>
+									                         
+									                      </div>
+									                      <div class="row">
+									                      	<div class='col-md-3'>
+									                      			<button type="submit" class="btn btn-primary">Buscar</button>&nbsp;&nbsp;
+									                      	</div>
+									                      </div>  
+                
+									                    </div><!-- /.box-body -->
+									                    </form>
+
+
+
+
+									                  </div>
+									                </div>
+									            </div>
+									        </div>
+
+									            </div>
+
+
                             <div class="panel panel-inverse">                       
                                 <div class="panel-heading">
                                       <h4 class="panel-title">Remuneraciones Per&iacute;odo</h4>
@@ -71,7 +122,7 @@
 
                       </div><!-- /.box-body -->
                       <div class="panel-footer">
-                      	<a href="<?php echo base_url(); ?>rrhh/detalle/<?php echo $idperiodo;?>" class="btn btn-success">Volver</a>
+                      	<a href="<?php echo base_url(); ?>rrhh/detalle/<?php echo $idperiodo."/".$idcentrocosto;?>" class="btn btn-success">Volver</a>
                       </div>
 
                  

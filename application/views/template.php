@@ -87,6 +87,14 @@
   <?php } ?>  
 
 
+
+      <?php if(isset($multipleSelect)){ ?>
+        <link href="<?php echo base_url(); ?>plugins/jQuery-Multiple-Select/dist/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css"/>
+        <script src="<?php echo base_url(); ?>plugins/jQuery-Multiple-Select/dist/js/bootstrap-multiselect.js"></script>
+      <?php } ?>
+
+
+
 <?php if(isset($blockUI)){ ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.blockUI.js" charset="UTF-8"></script>
   <?php } ?>  

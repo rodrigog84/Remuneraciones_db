@@ -27,7 +27,7 @@
 								                        <div class='row'>	
 
 
-									                  	<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/detalle" id="basicBootstrapForm" method="post"> 
+									                  	<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/detalle/<?php echo $idperiodo;?>" id="basicBootstrapForm" method="post"> 
 									                    <div class="panel-body" >
 
 									                      <div class='row'>
@@ -111,29 +111,37 @@
 											                            <td>$&nbsp;<?php echo number_format($periodo->sueldoliquido,0,".",".");?></td>
 											                              <td>
 											                              <center>
-											                              <?php if(!is_null($periodo->cierre)){ ?>
-											                              <a href="<?php echo base_url(); ?>rrhh/ver_remuneraciones_periodo/<?php echo $periodo->id_periodo; ?>" data-toggle="tooltip" title="Ver Remuneraciones Personal"><span class="glyphicon glyphicon-search"></span></a>
+											                              <?php if(!is_null($periodo->cierre) && $periodo->numtrabajadores > 0){ ?>
+											                              <a href="<?php echo base_url(); ?>rrhh/ver_remuneraciones_periodo/<?php echo $periodo->id_periodo."/".$idcentrocosto; ?>" data-toggle="tooltip" title="Ver Remuneraciones Personal"><span class="glyphicon glyphicon-search"></span></a>
+											                              <?php }else{ ?>
+											                              		-
 											                              <?php } ?>
 											                              </center>
 											                              </td>
 											                              <td>
 											                              <center>
-											                              <?php if(!is_null($periodo->cierre)){ ?>
+											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/previred/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
+											                              <?php }else{ ?>
+											                              		-
 											                              <?php } ?>
 											                              </center>
 											                              </td>
 											                              <td>
 											                              <center>
-											                              <?php if(!is_null($periodo->cierre)){ ?>
+											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/pago_bancos/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
+											                              <?php }else{ ?>
+											                              		-
 											                              <?php } ?>
 											                              </center>
 											                              </td>
 											                              <td>
 											                              <center>
-											                              <?php if(!is_null($periodo->cierre)){ ?>
+											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-book"></span></a>  
+											                              <?php }else{ ?>
+											                              		-
 											                              <?php } ?>
 											                              </center>
 											                              </td>  
