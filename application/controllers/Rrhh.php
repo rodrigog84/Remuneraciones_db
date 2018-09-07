@@ -2391,7 +2391,8 @@ public function editar_trabajador(){
 			$mes = $this->session->flashdata('asistencia_mes') == '' ? date('m') : $this->session->flashdata('asistencia_mes');
 			$anno = $this->session->flashdata('asistencia_anno') == '' ? date('Y') : $this->session->flashdata('asistencia_anno');
 			$this->load->model('admin');
-			$centros_costo = $this->admin->get_centro_costo();
+			//$centros_costo = $this->admin->get_centro_costo(null,'trabajadores');
+			$centros_costo = $this->rrhh_model->get_centro_costo_no_calculado($mes,$anno);
 			$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos_resumen(); 
 			//echo "<pre>";
 			//print_r($periodos_remuneracion); exit;
@@ -2753,11 +2754,12 @@ public function editar_trabajador(){
 
 			$idcentrocosto = $idcentrocosto == 0 ? null : $idcentrocosto;
 
-			$datosperiodo = $this->rrhh_model->get_periodos_cerrados($this->session->userdata('empresaid'),$idperiodo,$idcentrocosto);
+			$datosperiodo = $this->rrhh_model->get_periodos_cerrados_detalle($this->session->userdata('empresaid'),$idperiodo,$idcentrocosto);
 
 
 			//var_dump($datosperiodo); exit;
-			$centros_costo = $this->rrhh_model->get_centro_costo();
+			//$centros_costo = $this->rrhh_model->get_centro_costo();
+			$centros_costo = $this->rrhh_model->get_centro_costo_periodo_abierto($idperiodo);
 
 
 			$content = array(
@@ -3025,7 +3027,8 @@ public function previred($idperiodo = null)
 
 			$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,null,$idcentrocosto);
 			$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
-			$centros_costo = $this->rrhh_model->get_centro_costo();
+			//$centros_costo = $this->rrhh_model->get_centro_costo();
+			$centros_costo = $this->rrhh_model->get_centro_costo_periodo_abierto($idperiodo);
 
 
 			$content = array(
@@ -3117,7 +3120,8 @@ public function ver_remuneraciones_colaborador($idperiodo = '',$idcentrocosto = 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 			$remuneracion = $this->rrhh_model->get_remuneraciones_by_id($idremuneracion);
-
+			//echo "<pre>";
+			//print_r($remuneracion); exit;
 			if(count($remuneracion) == 0){ // SI NO ENCUENTRO NINGUNA REMUNERACION (CORRESPONDE A OTRA COMUNIDAD POR EJEMPLO)
 				redirect('main/dashboard/');
 			}else if(is_null($remuneracion->cierre)){
@@ -3480,7 +3484,14 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 	public function get_status_rem($tipo_status,$mes,$anno){
 
-		$estado_periodo = $this->rrhh_model->get_estado_periodo($mes,$anno);
+
+		if($tipo_status == 'calculo'){
+			$centros_costo = $this->rrhh_model->get_centro_costo_no_calculado($mes,$anno);
+			$estado_periodo = count($centros_costo) > 0 ? 2 : 0;
+		}else{
+			$estado_periodo = $this->rrhh_model->get_estado_periodo($mes,$anno);
+		}
+		
 
 		//OPCIONES:  ES NUEVO, YA SE CREO, YA ESTÁ CERRADO
 
@@ -3589,7 +3600,14 @@ public function liquidacion_colaborador($idremuneracion = null)
 		//$valid = $this->admin->get_permite_periodo($this->input->post('mes'),$this->input->post('anno'));
 		$valid = true;
 		if($valid){
-			$estado_periodo = $this->rrhh_model->get_estado_periodo($this->input->post('mes'),$this->input->post('anno'));
+
+			if($tipo_status == 'calculo'){
+				$centros_costo = $this->rrhh_model->get_centro_costo_no_calculado($this->input->post('mes'),$this->input->post('anno'));
+				$estado_periodo = count($centros_costo) > 0 ? 2 : 0;
+			}else{
+				$estado_periodo = $this->rrhh_model->get_estado_periodo($this->input->post('mes'),$this->input->post('anno'));	
+			}
+			//echo "estado_periodo:".$estado_periodo;
 
 
 			if(is_null($tipo_status)){

@@ -453,7 +453,7 @@ $(document).ready(function() {
                 validators: {
 
                     remote: {
-                        url: '<?php echo base_url();?>rrhh/estado_periodo/',
+                        url: '<?php echo base_url();?>rrhh/estado_periodo/calculo',
                         // Send { email: 'its value', username: 'its value' } to the back-end
                         data: function(validator, $field, value) {
                             return {
@@ -482,7 +482,8 @@ $(document).ready(function() {
         $('#centro_costo').multiselect({
         	nonSelectedText: "No hay Selección",
         	allSelectedText: 'Todos',
-        	includeSelectAllOption: true
+        	includeSelectAllOption: true,
+        	selectAllText: 'Seleccionar Todo'
         	});
 
     });
@@ -494,7 +495,8 @@ $(document).ready(function() {
         $('#centro_costo2').multiselect({
         	nonSelectedText: "No hay Selección",
         	allSelectedText: 'Todos',
-        	includeSelectAllOption: true
+        	includeSelectAllOption: true,
+        	selectAllText: 'Seleccionar Todo'
 
         });
         

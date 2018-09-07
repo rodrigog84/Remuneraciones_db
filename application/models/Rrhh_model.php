@@ -53,7 +53,7 @@ public function get_centro_costo(){
 	}
 
 
-	public function get_centro_costo_periodo_abierto($idperiodo = null){
+	/*public function get_centro_costo_periodo_abierto($idperiodo = null){
 		$data_periodo = $this->db->select('cc.nombre, pr.id_periodo, pr.id_empresa, pr.id_centro_costo')
 						  ->from('rem_periodo_remuneracion pr')
 						  ->join('rem_centro_costo as cc','pr.id_centro_costo = cc.id_centro_costo')
@@ -66,21 +66,41 @@ public function get_centro_costo(){
 
 		$query = $this->db->get();
 		return $query->result() ;
-	}	
+	}	*/
+
+
+	public function get_centro_costo_periodo_abierto($idperiodo = null){
+		$data_periodo = "select id_centro_costo, nombre 
+						from rem_centro_costo 
+						where id_empresa =".$this->session->userdata('empresaid')." 
+						and valido is not null 
+						and id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ".$this->session->userdata('empresaid').")						
+						and id_centro_costo  in (select pr.id_centro_costo  
+													from rem_periodo_remuneracion as pr
+													where pr.id_periodo = " . $idperiodo . "
+													and pr.id_empresa =".$this->session->userdata('empresaid')."
+													
+													and cierre is not null)"; 
+    //	echo $data_periodo; 
+    	$query= $this->db->query($data_periodo);
+   		return $query->result();
+	}
 
 	Public function get_centro_costo_no_calculado($mes,$anno){
 		$data_periodo = "select id_centro_costo, nombre 
 						from rem_centro_costo 
 						where id_empresa =".$this->session->userdata('empresaid')." 
 						and valido is not null 
+						and id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ".$this->session->userdata('empresaid').")						
 						and id_centro_costo not in (select pr.id_centro_costo  
 													from rem_periodo_remuneracion as pr
 													join rem_periodo as p on pr.id_periodo = p.id_periodo
 													where p.mes =".$mes." 
 													and p.anno = ".$anno."
 													and pr.id_empresa =".$this->session->userdata('empresaid')."
+													
 													and cierre is not null)"; 
-    	
+    //	echo $data_periodo; 
     	$query= $this->db->query($data_periodo);
    		return $query->result();
     	
@@ -91,13 +111,15 @@ public function get_centro_costo(){
 	public function get_centro_costo_pendiente($idperiodo =null){
 
 		$data_periodo = "select id_centro_costo, nombre 
-						from rem_centro_costo
+						from rem_centro_costo 
 						where id_empresa =".$this->session->userdata('empresaid')." 
-						and valido is not null
-						and id_centro_costo not in (select id_centro_costo 
-													from rem_periodo_remuneracion
-													where id_periodo =".$idperiodo."
-													and id_empresa =".$this->session->userdata('empresaid')." 
+						and valido is not null 
+						and id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ".$this->session->userdata('empresaid').")						
+						and id_centro_costo not in (select pr.id_centro_costo  
+													from rem_periodo_remuneracion as pr
+													where pr.id_periodo = ".$idperiodo."
+													and pr.id_empresa =".$this->session->userdata('empresaid')."
+													
 													and cierre is not null)";
 
         $query= $this->db->query($data_periodo);
@@ -119,12 +141,14 @@ public function get_centro_costo(){
 						  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('pr.aprueba is null')
 		                  ->where('pr.cierre is not null')
+		                  ->where('pr.id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ' . $this->session->userdata('empresaid') . ')')
 		                  ->order_by('p.anno','desc')
 		                  ->order_by('p.mes','desc');
 
 		$data_periodo = is_null($idperiodo)	? $data_periodo : $data_periodo->where('pr.id_periodo',$idperiodo);
 
 		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
 		
 		return is_null($idperiodo) ? $query->result() : $query->row();
 	}
@@ -1554,6 +1578,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 						    inner join rem_personal p on r.idpersonal = p.id_personal
                             where p.id_empresa = ' . $this->session->userdata('empresaid') . ' and r.id_periodo = ' . $idperiodo );
 
+
+
 		$personal = $this->get_personal(null,$centro_costo); 
 
 
@@ -2055,6 +2081,28 @@ limit 1		*/
 		return $datos;
 
 	}
+
+public function get_periodos_cerrados_detalle($empresaid,$idperiodo = null,$idcentrocosto = null){
+		$sql_centro_costo = is_null($idcentrocosto) ? '' : 'and pe.idcentrocosto = ' . $idcentrocosto;
+		$sql_centro_costo_rem = is_null($idcentrocosto) ? '' : 'and r.idcentrocosto = ' . $idcentrocosto;
+
+
+		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, max(pr.cierre) as cierre, pr.aprueba, (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo_rem . ') as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoliquido', false)
+						  ->from('rem_periodo as p')
+						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
+						  ->where('pr.id_empresa', $empresaid)
+		                  ->where('pr.cierre is not null')
+		                  ->group_by('p.id_periodo, p.mes, p.anno, pr.aprueba')
+		                  ->order_by('p.anno desc')
+		                  ->order_by('p.mes desc');
+		$periodo_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.id_periodo',$idperiodo);
+		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
+		//$datos = is_null($idperiodo) ? $query->result() : $query->row();				                  
+		$datos = $query->result();				                  
+		return $datos;
+
+	}	
 	/*public function get_periodos_cerrados($empresaid,$idperiodo = null,$idcentrocosto = null){
 		$sql_centro_costo = is_null($idcentrocosto) ? 'and pe.idcentrocosto = cc.id_centro_costo' : 'and pe.idcentrocosto = ' . $idcentrocosto;
 		$sql_centro_costo_rem = is_null($idcentrocosto) ? 'and pe.idcentrocosto = cc.id_centro_costo' : 'and r.idcentrocosto = ' . $idcentrocosto;
@@ -2542,7 +2590,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
-						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and pr.id_empresa = ' . $this->session->userdata('empresaid'))
+						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and pr.id_empresa = ' . $this->session->userdata('empresaid') . ' and pe.idcentrocosto = pr.id_centro_costo')
 						  ->join('rem_isapre as i','pe.idisapre = i.id_isapre')
 						  ->join('rem_cargos as c','pe.idcargo = c.id_cargos')
 						  ->join('rem_afp as a','pe.idafp = a.id_afp')

@@ -1140,14 +1140,15 @@ public function get_bonos($idtrabajador = null){
 
 
 
-	public function get_centro_costo($idcentrocosto = null){
+	public function get_centro_costo($idcentrocosto = null,$tipo = 'all'){
 
 			$centrocosto_data = $this->db->select('id_centro_costo, nombre, codigo')	
 						  ->from('rem_centro_costo')
 						  ->where('valido',1)
 						  ->where('id_empresa',$this->session->userdata('empresaid'))
 		                  ->order_by('nombre');
-		$centrocosto_data = is_null($idcentrocosto) ? $centrocosto_data : $centrocosto_data->where('id_centro_costo',$idcentrocosto);  		                  
+		$centrocosto_data = is_null($idcentrocosto) ? $centrocosto_data : $centrocosto_data->where('id_centro_costo',$idcentrocosto);  	
+		$centrocosto_data = $tipo == 'trabajadores'	? $centrocosto_data->where('id_centro_costo in (select idcentrocosto from rem_personal where id_empresa = ' . $this->session->userdata('empresaid') . ')') : $centrocosto_data;	                  
 		$query = $this->db->get();
 
 		return $query->result();
