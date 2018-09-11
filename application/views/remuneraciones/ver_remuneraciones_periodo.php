@@ -98,7 +98,7 @@
 												                        <?php foreach ($remuneraciones as $remuneracion) { ?>
 												                         <tr >
 												                          <td><?php echo $i;?></td>
-												                          <td><?php echo $remuneracion->nombre." ".$remuneracion->apaterno." ".$remuneracion->amaterno;?></td>
+												                          <td><?php echo $remuneracion->apaterno." ".$remuneracion->amaterno." ".$remuneracion->nombre;?></td>
 												                          <td>$&nbsp;<?php echo number_format($remuneracion->sueldobase,0,".",".");?></td>
 												                          <td>$&nbsp;<?php echo number_format($remuneracion->totalhaberes,0,".",".");?></td>
 												                          <td>$&nbsp;<?php echo number_format($remuneracion->totaldescuentos,0,".",".");?></td>
