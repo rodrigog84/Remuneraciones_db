@@ -734,7 +734,7 @@
 								                              <label for="rut">Sindicato</label>
 																<select name="sindicato" id="sindicato" class="form-control">
 																	<option value="SI">SI</option>
-																	<option value="NO">NO</option>
+																	<option value="NO" selected>NO</option>
 																
 																</select>
 
@@ -747,7 +747,7 @@
 								                              <label for="rut">Semana Corrida</label>
 																<select name="semana_corrida" id="semana_corrida" class="form-control">
 																	<option value="SI">SI</option>
-																	<option value="NO">NO</option>
+																	<option value="NO" selected>NO</option>
 																
 																</select>
 								                            </div>
