@@ -78,7 +78,7 @@
 									                      <form id="formprevafp" action="<?php echo base_url();?>rrhh/submit_personal_afp" method="post" role="form" enctype="multipart/form-data">
 									                      <section id="new">
 									                        <h3 class="page-header">Listado de Colaboradores</h3>
-									                        <table  class="table table-bordered table-striped dt-responsive">
+									                        <table id="listado_prevision_afp" class="table table-bordered table-striped dt-responsive">
 									                        <thead>
 									                          <tr>
 									                            <th rowspan="2"><small>#</small></th>
@@ -100,7 +100,7 @@
 									                            <?php $i = 1; ?>
 									                            <?php foreach ($personal as $trabajador) { ?>
 
-									                             <tr >
+									                             <tr>
 									                              <td><small><?php echo $i ;?></small></td>
 									                              <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
 									                              <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
@@ -138,16 +138,21 @@
 									                                </select>
 									                              </td>
 									                              <td class="text-right" ><b><span id="cotobligatoria_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo $porc_afp;?>&nbsp;%</span></b></td>
-									                              <td class="form-group">
-									                                <input type="text" name="cotadic_<?php echo $trabajador->id_personal;?>" id="cotadic_<?php echo $trabajador->id_personal;?>" class="form-control input-sm cot_adic" value="<?php echo $trabajador->adicafp; ?>"  />   
-									                              </td>
-									                              <td class="form-group">
+									                              <td>
+									                              	<div class=form-group">
+									                                	<input type="text" name="cotadic_<?php echo $trabajador->id_personal;?>" id="cotadic_<?php echo $trabajador->id_personal;?>" class="form-control input-sm cot_adic" value="<?php echo $trabajador->adicafp; ?>"  />   
+									                            	  </td>
+									                          		</div>
+									                              <td>
+									                              	<div class="form-group">
 									                                <select name="tipcotvol_<?php echo $trabajador->id_personal;?>" id="tipcotvol_<?php echo $trabajador->id_personal;?>" class="form-control  input-sm tipcotvol_list"  >
 									                                <option value="pesos" <?php echo $trabajador->tipoahorrovol == 'pesos' ? 'selected' : ''; ?> >($) Pesos</option>
 									                                <option value="porcentaje" <?php echo $trabajador->tipoahorrovol == 'porcentaje' ? 'selected' : ''; ?>>(%) Porcentaje</option>
 									                                </select>
+									                            	</div>
 									                              </td>
-									                              <td class="form-group">
+									                              <td>
+									                              	<div  class="form-group">
 
 									                                <?php if($trabajador->tipoahorrovol == 'pesos' && !is_null($trabajador->ahorrovol)){
 									                                        $ahorrovol = number_format($trabajador->ahorrovol,0,".",".");
@@ -159,6 +164,7 @@
 									                                        $class2 = "cot_vol";
 									                                        } ?>
 									                                <input type="text" name="cotvol_<?php echo $trabajador->id_personal;?>" id="cotvol_<?php echo $trabajador->id_personal;?>" class="form-control <?php echo $class1." ".$class2; ?> input-sm numeros" value="<?php echo $ahorrovol; ?>"  />   
+									                            </div>
 									                              </td>
 									                            </tr>
 									                            <?php $i++;?>
@@ -182,7 +188,7 @@
 								                      <form id="formapv" action="<?php echo base_url();?>rrhh/submit_personal_apv" method="post" role="form" enctype="multipart/form-data">
 								                      <section id="new">
 								                        <h3 class="page-header">Listado de Colaboradores</h3>
-								                        <table  class="table table-bordered table-striped dt-responsive">
+								                        <table  id="listado_apv_colaborador" class="table table-bordered table-striped dt-responsive">
 								                        <thead>
 								                          <tr>
 								                            <th style="width: 3%;"><small>#</small></th>
@@ -201,12 +207,13 @@
 								                            <?php $i = 1; ?>
 								                            <?php foreach ($personal as $trabajador) { ?>
 
-								                             <tr >
+								                             <tr>
 								                              <td><small><?php echo $i ;?></small></td>
 								                              <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
 								                              <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
-								                              <td class="form-group">
-								                                <select name="instapv_<?php echo $trabajador->id_personal;?>" id="instapv_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm dapv_list"  >
+								                              <td>
+								                              	<div class="form-group">
+								                                	<select name="instapv_<?php echo $trabajador->id_personal;?>" id="instapv_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm dapv_list"  >
 								                                    <option value="">Seleccione Instituci&oacute;n</option>
 								                                    <?php foreach ($apvs as $dapv) { ?>
 								                                          <?php $apvselected = $dapv->id_apv == $trabajador->instapv ? "selected" : ""; ?>
@@ -214,18 +221,25 @@
 								                                      <?php  } ?>
 								                              
 								                                </select>
+								                            	</div>
 								                              </td>  
-								                              <td class="form-group">
+								                              <td>
+								                              	<div class="form-group">
 								                                <input type="text" name="nrocontratoapv_<?php echo $trabajador->id_personal;?>" id="nrocontratoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros nrocontratoapv" value="<?php echo $trabajador->nrocontratoapv; ?>"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> />   
-								                              </td>                                                          
-								                              <td class="form-group ">
-								                                <select name="tipoapv_<?php echo $trabajador->id_personal;?>" id="tipoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm apv_list"  <?php echo is_null($trabajador->instapv)|| $trabajador->instapv == 0  ? 'disabled' : ''; ?> >
-								                                <option value="pesos" <?php echo $trabajador->tipocotapv == 'pesos' ? 'selected' : ''; ?>>($) Pesos</option>
-								                                <option value="uf" <?php echo $trabajador->tipocotapv == 'uf' ? 'selected' : ''; ?> >U.F.</option>
-								                                <option value="porcentaje" <?php echo $trabajador->tipocotapv == 'porcentaje' ? 'selected' : ''; ?>>(%) Porc.</option>
-								                                </select>
+								                              </div>
 								                              </td>
-								                              <td class="form-group">
+
+								                              <td>
+								                              	<div class="form-group">
+								                                	<select name="tipoapv_<?php echo $trabajador->id_personal;?>" id="tipoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm apv_list"  <?php echo is_null($trabajador->instapv)|| $trabajador->instapv == 0  ? 'disabled' : ''; ?> >
+								                                	<option value="pesos" <?php echo $trabajador->tipocotapv == 'pesos' ? 'selected' : ''; ?>>($) Pesos</option>
+								                                	<option value="uf" <?php echo $trabajador->tipocotapv == 'uf' ? 'selected' : ''; ?> >U.F.</option>
+								                                	<option value="porcentaje" <?php echo $trabajador->tipocotapv == 'porcentaje' ? 'selected' : ''; ?>>(%) Porc.</option>
+								                                	</select>
+								                                </div>
+								                              </td>
+								                              <td>
+								                              	<div class="form-group">
 								                                <?php if($trabajador->tipocotapv == 'pesos' && !is_null($trabajador->cotapv)){
 								                                        $cotapv = number_format($trabajador->cotapv,0,".",".");
 								                                        $class1 = "miles";
@@ -240,16 +254,21 @@
 								                                        $class2 = "";                                        
 								                                        } ?>                              
 								                                <input type="text" name="apv_<?php echo $trabajador->id_personal;?>" id="apv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros cot_apv <?php echo $class1." ".$class2; ?>" value="<?php echo $cotapv; ?>" <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0  ? 'disabled' : ''; ?> />   
+								                              </div>
 								                              </td>  
-								                              <td class="form-group">
+								                              <td>
+								                              	<div class="form-group">
 								                                <select name="formapagoapv_<?php echo $trabajador->id_personal;?>" id="formapagoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> >
 								                                <option value="1" <?php echo is_null($trabajador->formapagoapv) || $trabajador->formapagoapv == 1 ? 'selected' : ''; ?> >Directa</option>
 								                                <option value="2" <?php echo $trabajador->formapagoapv == 2 ? 'selected' : ''; ?> >Indirecta</option>
 								                                </select>                              
+								                              </div>
 								                              </td>       
-								                              <td class="form-group">
+								                              <td>
+								                              	<div class="form-group">
 								                              <?php $depconvapv = is_null($trabajador->depconvapv) ? 0 : number_format($trabajador->depconvapv,0,".","."); ?>
 								                                <input type="text" name="depconvapv_<?php echo $trabajador->id_personal;?>" id="depconvapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm miles depconvapv" value="<?php echo $depconvapv; ?>" <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0  ? 'disabled' : ''; ?> />   
+								                              </div>
 								                              </td>                                                      
 								                            </tr>
 								                            <?php $i++;?>
@@ -272,7 +291,7 @@
 								                      <form id="formsalud" action="<?php echo base_url();?>rrhh/submit_salud" method="post" role="form" enctype="multipart/form-data">
 								                      <section id="new">
 								                        <h3 class="page-header">Listado de Colaboradores</h3>
-								                        <table  class="table table-bordered table-striped dt-responsive">
+								                        <table  id="cotizacion_de_salud" class="table  table-striped dt-responsive">
 								                        <thead>
 								                          <tr>
 								                            <th >#</th>
@@ -341,7 +360,7 @@
 
 
 $(function () {
-        $('#listado').dataTable({
+        $('#listado,#listado_prevision_afp,#cotizacion_de_salud,#listado_apv_colaborador').dataTable({
           "bLengthChange": true,
           "bFilter": true,
           "bInfo": true,
@@ -364,6 +383,16 @@ $(function () {
             }              
           }          
         });
+
+
+       /* $('#listado_prevision_afp,#cotizacion_de_salud,#listado_apv_colaborador').dataTable({
+          "bLengthChange": true,
+          "bFilter": true,
+          "bInfo": true,
+          "bSort": false,
+          "bAutoWidth": false});*/
+
+
       });
 
 
