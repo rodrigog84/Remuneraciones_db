@@ -29,7 +29,7 @@
 																		<tr class="active" id="variable">
 											                              <td><small><?php echo $i ;?></small></td>
 	                              										  <td><small><?php echo $haber_descuento->rut."-".$haber_descuento->dv;?></small>
-	                              										  <td><small><?php echo $haber_descuento->nombre_colaborador."  ".$haber_descuento->apaterno." ".$haber_descuento->amaterno;?></small></td>
+	                              										  <td><small><?php echo $haber_descuento->apaterno." ".$haber_descuento->amaterno." ".$haber_descuento->nombre_colaborador;?></small></td>
                                                       <td><small><?php echo $haber_descuento->tipo;?></small></td>
 	                              										  <td><small><?php echo $haber_descuento->codigo;?></small></td>
                                                       <td><small><?php echo $haber_descuento->nombre;?></small></td>
