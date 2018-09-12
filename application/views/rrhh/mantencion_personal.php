@@ -213,7 +213,7 @@
 								                              <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
 								                              <td>
 								                              	<div class="form-group">
-								                                	<select name="instapv_<?php echo $trabajador->id_personal;?>" id="instapv_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm dapv_list"  >
+								                                	<select style="width: 170px; name="instapv_<?php echo $trabajador->id_personal;?>" id="instapv_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm dapv_list"  >
 								                                    <option value="">Seleccione Instituci&oacute;n</option>
 								                                    <?php foreach ($apvs as $dapv) { ?>
 								                                          <?php $apvselected = $dapv->id_apv == $trabajador->instapv ? "selected" : ""; ?>
