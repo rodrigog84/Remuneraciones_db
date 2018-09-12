@@ -88,7 +88,7 @@
 												                        <th>Haberes</th>
 												                        <th>Descuentos</th>
 												                        <th>Liquido a Pagar</th>
-												                        <th>Aportes Patronales</th>
+												                        <th>Aportes Empresa</th>
 												                        <th>Liquidaci&oacute;n</th>
 												                        
 																		</tr> 
