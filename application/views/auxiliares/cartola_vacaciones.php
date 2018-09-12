@@ -24,7 +24,7 @@
                     </td>
                     <td>
                     <p><b>Fecha Ingreso</b></p>
-                    <p><i class="fa fa-circle-o text-light-blue"></i>&nbsp;&nbsp;<?php echo $personal->fecingreso; ?></p>
+                    <p><i class="fa fa-circle-o text-light-blue"></i>&nbsp;&nbsp;<?php echo formato_fecha($personal->fecingreso,'Y-m-d','d/m/Y'); ?></p>
                   <p><b>D&iacute;as Progresivos Devengados</b></p>
                   <p><i class="fa fa-circle-o text-light-blue"></i>&nbsp;&nbsp;<?php echo number_format($num_dias_progresivos,2,",","."); ?></p>               
                   <p><b>Saldo Vacaciones</b></p>
