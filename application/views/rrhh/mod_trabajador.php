@@ -2140,6 +2140,10 @@ $(document).ready(function() {
                 validators: {
                     notEmpty: {
                         message: 'N&uacute;mero de Ficha es requerido'
+                  },
+                  numeric: {
+                  	separator: '.',
+                        message: 'Numero de Ficha s&oacute;lo puede contener n&uacute;meros'
                   }
              }
             },
