@@ -2344,7 +2344,7 @@ public function get_periodos_cerrados_detalle($empresaid,$idperiodo = null,$idce
 			 $sheet->getColumnDimension('AM')->setWidth(15);			
 			 $sheet->setCellValue('AM'.$i, 'Mutual de Seguridad');	 
 			 $sheet->getColumnDimension('AN')->setWidth(15);			
-			 $sheet->setCellValue('AN'.$i, 'Total Aportes Patronales');	 
+			 $sheet->setCellValue('AN'.$i, 'Total Aportes Empresa');	 
 
 
 
