@@ -2932,6 +2932,47 @@ public function editar_trabajador(){
 	}	
 
 
+public function exporta_colaborador($idpersonal = null)
+	{
+		
+		//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			set_time_limit(0);
+
+			//$periodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+			$datos_colaborador = $this->rrhh_model->get_personal_datos($idpersonal);
+
+			if(is_null($idpersonal)){
+				//redirect('main/dashboard/');
+				$datosdetalle = $this->rrhh_model->exporta_colaborador($datos_colaborador);
+			}else{
+				
+					$datosdetalle = $this->rrhh_model->exporta_colaborador($datos_colaborador);
+				}
+
+		
+			exit;
+
+
+		/*}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}*/
+
+	}	
+
+
+
+
+
 public function previred($idperiodo = null)
 	{
 
