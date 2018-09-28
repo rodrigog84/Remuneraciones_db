@@ -22,9 +22,11 @@
 											<div class="tab-pane <?php echo $mantencion_personal; ?>" id="personal">
 												<section id="personales">										
 											
-													<h3 class="inner-tittle two">Ficha Colaborador <a href="<?php echo base_url();?>rrhh/add_trabajador" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Colaborador</a>
+													<h3 class="inner-tittle two">Ficha Colaborador 
+														<a href="<?php echo base_url();?>rrhh/add_trabajador" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Colaborador</a>
 														&nbsp;&nbsp;
-														<a href="<?php echo base_url();?>rrhh/carga_masiva_personal" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a>
+														<a href="<?php echo base_url();?>rrhh/carga_masiva_personal" type="submit" class="btn btn-info"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a>
+														<a href="<?php echo base_url();?>rrhh/exporta_colaborador/" type="button" class="btn btn-success"><span class="fa fa-file-excel-o"></span>&nbsp;&nbsp;Exportar a Excel</a>
 													</h3>
 
 													  <div class="graph">
@@ -57,7 +59,9 @@
 																				<!--<a href="<?php echo base_url();?>rrhh/mod_trabajador" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>-->
 																				<a href="<?php echo base_url();?>rrhh/mod_trabajador/<?php echo $trabajador->rut ?>" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>
         																		<!--<a href="#" class="btn btn-info" role="button">Link Button</a>-->
+        																		<a href="<?php echo base_url();?>rrhh/exporta_colaborador/<?php echo $trabajador->rut ?>" class="btn btn-success" id="Exportar_excel" title="Exportar a Excel"><i class="fa fa-file-excel-o" aria-hidden="true" type="button"></i></a>
         																		<a href="#" onclick="desactivar_colaborador(<?php echo $trabajador->rut;?>)" class="btn btn-danger" id="Desactivar" title="Activar/Desactivar" data-toggle="modal" data-target="#myModalElim"><i class="fa fa-times" aria-hidden="true" type="button"></i></a>
+
 																			</td>
 																		</tr> 
 
@@ -385,15 +389,37 @@ $(function () {
         });
 
 
-       /* $('#listado_prevision_afp,#cotizacion_de_salud,#listado_apv_colaborador').dataTable({
-          "bLengthChange": true,
-          "bFilter": true,
-          "bInfo": true,
-          "bSort": false,
-          "bAutoWidth": false});*/
+
 
 
       });
+/*
+$(function (){
+      $('#listado').DataTable( {
+        initComplete: function () {
+            this.api().columns([0,1,2]).every( function () {
+                var column = this;
+                var select = $('<select><option value="     "></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        }
+    } );
+} );*/
+
+
 
 
 </script>											
