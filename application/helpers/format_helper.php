@@ -237,6 +237,62 @@ if (!function_exists('date2string'))
       $orden_letras[48] = "AW";
       $orden_letras[49] = "AX";
       $orden_letras[50] = "AY";
+      $orden_letras[50] = "AZ";
+      $orden_letras[51] = "BA";
+      $orden_letras[52] = "BB";
+      $orden_letras[53] = "BC";
+      $orden_letras[54] = "BD";
+      $orden_letras[55] = "BE";
+      $orden_letras[56] = "BF";
+      $orden_letras[57] = "BG";
+      $orden_letras[58] = "BH";
+      $orden_letras[59] = "BI";
+      $orden_letras[60] = "BJ";
+      $orden_letras[61] = "BK";
+      $orden_letras[62] = "BL";
+      $orden_letras[63] = "BM";
+      $orden_letras[64] = "BN";
+      $orden_letras[65] = "BO";
+      $orden_letras[66] = "BP";
+      $orden_letras[67] = "BQ";
+      $orden_letras[68] = "BR";
+      $orden_letras[69] = "BS";
+      $orden_letras[70] = "BT";
+      $orden_letras[71] = "BU";
+      $orden_letras[72] = "BV";
+      $orden_letras[73] = "BW";
+      $orden_letras[74] = "BX";
+      $orden_letras[75] = "BY";
+      $orden_letras[76] = "BZ";
+      $orden_letras[77] = "CA";
+      $orden_letras[78] = "CB";
+      $orden_letras[79] = "CC";
+      $orden_letras[80] = "CD";
+      $orden_letras[81] = "CE";
+      $orden_letras[82] = "CF";
+      $orden_letras[83] = "CG";
+      $orden_letras[84] = "CH";
+      $orden_letras[85] = "CI";
+      $orden_letras[86] = "CJ";
+      $orden_letras[87] = "CK";
+      $orden_letras[88] = "CL";
+      $orden_letras[89] = "CM";
+      $orden_letras[90] = "CN";
+      $orden_letras[91] = "CO";
+      $orden_letras[92] = "CP";
+      $orden_letras[93] = "CQ";
+      $orden_letras[94] = "CR";
+      $orden_letras[95] = "CS";
+      $orden_letras[96] = "CT";
+      $orden_letras[97] = "CU";
+      $orden_letras[98] = "CV";
+      
+
+
+
+
+
+
 
 
       return $orden_letras[$valor];

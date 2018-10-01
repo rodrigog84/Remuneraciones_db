@@ -2878,8 +2878,7 @@ public function exporta_colaborador($datos_colaborador){
 			 $sheet->getColumnDimension('AY')->setWidth(15);			
 			 $sheet->setCellValue('AY'.$i, 'Saldo Inicio Vacaciones Programadas');
 			 $sheet->getColumnDimension('AZ')->setWidth(15);			
-			 $sheet->setCellValue('AZ'.$i, 'id Centro Costo');
-			 
+			 $sheet->setCellValue('AZ'.$i, 'id Centro Costo');		 
 
 			 $sheet->getColumnDimension('BA')->setWidth(15);			
 			 $sheet->setCellValue('BA'.$i, 'Talla Polera');	
@@ -2933,8 +2932,6 @@ public function exporta_colaborador($datos_colaborador){
 			 $sheet->setCellValue('BY'.$i, 'id Motivo Egreso');
 			 $sheet->getColumnDimension('BZ')->setWidth(15);			
 			 $sheet->setCellValue('BZ'.$i, 'id Tipo cc');
-			 
-
 			 $sheet->getColumnDimension('CA')->setWidth(15);			
 			 $sheet->setCellValue('CA'.$i, 'id Seccion');	
 			 $sheet->getColumnDimension('CB')->setWidth(15);			
@@ -2983,9 +2980,9 @@ public function exporta_colaborador($datos_colaborador){
 
 
 
-			 $columnaFinal = 50;
-			 $mergeTotal = 50;
-			 $columnaTotales = 99;
+			 $columnaFinal = 98;
+			 $mergeTotal = 99;
+			 $columnaTotales = 98;
 			 $sheet->getStyle("B".$i.":".ordenLetrasExcel($columnaFinal).$i)->getFont()->setBold(true);
 			 $i++;
 			 
