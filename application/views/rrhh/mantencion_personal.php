@@ -364,7 +364,7 @@
 
 
 $(function () {
-        $('#listado,#listado_prevision_afp,#cotizacion_de_salud,#listado_apv_colaborador').dataTable({
+        $('#listado_prevision_afp,#cotizacion_de_salud,#listado_apv_colaborador').dataTable({
           "bLengthChange": true,
           "bFilter": true,
           "bInfo": true,
@@ -388,11 +388,49 @@ $(function () {
           }          
         });
 
-
-
-
-
       });
+
+
+
+$(document).ready(function() {
+
+    var table = $('#listado').DataTable({
+    	"bLengthChange": true,
+          "bFilter": true,
+          "bInfo": true,
+          "bSort": false,
+          "bAutoWidth": false,
+          "aLengthMenu" : [[5,15,30,45,100,-1],[5,15,30,45,100,'Todos']],
+          "iDisplayLength": 5,
+          "oLanguage": {
+              "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+              "sZeroRecords": "No se encontraron registros",
+              "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+              "sInfoEmpty": "Mostrando 0 de 0 registros",
+              "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+              "sSearch":        "Buscar:",
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":    "Último",
+                "sNext":    "Siguiente",
+                "sPrevious": "Anterior"}            } ,
+        		initComplete: function () {
+               		var div=$('#listado_wrapper');
+    				div.find("#listado_filter").prepend("<label for='idEstado'>Estado:</label> <select id='idEstado' name='idEstado' class='form-control' required><option value='' selected='selected'>Todos</option><option value='Activo'>Activo</option><option value='Inactivo'>Inactivo</option></select>");
+            		this.api().column(4).each(function () {
+                	var column = this;
+               		console.log(column.data());
+                	$('#idEstado').on('change',function(){
+                		var val=$(this).val();
+                		column.search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                });
+            });
+        }
+    });
+    });
+
+
 /*
 $(function (){
       $('#listado').DataTable( {
