@@ -2394,8 +2394,16 @@ public function editar_trabajador(){
 			//$centros_costo = $this->admin->get_centro_costo(null,'trabajadores');
 			$centros_costo = $this->rrhh_model->get_centro_costo_no_calculado($mes,$anno);
 			$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos_resumen(); 
-			//echo "<pre>";
-			//print_r($periodos_remuneracion); exit;
+			
+
+			if ($periodos_remuneracion == null){
+				$mes_curso = $mes;
+				$anno_curso = $anno;
+			}else{
+				$mes_curso = $periodos_remuneracion[0]->mes;
+				$anno_curso = $periodos_remuneracion[0]->anno;
+			}
+
 			$personal = $this->rrhh_model->get_personal(); 
 			
 			$array_remuneracion_trabajador = array();
@@ -2530,6 +2538,8 @@ public function editar_trabajador(){
 						'title' => 'Remuneraciones',
 						'subtitle' => 'Calculo Remuneraci&oacute;n');
 
+			$vars['mes_curso'] = $mes_curso;
+			$vars['anno_curso'] = $anno_curso;
 			$vars['content_menu'] = $content;				
 			$vars['mes'] = $mes;	
 			$vars['anno'] = $anno;	

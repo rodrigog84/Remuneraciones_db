@@ -36,18 +36,18 @@
 									                            <div class="form-group">
 									                                <label for="mes">Meses</label>
 									                                <select name="mes" id="mes" class="form-control periodo">
-									                                  <option value="1" <?php echo $mes == 1 ? "selected" : ""; ?>>Enero</option>
-									                                  <option value="2" <?php echo $mes == 2 ? "selected" : ""; ?>>Febrero</option>
-									                                  <option value="3" <?php echo $mes == 3 ? "selected" : ""; ?>>Marzo</option>
-									                                  <option value="4" <?php echo $mes == 4 ? "selected" : ""; ?>>Abril</option>
-									                                  <option value="5" <?php echo $mes == 5 ? "selected" : ""; ?>>Mayo</option>
-									                                  <option value="6" <?php echo $mes == 6 ? "selected" : ""; ?>>Junio</option>
-									                                  <option value="7" <?php echo $mes == 7 ? "selected" : ""; ?>>Julio</option>
-									                                  <option value="8" <?php echo $mes == 8 ? "selected" : ""; ?>>Agosto</option>
-									                                  <option value="9" <?php echo $mes == 9 ? "selected" : ""; ?>>Septiembre</option>
-									                                  <option value="10" <?php echo $mes == 10 ? "selected" : ""; ?>>Octubre</option>
-									                                  <option value="11" <?php echo $mes == 11 ? "selected" : ""; ?>>Noviembre</option>
-									                                  <option value="12" <?php echo $mes == 12 ? "selected" : ""; ?>>Diciembre</option>
+									                                  <option value="1" <?php echo $mes_curso == 1 ? "selected" : ""; ?>>Enero</option>
+									                                  <option value="2" <?php echo $mes_curso == 2 ? "selected" : ""; ?>>Febrero</option>
+									                                  <option value="3" <?php echo $mes_curso == 3 ? "selected" : ""; ?>>Marzo</option>
+									                                  <option value="4" <?php echo $mes_curso == 4 ? "selected" : ""; ?>>Abril</option>
+									                                  <option value="5" <?php echo $mes_curso == 5 ? "selected" : ""; ?>>Mayo</option>
+									                                  <option value="6" <?php echo $mes_curso == 6 ? "selected" : ""; ?>>Junio</option>
+									                                  <option value="7" <?php echo $mes_curso == 7 ? "selected" : ""; ?>>Julio</option>
+									                                  <option value="8" <?php echo $mes_curso == 8 ? "selected" : ""; ?>>Agosto</option>
+									                                  <option value="9" <?php echo $mes_curso == 9 ? "selected" : ""; ?>>Septiembre</option>
+									                                  <option value="10" <?php echo $mes_curso == 10 ? "selected" : ""; ?>>Octubre</option>
+									                                  <option value="11" <?php echo $mes_curso == 11 ? "selected" : ""; ?>>Noviembre</option>
+									                                  <option value="12" <?php echo $mes_curso == 12 ? "selected" : ""; ?>>Diciembre</option>
 									                                </select>
 									                            </div> 
 									                          </div>
@@ -56,7 +56,7 @@
 									                                <label for="anno">A&ntilde;o</label>
 									                                <select name="anno" id="anno" class="form-control periodo">
 									                                  <?php for($i=(date('Y')-2);$i<=(date('Y')+2);$i++){ ?>
-									                                  <?php $yearselected = $i == $anno ? "selected" : ""; ?>
+									                                  <?php $yearselected = $i == $anno_curso ? "selected" : ""; ?>
 									                                  <option value="<?php echo $i;?>" <?php echo $yearselected; ?>><?php echo $i;?></option>
 									                                  <?php } ?>
 									                                </select>

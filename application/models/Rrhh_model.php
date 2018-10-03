@@ -142,8 +142,8 @@ public function get_centro_costo(){
 		                  ->where('pr.aprueba is null')
 		                  ->where('pr.cierre is not null')
 		                  ->where('pr.id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ' . $this->session->userdata('empresaid') . ')')
-		                  ->order_by('p.anno','desc')
-		                  ->order_by('p.mes','desc');
+		                  ->order_by('p.anno','asc')
+		                  ->order_by('p.mes','asc');
 
 		$data_periodo = is_null($idperiodo)	? $data_periodo : $data_periodo->where('pr.id_periodo',$idperiodo);
 
