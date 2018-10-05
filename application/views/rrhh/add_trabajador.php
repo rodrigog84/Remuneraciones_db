@@ -275,11 +275,14 @@
 								                            <div class="form-group">
 								                                <label for="nombre">Jefe o Supervisor</label> 
 								                                <select name="jefe" id="jefe" class="form-control">
-																	<option value="">Seleccione Jefe o Supervisor</option>
-						                                    		<?php foreach ($personal as $trabajador) { ?>
-								                                      <?php $jefeselected = $trabajador->id_personal == $datos_form['idjefe'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
-								                                    <?php } ?>
+																	<option value="">Seleccione Jefe o Supervisor</option>																	
+						                                    			<?php foreach ($personal as $trabajador) { ?>
+						                                    				 <?php if ($trabajador->active != 0 ){ ?>
+								                                      			<?php $jefeselected = $trabajador->id_personal == $datos_form['idjefe'] ? "selected" : ""; ?>
+								                                     			<option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->apaterno." ".$trabajador->amaterno." ".$trabajador->nombre;?></option>
+								                                     		<?php } ?>
+								                                   
+								                                    	<?php } ?>
 																</select>
 								                            </div>
 								                          </div>														
@@ -289,8 +292,12 @@
 								                             	<select name="reemplazo" id="reemplazo" class="form-control">
 																	<option value="">Seleccione Reemplazo</option>
 						                                    		<?php foreach ($personal as $trabajador) { ?>
-								                                      <?php $jefeselected = $trabajador->id_personal == $datos_form['idjefe'] ? "selected" : ""; ?>
-								                                      <option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
+						                                    			<?php if ($trabajador->active != 0 ){ ?>
+
+								                                      		<?php $jefeselected = $trabajador->id_personal == $datos_form['idjefe'] ? "selected" : ""; ?>
+								                                      			<option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->apaterno." ".$trabajador->amaterno." ".$trabajador->nombre;?></option>
+								                                      	<?php } ?>
+
 								                                    <?php } ?>
 																</select>
 								                            </div>

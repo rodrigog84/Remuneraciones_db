@@ -276,10 +276,10 @@
 								                                <select name="jefe" id="jefe" class="form-control">
 																	<option value="">Seleccione Jefe o Supervisor</option>
 						                                    		<?php foreach ($personal as $trabajador) { ?>
-								                                      <?php if ($trabajador->rut <> $idrut){ ?>
+								                                      <?php if ($trabajador->rut != $idrut && $trabajador->active != 0 ){ ?>
 
 								                                      	<?php $jefeselected = $trabajador->id == $datos_form['idjefe'] ? "selected" : ""; ?>
-								                                      	<option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
+								                                      	<option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->apaterno." ".$trabajador->amaterno." ".$trabajador->nombre;?></option>
 								                                    	 <?php } ?>
 
 								                                    <?php } ?>
@@ -292,10 +292,10 @@
 								                             	<select name="reemplazo" id="reemplazo" class="form-control">
 																	<option value="">Seleccione Reemplazo</option>
 						                                    		<?php foreach ($personal as $trabajador) { ?>
-								                                      	 <?php if ($trabajador->rut <> $idrut){ ?>
+								                                      	 <?php if ($trabajador->rut != $idrut && $trabajador->active != 0){ ?>
 
 								                                      		<?php $jefeselected = $trabajador->id == $datos_form['idjefe'] ? "selected" : ""; ?>
-								                                      		<option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></option>
+								                                      		<option value="<?php echo $trabajador->id_personal;?>" <?php echo $jefeselected;?> ><?php echo $trabajador->apaterno." ".$trabajador->amaterno." ".$trabajador->nombre;?></option>
 								                                    	<?php } ?>
 								                                    <?php } ?>
 																</select>
