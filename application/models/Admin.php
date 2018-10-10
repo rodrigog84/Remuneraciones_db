@@ -248,6 +248,9 @@ class Admin extends CI_Model
 	}
 
 
+
+
+
 	public function get_afp($idafp = null){
 		$afp_data = $this->db->select('id_afp, nombre, porc, exregimen, codprevired')
 						  ->from('rem_afp a')
@@ -260,8 +263,6 @@ class Admin extends CI_Model
 		$datos = is_null($idafp) ? $query->result() : $query->row();
 		return $datos;
 	}	
-
-
 
 
 	public function add_afp($array_datos){
@@ -343,6 +344,82 @@ class Admin extends CI_Model
 	}	
 
 
+public function delete_apv($idapv){
+
+
+		$this->db->where('id_apv', $idapv);
+		$this->db->update('rem_apv',array('active' => '0')); 
+
+		return 1;
+		/*if($this->db->affected_rows() > 0){ 
+			return 1;
+		}else{ 
+			return -1;
+		}*/
+
+
+
+	}	
+
+public function add_apv($array_datos){
+		$this->db->trans_start();
+
+		$this->db->select('a.id_apv')
+						  ->from('rem_apv as a')
+		                  ->where('upper(a.nombre)', strtoupper($array_datos['nombre']))
+		                  ->where('a.active = 1');		
+
+		$query = $this->db->get();
+		$datos = $query->row();
+		if(count($datos) == 0){ // nueva apv  no existe
+			if($array_datos['idapv'] == 0){
+				$data = array(
+			      	'nombre' => $array_datos['nombre'],			      	
+			      	'codprevired' => $array_datos['codprevired'],
+			      	'active' => 1,
+			      	'updated_at' => date('Ymd H:i:s'),
+			      	'created_at' => date('Ymd H:i:s')
+				);
+
+				$this->db->insert('rem_apv', $data);
+				$idafp = $this->db->insert_id();
+				$this->db->trans_complete();
+
+				return 1;
+			}else{
+				$data = array(
+			      	'nombre' => $array_datos['nombre'],
+			      	'codprevired' => $array_datos['codprevired'],
+			      	'updated_at' => date('Ymd H:i:s')
+				);
+
+
+				$this->db->where('id_apv', $array_datos['idpv']);
+				$this->db->update('rem_apv',$data); 
+				$this->db->trans_complete();
+				return 1;
+			}
+		}else{ // ya existe proveedor nuevo
+
+			if($array_datos['idapv'] != 0){
+				$data = array(
+			      	'nombre' => $array_datos['nombre'],
+			      	'codprevired' => $array_datos['codprevired'],
+			      	'updated_at' => date('Ymd H:i:s')		      	
+				);
+
+
+				$this->db->where('id_apv', $array_datos['idapv']);
+				$this->db->update('rem_apv',$data); 
+				$this->db->trans_complete();
+				return 1;
+			}else{
+				return -1;	
+			}
+			
+		}
+
+	}	
 
 
 	public function get_tabla_impuesto(){
@@ -799,7 +876,7 @@ public function get_cargo_colaborador($idtrabajador = null,$actives = null){
 						  ->order_by('p.active','desc')
 		                  ->order_by('p.apaterno');
 		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);  	
-		$personal_data = is_null($actives) ? $personal_data : $personal_data->where('p.active',1);  		                  
+		//$personal_data = is_null($actives) ? $personal_data : $personal_data->where('p.active',1);  		                  
 
 		$query = $this->db->get();
 		$datos = is_null($idtrabajador) ? $query->result() : $query->row();

@@ -10,6 +10,7 @@ class Admins extends CI_Controller {
       $this->load->library('form_validation');
       $this->load->helper('format');
       $this->load->model('admin');
+      
       if (!$this->ion_auth->logged_in()){
       	 $this->session->set_userdata('uri_array',$this->uri->rsegment_array());
          redirect('auth/login', 'refresh');
@@ -209,6 +210,156 @@ class Admins extends CI_Controller {
 	}
 
 
+public function apv()
+	{	
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			$resultid = $this->session->flashdata('apv_result');
+			if($resultid == 1){
+				$vars['message'] = "APV Agregada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';				
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al agregar APV. APV ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 3){
+				$vars['message'] = "APV Editada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';				
+			}elseif($resultid == 4){
+				$vars['message'] = "Error al eliminar APV. APV no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';				
+			}elseif($resultid == 5){
+				$vars['message'] = "APV Eliminada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';								
+			}
+
+
+			
+
+			$apvs = $this->admin->get_apv();
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Administraci&oacute;n de Apv');
+
+			
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'admins/apv';
+			$vars['apvs'] = $apvs;
+			$vars['dataTables'] = true;
+			
+			
+			$template = "template";
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+
+
+	public function get_apv($idapv){
+
+		$this->load->model('admin');
+		$apv = $this->admin->get_apv($idapv);
+		echo json_encode($apv);
+
+	}
+
+
+    public function submit_apv(){
+		//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+    		
+			$nombre = $this->input->post('nombre');	
+			$codprevired = $this->input->post('codprevired');	
+			$idapv = $this->input->post('idapv');
+
+			
+			
+				$array_datos = array(
+								'nombre' => $nombre,
+								'codprevired' => $codprevired,
+								'idapv' => $idapv);
+			
+
+			
+			$result = $this->admin->add_apv($array_datos);
+
+			if($result == -1){
+				$this->session->set_flashdata('apv_result', 2);	
+			}else{
+				if($idapv == 0){
+					$this->session->set_flashdata('apv_result', 1);	
+				}else{
+					$this->session->set_flashdata('apv_result', 3);	
+				}
+			}
+
+			
+			redirect('admins/apv');	
+
+
+	/*	}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		*/
+
+
+	}
+
+	public function delete_apv($idapv = 0)
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$result = $this->admin->delete_apv($idapv);
+			var_dump($result);
+			if($result == -1){
+				$this->session->set_flashdata('apv_result', 4);	
+			}else{
+				$this->session->set_flashdata('apv_result', 5);	
+				
+			}
+
+			redirect('admins/apv');	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+
+
+
 	public function add_afp($idafp = 0)
 	{
 
@@ -256,6 +407,8 @@ class Admins extends CI_Controller {
 		}
 
 	}	
+
+
 
 
 
