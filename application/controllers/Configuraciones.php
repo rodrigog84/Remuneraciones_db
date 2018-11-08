@@ -10,6 +10,8 @@ class Configuraciones extends CI_Controller {
       $this->load->library('form_validation');
       $this->load->helper('format');
       $this->load->model('configuracion');
+      $this->load->model('admin');
+      $this->load->helper('download');
       if (!$this->ion_auth->logged_in()){
       	 $this->session->set_userdata('uri_array',$this->uri->rsegment_array());
          redirect('auth/login', 'refresh');
@@ -101,6 +103,321 @@ class Configuraciones extends CI_Controller {
 
 		}*/	
 
+
+	}
+
+
+	public function plantilla_banco(){
+			if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+				$plantillas_bancos = $this->configuracion->get_plantilla_banco();
+
+							
+				$content = array(
+							'menu' => 'Remuneraciones',
+							'title' => 'Remuneraciones',
+							'subtitle' => 'Creación Plantillas Bancos');
+
+				$vars['content_menu'] = $content;
+							
+				$vars['content_view'] = 'configuraciones/plantilla_banco';
+				
+
+				$template = "template";	
+				$vars['plantillas_bancos'] = $plantillas_bancos;		
+
+				$this->load->view($template,$vars);	
+
+			}else{
+				$content = array(
+							'menu' => 'Error 403',
+							'title' => 'Error 403',
+							'subtitle' => '403 error');
+
+
+				$vars['content_menu'] = $content;				
+				$vars['content_view'] = 'forbidden';
+				$this->load->view('template',$vars);
+
+			}	
+
+
+	}
+
+
+public function add_plantilla(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			
+
+			$bancos = $this->admin->get_bancos();			
+			$columnas = array(	'Rut',
+								'Digito Verificador',
+								'Apellido Paterno',
+								'Apellido Materno',
+								'Nombres',
+								'Direccion',
+								'Comuna',
+								'Forma Pago',
+								'Numero Cuenta Banco');
+
+			$tablas = array('rut','dv','apaterno','amaterno','nombre','direccion','idcomuna','id_forma_pago','nrocuentabanco');
+
+			$numero_columnas = sizeof($columnas);
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Creación Plantillas Bancos');
+			
+			$vars['columnas'] = $columnas;
+			$vars['tablas'] =$tablas;
+			$vars['numero_columnas'] = $numero_columnas;
+			$vars['content_menu'] = $content;
+			$vars['bancos'] = $bancos;
+			$vars['content_view'] = 'configuraciones/add_plantilla';
+			
+
+			$template = "template";			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}	
+
+
+	}
+
+	public function submit_plantilla_banco(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			
+			//cabecera
+			$nombre_plantilla = $this->input->post('nombre_plantilla');
+			$banco = $this->input->post('banco');
+			$id_plantilla_banco = $this->input->post('id_plantilla_banco');
+
+			//detalle
+			
+			$seq = $this->input->post('seq');
+			$nombre_campo = $this->input->post('nombre_campo');
+			$tipo = $this->input->post('tipo');
+			$largo = $this->input->post('largo');
+			$inicio = $this->input->post('inicio');
+			$fin = $this->input->post('fin');
+			$Observacion = $this->input->post('Observacion');
+			$nombre_tabla = $this->input->post('nombre_tabla');
+			$active = $this->input->post('active');
+			$array_active = array_fill(0, 8, '0');
+			$id_det_plantilla_banco = $this->input->post('id_det_plantilla_banco');
+/*
+			$array_datos_detalle['seq'] = $this->input->post('seq');
+			$array_datos_detalle['nombre_campo'] = $this->input->post('nombre_campo');
+			$array_datos_detalle['tipo'] = $this->input->post('tipo');
+			$array_datos_detalle['largo'] = $this->input->post('largo');
+			$array_datos_detalle['inicio'] = $this->input->post('inicio');
+			$array_datos_detalle['fin'] = $this->input->post('fin');
+			$array_datos_detalle['Observacion'] = $this->input->post('Observacion');
+			$array_datos_detalle['nombre_tabla'] = $this->input->post('nombre_tabla');
+			$active = $this->input->post('active');
+			$array_active = array_fill(0, 8, '0');
+			$array_datos_detalle['id_det_plantilla_banco'] = $this->input->post('id_det_plantilla_banco');*/
+
+			foreach ($active as $activo) {
+			
+				$valor = $activo -1;
+				$array_active[$valor] = '1';
+			};		
+			$active = $array_active;
+			
+			
+				
+			$array_datos_maestro = array(
+									'descripcion' => $nombre_plantilla,
+									'id_banco' => $banco,
+									'active' => 1);	
+			//var_dump($array_datos_detalle);
+
+
+			$array_datos_detalle = array(
+									'seq' => $seq,
+									'nombre_campo' => $nombre_campo,
+									'tipo' => $tipo,
+									'largo' => $largo,
+									'inicio' => $inicio,
+									'fin' => $fin,
+									'Observacion' => $Observacion,
+									'nombre_tabla' => $nombre_tabla,
+									'active' => $active,
+									'id_det_plantilla_banco' => $id_det_plantilla_banco
+								);
+			
+		
+			$plantilla_banco = $this->configuracion->add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$id_plantilla_banco); 
+
+			$this->session->set_flashdata('plantilla_banco_result', 1);
+			redirect('configuraciones/plantilla_banco');	
+			
+			
+		}else{
+				$content = array(
+							'menu' => 'Error 403',
+							'title' => 'Error 403',
+							'subtitle' => '403 error');
+
+
+				$vars['content_menu'] = $content;				
+				$vars['content_view'] = 'forbidden';
+				$this->load->view('template',$vars);
+
+			}
+	}
+
+	public function del_plantilla($id_plantilla_banco){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+			$plantilla_banco = $this->configuracion->del_plantilla_banco($id_plantilla_banco); 
+			
+			$this->session->set_flashdata('plantilla_banco_result', 1);
+			redirect('configuraciones/plantilla_banco');	
+			
+		}else{
+				$content = array(
+							'menu' => 'Error 403',
+							'title' => 'Error 403',
+							'subtitle' => '403 error');
+
+
+				$vars['content_menu'] = $content;				
+				$vars['content_view'] = 'forbidden';
+				$this->load->view('template',$vars);
+
+			}
+
+
+	}
+
+
+	public function exporta_plantilla($id_plantilla_banco){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+						
+			$bancos = $this->admin->get_bancos();
+			$datos_plantilla_banco = array();			
+			$datos_plantilla_banco = $this->configuracion->get_det_plantilla_banco_export($id_plantilla_banco);
+			$cabecera_plantilla_banco = $this->configuracion->get_plantilla_banco($id_plantilla_banco);
+			$datos_personal = $this->configuracion->get_personal_plantilla($cabecera_plantilla_banco->id_banco);			
+			$numero_datos_personal = count($datos_personal)-1;
+			$nro_datos_plantilla_banco = sizeof($datos_plantilla_banco);
+			$nombre_tabla = array();
+			
+			for ($i = 0; $i < $nro_datos_plantilla_banco ; $i++){ 				
+				foreach ($datos_plantilla_banco as $dat_plantilla ) {
+					$nombre_tabla[$i] = $dat_plantilla->nombre_tabla;
+					$largo_campo[$i] = $dat_plantilla->largo;
+				$i++;
+				}
+			
+			}
+
+			$plantilla_banco = $this->configuracion->exporta_plantilla_banco($datos_personal,$cabecera_plantilla_banco,$nombre_tabla,$largo_campo); 
+			
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}	
+	}
+
+	public function mod_plantilla($id_plantilla_banco){
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$datos_plantilla_banco = array();
+			
+			$datos_plantilla_banco = $this->configuracion->get_det_plantilla_banco($id_plantilla_banco);
+			$cabecera_plantilla_banco = $this->configuracion->get_plantilla_banco($id_plantilla_banco);
+
+			$bancos = $this->admin->get_bancos();			
+			$columnas = array(	'Rut',
+								'Digito Verificador',
+								'Apellido Paterno',
+								'Apellido Materno',
+								'Nombres',
+								'Direccion',
+								'Comuna',
+								'Forma Pago',
+								'Numero Cuenta Banco');
+
+			$tablas = array('rut','dv','apaterno','amaterno','nombre','direccion','idcomuna','id_forma_pago','nrocuentabanco');
+
+			$numero_columnas = sizeof($columnas);
+
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Remuneraciones',
+						'subtitle' => 'Modificar Plantillas Bancos');
+			
+			$vars['cabecera_plantilla_banco'] = $cabecera_plantilla_banco;
+			$vars['datos_plantilla_banco'] = $datos_plantilla_banco;
+			$vars['columnas'] = $columnas;
+			$vars['tablas'] =$tablas;
+			$vars['numero_columnas'] = $numero_columnas;
+			$vars['content_menu'] = $content;
+			$vars['bancos'] = $bancos;
+			$vars['content_view'] = 'configuraciones/mod_plantilla';
+			
+			//var_dump($datos_plantilla_banco);
+
+			$template = "template";
+			$this->load->view($template,$vars);	
+
+			
+
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}	
+
+	}
+
+
+
+	public function datos_plantilla_banco($id_plantilla_banco){
+	 
+	
+	$datos_det_plantilla = $this->configuraciones->get_det_plantilla_banco($id_plantilla_banco);
+	//json_encode($datos_personal2);
+	if ($datos_det_plantilla == 0){
+
+				echo json_encode('0');
+			}else{
+
+			echo json_encode($datos_det_plantilla);
+			}
 
 	}
 
