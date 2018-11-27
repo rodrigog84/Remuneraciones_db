@@ -2421,7 +2421,7 @@ class Ion_auth_model extends CI_Model
 
 
 		$this->db->where('id', $userid);
-		$this->db->update('gc_users',array('active' => '0')); 
+		$this->db->update('rem_users',array('active' => '0')); 
 
 
 		if($this->db->affected_rows() > 0){ // se eliminó proveedor correctamente

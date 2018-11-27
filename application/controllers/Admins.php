@@ -1329,4 +1329,36 @@ public function submit_user()
 	}
 
 
+	public function delete_user($userid = 0)
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$result = $this->ion_auth->delete_user($userid);
+			if($result == -1){
+				redirect('admins/admin_users/4');	
+			}else{
+				redirect('admins/admin_users/5');	
+			}
+
+
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+
+
+
 }
