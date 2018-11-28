@@ -877,7 +877,81 @@ class Mantenedores extends CI_Controller {
 
 	}
 
-		public function add_nacionalidad($idnacionalidad = null){
+
+	public function get_tipocuentabanco($id_tipo_cuenta_banco){
+
+		$tipo_cuenta_banco = $this->Mantenedores_model->get_tipo_cuenta_banco($id_tipo_cuenta_banco);
+		echo json_encode($tipo_cuenta_banco);
+
+
+	}
+	public function tipo_cuenta_banco(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){			
+			$resultid = $this->session->flashdata('tipo_cuenta_banco_result');
+			if($resultid == 1){
+				$vars['message'] = "Cuenta de Banco Agregada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}else if($resultid == 2){
+				$vars['message'] = "Cuenta de Banco editada Correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+
+			}else if($resultid == 3){
+				$vars['message'] = "Cuenta de Banco Ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
+			}elseif($resultid == 4){
+				$vars['message'] = "Error al eliminar. Cuenta no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';				
+			}elseif($resultid == 5){
+				$vars['message'] = "Cuenta de Banco Eliminada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';								
+			}
+
+			$tipo_cuenta_banco = $this->Mantenedores_model->get_tipo_cuenta_banco();
+			$bancos = $this->Mantenedores_model->bancos();
+
+
+			$content = array(
+						'menu' => 'Configuraciones Generales',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Tipo de Cuentas');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'mantenedores/tipo_cuenta_banco';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+
+			$vars['tipo_cuenta_banco'] = $tipo_cuenta_banco;
+			$vars['bancos'] = $bancos;
+			$template = "template";			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}
+
+
+
+
+	public function add_nacionalidad($idnacionalidad = null){
 		
 						
 			$nacionalidad = array();
@@ -899,6 +973,58 @@ class Mantenedores extends CI_Controller {
 			$template = "template";			
 
 			$this->load->view($template,$vars);	
+	}
+
+	public function submit_tipo_cuenta_banco(){
+	
+					
+		$nombre = $this->input->post('nombre_cuenta');
+		$banco = $this->input->post('banco');
+		$alias = $this->input->post('alias');
+		$id_tipo_cuenta_banco = $this->input->post('idtipocuentabanco');
+
+
+		
+		$array_datos = array(
+					'nombre' => $nombre,
+					'id_banco' => $banco,
+					'alias' => $alias,
+					'active' => 1,
+					'id_tipo_cuenta_banco' => $id_tipo_cuenta_banco
+					);
+
+		//var_dump($array_datos);
+
+		$this->Mantenedores_model->add_tipo_cuenta_banco($array_datos);
+
+
+		redirect('mantenedores/tipo_cuenta_banco');
+		/*
+		$content = array(
+			'menu' => 'Configuraciones Generales',
+			'title' => 'Configuraciones',
+			'subtitle' => 'Creaci&oacute;n Cuentas de Bancos');
+
+		$vars['content_menu'] = $content;				
+		$vars['content_view'] = 'mantenedores/add_tipo_cuenta_banco';
+		$vars['formValidation'] = true;
+		
+		$vars['gritter'] = true;
+		$vars['bancos'] = $bancos;
+		$template = "template";			
+
+		$this->load->view($template,$vars);	*/
+	}
+
+	public function delete_tipo_cuenta_banco(){
+
+		$id_tipo_cuenta_banco = $this->input->post('id-tipocuentabanco'); 
+		
+		echo $id_tipo_cuenta_banco;
+		$this->Mantenedores_model->delete_tipo_cuenta_banco($id_tipo_cuenta_banco);
+
+		redirect('mantenedores/tipo_cuenta_banco');
+
 	}
 
 	public function add_region($idregiones = null){
@@ -1674,8 +1800,5 @@ class Mantenedores extends CI_Controller {
 			redirect('mantenedores/licenciasconducir');				
 		
 	}
-
-	
-
 
 }

@@ -144,6 +144,23 @@ class Mantenedores_model extends CI_Model
 
 	}
 
+	public function get_tipo_cuenta_banco($id_tipo_cuenta_banco = null){
+		
+		$data = $this->db->select('t.id_tipo_cuenta_banco, t.id_banco,t.nombre,t.alias,t.active, b.nombre nombre_banco')
+				  ->from('rem_tipo_cuenta_banco t, rem_banco b')
+				  ->where('t.id_empresa',$this->session->userdata('empresaid'))
+				  ->where('t.id_banco = b.id_banco')	
+				  ->where('t.active',1)			  
+				  ->order_by('t.nombre');
+		$data = is_null($id_tipo_cuenta_banco) ? $data : $data->where('t.id_tipo_cuenta_banco',$id_tipo_cuenta_banco);
+		$query = $this->db->get();
+		$datos = is_null($id_tipo_cuenta_banco) ? $query->result() : $query->row();
+		return $datos;
+
+
+
+	}
+
 	public function nacionalidad($idnacionalidad = null){
 
 		$nacionalidad_data = $this->db->select('d.id_paises, d.iso, d.created_at, d.nombre')
@@ -659,6 +676,50 @@ class Mantenedores_model extends CI_Model
 			
 		}
 	}
+
+	public function add_tipo_cuenta_banco($array_datos){
+	
+
+		if ($array_datos['id_tipo_cuenta_banco'] == null){
+			$this->db->trans_start();
+			unset($array_datos['id_tipo_cuenta_banco']);
+			$array_datos['updated_at'] = date('Ymd H:i:s');
+			$array_datos['created_at'] = date('Ymd H:i:s');
+			$array_datos['created_by'] = $this->session->userdata('userid');
+			$array_datos['id_empresa'] = $this->session->userdata('empresaid');
+			$this->db->insert('rem_tipo_cuenta_banco', $array_datos);
+			$this->db->trans_complete();
+			return 1;
+
+		}else{
+
+			$this->db->trans_start();
+			$array_datos['updated_at'] = date('Ymd H:i:s');			
+			$array_datos['created_by'] = $this->session->userdata('userid');
+			$array_datos['id_empresa'] = $this->session->userdata('empresaid');
+			$id_tipo_cuenta_banco = $array_datos['id_tipo_cuenta_banco'];
+			unset($array_datos['id_tipo_cuenta_banco']);
+			$this->db->where('id_tipo_cuenta_banco',$id_tipo_cuenta_banco);
+			$this->db->update('rem_tipo_cuenta_banco',$array_datos);
+			$this->db->trans_complete();
+			return 2;
+
+		}
+
+		
+	}
+
+	public function delete_tipo_cuenta_banco($id_tipo_cuenta_banco){
+
+
+		$this->db->trans_start();
+		$this->db->where('id_tipo_cuenta_banco',$id_tipo_cuenta_banco);
+		$this->db->delete('rem_tipo_cuenta_banco');
+
+		$this->db->trans_complete();
+		return 5;
+	}
+
 
 	public function delete_comuna($idcomuna){
 
