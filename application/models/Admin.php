@@ -242,9 +242,6 @@ class Admin extends CI_Model
 		}else{ 
 			return -1;
 		}*/
-
-
-
 	}
 
 
