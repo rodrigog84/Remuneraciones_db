@@ -1188,6 +1188,37 @@
 							                        <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
+								                              <label for="rut">Tipo de Cuenta</label>
+																	<select  name="tipo_cuenta_bancaria" class="form-control" id="tipo_cuenta_bancaria">
+																		<option value="">Seleccione Tipo Cuenta</option>
+								                                    		<?php foreach ($tipo_cuenta_banco as $tipo_cuenta) { ?>
+										                                      
+										                                      <option value="<?php echo $tipo_cuenta->id_tipo_cuenta_banco;?>" >
+										                                      <?php echo $tipo_cuenta->nombre.' '.$tipo_cuenta->nombre_banco;?></option>
+									                                    <?php } ?>																
+								                                </select>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Plantilla Banco</label>
+																	<select name="plantilla_banco" id="plantilla_banco" class="form-control">
+																		<option value="">Seleccione Plantilla Banco</option>
+								                                    		<?php foreach ($plantillas_bancos as $plantillas) { ?>
+										                                      
+										                                      <option value="<?php echo $plantillas->id_plantilla_banco;?>" >
+										                                      <?php echo $plantillas->descripcion;?></option>
+									                                    <?php } ?>																
+								                                </select>
+
+																</div>
+								                          </div>
+
+							                        </div>
+
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
 								                              <label for="rut">Número de Cuenta</label>
 																<input type="text" name="cta_bancaria" class="form-control" id="cta_bancaria" placeholder="Nº Cuenta Bancaria">
 								                            </div>
@@ -1660,7 +1691,20 @@ $(document).ready(function(){
         					$("#banco").val(this.idbanco);	
         				}
 
+        				if(this.id_plantilla_banco == 0){
+        					$("#plantilla_banco").val('');
+        				}else{
+        					$("#plantilla_banco").val(this.id_plantilla_banco);	
+        				}
 
+        				if(this.id_tipo_cuenta_bancaria == 0){
+        					$("#tipo_cuenta_bancaria").val('');
+        				}else{
+        					$("#tipo_cuenta_bancaria").val(this.id_tipo_cuenta_bancaria);	
+        				}
+
+        				
+        				
         				$("#forma_pago").val(this.id_forma_pago);
 
         				if(this.id_forma_pago == 0){

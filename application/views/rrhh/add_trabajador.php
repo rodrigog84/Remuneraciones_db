@@ -1181,7 +1181,36 @@
 								                          </div>
 
 							                        </div>
+							                        <div class='row'>
+								                          <div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Tipo de Cuenta</label>
+																	<select  name="tipo_cuenta_bancaria" class="form-control" id="tipo_cuenta_bancaria">
+																		<option value="">Seleccione Tipo Cuenta</option>
+								                                    		<?php foreach ($tipo_cuenta_banco as $tipo_cuenta) { ?>
+										                                      
+										                                      <option value="<?php echo $tipo_cuenta->id_tipo_cuenta_banco;?>" >
+										                                      <?php echo $tipo_cuenta->nombre;?></option>
+									                                    <?php } ?>																
+								                                </select>
+								                            </div>
+								                          </div>
+								                          <div class='col-md-6'>
+									                           <div class="form-group">
+								                              <label for="rut">Plantilla Banco</label>
+																	<select name="plantilla_banco" id="plantilla_banco" class="form-control">
+																		<option value="">Seleccione Plantilla Banco</option>
+								                                    		<?php foreach ($plantillas_bancos as $plantillas) { ?>
+										                                      
+										                                      <option value="<?php echo $plantillas->id_plantilla_banco;?>" >
+										                                      <?php echo $plantillas->descripcion;?></option>
+									                                    <?php } ?>																
+								                                </select>
 
+																</div>
+								                          </div>
+
+							                        </div>
 							                        <div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
