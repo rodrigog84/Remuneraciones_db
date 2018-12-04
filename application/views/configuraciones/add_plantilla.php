@@ -102,7 +102,7 @@
 										</div>	
 									</td>
 				                	<td>
-				                		<input type="checkbox" name="active[<?php echo $i;?>]" id="active" class="minimal" value="<?php echo $contador;?>"> 
+				                		<input type="checkbox" name="active[<?php echo $i;?>]" id="active" class="minimal" value="<?php echo $contador;?>" checked> 
 				                		</a>
 				                	</td>
 				                </tr>

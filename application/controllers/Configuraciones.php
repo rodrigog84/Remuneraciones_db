@@ -158,10 +158,15 @@ public function add_plantilla(){
 								'Nombres',
 								'Direccion',
 								'Comuna',
-								'Forma Pago',
-								'Numero Cuenta Banco');
+								'Fecha de Pago',
+								'Forma de Pago',
+								'Codigo de Banco',
+								'Oficina de Pago',
+								'Numero Cuenta Banco',
+								'Documento',
+								'Monto a Pagar');
 
-			$tablas = array('rut','dv','apaterno','amaterno','nombre','direccion','idcomuna','id_forma_pago','nrocuentabanco');
+			$tablas = array('rut','dv','apaterno','amaterno','nombre','direccion','idcomuna','fecha_pago','alias','cod_sbif','oficina_pago','nrocuentabanco','documento','sueldoliquido');
 
 			$numero_columnas = sizeof($columnas);
 
@@ -217,7 +222,7 @@ public function add_plantilla(){
 			$Observacion = $this->input->post('Observacion');
 			$nombre_tabla = $this->input->post('nombre_tabla');
 			$active = $this->input->post('active');
-			$array_active = array_fill(0, 8, '0');
+			$array_active = array_fill(0, 13, '0');
 			$id_det_plantilla_banco = $this->input->post('id_det_plantilla_banco');
 /*
 			$array_datos_detalle['seq'] = $this->input->post('seq');
@@ -245,9 +250,9 @@ public function add_plantilla(){
 									'descripcion' => $nombre_plantilla,
 									'id_banco' => $banco,
 									'active' => 1);	
-			//var_dump($array_datos_detalle);
+			
 
-
+			
 			$array_datos_detalle = array(
 									'seq' => $seq,
 									'nombre_campo' => $nombre_campo,
@@ -260,8 +265,8 @@ public function add_plantilla(){
 									'active' => $active,
 									'id_det_plantilla_banco' => $id_det_plantilla_banco
 								);
+			//var_dump($array_datos_detalle);
 			
-		
 			$plantilla_banco = $this->configuracion->add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$id_plantilla_banco); 
 
 			$this->session->set_flashdata('plantilla_banco_result', 1);
@@ -313,7 +318,7 @@ public function add_plantilla(){
 			$datos_plantilla_banco = array();			
 			$datos_plantilla_banco = $this->configuracion->get_det_plantilla_banco_export($id_plantilla_banco);
 			$cabecera_plantilla_banco = $this->configuracion->get_plantilla_banco($id_plantilla_banco);
-			$datos_personal = $this->configuracion->get_personal_plantilla($cabecera_plantilla_banco->id_banco);			
+			$datos_personal = $this->configuracion->get_personal_plantilla($id_plantilla_banco);			
 			$numero_datos_personal = count($datos_personal)-1;
 			$nro_datos_plantilla_banco = sizeof($datos_plantilla_banco);
 			$nombre_tabla = array();
@@ -360,10 +365,15 @@ public function add_plantilla(){
 								'Nombres',
 								'Direccion',
 								'Comuna',
-								'Forma Pago',
-								'Numero Cuenta Banco');
+								'Fecha de Pago',
+								'Forma de Pago',
+								'Codigo de Banco',
+								'Oficina de Pago',
+								'Numero Cuenta Banco',
+								'Documento',
+								'Monto a Pagar');
 
-			$tablas = array('rut','dv','apaterno','amaterno','nombre','direccion','idcomuna','id_forma_pago','nrocuentabanco');
+			$tablas = array('rut','dv','apaterno','amaterno','nombre','direccion','idcomuna','fecha_pago','id_forma_pago','cod_sbif','oficina_pago','nrocuentabanco','documento','sueldoliquido');
 
 			$numero_columnas = sizeof($columnas);
 

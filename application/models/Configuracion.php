@@ -179,11 +179,11 @@ public function add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$i
 				$array_datos_detalle['updated_at'] = date('Ymd H:i:s');
 				$array_datos_detalle['created_at'] = date('Ymd H:i:s');
 
-				var_dump($array_datos_detalle);
+				//var_dump($array_datos_detalle);
 
 								
 
-				for ($i = 0; $i < 9; $i++){
+				for ($i = 0; $i < 14; $i++){
 
 					$array_datos = array(
 							'seq' => $array_datos_detalle['seq'][$i],
@@ -217,7 +217,7 @@ public function add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$i
 				$this->db->update('rem_plantilla_banco',$array_datos_maestro);
 				
 				$array_datos_detalle['updated_at'] = date('Ymd H:i:s');
-				for ($i = 0; $i < 9; $i++){
+				for ($i = 0; $i < 14; $i++){
 					
 					$array_datos = array(
 							'seq' => $array_datos_detalle['seq'][$i],
@@ -253,7 +253,7 @@ public function add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$i
 				$this->db->update('rem_plantilla_banco',$array_datos_maestro);
 				
 				$array_datos_detalle['updated_at'] = date('Ymd H:i:s');
-				for ($i = 0; $i < 9; $i++){
+				for ($i = 0; $i < 14; $i++){
 					
 					$array_datos = array(
 							'seq' => $array_datos_detalle['seq'][$i],
@@ -283,9 +283,9 @@ public function add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$i
 
 	
 
-	public function exporta_plantilla_banco($datos_personal,$cabecera_plantilla_banco,$nombre_tabla,$largo_campo){
+	public function exporta_plantilla_banco($datos_personal,$nombre_banco,$nombre_tabla,$largo_campo){
 
-			$nombre_archivo = $this->session->userdata('empresaid')."_".$cabecera_plantilla_banco->descripcion."_".date("Ymd").".txt";
+			$nombre_archivo = $this->session->userdata('empresaid')."_".$nombre_banco."_".date("Ymd").".txt";
 			$path_archivo = "./uploads/tmp/";
 			$file = fopen($path_archivo.$nombre_archivo, "w");
 			
@@ -293,10 +293,12 @@ public function add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$i
 
 			foreach ($datos_personal as $dat) {
 			
-				$linea = str_pad(substr(sanear_string($dat->$nombre_tabla[0]),0,15),$largo_campo[0]," ",STR_PAD_RIGHT);
+				$linea = str_pad(substr(sanear_string($dat->$nombre_tabla[0]),0,20),$largo_campo[0]," ",STR_PAD_RIGHT);
 				for ($i = 1 ; $i < $numero_columnas ; $i++){
 					
-					$linea .= str_pad(substr(sanear_string($dat->$nombre_tabla[$i]),0,15),$largo_campo[$i]," ",STR_PAD_RIGHT);					
+					//$dat->$nombre_tabla[$i] = ($dat->$nombre_tabla[$i] =='cod_sbif' ) ? '016' : '1' ;
+
+					$linea .= str_pad(substr(sanear_string($dat->$nombre_tabla[$i]),0,20),$largo_campo[$i]," ",STR_PAD_RIGHT);					
 				
 				};
 
@@ -397,15 +399,37 @@ public function add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$i
             
 	}
 
-	public function get_personal_plantilla($id_banco){
+	public function get_personal_plantilla($id_periodo, $id_plantilla_banco){
 
-		$banco_data = $this->db->select('p.rut,p.dv,p.apaterno,p.amaterno,p.nombre,p.direccion,com.nombre as idcomuna,fp.descripcion as 
-					id_forma_pago,p.nrocuentabanco')
-					->from('rem_personal p, rem_formas_pago fp, rem_comuna com')
-						  ->where('p.idbanco',$id_banco)
-						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
-						  ->where('p.id_forma_pago = fp.id_forma_pago')
-						  ->where('p.idcomuna = com.idcomuna');
+		$doc = 'doc';
+		$oficina_pago = '041';
+		$banco_data = $this->db->select(	'p.rut,
+											p.dv,
+											p.apaterno,
+											p.amaterno,
+											p.nombre,
+											p.direccion,
+											com.nombre as idcomuna,
+											fp.descripcion as id_forma_pago,
+											rem.sueldoliquido,
+											RIGHT(REPLICATE(\'0\', 20)+ CAST(nrocuentabanco AS VARCHAR(20)),20) as nrocuentabanco,
+											p.id_plantilla_banco, 
+											ban.cod_sbif,
+											tip.alias, 
+											\'00001\' as documento, 																				
+											\'044\' as oficina_pago, 
+											replace(CONVERT(VARCHAR(10), GETDATE(), 103),\'/\',\'\') as fecha_pago
+											')
+				  ->from('rem_personal p, rem_formas_pago fp, rem_comuna com, rem_remuneracion rem, rem_banco ban, rem_tipo_cuenta_banco tip')
+				  ->where('p.id_plantilla_banco',$id_plantilla_banco)
+				  ->where('rem.id_periodo',$id_periodo)
+				  ->where('p.id_empresa',$this->session->userdata('empresaid'))
+				  ->where('p.id_forma_pago = fp.id_forma_pago')
+				  ->where('p.idcomuna = com.idcomuna')
+				  ->where('p.id_forma_pago',3)
+				  ->where('p.id_personal = rem.idpersonal')
+				  ->where('p.idbanco = ban.id_banco')
+				  ->where('p.id_tipo_cuenta_bancaria = tip.id_tipo_cuenta_banco');
 
 		/*$query = $this->db->get();
 		$datos = is_null($id_banco) ? $query->result() : $query->row();

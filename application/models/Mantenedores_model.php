@@ -148,7 +148,7 @@ class Mantenedores_model extends CI_Model
 		
 		$data = $this->db->select('t.id_tipo_cuenta_banco, t.id_banco,t.nombre,t.alias,t.active, b.nombre nombre_banco')
 				  ->from('rem_tipo_cuenta_banco t, rem_banco b')
-				  ->where('t.id_empresa',$this->session->userdata('empresaid'))
+				 // ->where('t.id_empresa',$this->session->userdata('empresaid'))
 				  ->where('t.id_banco = b.id_banco')	
 				  ->where('t.active',1)			  
 				  ->order_by('t.nombre');

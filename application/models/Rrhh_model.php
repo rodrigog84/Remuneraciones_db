@@ -1079,8 +1079,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'formapagoapv',
 				'regimenapv',
 				'trabajo_pesado',
-				'format(plazo_contrato,\'dd/MM/yyyy\',\'en-US\') as plazo_contrato', 
-				
+				'format(plazo_contrato,\'dd/MM/yyyy\',\'en-US\') as plazo_contrato',
+				'id_plantilla_banco',
+				'id_tipo_cuenta_bancaria'
 				
 
 				

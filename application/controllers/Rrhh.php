@@ -1036,6 +1036,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			/***** CARGA DE DATOS PARA FORMULARIO ***/
 			$this->load->model('admin');
 			$this->load->model('rrhh_model');
+			$this->load->model('configuracion');
+			$this->load->model('Mantenedores_model');
 			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
 			$regiones = $this->admin->get_regiones();
 			$estados_civiles = $this->admin->get_estado_civil();
@@ -1065,7 +1067,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$clases= $this->admin->get_clases();
 			$cod_ine= $this->admin->get_ine();
 			$zonas_brechas= $this->admin->get_zona_brecha();
-			
+			$plantillas_bancos = $this->configuracion->get_plantilla_banco();
+			$tipo_cuenta_banco = $this->Mantenedores_model->get_tipo_cuenta_banco(null);
 			//var_dump($motivo_egreso); exit;
 
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
@@ -1157,6 +1160,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['categorias'] = $categoria;
 			$vars['lugar_pago'] = $lugar_pago;
 			$vars['bancos'] = $bancos;
+			$vars['plantillas_bancos'] = $plantillas_bancos;
 			$vars['forma_pago'] = $forma_pago;
 			$vars['motivo_egreso'] = $motivo_egreso;
 			$vars['tipo_cc'] = $tipo_cc;
@@ -1167,7 +1171,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['jornada_trabajo'] = $jornada_trabajo;
 			$vars['cod_ine'] = $cod_ine;
 			$vars['zonas_brechas'] = $zonas_brechas;
-
+			$vars['tipo_cuenta_banco'] = $tipo_cuenta_banco;
 			$vars['icheck'] = true;
 			$vars['jqueryRut'] = true;
 			$vars['mask'] = true;
@@ -1241,6 +1245,9 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 
 			/***** CARGA DE DATOS PARA FORMULARIO ***/
 			$this->load->model('admin');
+			$this->load->model('Mantenedores_model');
+			$this->load->model('configuracion');
+
 			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
 			$regiones = $this->admin->get_regiones();
 			$estados_civiles = $this->admin->get_estado_civil();
@@ -1270,6 +1277,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$cod_ine= $this->admin->get_ine();
 			$zonas_brechas= $this->admin->get_zona_brecha();
 			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
+			$plantillas_bancos = $this->configuracion->get_plantilla_banco();
+			$tipo_cuenta_banco = $this->Mantenedores_model->get_tipo_cuenta_banco(null);
 
 			//$zonas_brechas= $this->admin->get_zona_brecha();
 
@@ -1380,6 +1389,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['maleta'] = true;
 			$vars['pantalon'] = $pantalon;
 			$vars['polera'] = $polera;
+			$vars['plantillas_bancos'] = $plantillas_bancos;
+			$vars['tipo_cuenta_banco'] = $tipo_cuenta_banco;
 
 			$template = "template";
 			$this->load->view($template,$vars);	
@@ -1506,6 +1517,8 @@ public function editar_trabajador(){
 			$asig_por_invalidez = $this->input->post('asig_por_invalidez');
 			$asig_maternal = $this->input->post('asig_maternal');
 			$banco = $this->input->post('banco');
+			$plantilla_banco = $this->input->post('plantilla_banco');
+			$tipo_cuenta_bancaria = $this->input->post('tipo_cuenta_bancaria');
 			$forma_pago = $this->input->post('forma_pago');
 			$cta_bancaria = $this->input->post('cta_bancaria');
 			$apv = $this->input->post('apv');
@@ -1746,6 +1759,8 @@ public function editar_trabajador(){
 								'cargasinvalidas' => $asig_por_invalidez,
 								'cargasmaternales' => $asig_maternal,
 								'idbanco' => $banco,
+								'id_plantilla_banco' => $plantilla_banco,
+								'id_tipo_cuenta_bancaria' => $tipo_cuenta_bancaria,
 								'id_forma_pago' => $forma_pago,
 								'nrocuentabanco' => $cta_bancaria,
 								'instapv' => $apv,
@@ -1923,6 +1938,8 @@ public function editar_trabajador(){
 			$asig_por_invalidez = $this->input->post('asig_por_invalidez');
 			$asig_maternal = $this->input->post('asig_maternal');
 			$banco = $this->input->post('banco');
+			$tipo_cuenta_bancaria = $this->input->post('tipo_cuenta_bancaria');
+			$plantilla_banco = $this->input->post('plantilla_banco');
 			$forma_pago = $this->input->post('forma_pago');
 			$cta_bancaria = $this->input->post('cta_bancaria');
 			$apv = $this->input->post('apv');
@@ -2160,6 +2177,8 @@ public function editar_trabajador(){
 								'cargasinvalidas' => $asig_por_invalidez,
 								'cargasmaternales' => $asig_maternal,
 								'idbanco' => $banco,
+								'id_plantilla_banco' => $plantilla_banco,
+								'id_tipo_cuenta_bancaria' => $tipo_cuenta_bancaria,
 								'id_forma_pago' => $forma_pago,
 								'nrocuentabanco' => $cta_bancaria,
 								'instapv' => $apv,
@@ -3023,8 +3042,56 @@ public function previred($idperiodo = null)
 
 	}		
 
+	public function pago_bancos($id_periodo = null){
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$this->load->model('configuracion');
+			$bancos = $this->admin->get_bancos();			
+			$datos_plantilla_banco = array();			
+			
+			$cabecera_plantilla_banco = $this->configuracion->get_plantilla_banco();	
+			//var_dump($cabecera_plantilla_banco);
+
+			foreach ($cabecera_plantilla_banco as $cabecera ) {
+					$datos_personal = $this->configuracion->get_personal_plantilla($id_periodo, $cabecera->id_plantilla_banco);
+					
+					if($datos_personal != null){
+						$datos_plantilla_banco = $this->configuracion->get_det_plantilla_banco_export($cabecera->id_plantilla_banco);									
+						$numero_datos_personal = count($datos_personal)-1;
+						$nro_datos_plantilla_banco = sizeof($datos_plantilla_banco);
+						$nombre_tabla = array();
+						
+						for ($i = 0; $i < $nro_datos_plantilla_banco ; $i++){ 				
+							foreach ($datos_plantilla_banco as $dat_plantilla ) {
+								$nombre_tabla[$i] = $dat_plantilla->nombre_tabla;
+								$largo_campo[$i] = $dat_plantilla->largo;
+							$i++;
+							}
+						
+						}
+
+						$plantilla_banco = $this->configuracion->exporta_plantilla_banco($datos_personal,$cabecera->descripcion,$nombre_tabla,$largo_campo);
+					}	
+			 
+			}
+		}else{
+		$content = array(
+					'menu' => 'Error 403',
+					'title' => 'Error 403',
+					'subtitle' => '403 error');
 
 
+		$vars['content_menu'] = $content;				
+		$vars['content_view'] = 'forbidden';
+		$this->load->view('template',$vars);
+
+		}
+			
+				
+	}
+
+/*
 	public function pago_bancos($idperiodo = null)
 	{
 
@@ -3063,7 +3130,7 @@ public function previred($idperiodo = null)
 
 		}
 
-	}
+	}*/
 
 
 	public function ver_remuneraciones_periodo($idperiodo = '',$idcentrocosto = null)
