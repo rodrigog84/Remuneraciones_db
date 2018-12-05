@@ -144,7 +144,7 @@ class Mantenedores_model extends CI_Model
 
 	}
 
-	public function get_tipo_cuenta_banco($id_tipo_cuenta_banco = null){
+	public function get_tipo_cuenta_banco($id_tipo_cuenta_banco = null, $id_banco = null){
 		
 		$data = $this->db->select('t.id_tipo_cuenta_banco, t.id_banco,t.nombre,t.alias,t.active, b.nombre nombre_banco')
 				  ->from('rem_tipo_cuenta_banco t, rem_banco b')
@@ -153,6 +153,7 @@ class Mantenedores_model extends CI_Model
 				  ->where('t.active',1)			  
 				  ->order_by('t.nombre');
 		$data = is_null($id_tipo_cuenta_banco) ? $data : $data->where('t.id_tipo_cuenta_banco',$id_tipo_cuenta_banco);
+		$data = is_null($id_banco) ? $data : $data->where('t.id_banco',$id_banco);
 		$query = $this->db->get();
 		$datos = is_null($id_tipo_cuenta_banco) ? $query->result() : $query->row();
 		return $datos;

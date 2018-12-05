@@ -1187,11 +1187,7 @@
 								                              <label for="rut">Tipo de Cuenta</label>
 																	<select  name="tipo_cuenta_bancaria" class="form-control" id="tipo_cuenta_bancaria">
 																		<option value="">Seleccione Tipo Cuenta</option>
-								                                    		<?php foreach ($tipo_cuenta_banco as $tipo_cuenta) { ?>
-										                                      
-										                                      <option value="<?php echo $tipo_cuenta->id_tipo_cuenta_banco;?>" >
-										                                      <?php echo $tipo_cuenta->nombre;?></option>
-									                                    <?php } ?>																
+								                                    																	
 								                                </select>
 								                            </div>
 								                          </div>
@@ -1618,6 +1614,26 @@ $('#region').change(function(){
       
     }
 });
+
+
+$('#banco').change(function(){
+
+    if($(this).val() != ''){
+
+      $.get("<?php echo base_url();?>rrhh/get_tipo_cuenta_banco/"+$(this).val(),function(data){
+               // Limpiamos el select
+                    $('#tipo_cuenta_bancaria option').remove();
+                    var_json = $.parseJSON(data);
+                    $('#tipo_cuenta_bancaria').append('<option value="">Seleccione Tipo Cuenta </option>');
+                    for(i=0;i<var_json.length;i++){
+                      $('#tipo_cuenta_bancaria').append('<option value="' + var_json[i].id_tipo_cuenta_banco + '">' + var_json[i].nombre + '</option>');
+                    }
+                    $('#basicBootstrapForm').formValidation('revalidateField', 'tipo_cuenta_bancaria');
+      });
+      
+    }
+});
+
 
 $('#tipogratificacion').on('change',function(){
   if($(this).val() == 'MF'){
@@ -2360,6 +2376,9 @@ $(document).ready(function() {
                     }                    
                 }
             }, 
+
+           
+
             monto_cotizacion_apv: {
                     row: '.form-group',
                     validators: {

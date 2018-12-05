@@ -1190,13 +1190,9 @@
 								                            <div class="form-group">
 								                              <label for="rut">Tipo de Cuenta</label>
 																	<select  name="tipo_cuenta_bancaria" class="form-control" id="tipo_cuenta_bancaria">
-																		<option value="">Seleccione Tipo Cuenta</option>
-								                                    		<?php foreach ($tipo_cuenta_banco as $tipo_cuenta) { ?>
-										                                      
-										                                      <option value="<?php echo $tipo_cuenta->id_tipo_cuenta_banco;?>" >
-										                                      <?php echo $tipo_cuenta->nombre.' '.$tipo_cuenta->nombre_banco;?></option>
-									                                    <?php } ?>																
+																		<option value="">Seleccione Tipo Cuenta</option>               	 																
 								                                </select>
+								                                <input type="hidden" id="id_tipo_cuenta_bancaria">
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -1703,7 +1699,7 @@ $(document).ready(function(){
         					$("#tipo_cuenta_bancaria").val(this.id_tipo_cuenta_bancaria);	
         				}
 
-        				
+        				$("#id_tipo_cuenta_bancaria").val(this.id_tipo_cuenta_bancaria);
         				
         				$("#forma_pago").val(this.id_forma_pago);
 
@@ -1884,6 +1880,24 @@ $(document).ready(function(){
     }	
 
 
+    if($('#banco').val() != ''){
+
+      $.get("<?php echo base_url();?>rrhh/get_tipo_cuenta_banco/"+$('#banco').val(),function(data){
+               // Limpiamos el select
+                    $('#tipo_cuenta_bancaria option').remove();
+                    var_json = $.parseJSON(data);
+                    $('#tipo_cuenta_bancaria').append('<option value="">Seleccione Tipo Cuenta </option>');
+                    for(i=0;i<var_json.length;i++){
+                      $('#tipo_cuenta_bancaria').append('<option value="' + var_json[i].id_tipo_cuenta_banco + '">' + var_json[i].nombre + '</option>')
+                    }
+                   
+                    $("#tipo_cuenta_bancaria").val($('#id_tipo_cuenta_bancaria').val());
+      });
+      
+    }
+
+
+
   $('.numeros').keypress(function(event){
     if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
       event.preventDefault();
@@ -1951,6 +1965,25 @@ $('#region').change(function(){
                       $('#comuna').append('<option value="' + var_json[i].idcomuna + '">' + var_json[i].nombre + '</option>');
                     }
                     $('#basicBootstrapForm').formValidation('revalidateField', 'comuna');
+      });
+      
+    }
+});
+
+
+$('#banco').change(function(){
+
+    if($(this).val() != ''){
+
+      $.get("<?php echo base_url();?>rrhh/get_tipo_cuenta_banco/"+$(this).val(),function(data){
+               // Limpiamos el select
+                    $('#tipo_cuenta_bancaria option').remove();
+                    var_json = $.parseJSON(data);
+                    $('#tipo_cuenta_bancaria').append('<option value="">Seleccione Tipo Cuenta </option>');
+                    for(i=0;i<var_json.length;i++){
+                      $('#tipo_cuenta_bancaria').append('<option value="' + var_json[i].id_tipo_cuenta_banco + '">' + var_json[i].nombre + '</option>');
+                    }
+                    $('#basicBootstrapForm').formValidation('revalidateField', 'tipo_cuenta_bancaria');
       });
       
     }

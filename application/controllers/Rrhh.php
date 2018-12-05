@@ -4814,6 +4814,22 @@ public function genera_finiquito($idpersonal){
 
 }
 
+	public function get_tipo_cuenta_banco($id_banco){
 
+
+		$this->load->model('Mantenedores_model');
+		
+		$tipo_cuenta = $this->Mantenedores_model->get_tipo_cuenta_banco(null,$id_banco);
+
+		//$arrayComunas = array();
+		//$arrayComunas[''] = "Seleccione Comuna";
+		//foreach ($comunas as $comuna) {
+		//	$arrayComunas[$comuna->idcomuna] = $comuna->nombre;
+		//}
+		echo json_encode($tipo_cuenta);
+
+
+
+	}
 
 }

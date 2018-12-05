@@ -4967,5 +4967,8 @@ public function pago_bancos($datos_remuneracion){
 
 
 			unlink($path_archivo.$nombre_archivo);
-	}		
+	}	
+
+
+
 }
