@@ -508,6 +508,17 @@ public function solicita_vacaciones($array_datos){
 		
 	}
 
+	public function mod_licencia($array_datos,$id_licencia_medica){
+
+		$this->db->trans_start();
+		$array_datos['updated_at'] = date('Ymd H:i:s');
+		$this->db->where('id_licencia_medica',$id_licencia_medica);		
+		$this->db->update('rem_licencias_medicas', $array_datos);
+		$this->db->trans_complete();
+		return 1;
+		
+	}
+
 
 	public function get_licencias(){
 
@@ -519,7 +530,8 @@ public function solicita_vacaciones($array_datos){
 							'lic.numero_licencia',
 							'lic.id_licencia_medica',
 							'format(lic.fec_emision_licencia,\'dd/MM/yyyy\',\'en-US\') as fec_emision_licencia',
-							'lic.estado');
+							'lic.estado',
+							'numero_dias');
 		$this->db->select($array_datos)
 						  ->from('rem_personal p, rem_licencias_medicas lic')
 						  ->where('lic.id_empresa', $this->session->userdata('empresaid'))
@@ -530,6 +542,97 @@ public function solicita_vacaciones($array_datos){
 		 return $query->result();
 
 	}
+
+
+
+public function get_licencia_datos($id_licencia_medica){
+
+
+		$array_campos = array(
+				'p.id_licencia_medica',
+				'p.id_personal', 
+				'p.id_empresa',
+				'p.estado', 
+				'format(p.fec_emision_licencia,\'dd/MM/yyyy\',\'en-US\') as fec_emision_licencia',
+				'format(p.fec_inicio_reposo,\'dd/MM/yyyy\',\'en-US\') as fec_inicio_reposo', 
+				'p.edad',
+				'p.sexo',
+				'p.numero_dias',
+				'p.numero_dias_palabras',
+				'p.apaterno_hijo',
+				'p.amaterno_hijo',
+				'p.nombre_hijo',
+				'format(p.fecnachijo,\'dd/MM/yyyy\',\'en-US\') as fecnachijo',
+				'p.rut_hijo',
+				'p.dv_hijo',
+				'p.tipo_licencia',
+				'p.responsabilidad_laboral',
+				'p.inicio_tramite_invalidez',
+				'format(p.fecha_accidente_trabajo,\'dd/MM/yyyy\',\'en-US\') as fecha_accidente_trabajo',
+				'p.horas',
+				'p.minutos',
+				'p.trayecto',
+				'p.tipo_reposo',
+				'p.lugar_reposo',
+				'p.tipo_reposo_parcial',
+				'p.justificar_otro_domicilio',
+				'p.direccion_otro_domicilio',
+				'p.telefono_contacto',
+				'p.nombre_profesional',
+				'p.apaterno_profesional',
+				'p.amaterno_profesional',
+				'p.rut_profesional',
+				'p.dv_profesional',
+				'p.especialidad_profesional',
+				'p.tipo_profesional',
+				'p.registro_profesional',
+				'p.correo_profesional',
+				'p.telefono_profesional',
+				'p.direccion_profesional',
+				'p.fax_profesional',
+				'p.diagnostico',
+				'p.otro_diagnostico',
+				'p.antecedentes_clinicos',
+				'p.examenes_apoyo',
+				'format(p.updated_at,\'dd/MM/yyyy\',\'en-US\') as updated_at',
+				'format(p.created_at,\'dd/MM/yyyy\',\'en-US\') as created_at',
+				'p.numero_licencia',
+				'c.nombre as nombre',
+				'c.apaterno as apaterno',
+				'c.amaterno as amaterno',
+				'c.fecnacimiento as fecnacimiento',
+				'c.rut as rut',
+				'c.dv as dv'
+				//'format(c.fecnacimiento,\'dd/MM/yyyy\',\'en-US\') as fecnacimiento'			
+
+			);
+		
+		$licencia_data = $this->db->select($array_campos)
+						  ->from('rem_licencias_medicas p, rem_personal c')
+						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
+						  ->where('p.id_personal = c.id_personal');
+		$licencia_data = is_null($id_licencia_medica) ? $licencia_data : $licencia_data->where('p.id_licencia_medica',$id_licencia_medica);
+		//$personal_data = !$centro_costo  ? $personal_data : $personal_data->where_in('idcentrocosto',$centro_costo);
+
+		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
+		$datos =  $query->result();
+		return $datos;
+	}
+
+	public function del_licencia_medica($id_licencia_medica){
+
+		$this->db->trans_start();
+		$this->db->where('id_licencia_medica',$id_licencia_medica);
+		$this->db->delete('rem_licencias_medicas');
+
+
+
+		$this->db->trans_complete();
+		return 2;
+	}
+
+
 
 
 }

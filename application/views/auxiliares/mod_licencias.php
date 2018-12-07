@@ -11,21 +11,6 @@
   <?php endif; ?>
 
 
-<div class="container">
-	<form id="buscar_colaborador" name="buscar_colaborador">
-		<table class="table table-striped">
-			<thead> 
-				<tr> 
-					<th>Rut:   <input type="text" name="rut_buscar" id="rut_buscar"  class="form-control1"  placeholder="98123456-7" title="Escriba Rut" required oninput="checkRut(this)">
-						<a id='b1' class="btn btn-danger-sm" onclick="buscar_trabajador()" > Buscar <span class="glyphicon glyphicon-search"></span></button>	
-					</th> 
-				</tr> 
-			</thead>
-			<tbody>
-			</tbody>	
-		</table>
-	</form>
-</div>
 
 
 <div class="container">
@@ -35,22 +20,22 @@
 		<div class="panel-body">
 			<div class="row">
 			    <div class="form-group col-md-4">
-			      Nombre:<span id="nombre_span"></span>
+			      Nombre: <?php echo $nombre;?><span id="nombre_span"></span>
 			    </div>
 			    <div class="form-group col-md-6">
-			      RUT: <span id="rut_span"></span>
+			      RUT: <?php echo $rut;?><span id="rut_span"></span>
 			    </div>
 		  	</div>
 
 		  	<div class="row">
 			    <div class="form-group col-md-4">
-			      Apellido Paterno: <span id="apaterno_span"></span>
+			      Apellido Paterno: <?php echo $apaterno;?><span id="apaterno_span"></span>
 			    </div>
 			    <div class="form-group col-md-4">
-			      Apellido Materno: <span id="amaterno_span"></span>
+			      Apellido Materno: <?php echo $amaterno;?><span id="amaterno_span"></span>
 			    </div>
 			    <div class="form-group col-md-4">
-			      Edad:<span id="edad_span"></span>
+			      Edad: <?php echo $edad;?> Años <span id="edad_span"></span>
 			    </div>
 		  	</div>
 	          
@@ -60,7 +45,7 @@
 
 
 <div class="container">
-	<form  class="form" role="form" id="ingresar_licencia2" name="ingresar_licencia2"  method="post" action="<?php echo base_url();?>auxiliares/submit_licencia">
+	<form  class="form" role="form" id="ingresar_licencia2" name="ingresar_licencia2"  method="post" action="<?php echo base_url();?>auxiliares/submit_mod_licencia">
 		
 			<div class="sub-heard-part">
 				<ul class="nav nav-tabs">
@@ -76,7 +61,8 @@
 
 				<!-- CAMPOS OCULTOS -->
 				<input type="hidden" class="form-control" id="id_trabajador" name="id_trabajador">
-				<input type="hidden" class="form-control" id="edad" name="edad">
+				<input type="hidden" class="form-control" id="edad" name="edad" value="<?php echo $edad;?>">
+				<input type="hidden" class="form-control" id="id_licencia_medica2" name="id_licencia_medica2" value="<?php echo $id_licencia_medica ?>">
 
 
 				<!--   A1 Identificación del Trabajador  -->
@@ -360,9 +346,159 @@
   dateFormat: "dd/mm/yy"
 });
 	});
-</script>
-<!--date-piker-->
+</script> 
+<!--date-piker--> 
 
+
+<script>
+ $(function(){
+        
+    	$.ajax({type: "GET",
+		    		url: "<?php echo base_url();?>auxiliares/datos_licencia/<?php echo $id_licencia_medica;?>", 
+		    		dataType: "json",
+		    		success: function(datos_licencia2){
+		      			$.each(datos_licencia2,function(nombre) {
+		      			
+		      			$("#id_trabajador").val(this.id_personal);
+		      			//	Identificación del colaborador
+		      			
+		      			$("#numero_licencia").val(this.numero_licencia);
+		      			$("#fec_emision_licencia").val(this.fec_emision_licencia);
+		      			$("#fec_inicio_reposo").val(this.fec_inicio_reposo);
+		      			$("#sexo").val(this.sexo);
+		      			$("#numero_dias").val(this.numero_dias);
+
+		      			//A1 Identificación del Trabajador
+		      			$("#numero_dias_palabras").val(this.numero_dias_palabras);
+
+		      			
+		      			//A2 Identificación del Hijo
+		      			$("#nombre_hijo").val(this.nombre_hijo);
+		      			$("#rut_hijo").val(this.rut_hijo);
+		      			$("#apaterno_hijo").val(this.apaterno_hijo);
+		      			$("#amaterno_hijo").val(this.amaterno_hijo);
+		      			$("#fecnachijo").val(this.fecnachijo);
+
+		      			//A3 TIPO DE LICENCIA
+
+		      			$("#tipo_licencia").val(this.tipo_licencia);
+		      			$("#responsabilidad_laboral").val(this.responsabilidad_laboral);
+		      			$("#inicio_tramite_invalidez").val(this.inicio_tramite_invalidez);
+		      			$("#fecha_accidente_trabajo").val(this.fecha_accidente_trabajo);
+		      			$("#horas").val(this.horas);
+		      			$("#minutos").val(this.minutos);
+		      			$("#trayecto").val(this.trayecto);
+					
+		      			//A4 CARACTERISTICAS DEL REPOSO
+
+		      			$("#tipo_reposo").val(this.tipo_reposo);
+		      			$("#lugar_reposo").val(this.lugar_reposo);
+		      			$("#tipo_reposo_parcial").val(this.tipo_reposo_parcial);
+		      			$("#justificar_otro_domicilio").val(this.justificar_otro_domicilio);
+		      			$("#direccion_otro_domicilio").val(this.direccion_otro_domicilio);
+		      			$("#telefono_contacto").val(this.telefono_contacto);		      			
+
+		      			//A5 IDENTIFICACION DEL PROFESIONAL
+
+		      			$("#nombre_profesional").val(this.nombre_profesional);
+		      			$("#rut_profesional").val(this.rut_profesional);
+		      			$("#apaterno_profesional").val(this.apaterno_profesional);
+		      			$("#amaterno_profesional").val(this.amaterno_profesional);
+		      			$("#especialidad_profesional").val(this.especialidad_profesional);
+		      			$("#tipo_profesional").val(this.tipo_profesional);
+		      			$("#registro_profesional").val(this.registro_profesional);
+		      			$("#correo_profesional").val(this.correo_profesional);
+		      			$("#telefono_profesional").val(this.telefono_profesional);
+		      			$("#direccion_profesional").val(this.direccion_profesional);
+		      			$("#fax_profesional").val(this.fax_profesional);
+		      			
+
+		      			//A6 DIAGNOSTICO PRINCIPAL
+		      			
+
+		      			$("#diagnostico").val(this.diagnostico);
+		      			$("#otro_diagnostico").val(this.otro_diagnostico);
+		      			$("#antecedentes_clinicos").val(this.antecedentes_clinicos);
+		      			$("#examenes_apoyo").val(this.examenes_apoyo);
+		      			
+
+
+
+		      			})}})});
+		      		/*	$("#email").val(this.email);	
+        				$("#nacionalidad").val(this.idnacionalidad);
+        				$("#sueldo_base").val(this.sueldobase);
+        				$("#ecivil").val(this.idecivil);
+        				$("#sexo").val(this.sexo);
+        				$("#fechanacimiento").val(this.fecnacimiento);
+        				$("#cargo").val(this.idcargo);
+        				$("#isapre").val(this.idisapre);
+        				$("#centro_costo").val(this.idcentrocosto);
+        				$("#afp").val(this.idafp);
+        				$("#datepicker2").val(this.fecingreso);
+        				$("#fecha_inicio_vacaciones").val(this.fecinicvacaciones);
+        				$("#vacaciones_legales").val(this.saldoinicvacaciones);
+        				$("#vacaciones_progresivas").val(this.saldoinicvacprog);
+        				$("#polera").val(this.tallapolera);
+        				$("#pantalon").val(this.tallapantalon);
+        				$("#titulo").val(this.titulo);
+        				$("#licencia").val(this.idlicencia);
+        				$("#estudios").val(this.idestudio);
+        				$("#fono").val(this.fono);
+        				$("#numero_contrato_apv").val(this.nrocontratoapv);
+        				$("#apv").val(this.instapv);
+        				$("#tipo_cotizacion").val(this.tipocotapv);
+        				$("#monto_cotizacion_apv").val(this.cotapv);
+        				$("#monto_pactado").val(this.valorpactado);
+        				$("#categoria").val(this.id_categoria);
+        				$("#lugar_pago").val(this.id_lugar_pago);
+        				$("#sindicato").val(this.sindicato);
+        				$("#jubilado").val(this.jubilado);
+        				$("#regimen_pago").val(this.rol_privado);
+        				$("#tramo").val(this.idasigfamiliar);
+        				$("#semana_corrida").val(this.semana_corrida);
+        				$("#tiporenta").val(this.tiporenta);
+        				$("#idioma").val(this.ididioma);
+        				$("#numficha").val(this.numficha);
+        				$("#datepicker5").val(this.fecafp);
+        				$("#datepicker6").val(this.fecafc);
+        				$("#region").val(this.idregion);
+        				$("#asig_individual").val(this.cargassimples);
+        				$("#asig_por_invalidez").val(this.cargasinvalidas);
+        				$("#asig_maternal").val(this.cargasmaternales);
+        				$("#banco").val(this.idbanco);
+        				$("#forma_pago").val(this.id_forma_pago);
+        				$("#cta_bancaria").val(this.nrocuentabanco);
+        				$('#sueldo_base').mask('000.000.000.000.000', {reverse: true});
+        				
+        				if (this.pensionado ==1){
+        					//$("#pensionado").val(this.pensionado)
+        					$("#pensionado").attr('checked','checked');
+
+        				}else{
+        					$("#pensionado").attr('checked',false);
+        				}        				
+
+        				if (this.segcesantia ==1){
+        					$("#seguro_cesantia").val(this.segcesantia)
+        					document.getElementById("seguro_cesantia").checked = true;
+        					document.getElementById("datepicker6").disabled=false;
+
+        				}else{
+        					document.getElementById("seguro_cesantia").checked = false;
+        					document.getElementById("datepicker6").disabled=true;
+        				}
+        				
+        				}
+        				)}*/
+        				//});
+
+
+
+    	//});
+
+
+</script>
 <script>
 function checkRut(rut) {
     // Despejar Puntos
@@ -417,67 +553,39 @@ function checkRut(rut) {
 </script>
 
 
-<!--
-<script>
-        $('#b1').click(function(){  
-        		
-        		var valor = document.getElementById("rut_buscar").value;
-        		
-
-        		cuerpo = valor.slice(0,-1);
-        		alert(cuerpo);
-       			
-        	
-        });
-
-
- </script>-->
 
 
 <script>
     
-    function buscar_trabajador(){
+    function buscar_trabajador(idtrabajador){
         
     	//checkRut(rut_colaborador);
     	//alert(rut_colabora= dor);
-    	var rut_colaborador = $('#rut_buscar').val();
+    	/*var rut_colaborador = $('#rut_buscar').val();
     	var r = checkRut(document.getElementById('rut_buscar'));
     	if (!r){ 
-    		bootbox.alert({
-    			message:"Debe ingresar un RUT Valido",
-    			size: 'small'
-
-
-    		});
+    		bootbox.alert("Debe ingresar un RUT Valido");
     		return;
     	}
-    	rut_colaborador = rut_colaborador.substring(0, rut_colaborador.length - 2)
+    	rut_colaborador = rut_colaborador.substring(0, rut_colaborador.length - 2)*/
     	$.ajax({type: "GET",
-		    		url: "<?php echo base_url();?>rrhh/datos_personal/" + rut_colaborador, 
+		    		url: "<?php echo base_url();?>rrhh/datos_personal_lic/" + idtrabajador, 
 		    		dataType: "json",
 		    		success: function(datos_personal2){
-		      			if (datos_personal2 == 0){
-		      				bootbox.alert({
-				    			message:"Colaborador no encontrado",
-				    			size: 'small'
-				    		});
-		      			}else{
-		      				$.each(datos_personal2,function(nombre) {
-				      			$("#id_trabajador").val(this.id_personal);
-				      			$("#sexo").val(this.sexo);
-								calculaedad(this.fecnacimiento);
-				      			$("#nombre_span").text(this.nombre);
-				      			$("#rut_span").text(this.rut);
-				      			$("#apaterno_span").text(this.apaterno);
-				      			$("#amaterno_span").text(this.amaterno);
-
-		      			})}
-
-		      			}
+		      			$.each(datos_personal2,function(nombre) {
+			      			$("#id_trabajador").val(this.id_personal);
+			      			//$("#sexo").val(this.sexo);
+							//calculaedad(this.fecnacimiento);
+			      			$("#nombre_span").text(this.nombre);
+			      			$("#rut_span").text(this.rut);
+			      			$("#apaterno_span").text(this.apaterno);
+			      			$("#amaterno_span").text(this.amaterno);
         				
-        				
-    	});
-}
+        				}
+        				)}
+        				});
+    	};
+
 </script>
 <script language="JavaScript">
 

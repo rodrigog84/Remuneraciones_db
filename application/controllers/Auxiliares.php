@@ -661,7 +661,7 @@ public function submit_solicita_vacaciones(){
 						'title' => 'Licencias Medicas',
 						'subtitle' => 'Licencias Medicas');
 
-
+			$vars['datatable'] = true;
 			$vars['content_menu'] = $content;	
 			$vars['content_view'] = 'auxiliares/licencias';
 			$vars['licencia'] = $licencia;
@@ -695,6 +695,64 @@ public function submit_solicita_vacaciones(){
 
 	}
 
+
+	public function edit_licencias($id_licencia_medica=null){
+		
+		
+		$datos_licencia2 = $this->auxiliar->get_licencia_datos($id_licencia_medica);
+
+		foreach ($datos_licencia2 as $datos ) {
+	# code...
+
+		 
+		
+		
+		$cumpleanos = new DateTime($datos->fecnacimiento);
+	    $hoy = new DateTime();	    
+	    $annos = $hoy->diff($cumpleanos);
+	    $edad = $annos->y;
+	    $nombre = $datos->nombre;
+	    $apaterno = $datos->apaterno;
+	    $amaterno = $datos->amaterno;
+	    $rut = $datos->rut.'-'.$datos->dv;
+	   // echo $edad;
+	    }
+	    
+		$content = array(
+					'menu' => 'Licencias Medicas',
+					'title' => 'Licencias Medicas',
+					'subtitle' => 'Editar Licencias Medicas');
+		$vars['id_licencia_medica'] = $id_licencia_medica;
+		$vars['edad'] = $edad;
+		$vars['nombre'] = $nombre;
+		$vars['apaterno'] = $apaterno;
+		$vars['amaterno'] = $amaterno;
+		$vars['rut'] = $rut;
+		$vars['content_menu'] = $content;
+		$vars['id_licencia_medica'] = $id_licencia_medica;	
+		$vars['content_view'] = 'auxiliares/mod_licencias';
+
+		$template = "template";
+		$this->load->view($template,$vars);	
+	}
+
+
+	public function del_licencia($id_licencia_medica){
+
+		$licencia = $this->auxiliar->del_licencia_medica($id_licencia_medica);
+
+		redirect('auxiliares/licencias');	
+
+
+	}
+
+	public function datos_licencia($id_licencia_medica=null){
+
+		$datos_licencia2 = $this->auxiliar->get_licencia_datos($id_licencia_medica);
+
+		echo json_encode($datos_licencia2);
+
+	}
 
 	public function submit_licencia(){
 
@@ -852,6 +910,162 @@ public function submit_solicita_vacaciones(){
 
 	}
 
+public function submit_mod_licencia(){
+
+
+		// A1
+		$numero_licencia = $this->input->post("numero_licencia");
+		$idtrabajador = $this->input->post("id_trabajador");
+		$fec_emision_licencia = $this->input->post("fec_emision_licencia");
+		$fec_inicio_reposo = $this->input->post("fec_inicio_reposo");
+		$edad = $this->input->post("edad");
+		$sexo = $this->input->post("sexo");
+		$numero_dias = $this->input->post("numero_dias");
+		$numero_dias_palabras = $this->input->post("numero_dias_palabras");
+		// A2
+		$apaterno_hijo = $this->input->post("apaterno_hijo");		
+		$amaterno_hijo = $this->input->post("amaterno_hijo");
+		$nombre_hijo = $this->input->post("nombre_hijo");
+		$fecnachijo = $this->input->post("fecnachijo");
+		$rut_hijo = str_replace(".","",$this->input->post("rut_hijo"));
+		$arrayRutHijo = explode("-",$rut_hijo);
+		// A3
+		$tipo_licencia = $this->input->post("tipo_licencia");
+		$responsabilidad_laboral = $this->input->post("responsabilidad_laboral");
+		$inicio_tramite_invalidez = $this->input->post("inicio_tramite_invalidez");
+		$fecha_accidente_trabajo = $this->input->post("fecha_accidente_trabajo");
+		$horas = $this->input->post("horas");
+		$minutos = $this->input->post("minutos");
+		$trayecto = $this->input->post("trayecto");
+		// A4
+		$tipo_reposo = $this->input->post("tipo_reposo");
+		$lugar_reposo = $this->input->post("lugar_reposo");
+		$tipo_reposo_parcial = $this->input->post("tipo_reposo_parcial");
+		$justificar_otro_domicilio = $this->input->post("justificar_otro_domicilio");
+		$direccion_otro_domicilio = $this->input->post("direccion_otro_domicilio");
+		$telefono_contacto = $this->input->post("telefono_contacto");
+		// A5
+		$nombre_profesional = $this->input->post("nombre_profesional");
+		$apaterno_profesional = $this->input->post("apaterno_profesional");
+		$amaterno_profesional = $this->input->post("amaterno_profesional");
+		$rut_profesional = str_replace(".","",$this->input->post("rut_profesional"));
+		$arrayRutProfesional = explode("-",$rut_profesional);
+		$especialidad_profesional = $this->input->post("especialidad_profesional");
+		$tipo_profesional = $this->input->post("tipo_profesional");
+		$registro_profesional = $this->input->post("registro_profesional");
+		$correo_profesional = $this->input->post("correo_profesional");
+		$telefono_profesional = $this->input->post("telefono_profesional");
+		$direccion_profesional = $this->input->post("direccion_profesional");
+		$fax_profesional = $this->input->post("fax_profesional");
+		// A6
+		$diagnostico = $this->input->post("diagnostico");
+		$otro_diagnostico = $this->input->post("otro_diagnostico");
+		$antecedentes_clinicos = $this->input->post("antecedentes_clinicos");
+		$examenes_apoyo = $this->input->post("examenes_apoyo");
+		$id_licencia_medica = $this->input->post("id_licencia_medica2");
+	
+				
+		// SE REGULARIZA LOS CAMPOS FECHA DEL FORMATO dd/mm/yyyy A yyyy/mm/dd DE LA BD	
+		if($fec_emision_licencia != NULL){
+			$date = DateTime::createFromFormat('d/m/Y', $fec_emision_licencia);
+			$fec_emision_licencia = $date->format('Ymd');
+		}else{
+			$fec_emision_licencia = NULL;
+		}
+		
+		if($fec_inicio_reposo != NULL){
+			$date = DateTime::createFromFormat('d/m/Y', $fec_inicio_reposo);
+			$fec_inicio_reposo = $date->format('Ymd');
+		}else{
+			$fec_inicio_reposo =NULL;
+		}
+		
+		if ($fecnachijo != NULL){
+			$date = DateTime::createFromFormat('d/m/Y', $fecnachijo);
+			$fecnachijo = $date->format('Ymd');
+		}else{
+			$fecnachijo = NULL;
+
+		}
+		if ($fecha_accidente_trabajo != NULL){
+			$date = DateTime::createFromFormat('d/m/Y', $fecha_accidente_trabajo);
+			$fecha_accidente_trabajo = $date->format('Ymd');
+		}else{
+			$fecha_accidente_trabajo =NULL;
+		}
+		
+		
+
+		$array_datos = array('estado' => 'I',
+							//CAMPOS OCULTOS
+								'id_personal' => $idtrabajador,
+							//A1
+								'numero_licencia' => $numero_licencia,			
+								'id_empresa' => $this->session->userdata('empresaid'),	       						
+								'fec_emision_licencia' => $fec_emision_licencia,
+								'fec_inicio_reposo' => $fec_inicio_reposo,
+								'edad' => $edad,
+								'sexo' => $sexo,
+								'numero_dias' => $numero_dias,
+								'numero_dias_palabras' => $numero_dias_palabras,
+							 //A2
+							    'apaterno_hijo' => $apaterno_hijo,	
+								'amaterno_hijo' => $amaterno_hijo,
+								'nombre_hijo' => $nombre_hijo,
+								'fecnachijo' => $fecnachijo,
+								'rut_hijo' => $arrayRutHijo[0],
+								'dv_hijo' => $arrayRutHijo[1], 
+							 //A3
+								'tipo_licencia' => $tipo_licencia,
+								'responsabilidad_laboral' => $responsabilidad_laboral,
+								'inicio_tramite_invalidez' => $inicio_tramite_invalidez,
+								'fecha_accidente_trabajo' => $fecha_accidente_trabajo,
+								'horas' => $horas,
+								'minutos' => $minutos,
+								'trayecto' => $trayecto,
+							 //A4
+								'tipo_reposo' => $tipo_reposo,
+								'lugar_reposo' => $lugar_reposo,
+								'tipo_reposo_parcial' => $tipo_reposo_parcial,
+								'justificar_otro_domicilio' => $justificar_otro_domicilio,
+								'direccion_otro_domicilio' => $direccion_otro_domicilio,
+								'telefono_contacto' => $telefono_contacto,
+							 //A5
+								'nombre_profesional' => $nombre_profesional,
+								'apaterno_profesional' => $apaterno_profesional,
+								'amaterno_profesional' => $amaterno_profesional,
+								'rut_profesional' => $arrayRutProfesional[0],
+								'dv_profesional' => $arrayRutProfesional[1],
+								'especialidad_profesional' => $especialidad_profesional,
+								'tipo_profesional' => $tipo_profesional,
+								'registro_profesional' => $registro_profesional,
+								'correo_profesional' => $correo_profesional,
+								'telefono_profesional' => $telefono_profesional,
+								'direccion_profesional' => $direccion_profesional,
+								'fax_profesional' => $fax_profesional,
+							 //A6
+								'diagnostico' => $diagnostico,
+								'otro_diagnostico' => $otro_diagnostico,
+								'antecedentes_clinicos' => $antecedentes_clinicos,
+								'examenes_apoyo' => $examenes_apoyo
+							);
+
+		
+		
+		$result = $this->auxiliar->mod_licencia($array_datos,$id_licencia_medica);
+
+			if($result == -1){
+				$this->session->set_flashdata('personal_result', 2);
+			}else{
+				if($idtrabajador == 0){
+					$this->session->set_flashdata('personal_result', 1);
+				}else{
+					$this->session->set_flashdata('personal_result', 6);
+				}
+			}
+			redirect('auxiliares/licencias');
+	
+	}
 
 		
 }
