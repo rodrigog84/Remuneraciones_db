@@ -39,7 +39,7 @@ class Main extends CI_Controller {
 
 		$this->load->model('ion_auth_model');	
 		$this->load->model('admin');
-
+		$this->load->model('rrhh_model');		
 
 		$content = array(
 					'menu' => 'Dashboard',
@@ -48,9 +48,7 @@ class Main extends CI_Controller {
 
 
 		
-		$vars['content_menu'] = $content;				
-		
-
+		$vars['content_menu'] = $content;
 		$vars['content_view'] = 'dashboard';
 		$template = "template";
 
@@ -84,8 +82,41 @@ class Main extends CI_Controller {
 
 		}
 
-
+		if ($this->session->userdata('level') == 2 ){
+			if ($unidad_id != null ){
+										
+				$unidad_id = $unidad_id == '' && $this->session->userdata('empresaid') ? $this->session->userdata('empresaid') : $unidad_id;
+				$mes = $this->session->flashdata('asistencia_mes') == '' ? date('m') : $this->session->flashdata('asistencia_mes');
+				$anno = $this->session->flashdata('asistencia_anno') == '' ? date('Y') : $this->session->flashdata('asistencia_anno');
+				
+				$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos_resumen(); 
+				
 		
+				if ($periodos_remuneracion == null){
+					$mes_curso = $mes;
+					$anno_curso = $anno;
+				}else{
+					$mes_curso = $periodos_remuneracion[0]->mes;
+					$anno_curso = $periodos_remuneracion[0]->anno;
+				}
+				
+				$mes = array('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
+
+				$mes_curso = $mes[$mes_curso - 1];
+				
+				$periodo_actual = "Periodo en Curso: ".$mes_curso." ".$anno_curso;
+				$vars['periodo_actual'] = $periodo_actual;
+				}else{
+					$periodo_actual = "";
+					$vars['periodo_actual'] = $periodo_actual;
+
+				}
+
+			}else{
+
+				$periodo_actual = "";
+				$vars['periodo_actual'] = $periodo_actual;
+			}
 
 		/*** SI YA SE HABIA SELECCIONADO UN MODULO, REDIRECCIONA ****/
   		/*if(count($this->session->userdata('uri_array')) > 0){

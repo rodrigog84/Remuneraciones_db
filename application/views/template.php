@@ -376,28 +376,38 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    </button>                    
+                    </button>
+                                   
                 </ul>                
 
                 <!-- end mobile sidebar expand / collapse button -->
-                
-                          
+                                            
                 
                 <!-- begin header navigation right -->
                 <ul class="nav navbar-nav navbar-right">
+                    <div class="navbar-text">
+                       <em><?php if(isset($periodo_actual)){
+                       
+                              echo $periodo_actual; 
+                       }?></em>
+                  </div>    
+                                
+
                     <li>
-                        <form class="navbar-form full-width">
+
+                        <form class="navbar-form full-width">                          
                             
-                            
-                            
+                                
                                 <p class="text-info"><em><b><?php echo $this->session->userdata('empresanombre'); ?></em></b></p>
-                        </form>
+                        </form>                    
                     </li>                
                     <li class="dropdown navbar-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="<?php echo base_url();?>assets/img/user-13.jpg" alt="" />
                             <span class="hidden-xs"><?php echo $this->session->userdata('name'); ?></span> <b class="caret"></b>
                         </a>
+
+
                         <ul class="dropdown-menu animated fadeInLeft">
                             <li class="arrow"></li>
                             <!--li><a href="javascript:;">Editar Perfil</a></li-->
