@@ -1453,7 +1453,7 @@ class Mantenedores extends CI_Controller {
 				
 			}else{
 				$this->session->set_flashdata('cargos_result', 2);
-			redirect('mantenedores/cargo');	
+			redirect('mantenedores/cargos');	
 				
 			}
 
