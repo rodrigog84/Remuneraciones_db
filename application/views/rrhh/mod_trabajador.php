@@ -70,7 +70,7 @@
 								                          </div>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
-								                                <label for="nombre">Apellido Parterno</label>  
+								                                <label for="nombre">Apellido Paterno</label>  
 								                                 <input type="text" name="apaterno" class="form-control" id="apaterno" placeholder="Apellido Parterno" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" >
 								                            </div>
 								                          </div>
