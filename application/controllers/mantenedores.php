@@ -1449,7 +1449,7 @@ class Mantenedores extends CI_Controller {
 
 			if($idcargo==0){
 				$this->session->set_flashdata('cargos_result', 1);
-			redirect('mantenedores/cargo');
+			redirect('mantenedores/cargos');
 				
 			}else{
 				$this->session->set_flashdata('cargos_result', 2);
@@ -1698,6 +1698,8 @@ class Mantenedores extends CI_Controller {
 
 	public function delete_cargos($idcargo = 0)
 	{
+
+	
 
 		$result = $this->Mantenedores_model->delete_cargos($idcargo);
 			if($result == -1){
