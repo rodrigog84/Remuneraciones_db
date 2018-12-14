@@ -355,8 +355,8 @@ public function add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$i
 						if($i == 5){
 
 							$linea .= str_pad(sanear_string($dat->$nombre_tabla[2])." " . sanear_string($dat->$nombre_tabla[3]) . " " .sanear_string($dat->$nombre_tabla[4]),60," ",STR_PAD_RIGHT)."0                                   ";
-							$linea .= "                                     BC".$dat->$nombre_tabla[9].str_pad((float)$dat->$nombre_tabla[11],22," ",STR_PAD_RIGHT)."000".str_pad((float)$dat->$nombre_tabla[13],13,"0",STR_PAD_LEFT);
-							$linea .="Transfer anticipo                                                                                                                                                                             ";
+							$linea .= "                                     BC".$dat->$nombre_tabla[9].str_pad((float)$dat->$nombre_tabla[11],22," ",STR_PAD_RIGHT)."000".str_pad((float)$dat->$nombre_tabla[13],11,"0",STR_PAD_LEFT)."00";
+							$linea .="Sueldo Liquido                                                                                                                                                                                ";
 						}else if ($i == 1){
 							$linea .= str_pad(substr(sanear_string($dat->$nombre_tabla[$i]),0,20),$largo_campo[$i]," ",STR_PAD_RIGHT);	
 
