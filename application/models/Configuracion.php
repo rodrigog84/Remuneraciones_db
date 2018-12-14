@@ -281,9 +281,10 @@ public function add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$i
 
 	}	
 
-	
 
-	public function exporta_plantilla_banco($datos_personal,$nombre_banco,$nombre_tabla,$largo_campo){
+
+	//FUNCION ORIGINAL
+	/*public function exporta_plantilla_banco($datos_personal,$nombre_banco,$nombre_tabla,$largo_campo){
 
 			$nombre_archivo = $this->session->userdata('empresaid')."_".$nombre_banco."_".date("Ymd").".txt";
 			$path_archivo = "./uploads/tmp/";
@@ -308,6 +309,73 @@ public function add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$i
 			}
 
 			
+			fclose($file);
+					
+			$data_archivo = basename($path_archivo.$nombre_archivo);
+			header('Content-Type: text/plain');
+			header('Content-Disposition: attachment; filename=' . $data_archivo);
+			header('Content-Length: ' . filesize($path_archivo.$nombre_archivo));
+			readfile($path_archivo.$nombre_archivo);		
+
+
+			unlink($path_archivo.$nombre_archivo);
+
+	}*/
+	
+
+	public function exporta_plantilla_banco($datos_personal,$nombre_banco,$nombre_tabla,$largo_campo){
+
+			$nombre_archivo = $this->session->userdata('empresaid')."_".$nombre_banco."_".date("Ymd").".txt";
+			$path_archivo = "./uploads/tmp/";
+			$file = fopen($path_archivo.$nombre_archivo, "w");
+			
+			//echo "<pre>";
+			//print_r($datos_personal);// exit;
+			//dato fijo, después modificar
+			$linea_encabezado = "01076605109K00100001INMOBILIARIA TU CASA-TU N01201812140000551743600   0                                                                                                                                                                                                                                                                                                                                     0100\r\n";
+			//$linea .= "\r\n";
+
+			fputs($file,$linea_encabezado);
+			$numero_columnas = sizeof($nombre_tabla);
+
+			foreach ($datos_personal as $dat) {
+			//	echo "<pre>";
+			//	print_r($datos_personal);
+				//print_R($nombre_tabla); exit;
+
+				//$linea = str_pad(substr(sanear_string($dat->$nombre_tabla[0]),0,20),$largo_campo[0]," ",STR_PAD_RIGHT);
+
+				$cod_medio_pago = $dat->$nombre_tabla[0] == '16128023' ? '070' : '010';
+				$linea = "02076605109K001  00001".$cod_medio_pago.str_pad(substr(sanear_string($dat->$nombre_tabla[0]),0,20),$largo_campo[0]," ",STR_PAD_RIGHT);
+				$nombre = '';
+				for ($i = 1 ; $i < $numero_columnas ; $i++){
+					if($i == 2 || $i == 3 || $i == 4|| $i == 6){
+						//$nombre .= $dat->$nombre_tabla[$i]." ";
+					}else{
+						if($i == 5){
+
+							$linea .= str_pad(sanear_string($dat->$nombre_tabla[2])." " . sanear_string($dat->$nombre_tabla[3]) . " " .sanear_string($dat->$nombre_tabla[4]),60," ",STR_PAD_RIGHT)."0                                   ";
+							$linea .= "                                     BC".$dat->$nombre_tabla[9].str_pad((float)$dat->$nombre_tabla[11],22," ",STR_PAD_RIGHT)."000".str_pad((float)$dat->$nombre_tabla[13],13,"0",STR_PAD_LEFT);
+							$linea .="Transfer anticipo                                                                                                                                                                             ";
+						}else if ($i == 1){
+							$linea .= str_pad(substr(sanear_string($dat->$nombre_tabla[$i]),0,20),$largo_campo[$i]," ",STR_PAD_RIGHT);	
+
+						}
+							
+					}
+					//$dat->$nombre_tabla[$i] = ($dat->$nombre_tabla[$i] =='cod_sbif' ) ? '016' : '1' ;
+
+								
+				
+				};
+
+				$linea .= "\r\n";
+				fputs($file,$linea);
+
+			}
+
+			//echo "<pre>";
+			//echo $linea; 
 			fclose($file);
 					
 			$data_archivo = basename($path_archivo.$nombre_archivo);

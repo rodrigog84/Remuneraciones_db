@@ -3051,11 +3051,14 @@ public function previred($idperiodo = null)
 			$datos_plantilla_banco = array();			
 			
 			$cabecera_plantilla_banco = $this->configuracion->get_plantilla_banco();	
+
+			//echo "<pre>";
+			//print_r($cabecera_plantilla_banco); exit;
 			//var_dump($cabecera_plantilla_banco);
 
 			foreach ($cabecera_plantilla_banco as $cabecera ) {
 					$datos_personal = $this->configuracion->get_personal_plantilla($id_periodo, $cabecera->id_plantilla_banco);
-					
+					//print_r($datos_personal); exit;
 					if($datos_personal != null){
 						$datos_plantilla_banco = $this->configuracion->get_det_plantilla_banco_export($cabecera->id_plantilla_banco);									
 						$numero_datos_personal = count($datos_personal)-1;
@@ -3070,7 +3073,7 @@ public function previred($idperiodo = null)
 							}
 						
 						}
-
+						//echo "pasa<br>"; 
 						$plantilla_banco = $this->configuracion->exporta_plantilla_banco($datos_personal,$cabecera->descripcion,$nombre_tabla,$largo_campo);
 					}	
 			 
