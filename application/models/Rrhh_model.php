@@ -4681,8 +4681,8 @@ public function previred($datos_remuneracion){
 
 				$sueldoimponible_fonasa = ($remuneracion->fonasa+$remuneracion->inp) > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				$sueldoimponible_isapre = $remuneracion->cotizacionsalud > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
-				$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponible : 0;
-				$sueldoimponible_ccaf = $codprev_ccaf != 0 ? $remuneracion->sueldoimponible : 0;
+				$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
+				$sueldoimponible_ccaf = $codprev_ccaf != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				$sueldoimponible_segcesantia = $remuneracion->afilsegcesantia == 1 ? $remuneracion->sueldoimponibleafc : 0;
 				$cotccaffon = $codprev_ccaf == 0 ? 0 : $remuneracion->inp;
 				$aportepatronal = $codprev_mutual == 0 ? 0 : $remuneracion->aportepatronal;
