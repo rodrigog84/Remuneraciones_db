@@ -22,7 +22,7 @@
 	                            			<?php foreach ($bancos as $bancos) { ?>
 																		<tr class="active" id="variable">
 											              <td><small><h4 class="inner-tittle two"><?php echo $i ;?></small></h4></td>
-                                    <td><small><h4 class="inner-tittle two"><?php echo $bancos->nombre;?></small></h4></td>
+                                    <td><small><h4 class="inner-tittle two"><?php echo $bancos->cod_sbif;?></small></h4></td>
 	                              		<td><small><h4 class="inner-tittle two"><?php echo $bancos->nombre;?></small></h4></td>
                                     <td>
                                     <a href="<?php echo base_url();?>mantenedores/add_bancos/<?php echo $bancos->id_banco?>" class="btn btn-info opciones" id="opciones" title="Editar Banco"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>

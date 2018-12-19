@@ -386,14 +386,17 @@ class Mantenedores extends CI_Controller {
 			}else if($resultid == 3){
 				$vars['message'] = "Banco Ya existe";
 				$vars['classmessage'] = 'danger';
-				$vars['icon'] = 'fa-ban';		
-
+				$vars['icon'] = 'fa-ban';
 			}elseif($resultid == 4){
 				$vars['message'] = "Error al eliminar Banco. Pais no existe";
 				$vars['classmessage'] = 'danger';
 				$vars['icon'] = 'fa-ban';				
 			}elseif($resultid == 5){
 				$vars['message'] = "Banco Eliminado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';								
+			}elseif($resultid == 6){
+				$vars['message'] = "Codigo banco Ya existe";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';								
 			}
@@ -1464,6 +1467,28 @@ class Mantenedores extends CI_Controller {
 			$descripcion = $this->input->post('nombre');
 			$codigo = $this->input->post('codigo');
 			$idbanco = $this->input->post('idbanco');
+
+			$this->db->select('id_banco, cod_sbif, nombre, activo')
+						  ->from('rem_banco')
+						  ->where('nombre',$descripcion);
+		    $query = $this->db->get();
+
+		    if($query->result()){
+		    	$this->session->set_flashdata('bancos_result', 3);
+			redirect('mantenedores/bancos');
+		    	
+		    };
+
+		    $this->db->select('id_banco, cod_sbif, nombre, activo')
+						  ->from('rem_banco')
+						  ->where('cod_sbif',$codigo);
+		    $query2 = $this->db->get();
+
+		    if($query2->result()){
+		    	$this->session->set_flashdata('bancos_result', 6);
+			redirect('mantenedores/bancos');
+		    	
+		    };
 
 									
 			$datos = array();
