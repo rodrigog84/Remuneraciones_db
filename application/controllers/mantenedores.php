@@ -1351,6 +1351,16 @@ class Mantenedores extends CI_Controller {
 			$descripcion = $this->input->post('nombre');
 			$idnacionalidad = $this->input->post('idnacionalidad');
 
+			$this->db->select('id_paises, iso, created_at, nombre')
+						  ->from('rem_paises')
+						  ->where('nombre',$descripcion);
+		    $query = $this->db->get();
+
+		    if($query->result()){
+		    	$this->session->set_flashdata('nacionalidad_result', 3);
+			redirect('mantenedores/nacionalidad');
+		    	
+		    };
 						
 			$datos = array();
 			$datos['iso'] = $iso;
@@ -1359,11 +1369,11 @@ class Mantenedores extends CI_Controller {
 			$nacionalidad = $this->Mantenedores_model->add_nacionalidad($datos,$idnacionalidad);
 
 			if($idcentro==0){
-				$this->session->set_flashdata('nacionalidad', 1);
+				$this->session->set_flashdata('nacionalidad_result', 1);
 			redirect('mantenedores/nacionalidad');
 				
 			}else{
-				$this->session->set_flashdata('nacionalidad', 2);
+				$this->session->set_flashdata('nacionalidad_result', 2);
 			redirect('mantenedores/nacionalidad');	
 				
 			}
@@ -1398,6 +1408,17 @@ class Mantenedores extends CI_Controller {
 			$descripcion = $this->input->post('nombre');
 			$ididioma = $this->input->post('ididioma');
 
+			$this->db->select('id_idioma, created_at, nombre')
+						  ->from('rem_idioma')
+						  ->where('nombre',$descripcion);
+		    $query = $this->db->get();
+
+		    if($query->result()){
+		    	$this->session->set_flashdata('idioma_result', 3);
+			redirect('mantenedores/idioma');
+		    	
+		    };
+
 									
 			$datos = array();
 			$datos['nombre'] = $descripcion;
@@ -1421,7 +1442,16 @@ class Mantenedores extends CI_Controller {
 			$descripcion = $this->input->post('nombre');
 			$idcategoria = $this->input->post('idcategoria');
 
-									
+			$this->db->select('id_categoria, created_at, nombre')
+						  ->from('rem_categoria')
+						  ->where('nombre',$descripcion);
+		    $query = $this->db->get();
+
+		    if($query->result()){
+		    	$this->session->set_flashdata('categorias_result', 3);
+			redirect('mantenedores/categorias');		    	
+		    };
+		    									
 			$datos = array();
 			$datos['nombre'] = $descripcion;
 			
@@ -1444,6 +1474,15 @@ class Mantenedores extends CI_Controller {
 			$descripcion = $this->input->post('nombre');
 			$idcargo = $this->input->post('idcargo');
 
+			$$this->db->select('id_cargos, created_at, nombre, activo')
+						  ->from('rem_cargos')
+						  ->where('nombre',$descripcion);
+		    $query = $this->db->get();
+
+		    if($query->result()){
+		    	$this->session->set_flashdata('cargos_result', 3);
+			redirect('mantenedores/cargos');		    	
+		    };
 									
 			$datos = array();
 			$datos['nombre'] = $descripcion;
@@ -1513,6 +1552,16 @@ class Mantenedores extends CI_Controller {
 		
 			$descripcion = $this->input->post('nombre');
 			$idlugarpago = $this->input->post('idlugardepago');
+
+			$this->db->select('id_lugar_pago, nombre')
+						  ->from('rem_lugar_pago')
+						  ->where('nombre',$descripcion);
+		    $query = $this->db->get();
+
+		    if($query->result()){
+		    	$this->session->set_flashdata('lugardepago_result', 3);
+			redirect('mantenedores/lugardepago');		    	
+		    };
 									
 			$datos = array();
 			$datos['nombre'] = $descripcion;
@@ -1535,6 +1584,16 @@ class Mantenedores extends CI_Controller {
 		
 			$descripcion = $this->input->post('nombre');
 			$idformapago = $this->input->post('idformapago');
+
+			$this->db->select("id_forma_pago, descripcion")
+						  ->from('rem_formas_pago')
+						  ->where('descripcion',$descripcion);
+		    $query = $this->db->get();
+
+		    if($query->result()){
+		    	$this->session->set_flashdata('formadepago_result', 3);
+			redirect('mantenedores/formadepago');		    	
+		    };
 									
 			$datos = array();
 			$datos['descripcion'] = $descripcion;
@@ -1557,6 +1616,16 @@ class Mantenedores extends CI_Controller {
 		
 			$descripcion = $this->input->post('nombre');
 			$idestudios = $this->input->post('idestudios');
+
+			$this->db->select('id_estudios, id_empresa, nombre, codigo, valido, created_at')
+						  ->from('rem_estudios')
+						  ->where('nombre',$descripcion);
+		    $query = $this->db->get();
+
+		    if($query->result()){
+		    	$this->session->set_flashdata('estudios_result', 3);
+			redirect('mantenedores/estudios');		    	
+		    };
 												
 			$datos = array();
 			$datos['nombre'] = $descripcion;
@@ -1579,6 +1648,16 @@ class Mantenedores extends CI_Controller {
 		
 			$descripcion = $this->input->post('nombre');
 			$idestadocivil = $this->input->post('idestadocivil');
+
+			$this->db->select('id_estado_civil, nombre, activo')
+						  ->from('rem_estado_civil')
+						  ->where('nombre',$descripcion);
+		    $query = $this->db->get();
+
+		    if($query->result()){
+		    	$this->session->set_flashdata('estadocivil_result', 3);
+			redirect('mantenedores/estadocivil');		    	
+		    };
 												
 			$datos = array();
 			$datos['nombre'] = $descripcion;
@@ -1601,6 +1680,16 @@ class Mantenedores extends CI_Controller {
 		
 			$descripcion = $this->input->post('nombre');
 			$idlicenciaconducir = $this->input->post('idlicenciaconducir');
+
+			$this->db->select('id_licencia_conducir, nombre, valido')
+						  ->from('rem_licencia_conducir')
+						  ->where('nombre',$descripcion);
+		    $query = $this->db->get();
+
+		    if($query->result()){
+		    	$this->session->set_flashdata('licenciaconducir_result', 3);
+			redirect('mantenedores/licenciasconducir');		    	
+		    };
 												
 			$datos = array();
 			$datos['nombre'] = $descripcion;
