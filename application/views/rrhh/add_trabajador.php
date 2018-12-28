@@ -1435,7 +1435,7 @@
 										</div>
 										<br>
 										<br>
-										<button type="submit" class="btn btn-info">Guardar</button>
+										<button type="button" onclick="Verifica_Rut()" class="btn btn-info">Guardar</button>
 										
 										<a href="<?php echo base_url();?>rrhh/mantencion_personal" class="btn btn-success">Volver</a>	
 									</div>
@@ -1817,6 +1817,42 @@ function VerificaRut(rut) {
 
 
 
+function Verifica_Rut() {
+	
+	var rut2 = document.getElementById("rut").value;
+	var cleanRut = replaceAll(rut2,".","");
+	var rut_completo = cleanRut;
+	var cleanRut = replaceAll(cleanRut,"-","");
+	var rut2 = cleanRut.slice(0,-1);
+	$.ajax({type: "GET",
+    		url: "<?php echo base_url();?>rrhh/datos_personal/"+rut2, 
+    		dataType: "json",
+    		async: false,
+    		success: function(datos_personal2){		      			
+    			
+    			if(datos_personal2.length == 0){			      			
+    				   				
+    				$('#basicBootstrapForm').submit();
+
+    			}else{
+	      			$.each(datos_personal2,function(nombre) { 
+	      				if(this.rut == rut_completo){
+	      					bootbox.alert({
+				      						message: "Colaborador con Rut "+ this.rut +" ingresado anteriormente",
+				      						size: 'small'
+				      						});
+	      				}	
+	      			}		    			
+      			)
+      		}
+      	}   	
+})
+}
+
+
+
+
+
 $(document).ready(function() {
 
  $('#basicBootstrapForm').formValidation({
@@ -1841,6 +1877,8 @@ $(document).ready(function() {
                     },
                     validateRut: {
                       message: 'Rut Incorrecto'
+                    }
+
                     }
 
                 }
@@ -2419,7 +2457,7 @@ $(document).ready(function() {
 
                     }
                 },
-        }
+        
     })
 
        // Called when a field is invalid
