@@ -1820,6 +1820,7 @@ function VerificaRut(rut) {
 function Verifica_Rut() {
 	
 	var rut2 = document.getElementById("rut").value;
+	var num_ficha = document.getElementById("numficha").value;
 	var cleanRut = replaceAll(rut2,".","");
 	var rut_completo = cleanRut;
 	var cleanRut = replaceAll(cleanRut,"-","");
@@ -1836,11 +1837,17 @@ function Verifica_Rut() {
 
     			}else{
 	      			$.each(datos_personal2,function(nombre) { 
-	      				if(this.rut == rut_completo){
+	      				if(this.rut == rut_completo && this.numficha == num_ficha){
+	      					bootbox.alert({
+				      						message: "Colaborador con Rut "+ this.rut +" y ficha numero "+num_ficha+" ingresado anteriormente",
+				      						size: 'small'
+				      						});
+	      				}else if(this.rut == rut_completo && this.numficha != num_ficha){	      					
 	      					bootbox.alert({
 				      						message: "Colaborador con Rut "+ this.rut +" ingresado anteriormente",
 				      						size: 'small'
 				      						});
+
 	      				}	
 	      			}		    			
       			)
