@@ -42,7 +42,7 @@ class Configuracion extends CI_Model
 
 	public function get_haberes_descuentos($idhaberdescto = null,$tipo = null){
 
-		$habdescto_data = $this->db->select('d.id, d.codigo, d.tipo, d.nombre, d.editable, d.visible, d.tipocalculo, d.formacalculo, d.imponible, d.fijo, d.proporcional, d.semanacorrida, d.tributable, d.retjudicial')
+		$habdescto_data = $this->db->select('d.id, d.codigo, d.tipo, d.nombre, d.editable, d.visible, d.tipocalculo, d.formacalculo, d.imponible, d.fijo, d.proporcional, d.semanacorrida, d.tributable, d.retjudicial, d.otros_aportes')
 						  ->from('rem_conf_haber_descuento d')
 						  ->join('rem_conf_haber_descuento_empresa de','d.id = de.idconfhd and de.idempresa = ' . $this->session->userdata('empresaid'),'left')
 						  ->where('valido = 1')

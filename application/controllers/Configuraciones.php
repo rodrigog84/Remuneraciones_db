@@ -784,6 +784,8 @@ public function submit_haber_descuento(){
 			$datos['semanacorrida'] = $this->input->post('semanacorrida') == '' ? 0 : 1;
 			$datos['fijo'] = $this->input->post('fijo') == '' ? 0 : 1;
 			$datos['proporcional'] = $this->input->post('proporcional') == '' ? 0 : 1;
+			$datos['otros_aportes'] = $this->input->post('otros_aportes') == '' ? 0 : 1;
+
 			
 			$datos['editable'] = 1;
 			$datos['visible'] = 1;

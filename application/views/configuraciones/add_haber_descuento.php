@@ -277,6 +277,25 @@
 																					</div>
 																				</div>
 																			</td>
+																			<td>
+														
+																				<div class="form-group">
+																					<div class="col-sm-8">
+																						<div class="radio block">
+																							<label>
+																								<?php if(isset($haberes_descuentos->otros_aportes)){
+																										$checked_otros_aportes = $haberes_descuentos->otros_aportes == 1 ? 'checked' : '';
+
+																								}else{
+
+																									$checked_otros_aportes = '';
+																								}?>
+																								<input class="form-check-input" type="checkbox" name="otros_aportes"  id="otros_aportes" value="otros_aportes" <?php echo $checked_otros_aportes; ?> > Otros Aportes
+																							</label>
+																						</div>
+																					</div>
+																				</div>
+																			</td>
 
 																			<!--td>
 																				<select name="selector1" id="selector1" class="form-control1">
