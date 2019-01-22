@@ -129,6 +129,7 @@ class Main extends CI_Controller {
   			redirect($url);
 
   		}		*/		
+  		$vars['highchartsGraph'] = true;
 		$this->load->view($template,$vars);			
 		
 
