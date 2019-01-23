@@ -40,7 +40,10 @@ class Main extends CI_Controller {
 		$this->load->model('ion_auth_model');	
 		$this->load->model('admin');
 		$this->load->model('rrhh_model');		
-
+		$colaboradores = $this->rrhh_model->get_personal_datos();
+		$num_colaboradores = sizeof($colaboradores);
+		$centro_costo = $this->rrhh_model->get_centro_costo();
+		$num_centro_costo = sizeof($centro_costo);
 		$content = array(
 					'menu' => 'Dashboard',
 					'title' => 'Dashboard',
@@ -55,6 +58,7 @@ class Main extends CI_Controller {
 		if($this->session->userdata('level') == 2){
 			// SI YA SELECCIONO COMUNIDAD, NO ES NECESARIO ELEGIR NUEVAMENTE
 			$unidad_id = $unidad_id == '' && $this->session->userdata('empresaid') ? $this->session->userdata('empresaid') : $unidad_id;
+			//$num_colaboradores = $this->rrhh_model->get_personal_datos('null');
 
 			$empresas_asignadas = $unidad_id != '' ? $this->admin->empresas_asignadas($this->session->userdata('user_id'),$this->session->userdata('level'),$unidad_id) : $this->admin->empresas_asignadas($this->session->userdata('user_id'),$this->session->userdata('level'));
 
@@ -65,7 +69,8 @@ class Main extends CI_Controller {
 							'menu' => 'Selecci&oacute;n Empresa',
 							'title' => 'Empresas',
 							'subtitle' => 'Selecci&oacute;n de Empresa');
-
+				$vars['num_colaboradores'] = $num_colaboradores;
+				$vars['num_centro_costo'] = $num_centro_costo;
 				$vars['content_menu'] = $content;
 				$vars['empresas'] = $empresas_asignadas;
 				$vars['content_view'] = 'admins/asigna_empresa';
@@ -90,6 +95,7 @@ class Main extends CI_Controller {
 				$anno = $this->session->flashdata('asistencia_anno') == '' ? date('Y') : $this->session->flashdata('asistencia_anno');
 				
 				$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos_resumen(); 
+				//$num_colaboradores = count($this->rrhh_model->get_personal_datos('null'));
 				
 		
 				if ($periodos_remuneracion == null){
@@ -106,16 +112,22 @@ class Main extends CI_Controller {
 				
 				$periodo_actual = "Periodo en Curso: ".$mes_curso." ".$anno_curso;
 				$vars['periodo_actual'] = $periodo_actual;
+				$vars['num_colaboradores'] = $num_colaboradores;
+				$vars['num_centro_costo'] = $num_centro_costo;
 				}else{
 					$periodo_actual = "";
 					$vars['periodo_actual'] = $periodo_actual;
+					$vars['num_colaboradores'] = $num_colaboradores;
+					$vars['num_centro_costo'] = $num_centro_costo;
 
 				}
 
 			}else{
-
+				//$num_colaboradores = count($this->rrhh_model->get_personal_datos('null'));
 				$periodo_actual = "";
 				$vars['periodo_actual'] = $periodo_actual;
+				$vars['num_colaboradores'] = $num_colaboradores;
+				$vars['num_centro_costo'] = $num_centro_costo;
 			}
 
 		/*** SI YA SE HABIA SELECCIONADO UN MODULO, REDIRECCIONA ****/

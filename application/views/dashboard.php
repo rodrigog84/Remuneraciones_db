@@ -7,10 +7,11 @@
                         <div class="stats-icon"><i class="fa fa-users"></i></div>
                         <div class="stats-info">
                             <h4>N&uacute;mero Colaboradores</h4>
-                            <p>504</p>    
+                            <!--<p>504</p>-->
+                            <p><?php echo $num_colaboradores;  ?> </p>
                         </div>
                         <div class="stats-link">
-                            <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+                            <a href="javascript:;">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -22,10 +23,10 @@
                         <div class="stats-icon"><i class="fa fa-building"></i></div>
                         <div class="stats-info">
                             <h4>Centros de Costo</h4>
-                            <p>6</p> 
+                            <p><?php echo $num_centro_costo;  ?> </p>
                         </div>
                         <div class="stats-link">
-                            <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+                            <a href="javascript:;">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
                         </div>
                     </div>
                 </div>                
@@ -38,7 +39,7 @@
                             <p>27.582</p>    
                         </div>
                         <div class="stats-link">
-                            <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+                            <a href="javascript:;">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -52,7 +53,7 @@
                             <p>35.573</p>   
                         </div>
                         <div class="stats-link">
-                            <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+                            <a href="javascript:;">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
                         </div>
                     </div>
                 </div>

@@ -970,7 +970,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		return 1;
 	}
 
-	public function get_personal_datos($rut){
+	public function get_personal_datos($rut = null){
 
 
 		$array_campos = array(
