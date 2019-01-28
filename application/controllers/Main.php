@@ -44,6 +44,19 @@ class Main extends CI_Controller {
 		$num_colaboradores = sizeof($colaboradores);
 		$centro_costo = $this->rrhh_model->get_centro_costo();
 		$num_centro_costo = sizeof($centro_costo);
+		$num_masculino=0;
+		$num_femenino=0;
+
+		foreach ($colaboradores as $colaborador) {
+			# code...
+			if($colaborador->sexo == 'M'){
+				$num_masculino = $num_masculino + 1;
+			}
+			if ($colaborador->sexo == 'F'){
+				$num_femenino = $num_femenino + 1;
+			}
+		}
+		
 		$content = array(
 					'menu' => 'Dashboard',
 					'title' => 'Dashboard',
@@ -53,6 +66,7 @@ class Main extends CI_Controller {
 		
 		$vars['content_menu'] = $content;
 		$vars['content_view'] = 'dashboard';
+
 		$template = "template";
 
 		if($this->session->userdata('level') == 2){
@@ -69,6 +83,10 @@ class Main extends CI_Controller {
 							'menu' => 'Selecci&oacute;n Empresa',
 							'title' => 'Empresas',
 							'subtitle' => 'Selecci&oacute;n de Empresa');
+
+
+				$vars['num_masc'] = $num_masculino;
+				$vars['num_fem'] = $num_femenino;
 				$vars['num_colaboradores'] = $num_colaboradores;
 				$vars['num_centro_costo'] = $num_centro_costo;
 				$vars['content_menu'] = $content;
@@ -114,12 +132,15 @@ class Main extends CI_Controller {
 				$vars['periodo_actual'] = $periodo_actual;
 				$vars['num_colaboradores'] = $num_colaboradores;
 				$vars['num_centro_costo'] = $num_centro_costo;
+				$vars['num_masc'] = $num_masculino;
+				$vars['num_fem'] = $num_femenino;
 				}else{
 					$periodo_actual = "";
 					$vars['periodo_actual'] = $periodo_actual;
 					$vars['num_colaboradores'] = $num_colaboradores;
 					$vars['num_centro_costo'] = $num_centro_costo;
-
+					$vars['num_masc'] = $num_masculino;
+					$vars['num_fem'] = $num_femenino;
 				}
 
 			}else{
@@ -128,6 +149,8 @@ class Main extends CI_Controller {
 				$vars['periodo_actual'] = $periodo_actual;
 				$vars['num_colaboradores'] = $num_colaboradores;
 				$vars['num_centro_costo'] = $num_centro_costo;
+				$vars['num_masc'] = $num_masculino;
+				$vars['num_fem'] = $num_femenino;
 			}
 
 		/*** SI YA SE HABIA SELECCIONADO UN MODULO, REDIRECCIONA ****/

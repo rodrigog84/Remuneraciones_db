@@ -121,6 +121,10 @@
 $(function () {
 
 
+    var num_masc = <?php echo $num_masc; ?>;
+    var num_fem = <?php echo $num_fem; ?>;
+
+
     $('#container').highcharts({
         chart: {
         type: 'column'
@@ -209,12 +213,12 @@ $(function () {
         colorByPoint: true,
         data: [{
             name: 'Hombres',
-            y: 61.41,
+            y:  num_masc, 
             sliced: true,
             selected: true
         }, {
             name: 'Mujeres',
-            y: 11.84
+            y: num_fem
         }]
     }]
 
