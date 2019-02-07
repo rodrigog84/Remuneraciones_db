@@ -19,6 +19,10 @@
     <link href="<?php echo base_url(); ?>assets/css/style.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/css/style-responsive.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/css/theme/blue.css" rel="stylesheet" id="theme" />
+    <link href="<?php echo base_url(); ?>assets/css/morris.css" rel="stylesheet" />
+    <link href="<?php echo base_url(); ?>assets/css/metisMenu.css" rel="stylesheet" />
+ 
+    
     <!-- ================== END BASE CSS STYLE ================== -->
     
     <!-- ================== BEGIN BASE JS ================== -->
@@ -308,16 +312,22 @@
       <?php } ?>   
 
 
+<!--<link href="<?php echo base_url();?>/dist/css/sb-admin-2.css" rel="stylesheet">-->
+
 
 <link rel="stylesheet" href="<?php echo base_url();?>css/bootstrap-multiselect.css" type="text/css"/>
 <!-- Latest compiled and minified JavaScript -->
 <script src="<?php echo base_url();?>js/bootstrap-multiselect.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-es_CL.js"></script>
-<!--<link rel="stylesheet" href="<?php echo base_url();?>css/bootstrap-select.min.css">-->
+<script src="<?php echo base_url();?>js/metisMenu.min.js"></script>
+<script src="<?php echo base_url();?>js/raphael.min.js"></script>
+<script src="<?php echo base_url();?>js/morris.min.js"></script>
 
 
 
 
+       
+        
         <script src="<?php echo base_url(); ?>assets/js/apps.min.js"></script>
 
     <script>
@@ -386,8 +396,10 @@
                 <!-- begin header navigation right -->
                 <ul class="nav navbar-nav navbar-right">
                     <div class="navbar-text">
-                       <em><?php if(isset($periodo_actual)){
+                       <em><?php if(isset($periodo_actual) && isset($numero_personal) && isset($licencias)){
                        
+                              $numero_personal ='';
+                              $licencias ='';
                               echo $periodo_actual; 
                        }?></em>
                   </div>    
@@ -547,7 +559,7 @@
         <!-- begin #footer -->
         <?php if(!isset($footer)){ ?>
         <div id="footer" class="footer">
-            &copy; 2018 Infosys - Consisa - Todos los derechos reservados
+            &copy; 2018 Infosys - Todos los derechos reservados
         </div>        
         <?php } ?>
 

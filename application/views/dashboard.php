@@ -11,7 +11,7 @@
                             <p><?php echo $num_colaboradores;  ?> </p>
                         </div>
                         <div class="stats-link">
-                            <a href="javascript:;">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
+                            <a href="<?php echo base_url();?>rrhh/mantencion_personal">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -26,20 +26,20 @@
                             <p><?php echo $num_centro_costo;  ?> </p>
                         </div>
                         <div class="stats-link">
-                            <a href="javascript:;">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
+                            <a href="<?php echo base_url();?>configuraciones/centrocosto">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
                         </div>
                     </div>
                 </div>                
                 <!-- begin col-3 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="widget widget-stats bg-green">
-                        <div class="stats-icon"><i class="fa fa-dollar"></i></div>
+                        <div class="stats-icon"><i class="fa fa-medkit"></i></div>
                         <div class="stats-info">
-                            <h4>Valor UF</h4>
-                            <p>27.582</p>    
+                            <h4>Licencias Medicas</h4>
+                            <p><?php echo $num_licencia;  ?></p>    
                         </div>
                         <div class="stats-link">
-                            <a href="javascript:;">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
+                            <a href="<?php echo base_url();?>auxiliares/licencias">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -49,11 +49,11 @@
                     <div class="widget widget-stats bg-blue">
                         <div class="stats-icon"><i class="fa fa-money"></i></div>
                         <div class="stats-info">
-                            <h4>Valor U.T.M</h4>
-                            <p>35.573</p>   
+                            <h4>Periodo de Remuneraciones</h4>
+                            <p><?php echo $periodo_actual?></p>   
                         </div>
                         <div class="stats-link">
-                            <a href="javascript:;">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
+                            <a href="<?php echo base_url();?>rrhh/calculo_remuneraciones">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -107,6 +107,50 @@
                         <div class="panel-body">
                             <div id="container4" class="height-sm"></div>
                         </div>
+                    </div>
+                    <div class="panel panel-inverse" data-sortable-id="index-8">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Indicadores</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div id="container8" class="height-sm">
+                               
+                               <table class="table table-borderless">
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                </tr>   
+                                    <tr>
+                                        <td class="text-left">Unidad de Fomento (UF):</td>
+                                        <td class="text-right">$<?php echo $parametros_generales->uf;?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Unidad Tributaria Mensual(UTM):</td>
+                                        <td class="text-right">$<?php echo $parametros_generales->utm;?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Sueldo Minimo</td>
+                                        <td class="text-right">$<?php echo $parametros_generales->sueldominimo;?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Tope Imponible:</td>
+                                        <td class="text-right"><?php echo $parametros_generales->topeimponible;?>%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Tope Seguro de Cesantía:</td>
+                                        <td class="text-right"><?php echo $parametros_generales->topeimponibleafc;?>%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Tasa Mutualidad:</td>
+                                        <td class="text-right"><?php echo $parametros_generales->topeimponibleafc;?>%</td>
+                                    </tr>
+
+                               </table>
+
+                            </div>
+
+                        </div>
+                      
                     </div>
                     
                   

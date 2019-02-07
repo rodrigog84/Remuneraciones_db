@@ -674,7 +674,13 @@ public function submit_solicita_vacaciones(){
 
 	}
 
+	public function get_licencias(){
 
+		$licencia = $this->auxiliar->get_licencias();
+		return $licencia;
+
+
+	}
 
 	public function add_licencias(){
 		

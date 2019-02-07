@@ -39,14 +39,33 @@ class Main extends CI_Controller {
 
 		$this->load->model('ion_auth_model');	
 		$this->load->model('admin');
-		$this->load->model('rrhh_model');		
+		$this->load->model('rrhh_model');
+		$this->load->model('auxiliar');
+		$afp = $this->admin->get_afp();		
 		$colaboradores = $this->rrhh_model->get_personal_datos();
 		$num_colaboradores = sizeof($colaboradores);
 		$centro_costo = $this->rrhh_model->get_centro_costo();
 		$num_centro_costo = sizeof($centro_costo);
 		$num_masculino=0;
 		$num_femenino=0;
+		$parametros_generales = $this->admin->get_parametros_generales();
+		$licencia = $this->auxiliar->get_licencias();
+		$num_licencia = sizeof($licencia);
+		$parametros_generales->uf=number_format($parametros_generales->uf, 2, ',', '.');
+		$parametros_generales->utm=number_format($parametros_generales->utm, 2, ',', '.');
+		$parametros_generales->sueldominimo=number_format($parametros_generales->sueldominimo, 0, ',', '.');
+		$parametros_generales->topeimponible=number_format($parametros_generales->topeimponible, 2, ',', '.');
+		$parametros_generales->topeimponibleafc=number_format($parametros_generales->topeimponibleafc, 2, ',', '.');
 
+/*
+		
+
+		var_dump($afp);
+
+
+
+		exit;*/
+		
 		foreach ($colaboradores as $colaborador) {
 			# code...
 			if($colaborador->sexo == 'M'){
@@ -83,8 +102,8 @@ class Main extends CI_Controller {
 							'menu' => 'Selecci&oacute;n Empresa',
 							'title' => 'Empresas',
 							'subtitle' => 'Selecci&oacute;n de Empresa');
-
-
+				$vars['num_licencia'] = $num_licencia;
+				$vars['parametros_generales'] = $parametros_generales;
 				$vars['num_masc'] = $num_masculino;
 				$vars['num_fem'] = $num_femenino;
 				$vars['num_colaboradores'] = $num_colaboradores;
@@ -128,12 +147,14 @@ class Main extends CI_Controller {
 
 				$mes_curso = $mes[$mes_curso - 1];
 				
-				$periodo_actual = "Periodo en Curso: ".$mes_curso." ".$anno_curso;
+				$periodo_actual = "".$mes_curso." ".$anno_curso;
+				$vars['parametros_generales'] = $parametros_generales;
 				$vars['periodo_actual'] = $periodo_actual;
 				$vars['num_colaboradores'] = $num_colaboradores;
 				$vars['num_centro_costo'] = $num_centro_costo;
 				$vars['num_masc'] = $num_masculino;
 				$vars['num_fem'] = $num_femenino;
+				$vars['num_licencia'] = $num_licencia;
 				}else{
 					$periodo_actual = "";
 					$vars['periodo_actual'] = $periodo_actual;
@@ -141,6 +162,8 @@ class Main extends CI_Controller {
 					$vars['num_centro_costo'] = $num_centro_costo;
 					$vars['num_masc'] = $num_masculino;
 					$vars['num_fem'] = $num_femenino;
+					$vars['parametros_generales'] = $parametros_generales;
+					$vars['num_licencia'] = $num_licencia;
 				}
 
 			}else{
@@ -151,6 +174,8 @@ class Main extends CI_Controller {
 				$vars['num_centro_costo'] = $num_centro_costo;
 				$vars['num_masc'] = $num_masculino;
 				$vars['num_fem'] = $num_femenino;
+				$vars['parametros_generales'] = $parametros_generales;
+				$vars['num_licencia'] = $num_licencia;
 			}
 
 		/*** SI YA SE HABIA SELECCIONADO UN MODULO, REDIRECCIONA ****/
