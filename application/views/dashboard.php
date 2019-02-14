@@ -116,10 +116,7 @@
                             <div id="container8" class="height-sm">
                                
                                <table class="table table-borderless">
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                </tr>   
+                                   
                                     <tr>
                                         <td class="text-left">Unidad de Fomento (UF):</td>
                                         <td class="text-right">$<?php echo $parametros_generales->uf;?></td>
@@ -167,7 +164,10 @@ $(function () {
 
     var num_masc = <?php echo $num_masc; ?>;
     var num_fem = <?php echo $num_fem; ?>;
+    var remuneraciones_anual = <?php echo json_encode($pago_remuneraciones); ?>;
 
+    var arreglo_afp = <?php echo json_encode($arreglo_afp); ?>;
+    var arreglo_cc = <?php echo json_encode($arreglo_cc); ?>;
 
     $('#container').highcharts({
         chart: {
@@ -218,7 +218,9 @@ $(function () {
     },
     series: [{
         name: 'Monto Pagado',
-        data: [18.5, 20, 15, 16, 17, 16.5, 18.1, 18.5, 19, 19.6, 19.4, 20]
+        data: remuneraciones_anual
+        //data: [18.5, 20, 15, 16, 17, 16.5, 18.1, 18.5, 19, 19.6, 19.4, 20]
+
 
     }]
     });
@@ -297,13 +299,17 @@ $(function () {
         enabled: false
     },
     plotOptions: {
+        
+
         series: {
             borderWidth: 0,
             dataLabels: {
                 enabled: true,
                 format: '{point.y:.1f}%'
             }
+
         }
+
     },
 
     tooltip: {
@@ -315,7 +321,9 @@ $(function () {
         {
             "name": "Browsers",
             "colorByPoint": true,
-            "data": [
+            "data": arreglo_afp
+
+            /*[
                 {
                     "name": "Capital",
                     "y": 62.74,
@@ -351,7 +359,7 @@ $(function () {
                     "y": 7.62,
                     "drilldown": "No Cotiza"
                 }
-            ]
+            ]*/
         }
     ],
 
@@ -388,7 +396,8 @@ $(function () {
     series: [{
         name: 'Brands',
         colorByPoint: true,
-        data: [{
+        data: arreglo_cc
+         /*[{
             name: 'Chrome',
             y: 61.41,
             sliced: true,
@@ -405,7 +414,7 @@ $(function () {
         }, {
             name: 'Centro Costo 4',
             y: 4.18
-        }]
+        }]*/
     }]
 
 

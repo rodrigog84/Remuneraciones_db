@@ -41,7 +41,8 @@ class Main extends CI_Controller {
 		$this->load->model('admin');
 		$this->load->model('rrhh_model');
 		$this->load->model('auxiliar');
-		$afp = $this->admin->get_afp();		
+		$afp = $this->admin->get_afp();	
+		$cant_afp = sizeof($afp);	
 		$colaboradores = $this->rrhh_model->get_personal_datos();
 		$num_colaboradores = sizeof($colaboradores);
 		$centro_costo = $this->rrhh_model->get_centro_costo();
@@ -56,15 +57,53 @@ class Main extends CI_Controller {
 		$parametros_generales->sueldominimo=number_format($parametros_generales->sueldominimo, 0, ',', '.');
 		$parametros_generales->topeimponible=number_format($parametros_generales->topeimponible, 2, ',', '.');
 		$parametros_generales->topeimponibleafc=number_format($parametros_generales->topeimponibleafc, 2, ',', '.');
+		$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'));
+		$pago_remuneraciones = array(18.5, 20, 15, 16, 17, 16.5, 18.1, 18.5, 19, 19.6, 19.4, 20);
+		
+		
+		$contadores = array();
+		for ($i = 0; $i<$cant_afp;$i++){
+				
 
-/*
+				$contadores[$afp[$i]->id_afp] = 0;
+		}
+
+		for ($i = 0; $i < $num_colaboradores; $i++){
+			$contadores[$colaboradores[$i]->idafp] += 1;
+		}
+
+		for ($i = 0; $i<$cant_afp;$i++){
+			$arreglo_afp[$i] = array( 'name' => $afp[$i]->nombre , 'y' =>  $contadores[$afp[$i]->id_afp], 'drilldown' => $afp[$i]->nombre);
+		}
+		
+		
+		$contador_cc = array();
+		for ($i = 0; $i<$num_centro_costo;$i++){
+				
+
+				$contador_cc[$centro_costo[$i]->id_centro_costo] = 0;
+		}
+
+		for ($i = 0; $i < $num_colaboradores; $i++){
+			$contador_cc[$colaboradores[$i]->idcentrocosto] += 1;
+		}
+
+		for ($i = 0; $i<$num_centro_costo;$i++){
+			$arreglo_cc[$i] = array( 'name' => $centro_costo[$i]->nombre , 'y' =>  $contador_cc[$centro_costo[$i]->id_centro_costo]);
+		}
 		
 
-		var_dump($afp);
 
+		//echo json_encode($arreglo_cc);
 
+		//echo json_encode($datosperiodo);
+		//echo json_encode($arreglo_afp);
 
-		exit;*/
+		//var_dump($arreglo_afp);
+		//echo json_encode($cantidad_personal_afp);
+		//echo json_encode($cantidad_afp);
+//exit;
+		
 		
 		foreach ($colaboradores as $colaborador) {
 			# code...
@@ -102,6 +141,10 @@ class Main extends CI_Controller {
 							'menu' => 'Selecci&oacute;n Empresa',
 							'title' => 'Empresas',
 							'subtitle' => 'Selecci&oacute;n de Empresa');
+				
+				$vars['arreglo_cc'] = $arreglo_cc;
+				$vars['arreglo_afp'] = $arreglo_afp;
+				$vars['pago_remuneraciones'] = $pago_remuneraciones;
 				$vars['num_licencia'] = $num_licencia;
 				$vars['parametros_generales'] = $parametros_generales;
 				$vars['num_masc'] = $num_masculino;
@@ -112,6 +155,7 @@ class Main extends CI_Controller {
 				$vars['empresas'] = $empresas_asignadas;
 				$vars['content_view'] = 'admins/asigna_empresa';
 				$template = "template_lock";
+
 				//$this->load->view('template_lock',$vars);	
 			}else if(count($empresas_asignadas) == 1){ 			
 				$this->session->set_userdata('empresaid',$empresas_asignadas->id_empresa);
@@ -155,6 +199,9 @@ class Main extends CI_Controller {
 				$vars['num_masc'] = $num_masculino;
 				$vars['num_fem'] = $num_femenino;
 				$vars['num_licencia'] = $num_licencia;
+				$vars['pago_remuneraciones'] = $pago_remuneraciones;
+				$vars['arreglo_afp'] = $arreglo_afp;
+				$vars['arreglo_cc'] = $arreglo_cc;
 				}else{
 					$periodo_actual = "";
 					$vars['periodo_actual'] = $periodo_actual;
@@ -164,6 +211,9 @@ class Main extends CI_Controller {
 					$vars['num_fem'] = $num_femenino;
 					$vars['parametros_generales'] = $parametros_generales;
 					$vars['num_licencia'] = $num_licencia;
+					$vars['pago_remuneraciones'] = $pago_remuneraciones;
+					$vars['arreglo_afp'] = $arreglo_afp;
+					$vars['arreglo_cc'] = $arreglo_cc;
 				}
 
 			}else{
@@ -176,6 +226,9 @@ class Main extends CI_Controller {
 				$vars['num_fem'] = $num_femenino;
 				$vars['parametros_generales'] = $parametros_generales;
 				$vars['num_licencia'] = $num_licencia;
+				$vars['pago_remuneraciones'] = $pago_remuneraciones;
+				$vars['arreglo_afp'] = $arreglo_afp;
+				$vars['arreglo_cc'] = $arreglo_cc;
 			}
 
 		/*** SI YA SE HABIA SELECCIONADO UN MODULO, REDIRECCIONA ****/
