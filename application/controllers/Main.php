@@ -58,11 +58,12 @@ class Main extends CI_Controller {
 		$parametros_generales->sueldominimo=number_format($parametros_generales->sueldominimo, 0, ',', '.');
 		$parametros_generales->topeimponible=number_format($parametros_generales->topeimponible, 2, ',', '.');
 		$parametros_generales->topeimponibleafc=number_format($parametros_generales->topeimponibleafc, 2, ',', '.');
-		//$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'));
+		//$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'), null);
 		$pago_remuneraciones = array(18.5, 20, 15, 16, 17, 16.5, 18.1, 18.5, 19, 19.6, 19.4, 20);
 		
 		$arreglo_cc = array();
 		$contador_cc = array();
+		$empresa = array();
 		for ($i = 0; $i<$num_centro_costo;$i++){
 				
 
@@ -139,6 +140,7 @@ class Main extends CI_Controller {
 
 			$num_empresas = count($this->admin->empresas_asignadas($this->session->userdata('user_id'),$this->session->userdata('level')));
 
+
 			if(count($empresas_asignadas) > 1){ // EN CASO DE TENER MÁS DE UNA COMUNIDAD LO ENVÍA A LA PÁGINA DE SELECCIÓN
 				$content = array(
 							'menu' => 'Selecci&oacute;n Empresa',
@@ -180,6 +182,10 @@ class Main extends CI_Controller {
 				$mes = $this->session->flashdata('asistencia_mes') == '' ? date('m') : $this->session->flashdata('asistencia_mes');
 				$anno = $this->session->flashdata('asistencia_anno') == '' ? date('Y') : $this->session->flashdata('asistencia_anno');
 				
+				$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
+				
+				$empresa->porcmutual = number_format($empresa->porcmutual, 2, ',', '.');
+
 				$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos_resumen(); 
 				//$num_colaboradores = count($this->rrhh_model->get_personal_datos('null'));
 				
@@ -197,6 +203,7 @@ class Main extends CI_Controller {
 				$mes_curso = $mes[$mes_curso - 1];
 				
 				$periodo_actual = "".$mes_curso." ".$anno_curso;
+				$vars['empresa'] = $empresa;
 				$vars['parametros_generales'] = $parametros_generales;
 				$vars['periodo_actual'] = $periodo_actual;
 				$vars['num_colaboradores'] = $num_colaboradores;
@@ -209,6 +216,7 @@ class Main extends CI_Controller {
 				$vars['arreglo_cc'] = $arreglo_cc;
 				}else{
 					$periodo_actual = "";
+					$vars['empresa'] = $empresa;
 					$vars['periodo_actual'] = $periodo_actual;
 					$vars['num_colaboradores'] = $num_colaboradores;
 					$vars['num_centro_costo'] = $num_centro_costo;
@@ -224,6 +232,7 @@ class Main extends CI_Controller {
 			}else{
 				//$num_colaboradores = count($this->rrhh_model->get_personal_datos('null'));
 				$periodo_actual = "";
+				$vars['empresa'] = $empresa;
 				$vars['periodo_actual'] = $periodo_actual;
 				$vars['num_colaboradores'] = $num_colaboradores;
 				$vars['num_centro_costo'] = $num_centro_costo;
