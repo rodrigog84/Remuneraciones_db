@@ -128,6 +128,138 @@ class Rrhh extends CI_Controller {
 
     }
 
+    public function exportarExcelpersonal(){
+            	
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=personal.xls"); 
+            
+            $personal = $this->rrhh_model->get_personal();
+
+            echo '<table>';
+            echo "<tr>";
+                echo "<td>ID EMPRESA</td>"; 
+                echo "<td>RUT</td>";               
+                echo "<td>DV</td>";
+                echo "<td>NOMBRES</td>";
+                echo "<td>A PATERNO</td>";
+                echo "<td>A MATERNO</td>";
+                echo "<td>FECHA NACIMIENTO</td>";
+                echo "<td>SEXO</td>";   
+                echo "<td>IDCIVIL</td>";
+                echo "<td>NACIONALIDAD</td>";
+                echo "<td>DIRECCION</td>";
+                echo "<td>ID REGION</td>";
+                echo "<td>ID COMUNA</td>";
+                echo "<td>FONO</td>";
+                echo "<td>E MAIL</td>";
+                echo "<td>FCHA INGRESO</td>";
+                echo "<td>ID CARGO</td>";
+                echo "<td>FECHA INIC. VACACIONES</td>";
+                echo "<td>SALDO INIC. VACACIONES</td>";
+                echo "<td>SALDO INIC. VAC. PROGRESIVAS</td>";
+                echo "<td>DIAS PROGRESIVOS</td>";
+                echo "<td>DIAS VACAC. TOMADOS</td>";
+                echo "<td>DIAS PROG. TOMADOS</td>";
+                echo "<td>TIPO CONTRATO</td>";
+                echo "<td>PARTTIME</td>";
+                echo "<td>SEG. CESANTIA</td>";
+                echo "<td>FECAFC</td>";
+                echo "<td>DIAS TRABAJO</td>";
+                echo "<td>HORAS DIARIAS</td>";
+                echo "<td>HORAS SEMANALES</td>";
+                echo "<td>SUELDO BASE</td>";
+                echo "<td>TIPO GRATIFICACION</td>";
+                echo "<td>GRATIFICACION</td>";
+                echo "<td>ASIG. FAMILIAR</td>";
+                echo "<td>CARGAS SIMPLES</td>";
+                echo "<td>CARGAS INVALIDAS</td>";
+                echo "<td>CARGAS MATERNALES</td>";
+                echo "<td>CARGAS RETROACTIVAS</td>";
+                echo "<td>ID ASIG. FAMILIAR</td>";
+                echo "<td>MOVILIZACION</td>";
+                echo "<td>COLACION</td>";
+                echo "<td>PENSIONADO</td>";
+                echo "<td>ID AFP</td>";
+                echo "<td>ADIC.AFP</td>";
+                echo "<td>TIPO AHORR. VOL.</td>";
+                echo "<td>AHORRO VOL.</td>";
+                echo "<td>INST. APV</td>";
+                echo "<td>NRO. CONTRATO APV</td>";
+                echo "<td>TIPO COTIZ.APV</td>";
+                echo "<td>COTIZ. APV</td>";
+                echo "<td>FORMA PAGO APV</td>";
+                echo "<td>DEP. CONV. APV</td>";
+                echo "<td>ID ISAPRE</td>";
+                echo "<td>VALOR PACTADO</td>";
+                echo "<td>ACTIVE</td>";
+                echo "<td>FECHA CREACION</td>";
+                echo "<td>FECHA ACTUALIZACION</td>";
+                echo "<td>NUM. FICHA</td>";
+                echo "<td>ID NACIONALIDAD</td>";
+                echo "<td>TIPO RENTA</td>";
+                echo "<td>ID ESTUDIO</td>";
+                echo "<td>TITULO</td>";
+                echo "<td>ID IDIOMA</td>";
+                echo "<td>ID JEFE</td>";
+                echo "<td>ID LICENCIA</td>";
+                echo "<td>TIPO DOCUMENTO</td>";
+                echo "<td>TALLA POLERA</td>";
+                echo "<td>TALLA PANTALON</td>";
+                echo "<td>ID CENTRO COSTO</td>";
+                echo "<td>C. BENEFICIO</td>";
+                echo "<td>ID REEMPLAZO</td>";
+                echo "<td>FECHA MODIFICACION</td>";
+                echo "<td>ID BANCO</td>";
+                echo "<td>NRO CTA BANCO</td>";
+                echo "<td>SEMANA CORRIDA</td>";
+                echo "<td>ID CATEGORIA</td>";
+                echo "<td>ID LUGAR PAGO</td>";
+                echo "<td>SINDICATO</td>";
+                echo "<td>ROL PRIVADO</td>";
+                echo "<td>JUBILADO</td>";
+                echo "<td>FECHA AFP</td>";
+                echo "<td>ID FORMA DE PAGO</td>";
+                echo "<td>FECHA RETIRO</td>";
+                echo "<td>FECHA FINIQUITO</td>";
+                echo "<td>ID MOTIVO EGRESO</td>";
+                echo "<td>ID TIPO CC</td>";
+                echo "<td>ID SECCION</td>";
+                echo "<td>ID SITUACION</td>";
+                echo "<td>ID CLASE</td>";
+                echo "<td>ID INE</td>";
+                echo "<td>ID ZONA</td>";
+                echo "<td>FECHA REAL CONTRATO</td>";
+                echo "<td>PRIMER VENCIMIENTO</td>";
+                echo "<td>FUN</td>";
+                echo "<td>FECHA VENC. PLAN</td>";
+                echo "<td>FECHA APVC</td>";
+                echo "<td>FECHA TERM SUBSIDIO</td>";
+                echo "<td>RUT PAGO</td>";
+                echo "<td>DEVOLUC. PAGO</td>";
+                echo "<td>NOMBRE PAGO</td>";
+                echo "<td>EMAIL PAGO</td>";
+                echo "<td>USUARIO WINDOWS</td>";
+                echo "<td>REGIMEN APV</td>";
+                echo "<td>TRABAJO PESADO</td>";
+                echo "<td>PLAZO CONTRATO</td>";
+                echo "<td>ID PLANTILLA BANCO</td>";
+                echo "<td>ID TIPO CTA BANCARIA</td>";                
+              echo "</tr>";
+
+                          
+             /* foreach($personal as $v){
+              	 echo "<tr>";
+                 echo "<td>".$v->rut."</td>";
+                 echo "<td>".$v->dv."</td>";
+                 echo "<td>".$v->nombre." ".$v->apaterno." ".$v->amaterno."</td>";
+                 echo "</tr>";
+               }	*/
+         echo '</table>';
+         exit;
+
+    }
+
+
     public function exportarExcelanticipos(){
             	
             header("Content-type: application/vnd.ms-excel"); 

@@ -234,6 +234,34 @@ class Carga_masiva extends CI_Controller {
 				   $rolprovado = $datos[77];
 				   $jubilado = $datos[78];
 				   $fecafp = $datos[79];
+				   $idformpago = $datos[80];
+
+				   $fecharetiro = $datos[81];
+				   $fechafiniquito = $datos[82];
+				   $motivoegreso = $datos[83];
+				   $tipocc = $datos[84];
+				   $seccion = $datos[85];
+				   $situacion = $datos[86];
+				   $clase = $datos[87];
+				   $idine = $datos[88];
+				   $idzona = $datos[89];
+				   $fecrealcontrato = $datos[90];
+
+				   $primervenc = $datos[91];
+				   $fun = $datos[92];
+				   $fecvencplan = $datos[93];
+				   $fecapvc = $datos[94];
+				   $fectermsubsidio = $datos[95];
+				   $rutpago = $datos[96];
+				   $dvpago = $datos[97];
+				   $nombrepago = $datos[98];
+				   $emailpago = $datos[99];
+				   $usuariowindows = $datos[100];
+				   $regimenapv = $datos[101];
+				   $trabajopesado = $datos[102];
+				   $plazocontrato = $datos[103];
+				   $plantillabanco = $datos[104];
+				   $cuentabancaria = $datos[105];
 				   
 				   
 		           $this->db->select('p.id_personal, p.id_empresa, p.active, p.dv')
@@ -329,7 +357,32 @@ class Carga_masiva extends CI_Controller {
 						'rol_privado' => $rolprovado,
 						'jubilado' => $jubilado,
 						'fecafp' => $fecafp,
-			
+						'id_forma_pago' => $idformpago,
+						'fecha_retiro' => $fecharetiro,
+						'fecha_finiquito' => $fechafiniquito,
+						'id_motivo_egreso' => $motivoegreso,
+						'id_tipo_cc' => $tipocc,
+						'id_seccion' => $seccion,
+						'id_situacion' => $situacion,
+						'id_clase' => $clase,
+						'id_ine' => $idine,
+						'id_zona' => $idzona,
+						'fecrealcontrato' => $fecrealcontrato,
+						'primervenc' => $primervenc,
+						'fun' => $fun,
+						'fecvencplan' => $fecvencplan,
+						'fecapvc' => $fecapvc,
+						'fectermsubsidio' => $fectermsubsidio,
+						'rut_pago' => $rutpago,
+						'dv_pago' => $dvpago,
+						'nombre_pago' => $nombrepago,
+						'email_pago' => $emailpago,
+						'usuario_windows' => $usuariowindows,
+						'regimenapv' => $regimenapv,
+						'trabajo_pesado' => $trabajopesado,
+						'plazo_contrato' => $plazocontrato,
+						'id_plantilla_banco' => $plantillabanco,
+						'id_tipo_cuenta_bancaria' => $cuentabancaria,			
 					);
 		       	   //guardamos en base de datos la línea leida
 		       	  //qprint_r($array_datos);
