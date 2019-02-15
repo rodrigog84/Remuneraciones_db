@@ -52,12 +52,13 @@ class Main extends CI_Controller {
 		$parametros_generales = $this->admin->get_parametros_generales();
 		$licencia = $this->auxiliar->get_licencias();
 		$num_licencia = sizeof($licencia);
+		
 		$parametros_generales->uf=number_format($parametros_generales->uf, 2, ',', '.');
 		$parametros_generales->utm=number_format($parametros_generales->utm, 2, ',', '.');
 		$parametros_generales->sueldominimo=number_format($parametros_generales->sueldominimo, 0, ',', '.');
 		$parametros_generales->topeimponible=number_format($parametros_generales->topeimponible, 2, ',', '.');
 		$parametros_generales->topeimponibleafc=number_format($parametros_generales->topeimponibleafc, 2, ',', '.');
-		$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'));
+		//$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'));
 		$pago_remuneraciones = array(18.5, 20, 15, 16, 17, 16.5, 18.1, 18.5, 19, 19.6, 19.4, 20);
 		
 		
@@ -142,7 +143,7 @@ class Main extends CI_Controller {
 							'title' => 'Empresas',
 							'subtitle' => 'Selecci&oacute;n de Empresa');
 				
-				$vars['arreglo_cc'] = $arreglo_cc;
+				
 				$vars['arreglo_afp'] = $arreglo_afp;
 				$vars['pago_remuneraciones'] = $pago_remuneraciones;
 				$vars['num_licencia'] = $num_licencia;
@@ -153,6 +154,7 @@ class Main extends CI_Controller {
 				$vars['num_centro_costo'] = $num_centro_costo;
 				$vars['content_menu'] = $content;
 				$vars['empresas'] = $empresas_asignadas;
+				$vars['arreglo_cc'] = $arreglo_cc;
 				$vars['content_view'] = 'admins/asigna_empresa';
 				$template = "template_lock";
 
