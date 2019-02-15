@@ -61,6 +61,23 @@ class Main extends CI_Controller {
 		//$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'));
 		$pago_remuneraciones = array(18.5, 20, 15, 16, 17, 16.5, 18.1, 18.5, 19, 19.6, 19.4, 20);
 		
+		$arreglo_cc = array();
+		$contador_cc = array();
+		for ($i = 0; $i<$num_centro_costo;$i++){
+				
+
+				$contador_cc[$centro_costo[$i]->id_centro_costo] = 0;
+		}
+
+		for ($i = 0; $i < $num_colaboradores; $i++){
+			$contador_cc[$colaboradores[$i]->idcentrocosto] += 1;
+		}
+
+		for ($i = 0; $i<$num_centro_costo;$i++){
+			$arreglo_cc[$i] = array( 'name' => $centro_costo[$i]->nombre , 'y' =>  $contador_cc[$centro_costo[$i]->id_centro_costo]);
+		}
+		
+
 		
 		$contadores = array();
 		for ($i = 0; $i<$cant_afp;$i++){
@@ -78,22 +95,7 @@ class Main extends CI_Controller {
 		}
 		
 		
-		$contador_cc = array();
-		for ($i = 0; $i<$num_centro_costo;$i++){
-				
-
-				$contador_cc[$centro_costo[$i]->id_centro_costo] = 0;
-		}
-
-		for ($i = 0; $i < $num_colaboradores; $i++){
-			$contador_cc[$colaboradores[$i]->idcentrocosto] += 1;
-		}
-
-		for ($i = 0; $i<$num_centro_costo;$i++){
-			$arreglo_cc[$i] = array( 'name' => $centro_costo[$i]->nombre , 'y' =>  $contador_cc[$centro_costo[$i]->id_centro_costo]);
-		}
 		
-
 
 		//echo json_encode($arreglo_cc);
 
@@ -145,6 +147,7 @@ class Main extends CI_Controller {
 				
 				
 				$vars['arreglo_afp'] = $arreglo_afp;
+				$vars['arreglo_cc'] = $arreglo_cc;
 				$vars['pago_remuneraciones'] = $pago_remuneraciones;
 				$vars['num_licencia'] = $num_licencia;
 				$vars['parametros_generales'] = $parametros_generales;
@@ -154,7 +157,7 @@ class Main extends CI_Controller {
 				$vars['num_centro_costo'] = $num_centro_costo;
 				$vars['content_menu'] = $content;
 				$vars['empresas'] = $empresas_asignadas;
-				$vars['arreglo_cc'] = $arreglo_cc;
+				
 				$vars['content_view'] = 'admins/asigna_empresa';
 				$template = "template_lock";
 
