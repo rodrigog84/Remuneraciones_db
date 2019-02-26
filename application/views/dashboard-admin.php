@@ -45,18 +45,7 @@
                 </div>
                 <!-- end col-3 -->
                 <!-- begin col-3 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="widget widget-stats bg-blue">
-                        <div class="stats-icon"><i class="fa fa-money"></i></div>
-                        <div class="stats-info">
-                            <h4>Periodo de Remuneraciones</h4>
-                            <p><?php echo $periodo_actual?></p>   
-                        </div>
-                        <div class="stats-link">
-                            <a href="<?php echo base_url();?>rrhh/calculo_remuneraciones">Ver Detalle <i class="fa fa-arrow-circle-o-right"></i></a>
-                        </div>
-                    </div>
-                </div>
+                
                
                
                 <!-- end col-3 -->
@@ -66,48 +55,11 @@
             <!-- begin row -->
             <div class="row">
                 <!-- begin col-8 -->
-                <div class="col-md-8">
-                    <div class="panel panel-inverse" data-sortable-id="index-1">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">Monto Pago Remuneraciones &Uacute;ltimos 12 meses</h4>
-                        </div>
-                        <div class="panel-body">
-                            <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto" class="height-sm"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="panel panel-inverse" data-sortable-id="index-1">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">Colaboradores por A.F.P</h4>
-                        </div>
-                        <div class="panel-body">
-                            <div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto" class="height-sm"></div>
-                        </div>
-                    </div>                   
-
-
-                </div>
+                
                 <!-- end col-8 -->
                 <!-- begin col-4 -->
                 <div class="col-md-4">
-                    <div class="panel panel-inverse" data-sortable-id="index-6">
-                        <div class="panel-heading">
-                            
-                            <h4 class="panel-title">Colaboradores por Sexo</h4>
-                        </div>
-                        <div class="panel-body p-t-0">
-                            <div id="container2" style="min-width: 310px; height: 310px; margin: 0 auto"></div>
-                        </div>
-                    </div>
                     
-                    <div class="panel panel-inverse" data-sortable-id="index-7">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">Colaboradores por Centro de Costo</h4>
-                        </div>
-                        <div class="panel-body">
-                            <div id="container4" class="height-sm"></div>
-                        </div>
-                    </div>
                     <div class="panel panel-inverse" data-sortable-id="index-8">
                         <div class="panel-heading">
                             <h4 class="panel-title">Indicadores</h4>
@@ -137,10 +89,10 @@
                                         <td class="text-left">Tope Seguro de Cesantía:</td>
                                         <td class="text-right"><?php echo $parametros_generales->topeimponibleafc;?>%</td>
                                     </tr>
-                                    <tr>
+                                   <!--  <tr>
                                         <td class="text-left">Tasa Mutualidad:</td>
-                                        <td class="text-right"><?php echo $empresa->porcmutual;?>%</td>
-                                    </tr>
+                                       <td class="text-right"><?php echo $empresa->porcmutual;?>%</td>
+                                    </tr>-->
 
                                </table>
 
@@ -327,43 +279,7 @@ $(function () {
             "colorByPoint": true,
             "data": arreglo_afp
 
-            /*[
-                {
-                    "name": "Capital",
-                    "y": 62.74,
-                    "drilldown": "Capital"
-                },
-                {
-                    "name": "Cuprum",
-                    "y": 10.57,
-                    "drilldown": "Cuprum"
-                },
-                {
-                    "name": "Habitat",
-                    "y": 7.23,
-                    "drilldown": "Habitat"
-                },
-                {
-                    "name": "Modelo",
-                    "y": 5.58,
-                    "drilldown": "Modelo"
-                },
-                {
-                    "name": "PlanVital",
-                    "y": 4.02,
-                    "drilldown": "PlanVital"
-                },
-                {
-                    "name": "Provida",
-                    "y": 1.92,
-                    "drilldown": "Provida"
-                },
-                {
-                    "name": "No Cotiza",
-                    "y": 7.62,
-                    "drilldown": "No Cotiza"
-                }
-            ]*/
+            
         }
     ],
 
