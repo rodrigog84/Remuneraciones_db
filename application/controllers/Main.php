@@ -232,11 +232,12 @@ class Main extends CI_Controller {
 					$meses[$i] = array('mes' => number_format(date("m",mktime(0,0,0,date("m")-$i,date("d"),date("Y"))))  , 'anno' => date("Y",mktime(0,0,0,date("m")-$i,date("d"),date("Y"))));
 					$meses_remunerados[$i] = 0;
 				}
-				
 				for ($i=1; $i<13 ; $i++){
-					$meses_remunerados[$datosperiodo[$i]->mes] = $datosperiodo[$i]->sueldoimponible;
+					if(isset($datosperiodo[$i]->mes)){
+						$meses_remunerados[$datosperiodo[$i]->mes] = isset($datosperiodo[$i]->sueldoimponible) ? $datosperiodo[$i]->sueldoimponible : 0;	
+					}
+					
 				}
-				
 				for ($i=1; $i<13 ; $i++){
 					$meses_x_montopago[$i] = array ('mes' => $meses_arreglo[$meses[$i]['mes']].' '.$meses[$i]['anno']);
 					$pago_remuneraciones[$i] =  array ( 'pago' =>$meses_remunerados[$meses[$i]['mes']]);
