@@ -65,7 +65,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Nombres</label>
-								                             	<input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" >
+								                             	<input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombres" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" >
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -1226,8 +1226,8 @@
 													<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
-								                              <label for="rut">Nombre Completo</label>
-																<input type="text" name="nombrefp" class="form-control" id="nombrefp" placeholder="Nombre Completo" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+								                              <label for="rut">Nombres</label>
+																<input type="text" name="nombrefp" class="form-control" id="nombrefp" placeholder="Nombres" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
