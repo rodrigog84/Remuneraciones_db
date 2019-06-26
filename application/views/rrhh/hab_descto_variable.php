@@ -243,7 +243,7 @@
                                        <td><small>' + fila + '</small></td>\
                                        <td><small><input type="checkbox" id="sel_col-' + var_json[i].id_personal + '" name="sel_col-' + var_json[i].id_personal + '" class="sel_col"></small></td>\
                                        <td><small>' + var_json[i].rut + '-' + var_json[i].dv + '</small></td>\
-                                       <td><small>' + var_json[i].nombre + '</small></td>\
+                                       <td><small>' + var_json[i].nombre + ' ' + var_json[i].apaterno + ' ' + var_json[i].amaterno + '</small></td>\
                                        <td><small><input type="text" class="miles" name="monto_col-' + var_json[i].id_personal + '" id="monto_col-' + var_json[i].id_personal + '" value="0"></small></td>\
                                       </tr>';
                                       fila++;
