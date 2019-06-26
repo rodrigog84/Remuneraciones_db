@@ -2601,6 +2601,10 @@ $(document).ready(function() {
                 validators: {
                     notEmpty: {
                         message: 'Monto Pactado es requerido'
+                    },
+                    regexp: {
+                            regexp: /^[0-9]+([,][0-9]+)?$/,
+                            message: 'Debe ingresar un valor decimal'
                     }
                 }
             },  
@@ -2912,7 +2916,11 @@ $('#apv').on('change',function(){
 $('.miles').mask('000.000.000.000.000', {reverse: true}); 
 $('.miles_decimales').mask('#.##0,00', {reverse: true}); 
 
- $('.miles_decimales_isapre').mask('#.####0,0000', {reverse: true});       
+ //$('.miles_decimales_isapre').mask('#.####0,0000', {reverse: true});       
+
+  $('.miles_decimales_isapre').keyup(function (){
+    this.value = (this.value + '').replace(/[^,0-9]/g, '');
+  });
 
 
 $('#tipo_cotizacion').change(function(){
