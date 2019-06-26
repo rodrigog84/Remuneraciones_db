@@ -437,7 +437,7 @@
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
 						                              <label for="diastrabajo">D&iacute;as de Trabajo</label>
-						                              <input type="text" class="form-control" name="diastrabajo" id="diastrabajo" placeholder="Ingrese D&iacute;as de Trabajo" value="<?php echo $datos_form['diastrabajo']; ?>" >                            
+						                              <input type="text" class="form-control" name="diastrabajo" id="diastrabajo" placeholder="Ingrese D&iacute;as de Trabajo" value="<?php echo $datos_form['diastrabajo'] == '' ? 30 : $datos_form['diastrabajo']; ?>" >                            
 						                            </div> 
 						                          </div>	
 
