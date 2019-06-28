@@ -1007,7 +1007,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Monto Cotización A.P.V.</label>
-																<input type="text" name="monto_cotizacion_apv" class="form-control numeros miles" id="monto_cotizacion_apv" placeholder="Monto Cotizacion" disabled>
+																<input type="text" name="monto_cotizacion_apv" class="form-control" id="monto_cotizacion_apv" placeholder="Monto Cotizacion" disabled>
 								                            </div>
 								                          </div>
 
@@ -1608,13 +1608,18 @@ $(document).ready(function(){
 
 						    }else if(this.tipocotapv == 'uf'){
 						      $('#monto_cotizacion_apv').removeClass("miles");   
-						      $('#monto_cotizacion_apv').addClass("miles_decimales");   
-						      $('#monto_cotizacion_apv').mask('#.##0,00', {reverse: true}) 
+						      $('#monto_cotizacion_apv').removeClass("miles_decimales");   
+						      var monto_cotizacion_apv = $('#monto_cotizacion_apv').val();
+						      monto_cotizacion_apv = replaceAll(monto_cotizacion_apv,'.',',');
+						      $('#monto_cotizacion_apv').val(monto_cotizacion_apv);
+						      
+						    //  $('#monto_cotizacion_apv').mask('#.##0,00', {reverse: true}) 
 						      
 						    }else{
 						      $('#monto_cotizacion_apv').addClass("miles");   
 						      $('#monto_cotizacion_apv').removeClass("miles_decimales");   
 						      $('#monto_cotizacion_apv').mask('000.000.000.000.000', {reverse: true}); // agrega mascara
+
 						    }
 
 							$('#regimen_apv').val(this.regimenapv);
@@ -1898,11 +1903,7 @@ $(document).ready(function(){
 
 
 
-  $('.numeros').keypress(function(event){
-    if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
-      event.preventDefault();
-    } 
-  })
+
 
 
 });
@@ -2746,6 +2747,16 @@ $(document).ready(function() {
                           message: 'Ahorro APV debe estar entre 0 y 100',
                           callback: function (value, validator, $field) {
                               if($('#tipo_cotizacion').val() == 'porcentaje'){
+
+                              	/*if(!/[0-9]$/.test(value)){
+                                    	return  {
+                                          valid: false,
+                                          message: 'Debe ingresar solo n&uacute;meros'
+                                      }
+
+
+                              	}*/
+
                                 var array_value = value.split(".");
                                 if(array_value.length > 2){
                                     return  {
@@ -2769,6 +2780,19 @@ $(document).ready(function() {
                                 }
 
 
+
+                              }else if($('#tipo_cotizacion').val() == 'uf'){
+                              		if(!/^[0-9]+([,][0-9]+)?$/.test(value)){
+                                    	return  {
+                                          valid: false,
+                                          message: 'Debe ingresar un valor decimal'
+                                      }
+
+
+                              		}else{
+                              			return true;
+
+                              		}
 
                               }else{
                                 return true;
@@ -2914,15 +2938,33 @@ $('#apv').on('change',function(){
 
 
 $('.miles').mask('000.000.000.000.000', {reverse: true}); 
-$('.miles_decimales').mask('#.##0,00', {reverse: true}); 
+//$('.miles_decimales').mask('#.##0,00', {reverse: true}); 
 
  //$('.miles_decimales_isapre').mask('#.####0,0000', {reverse: true});       
 
-  $('.miles_decimales_isapre').keyup(function (){
+  /*$('.miles_decimales_isapre').keyup(function (){
     this.value = (this.value + '').replace(/[^,0-9]/g, '');
-  });
+  });*/
 
+ $('#monto_cotizacion_apv').keypress(function(event){
 
+ 	if($('#tipo_cotizacion') == 'porcentaje'){
+		if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
+	      event.preventDefault();
+	    }
+
+ 	}else if($('#tipo_cotizacion').val() == 'uf'){
+	    if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 44){
+	      event.preventDefault();
+	    } 
+ 	}else{
+	    if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
+	      event.preventDefault();
+	    } 
+
+ 	}
+
+ });
 $('#tipo_cotizacion').change(function(){
 
     
@@ -2933,11 +2975,13 @@ $('#tipo_cotizacion').change(function(){
       $('#monto_cotizacion_apv').removeClass("miles_decimales");   
 
       $('#monto_cotizacion_apv').unmask(); //quita mascara
-
     }else if($(this).val() == 'uf'){
       $('#monto_cotizacion_apv').removeClass("miles");   
-      $('#monto_cotizacion_apv').addClass("miles_decimales");   
-      $('#monto_cotizacion_apv').mask('#.##0,00', {reverse: true}) 
+      $('#monto_cotizacion_apv').removeClass("miles_decimales");   
+      $('#monto_cotizacion_apv').unmask();
+      //$('#monto_cotizacion_apv').addClass("miles_decimales");   
+      //$('#monto_cotizacion_apv').mask('#.##0,00', {reverse: true}) 
+
       
     }else{
       $('#monto_cotizacion_apv').addClass("miles");   
