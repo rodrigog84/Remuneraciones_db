@@ -2711,15 +2711,20 @@ $(document).ready(function() {
                 }
             }, 
 
+
             horasdiarias: {
                 row: '.form-group',
                 validators: {
                     notEmpty: {
                         message: 'Horas Diarias es requerido'
                     },
-                    integer: {
+                    /*integer: {
                         message: 'El valor ingresado no es num&eacute;rico',
-                    },
+                    },*/
+                    regexp: {
+                            regexp: /^[0-9]+([.][0-9]+)?$/,
+                            message: 'Debe ingresar un valor decimal'
+                    },                  
                     between: {
                         min: 0,
                         max: 24,
@@ -2734,9 +2739,13 @@ $(document).ready(function() {
                     notEmpty: {
                         message: 'Horas Semanales es requerido'
                     },
-                    integer: {
+                    /*integer: {
                         message: 'El valor ingresado no es num&eacute;rico',
-                    }                    
+                    } */
+                    regexp: {
+                            regexp: /^[0-9]+([.][0-9]+)?$/,
+                            message: 'Debe ingresar un valor decimal'
+                    }                                       
                 }
             }, 
 			monto_cotizacion_apv: {

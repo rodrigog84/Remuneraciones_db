@@ -1008,7 +1008,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Monto Cotización A.P.V.</label>
-																<input type="text" name="monto_cotizacion_apv" class="form-control numeros miles" id="monto_cotizacion_apv" placeholder="Monto Cotizacion" disabled>
+																<input type="text" name="monto_cotizacion_apv" class="form-control " id="monto_cotizacion_apv" placeholder="Monto Cotizacion" disabled>
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -2289,7 +2289,11 @@ $(document).ready(function() {
                 validators: {
                     notEmpty: {
                         message: 'Monto Pactado es requerido'
-                    }
+                    },
+                    regexp: {
+                            regexp: /^[0-9]+([,][0-9]+)?$/,
+                            message: 'Debe ingresar un valor decimal'
+                    }                    
                 }
             },  
 
@@ -2393,15 +2397,19 @@ $(document).ready(function() {
                 }
             }, 
 
-            horasdiarias: {
+             horasdiarias: {
                 row: '.form-group',
                 validators: {
                     notEmpty: {
                         message: 'Horas Diarias es requerido'
                     },
-                    integer: {
+                    /*integer: {
                         message: 'El valor ingresado no es num&eacute;rico',
-                    },
+                    },*/
+                    regexp: {
+                            regexp: /^[0-9]+([.][0-9]+)?$/,
+                            message: 'Debe ingresar un valor decimal'
+                    },                  
                     between: {
                         min: 0,
                         max: 24,
@@ -2416,9 +2424,13 @@ $(document).ready(function() {
                     notEmpty: {
                         message: 'Horas Semanales es requerido'
                     },
-                    integer: {
+                    /*integer: {
                         message: 'El valor ingresado no es num&eacute;rico',
-                    }                    
+                    } */
+                    regexp: {
+                            regexp: /^[0-9]+([.][0-9]+)?$/,
+                            message: 'Debe ingresar un valor decimal'
+                    }                                       
                 }
             }, 
 
@@ -2431,6 +2443,7 @@ $(document).ready(function() {
                       callback: {
                           message: 'Ahorro APV debe estar entre 0 y 100',
                           callback: function (value, validator, $field) {
+                          		//console.log($('#tipo_cotizacion').val());
                               if($('#tipo_cotizacion').val() == 'porcentaje'){
                                 var array_value = value.split(".");
                                 if(array_value.length > 2){
@@ -2454,6 +2467,18 @@ $(document).ready(function() {
 
                                 }
 
+                              }else if($('#tipo_cotizacion').val() == 'uf'){
+                              		if(!/^[0-9]+([,][0-9]+)?$/.test(value)){
+                                    	return  {
+                                          valid: false,
+                                          message: 'Debe ingresar un valor decimal'
+                                      }
+
+
+                              		}else{
+                              			return true;
+
+                              		}
 
 
                               }else{
@@ -2608,10 +2633,29 @@ $('#apv').on('change',function(){
 })
 
 $('.miles').mask('000.000.000.000.000', {reverse: true}); 
-$('.miles_decimales').mask('#.##0,00', {reverse: true}); 
+//$('.miles_decimales').mask('#.##0,00', {reverse: true}); 
 
- $('.miles_decimales_isapre').mask('#.####0,0000', {reverse: true});       
+ //$('.miles_decimales_isapre').mask('#.####0,0000', {reverse: true});       
 
+$('#monto_cotizacion_apv').keypress(function(event){
+
+ 	if($('#tipo_cotizacion') == 'porcentaje'){
+		if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
+	      event.preventDefault();
+	    }
+
+ 	}else if($('#tipo_cotizacion').val() == 'uf'){
+	    if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 44){
+	      event.preventDefault();
+	    } 
+ 	}else{
+	    if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
+	      event.preventDefault();
+	    } 
+
+ 	}
+
+ });
 
 $('#tipo_cotizacion').change(function(){
 
@@ -2626,13 +2670,16 @@ $('#tipo_cotizacion').change(function(){
 
     }else if($(this).val() == 'uf'){
       $('#monto_cotizacion_apv').removeClass("miles");   
-      $('#monto_cotizacion_apv').addClass("miles_decimales");   
-      $('#monto_cotizacion_apv').mask('#.##0,00', {reverse: true}) 
+      $('#monto_cotizacion_apv').removeClass("miles_decimales");   
+      $('#monto_cotizacion_apv').unmask();
+      //$('#monto_cotizacion_apv').mask('#.##0,00', {reverse: true}) 
       
     }else{
       $('#monto_cotizacion_apv').addClass("miles");   
       $('#monto_cotizacion_apv').removeClass("miles_decimales");   
       $('#monto_cotizacion_apv').mask('000.000.000.000.000', {reverse: true}); // agrega mascara
+
+  
     }
 
     
