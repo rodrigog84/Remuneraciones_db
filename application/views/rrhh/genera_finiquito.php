@@ -10,67 +10,48 @@
                     <div class="tab-content">
                       <div class="tab-pane active" id="datospersonales">
                         <section id="personales">
-                          <table class="table table-striped">
-                            <thead> 
-                              <tr> 
-                                <th>Rut:</th> 
-                                <th>Fecha Ingreso:</th>
-                                <th>Sueldo Base:</th>            
-                              </tr> 
-                            </thead>
-                            <tbody>
-                              <td>
-                                <input type="text" name="rut" id="rut"  class="form-control1"  placeholder="<?php echo $personal->rut."-".$personal->dv;?>" title="Escriba Rut" disabled  >
-                              </td>
-                              <td>
-                                <input type="text" name="fechaingreso" id="fechaingreso" class="form-control1" id="" placeholder="<?php echo $personal->fecingreso;?>" disabled >
-                              </td>
-                              <td>
-                                <input type="text" name="sueldobase" id="sueldobase" class="form-control1" id="" placeholder="<?php echo $personal->sueldobase;?>" disabled >
-                              </td>
-                              
-                            </tbody>  
-                          </table>
+                          <div class='row'>
+                                          <div class='col-md-6'>
+                                            <div class="form-group">
+                                              <label for="rut">Rut</label>
+                                              <input type="text" name="rut" id="rut"  class="form-control"  placeholder="<?php echo $personal->rut."-".$personal->dv;?>" title="Escriba Rut" readonly  >
+                                            </div>
+                                          </div>
+                                          <div class='col-md-6'>
+                                            <div class="form-group">
+                                                <label for="nombre">Fecha Ingreso</label>  
+                                                 <input type="text" name="fechaingreso" id="fechaingreso" class="form-control" id="" placeholder="<?php echo $personal->fecingreso;?>" readonly >
+                                            </div>
+                                          </div>
 
-                          <table class="table table-striped">
-                            <thead> 
-                              <tr> 
-                                <th>Nombre Completo:</th> 
-                                <th>Apellido Parterno:</th>
-                                <th>Apellido Materno:</th>                                  
-                              </tr> 
-                            </thead>
-                            <tbody>
-                              <td >
-                                <div class="form-group">
-                                <input type="text" name="nombre" class="form-control1" id="nombre" placeholder="<?php echo $personal->nombre;?>" disabled>
-                                </div>
-                              </td>
-                              <td class="form-group">
-                                <input type="text" name="apaterno" class="form-control1" id="apaterno" placeholder="<?php echo $personal->apaterno;?>" disabled>
-                              </td>
-                              <td class="form-group">
-                                <input type="text" name="amaterno" class="form-control1" id="amaterno" placeholder="<?php echo $personal->amaterno;?>" disabled>
-                              </td>
-                            </tbody>
-                          </table>                          
-                          <table class="table table-striped">
-                            <thead> 
-                              <tr> 
-                                <th>Dirección:</th> 
-                                <th>Email:</th>
-                                    
-                              </tr> 
-                            </thead>
-                            <tbody>
-                              <td>
-                                <input type="text" name="direccion" id="direccion" class="form-control1 required" placeholder="<?php echo $personal->direccion;?>" data-toggle="modal" data-target="#myModalDireccion" size="40" disabled>
-                              </td>
-                              <td>
-                                <input type="text" name="email" id="email" class="form-control1" placeholder="<?php echo $personal->email;?>" disabled>
-                              </td>
-                            </tbody>
-                          </table>
+                          </div>
+                           <div class='row'>
+                                          <div class='col-md-6'>
+                                            <div class="form-group">
+                                              <label for="rut">Nombre Completo</label>
+                                              <input type="text" name="nombre" class="form-control" id="nombre" placeholder="<?php echo $personal->nombre." ".$personal->apaterno." ".$personal->amaterno;?>" disabled>
+                                            </div>
+                                          </div>
+                                          <div class='col-md-6'>
+                                            <div class="form-group">
+                                                <label for="nombre">Dirección</label>  
+                                                  <input type="text" name="direccion" id="direccion" class="form-control required" placeholder="<?php echo $personal->direccion;?>" data-toggle="modal" data-target="#myModalDireccion" size="40" disabled>
+                                            </div>
+                                          </div>
+
+                          </div>
+                          <div class='row'>
+                                          <div class='col-md-6'>
+                                            <div class="form-group">
+                                              <label for="rut">Email</label>
+                                              <input type="text" name="email" id="email" class="form-control" placeholder="<?php echo $personal->email;?>" disabled>
+                                            </div>
+                                          </div>
+                                         
+
+                          </div>                          
+
+                         
                           </section>
                       </div>   
                       </div><!-- /.box-body -->                 
@@ -93,21 +74,7 @@
 
                             </div>  
                           </div>
-                           <div class='col-md-4'>
-                             <thead> 
-                              <tr> 
-                                <th>Fecha Finiquito:</th> 
-                              </tr> 
-                            </thead>
-                            <tbody>
-                              <td>
-                                <input placeholder="Fecha Contrato" name="fechacontrato" id="fechacontrato" class="form-control1" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
-                              </td>  
-                              
-                                                   
-                            </tbody>
-                          
-                          </div>  
+                            
 
                            <div class='col-md-4'>
                              <tbody>
@@ -126,11 +93,83 @@
                               <table class="table users table-hover">
                                 <thead>
                         <tr class="active" class="info">
+                          <th><p class="text-center">DATOS GENERALES</p></th>
+                          <th>&nbsp;</th>
+                        </tr>
+                        <tr>
+                          <td>Art&iacute;culo Causal Finiquito </td>
+                          <td> <select class="form-control">
+                               </select>
+                           </td>
+                        </tr>
+                        <tr>
+                          <td>Fecha Contrato </td>
+                          <td><input placeholder="Fecha Contrato" name="fechacontrato" id="fechacontrato" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                           </td>
+                        </tr>
+                        <tr>
+                          <td>Fecha Finiquito </td>
+                          <td><input placeholder="Fecha Finiquito" name="fechafiniquito" id="fechafiniquito" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                           </td>
+                        </tr>
+                        <tr>
+                          <td>Total d&iacute;as trabajados </td>
+                          <td><input placeholder="D&iacute;as Trabajados" name="diastrabajados" id="diastrabajados" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                           </td>
+                        </tr>
+                        <tr>
+                          <td>Factor c&aacute;lculo diario </td>
+                          <td><input placeholder="Factor C&aacute;lculo Diario" name="fcalculodiario" id="fcalculodiario" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                           </td>
+                        </tr>
+                        <tr>
+                          <td>A&ntilde;os de Servicio </td>
+                          <td><input placeholder="A&ntilde;os de Servicio" name="annosservicio" id="annosservicio" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                           </td>
+                        </tr>
+                        <tr class="active" class="info">
+                          <th><p class="text-center">DATOS VACACIONES</p></th>
+                          <th>&nbsp;</th>
+                        </tr>
+                        <tr>
+                          <td>Total Vacaciones </td>
+                          <td><input placeholder="Total Vacaciones" name="totalvacaciones" id="totalvacaciones" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                           </td>
+                        </tr>
+                        <tr>
+                          <td>D&iacute;as Vacaciones Tomados </td>
+                          <td><input placeholder="D&iacute;as Vacaciones Tomados" name="vacacionestomados" id="vacacionestomados" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                           </td>
+                        </tr>
+                        <tr>
+                          <td>Saldo Vacaciones </td>
+                          <td><input placeholder="Saldo Vacaciones" name="saldovacaciones" id="saldovacaciones" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                           </td>
+                        </tr>
+                        <tr>
+                          <td>D&iacute;as Inh&aacute;biles Posteriores </td>
+                          <td><input placeholder="D&iacute;as Inh&aacute;biles Posteriores" name="diasihabiles" id="diasihabiles" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                           </td>
+                        </tr>
+                        <tr>
+                          <td>Total Vacaciones Pendientes </td>
+                          <td><input placeholder="Total Vacaciones Pendientes" name="totvacpendientes" id="totvacpendientes" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                           </td>
+                        </tr>
+                        <tr class="active" class="info">
                           <th><p class="text-center">HABERES</p></th>
                           <th>CALCULO</th>
                         </tr>
-                          <td>Feriado Proporcional <small><?php echo $personal->saldoinicvacprog;?></small> días habíles </td>
+                        
+                       
+                        <tr>
+                          <td>Vacaciones Proporcionales <small><?php echo $personal->saldoinicvacprog;?></small> días habíles </td>
                           <td> $ 228.388 </td>
+                        </tr>
+                        <tr>
+                          <td>Indemnizacion Aviso Previo </td>
+                          <td> $ 228.388 </td>  
+                        </tr> 
                         <tr>
                           <td>Indemnizacion Años de Servicio </td>
                           <td> $ 228.388 </td>  
