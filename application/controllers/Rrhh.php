@@ -3520,13 +3520,24 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 			$personal = $this->rrhh_model->get_personal(); 
 			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno); 
+      echo "<pre>";
+      //var_dump($personal); exit;
+ 
+      foreach ($personal as $trabajador) {
+        $datos_licencia = $this->rrhh_model->get_licencia_medica($trabajador->id_personal); 
+        $licencias[$trabajador->id_personal] = $datos_licencia;
+      }
+
+
 
 			$array_remuneracion_trabajador = array();
 			foreach ($datos_remuneracion as $remuneracion) {
 				$array_remuneracion_trabajador[$remuneracion->idpersonal] = $remuneracion->diastrabajo;
+       
+        //print_r($datos_licencia);
 			}
 
-
+      //exit;
 			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',
@@ -4924,10 +4935,15 @@ public function genera_finiquito($idpersonal){
 	//exit;
 
 	$tipocontrato = $this->admin->get_tipo_documento($idtipo);
+  $causales_finiquito = $this->admin->get_causal_finiquito();
 	
 	$vars['personal'] = $personal;
 	$vars['tipocontrato'] = $tipocontrato;
+  $vars['causales_finiquito'] = $causales_finiquito;
 	$vars['contrato'] = 1;
+  $vars['datetimepicker'] = true;
+  $vars['maleta'] = true;
+  $vars['mask'] = true;
 	$vars['content_menu'] = $content;				
 	$vars['content_view'] = 'forbidden';
 	$vars['content_view'] = 'rrhh/genera_finiquito';

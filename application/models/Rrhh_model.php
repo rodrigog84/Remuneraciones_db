@@ -1330,6 +1330,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 					);
 					$this->db->insert('rem_remuneracion', $data);
+					echo $this->db->last_query(); exit;
 			}/*else{
 					$data = array(
 				      	'diastrabajo' => $info_trabajador
@@ -4337,6 +4338,19 @@ public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$i
 		$movimiento_data = is_null($idmovimiento) ? $movimiento_data : $movimiento_data->where('id',$idmovimiento);  		                  
 		$query = $this->db->get();
 		$datos = is_null($idmovimiento) ? $query->result() : $query->row();
+		return $datos;
+	}
+
+
+
+	public function get_licencia_medica($idpersonal = null){
+
+		$movimiento_data = $this->db->select('id_personal, fec_inicio_reposo, numero_dias, dateadd(dd,numero_dias,fec_inicio_reposo) as fin_reposo',false)
+						  ->from('rem_licencias_medicas')
+						  ->where('id_personal',$idpersonal);
+			                  //	echo "asdasd"; exit;
+		$query = $this->db->get();
+		$datos = $query->result();
 		return $datos;
 	}
 

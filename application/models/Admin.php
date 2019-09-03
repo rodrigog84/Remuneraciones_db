@@ -1165,7 +1165,16 @@ public function get_bonos($idtrabajador = null){
 		return $query->result();
 	}		
 
-
+	public function get_causal_finiquito($idtipo = null){
+		
+		$causal_data = $this->db->select('idcausal,motivo, articulo')
+						  ->from('rem_causal_finiquito')
+						  ->where('activo',1)
+		                  ->order_by('motivo');
+		
+   		$query = $this->db->get();   		
+		return $query->result();
+	}	
 
 
 	public function get_paises($idpais = null){

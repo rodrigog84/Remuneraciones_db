@@ -98,33 +98,38 @@
                         </tr>
                         <tr>
                           <td>Art&iacute;culo Causal Finiquito </td>
-                          <td> <select class="form-control">
+                          <td> <select class="form-control" name="causal_finiquito" id="causal_finiquito">
+                                <option value="">Seleccione Causal Finiquito</option>
+                                <?php foreach ($causales_finiquito as $causal) { ?>
+                                  
+                                  <option value="<?php echo $causal->idcausal;?>" ><?php echo $causal->motivo;?></option>
+                                <?php } ?>                            
                                </select>
                            </td>
                         </tr>
                         <tr>
                           <td>Fecha Contrato </td>
-                          <td><input placeholder="Fecha Contrato" name="fechacontrato" id="fechacontrato" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                          <td><input placeholder="Fecha Contrato" name="fechacontrato" id="fechacontrato" class="form-control fecha_calc_dias" required  type="text" value="" onblur="if (this.value == '') {this.value = '';}" />
                            </td>
                         </tr>
                         <tr>
                           <td>Fecha Finiquito </td>
-                          <td><input placeholder="Fecha Finiquito" name="fechafiniquito" id="fechafiniquito" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                          <td><input placeholder="Fecha Finiquito" name="fechafiniquito" id="fechafiniquito" class="form-control fecha_calc_dias" required  type="text" value="" onblur="if (this.value == '') {this.value = '';}" />
                            </td>
                         </tr>
                         <tr>
                           <td>Total d&iacute;as trabajados </td>
-                          <td><input placeholder="D&iacute;as Trabajados" name="diastrabajados" id="diastrabajados" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                          <td><input placeholder="D&iacute;as Trabajados" name="diastrabajados" id="diastrabajados" class="form-control" required  type="text" value=""  onblur="if (this.value == '') {this.value = '';}" />
                            </td>
                         </tr>
                         <tr>
                           <td>Factor c&aacute;lculo diario </td>
-                          <td><input placeholder="Factor C&aacute;lculo Diario" name="fcalculodiario" id="fcalculodiario" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                          <td><input placeholder="Factor C&aacute;lculo Diario" name="fcalculodiario" id="fcalculodiario" class="form-control" required  type="text" value=""  onblur="if (this.value == '') {this.value = '';}" />
                            </td>
                         </tr>
                         <tr>
                           <td>A&ntilde;os de Servicio </td>
-                          <td><input placeholder="A&ntilde;os de Servicio" name="annosservicio" id="annosservicio" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                          <td><input placeholder="A&ntilde;os de Servicio" name="annosservicio" id="annosservicio" class="form-control" required  type="text" value=""  onblur="if (this.value == '') {this.value = '';}" />
                            </td>
                         </tr>
                         <tr class="active" class="info">
@@ -133,27 +138,27 @@
                         </tr>
                         <tr>
                           <td>Total Vacaciones </td>
-                          <td><input placeholder="Total Vacaciones" name="totalvacaciones" id="totalvacaciones" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                          <td><input placeholder="Total Vacaciones" name="totalvacaciones" id="totalvacaciones" class="form-control" required  type="text" value=""  onblur="if (this.value == '') {this.value = '';}" />
                            </td>
                         </tr>
                         <tr>
                           <td>D&iacute;as Vacaciones Tomados </td>
-                          <td><input placeholder="D&iacute;as Vacaciones Tomados" name="vacacionestomados" id="vacacionestomados" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                          <td><input placeholder="D&iacute;as Vacaciones Tomados" name="vacacionestomados" id="vacacionestomados" class="form-control" required  type="text" value=""  onblur="if (this.value == '') {this.value = '';}" />
                            </td>
                         </tr>
                         <tr>
                           <td>Saldo Vacaciones </td>
-                          <td><input placeholder="Saldo Vacaciones" name="saldovacaciones" id="saldovacaciones" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                          <td><input placeholder="Saldo Vacaciones" name="saldovacaciones" id="saldovacaciones" class="form-control" required  type="text" value=""  onblur="if (this.value == '') {this.value = '';}" />
                            </td>
                         </tr>
                         <tr>
                           <td>D&iacute;as Inh&aacute;biles Posteriores </td>
-                          <td><input placeholder="D&iacute;as Inh&aacute;biles Posteriores" name="diasihabiles" id="diasihabiles" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                          <td><input placeholder="D&iacute;as Inh&aacute;biles Posteriores" name="diasihabiles" id="diasihabiles" class="form-control" required  type="text" value=""  onblur="if (this.value == '') {this.value = '';}" />
                            </td>
                         </tr>
                         <tr>
                           <td>Total Vacaciones Pendientes </td>
-                          <td><input placeholder="Total Vacaciones Pendientes" name="totvacpendientes" id="totvacpendientes" class="form-control" required  type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}" />
+                          <td><input placeholder="Total Vacaciones Pendientes" name="totvacpendientes" id="totvacpendientes" class="form-control" required  type="text" value=""  onblur="if (this.value == '') {this.value = '';}" />
                            </td>
                         </tr>
                         <tr class="active" class="info">
@@ -176,11 +181,11 @@
                         </tr> 
                         <tr>
                           <td>Indemnizacion Voluntaria </td>
-                          <td><input type="number" name="indem_vol" id="indem_vol" class="form-control1 required" placeholder="Ingrese Monto" size="20"></td>  
+                          <td><input type="number" name="indem_vol" id="indem_vol" class="form-control required" placeholder="Ingrese Monto" size="20"></td>  
                         </tr> 
                         <tr>
                           <td>Desahucio </td>
-                          <td> <input type="number" name="desaucio" id="desaucio" class="form-control1 required" placeholder="Ingrese Monto" size="20" ></td>  
+                          <td> <input type="number" name="desaucio" id="desaucio" class="form-control required" placeholder="Ingrese Monto" size="20" ></td>  
                         </tr> 
                         <tr class="active" class="info">
                           <th>TOTAL HABERES</th>
@@ -191,14 +196,14 @@
                           <th>CALCULO</th>
                         </tr>
                           <td>Prestamo Empresa </td>
-                          <td><input type="number" name="prestamo" id="prestamo" class="form-control1 required" placeholder="Ingrese Monto" size="20" ></td>
+                          <td><input type="number" name="prestamo" id="prestamo" class="form-control required" placeholder="Ingrese Monto" size="20" ></td>
                         <tr>
                           <td>Prestamo C.C.A.F </td>
-                          <td><input type="number" name="cajacompensacion" id="cajacompensacion" class="form-control1 required" placeholder="Ingrese Monto" size="20" ></td>  
+                          <td><input type="number" name="cajacompensacion" id="cajacompensacion" class="form-control required" placeholder="Ingrese Monto" size="20" ></td>  
                         </tr> 
                         <tr>
                           <td>Otros </td>
-                          <td><input type="number" name="otros" id="otros" class="form-control1 required" placeholder="Ingrese Monto" size="20" ></td>  
+                          <td><input type="number" name="otros" id="otros" class="form-control required" placeholder="Ingrese Monto" size="20" ></td>  
                         </tr> 
                         <tr class="active" class="info">
                           <th>TOTAL DESCUENTOS</th>
@@ -234,8 +239,17 @@
 
 <script>
   $(function() {
-    $( "#fechacontrato,#fechaingreso").datepicker({
-  dateFormat: "dd/mm/yy"
+    $( "#fechacontrato,#fechaingreso,#fechafiniquito").datetimepicker({
+       // format: "dd/mm/yyyy",
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        todayBtn: true,
+        pickerPosition: "bottom-left",
+        weekStart: true,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+        language:  'es', 
 });
   });
 </script>  
@@ -243,78 +257,56 @@
 
     $(document).ready(function() {
 
-      $('.periodo').change(function(){
-          $('#basicBootstrapForm').formValidation('revalidateField', 'anno');
-            var cerrado = false;
-            $.ajax({url: "<?php echo base_url();?>rrhh/get_status_rem/asistencia/"+$('#mes').val()+"/"+$('#anno').val(),
-              type: 'GET',
-              async: false,
-              success : function(data) {
-                  var_json = $.parseJSON(data);
-                  $('#span_status').html(var_json["label_text"]);
-                  $('#span_status').attr('class',"label "+var_json["label_style"]);     
-                  cerrado = var_json["status"] == 'cerrado' ? true : false;
-              }});
+      $('.fecha_calc_dias').change(function(){
+        console.log($('#fechacontrato').val());
+        console.log($('#fechafiniquito').val());
+        var fechacontrato = $('#fechacontrato').val();
+        var fechafiniquito = $('#fechafiniquito').val();
+        if(fechacontrato != '' && fechafiniquito != ''){
 
-            if(cerrado){
-              $('#tipo').val('');
-              $('#tabla_colaboradores').html('');
-            }else{
-              $('input').attr('readonly',false);
-            }           
-            
+         // var fecha1 = 
+          //console.log((fechacontrato.format('yyyy-mm-dd')));
+          var fecha1 = moment(fechacontrato);
+          var fecha2 = moment(fechafiniquito);
+
+          //console.log(fecha2.diff(fecha1, 'days'), ' dias de diferencia');
+          var diastrabajados = fecha2.diff(fecha1, 'days')+1;
+          $('#diastrabajados').val(diastrabajados);
+          var factor_calculo_diario = Math.round((diastrabajados/360)*10)/10;
+          var annos_servicio = Math.round((diastrabajados/360));
+          var vac_otorgadas = annos_servicio*15;
+          $('#fcalculodiario').val(factor_calculo_diario);
+          $('#annosservicio').val(annos_servicio);
+          $('#totalvacaciones').val(vac_otorgadas);
+        }else{
+          $('#diastrabajados').val(0);          
+          $('#fcalculodiario').val(0);
+          $('#annosservicio').val(0);
+          $('#totalvacaciones').val(0);
+        }
+
       });
 
+      $('#vacacionestomados').on('input',function(){
+
+        var vac_otorgadas = $('#totalvacaciones').val();
+        var vac_tomadas = $(this).val();
+
+        var saldo_vacaciones = vac_otorgadas - vac_tomadas;
+
+        $('#saldovacaciones').val(saldo_vacaciones);
+
+      });
+
+
+      $('')
+
+
+     
+
       var cerrado = false;
-      $.ajax({url: "<?php echo base_url();?>rrhh/get_status_rem/hab_descto/"+$('#mes').val()+"/"+$('#anno').val(),
-        type: 'GET',
-        async: false,
-        success : function(data) {
-            var_json = $.parseJSON(data);
-            $('#span_status').html(var_json["label_text"]);
-            $('#span_status').attr('class',"label "+var_json["label_style"]);     
-            cerrado = var_json["status"] == 'cerrado' ? true : false;
-        }});
-
-      if(cerrado){
-        $('#tabla_colaboradores').val('');
-        $('#tabla_colaboradores').html('');
-      }else{
-        //$('input').attr('readonly',false);
-      }      
-
-
-  $('#basicBootstrapForm').formValidation({
-        framework: 'bootstrap',
-        excluded: ':disabled',
-        icon: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            anno: {
-                row: '.form-group',
-                validators: {
-
-                    remote: {
-                        url: '<?php echo base_url();?>rrhh/estado_periodo/',
-                        // Send { email: 'its value', username: 'its value' } to the back-end
-                        data: function(validator, $field, value) {
-                            return {
-                                mes: $('#mes').val()
-                            };
-                        },
-                        message: 'Per&iacute;odo cerrado o no permitido para la empresa ',
-                        type: 'POST'
-                    }
-                },
-
-            }
-        }
-    })
-    .formValidation('revalidateField', 'anno');
-
+     
+  
         <?php if(isset($message)){ ?>
 
         $.gritter.add({
@@ -339,111 +331,6 @@
         })
 
        
-
-        $('.busca_col').on('change',function(){
-          var hab_descto = $('#hab_descto').val();
-          var centro_costo = $('#centro_costo').val();
-
-          if(hab_descto != '' && centro_costo != ''){
-
-                var table = "";
-                var fila = 1;
-                $.ajax({
-                    type: "GET",
-                    url: '<?php echo base_url();?>rrhh/get_colaboradores/' + centro_costo,
-                }).success(function(response) {
-                    
-                     table += '<table  class="table table-bordered table-striped dt-responsive">\
-                          <thead>\
-                            <tr>\
-                              <th >#</th>\
-                              <th ><input type="checkbox" id="sel_all" name="sel_all" ></th>\
-                              <th >Rut</th>\
-                              <th >Nombre</th>\
-                              <th >Monto</th>\
-                            </tr>\
-                          </thead>\
-                          <tbody>';
-
-                        var_json = $.parseJSON(response);
-
-                        if(var_json.length > 0){
-                              for(i=0;i<var_json.length;i++){
-                                    table += '<tr>\
-                                       <td><small>' + fila + '</small></td>\
-                                       <td><small><input type="checkbox" id="sel_col-' + var_json[i].id_personal + '" name="sel_col-' + var_json[i].id_personal + '" class="sel_col"></small></td>\
-                                       <td><small>' + var_json[i].rut + '-' + var_json[i].dv + '</small></td>\
-                                       <td><small>' + var_json[i].nombre + '</small></td>\
-                                       <td><small><input type="text" class="miles" name="monto_col-' + var_json[i].id_personal + '" id="monto_col-' + var_json[i].id_personal + '" value="0"></small></td>\
-                                      </tr>';
-                                      fila++;
-                              }
-
-
-                        }else{
-                            table += '<tr ><td colspan="4">No existen colaboradores en el centro de costo seleccionado</td></tr>';
-
-                        }
-                          
-                          table +='</tbody>\
-                                  </table>';
-
-
-                          $('#tabla_colaboradores').html(table);
-
-
-                          $('#sel_all').on('click',function(){
-
-                                  if($(this).is(':checked')){
-                                      $('.sel_col').attr('checked','checked');
-                                  }else{
-                                      $('.sel_col').attr('checked',false);
-                                  }
-                          })
-                     
-                });  
-
-          }else{
-
-              $('#tabla_colaboradores').html('');
-
-          }
-
-
-        })
-
-        $('#tipo').on('change',function(){
-
-
-              var tipo = $(this).val();
-
-              if(tipo != ''){
-
-                $.ajax({
-                    type: "GET",
-                    url: '<?php echo base_url();?>rrhh/get_hab_descto/'+tipo,
-                }).success(function(response) {
-
-                       // Limpiamos el select
-                        $('#hab_descto option').remove();
-                        
-                        
-                        $('#hab_descto').append('<option value="">Seleccione Haber / Descuento</option>');
-                        var_json = $.parseJSON(response);
-                        for(i=0;i<var_json.length;i++){
-                          $('#hab_descto').append('<option value="' + var_json[i].id + '">' + '( ' + var_json[i].codigo + ' ) ' +var_json[i].nombre + '</option>');
-                        }
-
-
-                });   
-
-              }else{
-                $('#hab_descto option').remove();
-                $('#hab_descto').append('<option value="">Seleccione Haber / Descuento</option>');
-
-              }
-                   
-        })
 
     });
 
