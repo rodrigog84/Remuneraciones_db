@@ -1108,6 +1108,64 @@ if (!function_exists('primera_mayuscula'))
   }
 }
 
+
+
+
+if (!function_exists('dias_mes_rango'))
+{
+
+  function dias_mes_rango($fecinicio,$fecfin,$mes_analisis)
+  {
+    $fecinicio_format = str_replace("-","",substr($fecinicio,0,7));
+    $fecfin_format = str_replace("-","",substr($fecfin,0,7));
+    $mes_an = substr($mes_analisis,4,2);
+    $anno_an = substr($mes_analisis,0,4);
+    $dias_transcurridos_mes = -1;
+    if($fecinicio_format == $mes_analisis && $fecfin_format == $mes_analisis){
+
+        $fechainicial = new DateTime($fecinicio);
+        $fechafinal = new DateTime($fecfin);
+        $diferencia = $fechainicial->diff($fechafinal);
+        $dias_transcurridos_mes = $diferencia->days;
+
+    }
+
+    if($fecinicio_format != $mes_analisis && $fecfin_format != $mes_analisis){
+
+        $dias_transcurridos_mes = $dias_transcurridos_mes;
+
+    }
+
+
+    if($fecinicio_format == $mes_analisis && $fecfin_format != $mes_analisis){
+
+
+        $ult_dia_mes =  ultimo_dia_mes($mes_an,$anno_an); 
+        $fechainicial = new DateTime($fecinicio);
+       // echo $fecinicio."  ".$anno_an."-".$mes_an."-".$ult_dia_mes; 
+        $fechafinal = new DateTime($anno_an."-".$mes_an."-".$ult_dia_mes);
+        $diferencia = $fechainicial->diff($fechafinal);
+       // var_dump($diferencia); 
+        $dias_transcurridos_mes = $diferencia->days;
+
+    }    
+
+
+    if($fecinicio_format != $mes_analisis && $fecfin_format == $mes_analisis){
+
+
+        $fechainicial = new DateTime($anno_an."-".$mes_an."-01");
+        $fechafinal = new DateTime($fecfin);
+        $diferencia = $fechainicial->diff($fechafinal);
+        $dias_transcurridos_mes = $diferencia->days;
+
+    }  
+
+ 
+      return $dias_transcurridos_mes+1;
+  }
+}
+
 } 
 
            

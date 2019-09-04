@@ -3520,15 +3520,28 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 			$personal = $this->rrhh_model->get_personal(); 
 			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno); 
-      echo "<pre>";
+     // echo "<pre>";
       //var_dump($personal); exit;
  
       foreach ($personal as $trabajador) {
         $datos_licencia = $this->rrhh_model->get_licencia_medica($trabajador->id_personal); 
-        $licencias[$trabajador->id_personal] = $datos_licencia;
+        
+        //echo $anno.$mes;
+        //dias_mes_rango()
+        //var_dump($datos_licencia); 
+        $dias_licencia = 0;
+        foreach ($datos_licencia as $licencia) {
+            //print_r($licencia);
+           $dias_licencia = $dias_licencia + dias_mes_rango(substr($licencia->fec_inicio_reposo,0,10),substr($licencia->fin_reposo,0,10),$anno.$mes);
+
+        }
+        $licencias[$trabajador->id_personal] = $dias_licencia;
+        //echo $dias_licencia."<br>"; 
+
+
       }
 
-
+     // exit;
 
 			$array_remuneracion_trabajador = array();
 			foreach ($datos_remuneracion as $remuneracion) {
@@ -3546,6 +3559,7 @@ public function liquidacion_colaborador($idremuneracion = null)
 			$vars['content_menu'] = $content;				
 			$vars['personal'] = $personal;	
 			$vars['datos_remuneracion'] = $array_remuneracion_trabajador;	
+      $vars['licencias'] = $licencias; 
 			$vars['mes'] = $mes;	
 			$vars['anno'] = $anno;	
 			$vars['content_view'] = 'rrhh/asistencia';

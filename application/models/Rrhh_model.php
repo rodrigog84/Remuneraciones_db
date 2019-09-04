@@ -4345,7 +4345,7 @@ public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$i
 
 	public function get_licencia_medica($idpersonal = null){
 
-		$movimiento_data = $this->db->select('id_personal, fec_inicio_reposo, numero_dias, dateadd(dd,numero_dias,fec_inicio_reposo) as fin_reposo',false)
+		$movimiento_data = $this->db->select('id_personal, fec_inicio_reposo, numero_dias, dateadd(dd,numero_dias-1,fec_inicio_reposo) as fin_reposo',false)
 						  ->from('rem_licencias_medicas')
 						  ->where('id_personal',$idpersonal);
 			                  //	echo "asdasd"; exit;

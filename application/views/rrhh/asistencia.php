@@ -109,7 +109,7 @@
 											                                    <b><span id="diasatrabajar_<?php echo $trabajador->id_personal;?>"  class="text-right" ><?php echo $trabajador->diastrabajo;?></span></b>   
 											                                </td>
 											                                <td class="form-group">
-											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo" value="<?php echo isset($datos_remuneracion[$trabajador->id_personal]) ? $datos_remuneracion[$trabajador->id_personal] : $trabajador->diastrabajo; ?>"  />   
+											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo" value="<?php echo isset($datos_remuneracion[$trabajador->id_personal]) ? $datos_remuneracion[$trabajador->id_personal] - $licencias[$trabajador->id_personal] : $trabajador->diastrabajo - $licencias[$trabajador->id_personal]; ?>"  />   
 											                                </td>
 											                              </tr>
 											                              <?php $i++;?>
