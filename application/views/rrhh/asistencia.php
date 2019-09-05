@@ -93,6 +93,7 @@
 										                              <th >Rut</th>
 										                              <th >Nombre Trabajador</th>
 										                              <th >D&iacute;as a Trabajar</th>
+										                              <th >Licencias</th>
 										                              <th >Dias Trabajados</th>
 									                            	</tr>
 																	</thead> 
@@ -108,8 +109,11 @@
 											                                <td>
 											                                    <b><span id="diasatrabajar_<?php echo $trabajador->id_personal;?>"  class="text-right" ><?php echo $trabajador->diastrabajo;?></span></b>   
 											                                </td>
+											                                 <td>
+											                                    <b><span id="diaslicencia_<?php echo $trabajador->id_personal;?>"  class="text-right" ><?php echo $licencias[$trabajador->id_personal];?></span></b>   
+											                                </td>
 											                                <td class="form-group">
-											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo" value="<?php echo isset($datos_remuneracion[$trabajador->id_personal]) ? $datos_remuneracion[$trabajador->id_personal] - $licencias[$trabajador->id_personal] : $trabajador->diastrabajo - $licencias[$trabajador->id_personal]; ?>"  />   
+											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo" value="<?php echo isset($datos_remuneracion[$trabajador->id_personal]) ? $datos_remuneracion[$trabajador->id_personal] : $trabajador->diastrabajo - $licencias[$trabajador->id_personal]; ?>"  />   
 											                                </td>
 											                              </tr>
 											                              <?php $i++;?>
@@ -228,8 +232,9 @@ $(document).ready(function() {
                             var array_field = id_text.split("_");
                             idtrabajador = array_field[1];
                             var asistencia_trabajador = $('#diasatrabajar_'+idtrabajador).html() == '' ? 0 : parseInt($('#diasatrabajar_'+idtrabajador).html());
+                            var licencias_trabajador = $('#diaslicencia_'+idtrabajador).html() == '' ? 0 : parseInt($('#diaslicencia_'+idtrabajador).html());
                             var asistencia_actual = $('#diastrabajo_'+idtrabajador).val() == '' ? 0 : parseInt($('#diastrabajo_'+idtrabajador).val());                            
-                            if(asistencia_actual <= asistencia_trabajador){
+                            if(asistencia_actual <= (asistencia_trabajador - licencias_trabajador)){
                               return true;
                             }else{
                               return  {

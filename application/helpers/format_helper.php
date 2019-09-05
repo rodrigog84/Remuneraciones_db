@@ -1116,6 +1116,7 @@ if (!function_exists('dias_mes_rango'))
 
   function dias_mes_rango($fecinicio,$fecfin,$mes_analisis)
   {
+   // echo $fecinicio."- ".$fecfin."-".$mes_analisis."<br>";
     $fecinicio_format = str_replace("-","",substr($fecinicio,0,7));
     $fecfin_format = str_replace("-","",substr($fecfin,0,7));
     $mes_an = substr($mes_analisis,4,2);

@@ -3520,7 +3520,7 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 			$personal = $this->rrhh_model->get_personal(); 
 			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno); 
-     // echo "<pre>";
+      //echo "<pre>";
       //var_dump($personal); exit;
  
       foreach ($personal as $trabajador) {
@@ -3528,11 +3528,12 @@ public function liquidacion_colaborador($idremuneracion = null)
         
         //echo $anno.$mes;
         //dias_mes_rango()
-        //var_dump($datos_licencia); 
+       // var_dump($datos_licencia); 
         $dias_licencia = 0;
         foreach ($datos_licencia as $licencia) {
             //print_r($licencia);
-           $dias_licencia = $dias_licencia + dias_mes_rango(substr($licencia->fec_inicio_reposo,0,10),substr($licencia->fin_reposo,0,10),$anno.$mes);
+            //echo "<br>".$dias_licencia."<br>";
+           $dias_licencia = $dias_licencia + dias_mes_rango(substr($licencia->fec_inicio_reposo,0,10),substr($licencia->fin_reposo,0,10),$anno.str_pad($mes,2,"0",STR_PAD_LEFT));
 
         }
         $licencias[$trabajador->id_personal] = $dias_licencia;
@@ -3540,7 +3541,8 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 
       }
-
+      
+     // var_dump($licencias); exit;
      // exit;
 
 			$array_remuneracion_trabajador = array();
