@@ -110,7 +110,7 @@
 											                                    <b><span id="diasatrabajar_<?php echo $trabajador->id_personal;?>"  class="text-right" ><?php echo $trabajador->diastrabajo;?></span></b>   
 											                                </td>
 											                                 <td>
-											                                    <b><span id="diaslicencia_<?php echo $trabajador->id_personal;?>"  class="text-right" ><?php echo $licencias[$trabajador->id_personal];?></span></b>   
+											                                    <b><span id="diaslicencia_<?php echo $trabajador->id_personal;?>"  class="diaslicencia text-right" ><?php echo $licencias[$trabajador->id_personal];?></span></b>   
 											                                </td>
 											                                <td class="form-group">
 											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo" value="<?php echo isset($datos_remuneracion[$trabajador->id_personal]) ? $datos_remuneracion[$trabajador->id_personal] : $trabajador->diastrabajo - $licencias[$trabajador->id_personal]; ?>"  />   
@@ -165,9 +165,31 @@ $('.periodo').change(function(){
       }
 
 
+       $(".diaslicencia").each(
+                        function(index,value){
+                            var id_text = $(this).attr('id');
+                            var array_field = id_text.split("_");
+                            idtrabajador = array_field[1];  
+                            console.log(idtrabajador);
+                             $.get("<?php echo base_url();?>rrhh/get_datos_licencia/"+$('#mes').val()+"/"+$('#anno').val()+"/"+idtrabajador,function(data){
+                             	console.log(data);
+                             	var_json_lic = $.parseJSON(data);
+                             	console.log(var_json_lic);
+                             	console.log($('#diaslicencia_'+idtrabajador).html());
+                             	$('#diaslicencia_'+idtrabajador).html(var_json_lic['dias_licencia']);
+                            /*var diastrabajo =  typeof(var_json["diastrabajo_"+idtrabajador]) != 'undefined' && var_json["diastrabajo_"+idtrabajador] != null ? var_json["diastrabajo_"+idtrabajador] : parseInt($('#diasatrabajar_'+idtrabajador).html());
+                            $(this).val(diastrabajo);*/
+                        	});
+                        }
+                        
+                    );
+
+
+
       $.get("<?php echo base_url();?>rrhh/get_datos_remuneracion/"+$('#mes').val()+"/"+$('#anno').val(),function(data){
                // Limpiamos el select
                     var_json = $.parseJSON(data);
+                   // console.log(var_json);
                     $(".diastrabajo").each(
                         function(index,value){
                             var id_text = $(this).attr('id');

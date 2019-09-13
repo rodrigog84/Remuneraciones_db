@@ -2722,11 +2722,24 @@ public function editar_trabajador(){
 	}
 
 
+public function get_datos_licencia($mes,$anno,$idtrabajador){
+
+      $datos_licencia = $this->rrhh_model->get_licencia_medica($idtrabajador); 
+      $dias_licencia = 0;
+      foreach ($datos_licencia as $licencia) {
+         $dias_licencia = $dias_licencia + dias_mes_rango(substr($licencia->fec_inicio_reposo,0,10),substr($licencia->fin_reposo,0,10),$anno.str_pad($mes,2,"0",STR_PAD_LEFT));
+
+      }
+    $array_licencia['dias_licencia'] = $dias_licencia;
+    echo json_encode($array_licencia);
+  } 
+
 
 	public function get_datos_remuneracion($mes,$anno){
 		$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno);
 		$array_remuneracion_trabajador = array();
 		foreach ($datos_remuneracion as $remuneracion) {
+
 			$array_remuneracion_trabajador["valorhora_".$remuneracion->idpersonal] = $remuneracion->valorhora;
 			$array_remuneracion_trabajador["diastrabajo_".$remuneracion->idpersonal] = $remuneracion->diastrabajo;
 			$array_remuneracion_trabajador["horasdescuento_".$remuneracion->idpersonal] = $remuneracion->horasdescuento;

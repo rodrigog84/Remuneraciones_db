@@ -1321,16 +1321,25 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$datos_remuneracion = $query->row();
 			if(count($datos_remuneracion) == 0){ // si no existe periodo, se crea
 
+					$datos_licencia = $this->rrhh_model->get_licencia_medica($trabajador->id_personal); 
+			        $dias_licencia = 0;
+			        foreach ($datos_licencia as $licencia) {
+			           $dias_licencia = $dias_licencia + dias_mes_rango(substr($licencia->fec_inicio_reposo,0,10),substr($licencia->fin_reposo,0,10),$anno.str_pad($mes,2,"0",STR_PAD_LEFT));
+
+			        }
+			        $dias_trabajo = 30 - $dias_licencia;				
+
 					$data = array(
 				      	'idpersonal' => $trabajador->id_personal,
 				      	'id_periodo' => $idperiodo,
 				      	'id_empresa' => $this->session->userdata('empresaid'),
 				      	'idcentrocosto' => $trabajador->idcentrocosto,
+				      	'diastrabajo' => $dias_trabajo,
 				      	'created_at' => date("Y-m-d H:i:s")
 
 					);
 					$this->db->insert('rem_remuneracion', $data);
-					echo $this->db->last_query(); exit;
+					//echo $this->db->last_query(); exit;
 			}/*else{
 					$data = array(
 				      	'diastrabajo' => $info_trabajador
@@ -1588,7 +1597,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		foreach ($personal as $trabajador) { // calculo de sueldos por cada trabajador
 
 			$datos_remuneracion = $this->get_datos_remuneracion_by_periodo($idperiodo,$trabajador->id_personal);
-
+			//print_r($datos_remuneracion); exit;
 			$datos_bonos = array();
 			//$datos_bonos = $this->get_bonos($trabajador->id); // se modifica esto porque aún no existen bonos
 			$bonos_imponibles = 0;
