@@ -1140,7 +1140,7 @@ public function submit_salud(){
 public function datos_personal($rut=null){
 
 	$datos_personal2 = $this->rrhh_model->get_personal_datos($rut);
-	//json_encode($datos_personal2);
+	//echo json_encode($datos_personal2); exit;
 	if ($datos_personal2 == 0){
 
 				echo json_encode('0');
@@ -1220,6 +1220,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 						'title' => 'Remuneraciones',
 						'subtitle' => 'Modificar Colaborador');
 
+     // echo "<pre>";
+     // print_r($trabajador); exit;
 
 			$datos_form = array(
 								'idtrabajador' =>  is_null($idtrabajador) ? 0 : $trabajador->id,	
@@ -1264,6 +1266,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 								'segcesantia' => is_null($idtrabajador) ? "" : $trabajador->segcesantia,
 								'movilizacion' => is_null($idtrabajador) ? "" : number_format($trabajador->movilizacion,0,".","."),
 								'colacion' => is_null($idtrabajador) ? "" : number_format($trabajador->colacion,0,".","."),
+                'anticipo_permanente' =>  is_null($idtrabajador) ? "" : $trabajador->anticipo_permanente,
+                'anticipo' =>  is_null($idtrabajador) ? "" : $trabajador->anticipo,
 								'active' => is_null($idtrabajador) ? "1" : $trabajador->active,
 								);
 			
@@ -1609,7 +1613,8 @@ public function editar_trabajador(){
 			$fecrealcontrato = $this->input->post('fecha_real');
 			$primervenc = $this->input->post('vencimiento_1');
 
-			
+			$anticipo_permanente = $this->input->post('anticipo_permanente') == 'on' ? 1 : 0;
+      $anticipo = str_replace(".","",$this->input->post('anticipo'));
 
 			$fecha_inicio_vacaciones = $this->input->post('fecha_inicio_vacaciones');
 			$tipocontrato = $this->input->post('tipocontrato');
@@ -1864,6 +1869,8 @@ public function editar_trabajador(){
 								'gratificacion' => $gratificacion,
 								'movilizacion' => $movilizacion,
 								'colacion' => $colacion,
+                'anticipo_permanente' => $anticipo_permanente,
+                'anticipo' => $anticipo,
 								'idasigfamiliar' => $tramo,
 								'valorpactado' => $monto_pactado,
 								'segcesantia' => $seguro_cesantia,

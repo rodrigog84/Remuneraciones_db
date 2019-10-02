@@ -881,14 +881,16 @@ public function get_cargo_colaborador($idtrabajador = null,$actives = null){
 	}
 
 public function get_personal_total($idtrabajador = null){
+		echo $idtrabajador;
 
-		$personal_data = $this->db->select('id_personal, id_empresa, rut, dv, nombre, apaterno, amaterno, fecnacimiento, sexo, idecivil, nacionalidad, direccion, idregion, idcomuna, fono, email, fecingreso, idcargo, tipocontrato, parttime, segcesantia, fecafc, diastrabajo, horasdiarias, horassemanales, sueldobase, tipogratificacion, gratificacion, asigfamiliar, cargassimples, cargasinvalidas, cargasmaternales, cargasretroactivas, idasigfamiliar, movilizacion, colacion, pensionado, idafp, adicafp, tipoahorrovol, ahorrovol, instapv, nrocontratoapv, tipocotapv, cotapv, formapagoapv, depconvapv, idisapre, valorpactado, fecinicvacaciones, saldoinicvacaciones, saldoinicvacprog, active')
+		$personal_data = $this->db->select('id_personal, id_empresa, rut, dv, nombre, apaterno, amaterno, fecnacimiento, sexo, idecivil, nacionalidad, direccion, idregion, idcomuna, fono, email, fecingreso, idcargo, tipocontrato, parttime, segcesantia, fecafc, diastrabajo, horasdiarias, horassemanales, sueldobase, tipogratificacion, gratificacion, asigfamiliar, cargassimples, cargasinvalidas, cargasmaternales, cargasretroactivas, idasigfamiliar, movilizacion, colacion, pensionado, idafp, adicafp, tipoahorrovol, ahorrovol, instapv, nrocontratoapv, tipocotapv, cotapv, formapagoapv, depconvapv, idisapre, valorpactado, fecinicvacaciones, saldoinicvacaciones, saldoinicvacprog, active, anticipo_permanente, anticipo')
 						  ->from('rem_personal p')
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
 						  ->order_by('p.active','desc')
 		                  ->order_by('p.nombre');
 		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);  		                  
 		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
 		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
 		return $datos;
 	}

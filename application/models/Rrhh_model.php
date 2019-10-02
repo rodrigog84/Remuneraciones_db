@@ -1081,7 +1081,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'trabajo_pesado',
 				'format(plazo_contrato,\'dd/MM/yyyy\',\'en-US\') as plazo_contrato',
 				'id_plantilla_banco',
-				'id_tipo_cuenta_bancaria'
+				'id_tipo_cuenta_bancaria',
+				'anticipo_permanente',
+				'anticipo'
 				
 
 				

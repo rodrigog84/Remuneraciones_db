@@ -511,6 +511,27 @@
 								                          
 
 							                        </div>
+							                        <div class='row'>
+														 <div class='col-md-6'>
+						                            <div class="form-group">
+								                              <label for="rut">Anticipo Permanente</label><br>
+																<input class="minimal" id="anticipo_permanente" name="anticipo_permanente" type="checkbox" onchange="habilitar_anticipo(this.checked);" > 
+								                    </div>
+						                          </div>
+
+
+														<div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="colacion">Valor Anticipo</label>   
+								                                <input type="text" class="form-control miles" name="anticipo" id="anticipo" placeholder="Ingrese Valor Anticipo" disabled value="<?php echo $datos_form['anticipo']; ?>" >                            
+								                            </div> 
+								                         </div>
+
+
+								                          
+								                          
+
+							                        </div>
 													<div class='row'>
 
 														<div class='col-md-6'>
@@ -1802,8 +1823,18 @@ $(document).ready(function(){
         				
         				
 
-        				
-        				
+        				console.log(this.anticipo_permanente);
+        				if (this.anticipo_permanente ==1){
+        					$('#anticipo').prop('disabled','');
+        					$("#anticipo").val(this.anticipo);
+        					$("#anticipo_permanente").iCheck('check');
+        				}else{
+        					$("#anticipo_permanente").iCheck('uncheck');
+        					$('#anticipo').val('');
+        					$('#anticipo').prop('disabled','disabled');
+        				}
+
+
         				$("#idcomuna").val(this.idcomuna);
 						
         				
@@ -2057,6 +2088,9 @@ $('#tipogratificacion').on('change',function(){
 				
 			}
 		}
+
+
+		
 </script>
 
 <script>
@@ -2748,6 +2782,38 @@ $(document).ready(function() {
                     }                                       
                 }
             }, 
+            anticipo: {
+                // The children's full name are inputs with class .childFullName
+                //selector: '.anticipo',
+                // The field is placed inside .col-xs-6 div instead of .form-group
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Informaci&oacute;n de Anticipo es requerida'
+                    },
+                    callback: {
+                        message: 'Anticipo debe ser menor a sueldo base',
+                        callback: function (value, validator, $field) {
+                            var sueldobase = $('#sueldo_base').val() == '' ? 0 : parseInt(replaceAll($('#sueldo_base').val(),".",""));
+                            var anticipo = $('#anticipo').val() == '' ? "0" : $('#anticipo').val();                            
+
+                            anticipo = parseInt(replaceAll(anticipo,".",""));
+                            //sueldobase = parseInt(replaceAll(sueldobase,".",""));
+
+                            if(anticipo < sueldobase){
+                              return true;
+                            }else{
+                              return  {
+                                    valid: false,
+                                    message: 'Anticipo debe ser menor a sueldo base'
+                                }
+                            }
+                        }
+                    }                    
+
+                },
+
+            },
 			monto_cotizacion_apv: {
                     row: '.form-group',
                     validators: {
@@ -2919,6 +2985,19 @@ $("#seguro_cesantia").on('ifUnchecked',function(event){
   $("#datepicker6").attr('disabled',true);
 
 });    
+
+
+
+$("#anticipo_permanente").on('ifChecked',function(event){
+  $("#anticipo").attr('disabled',false);
+});
+
+
+$("#anticipo_permanente").on('ifUnchecked',function(event){
+ $('#anticipo').val('');
+  $("#anticipo").attr('disabled',true);
+
+});  
 
 
 $('#apv').on('change',function(){
