@@ -56,16 +56,16 @@ $db['default']['password'] = '1234';
 */
 //$db['default']['hostname'] = '192.168.10.79';   // BD Remota
 //$db['default']['hostname'] = '190.101.205.91';   // BD Remota
-$db['default']['hostname'] = '190.101.57.202';
-$db['default']['port'] = 1433; 
-$db['default']['username'] = 'usuarios_remuneraciones'; 
-$db['default']['password'] = '1QAZxsw2';
+//$db['default']['hostname'] = '190.101.57.202';
+//db['default']['port'] = 1433; 
+//$db['default']['username'] = 'usuarios_remuneraciones'; 
+//$db['default']['password'] = '1QAZxsw2';
 
 
-//$db['default']['hostname'] = 'DESKTOP-LEUD44H\SQLEXPRESS';
-//$db['default']['port'] = 1433; //'chilefor_admin21'
-//$db['default']['username'] = ''; //'chilefor_admin21'
-//$db['default']['password'] = ''; //'^o6_5+TGP8JK';
+$db['default']['hostname'] = 'DESKTOP-G1TA7KF\SQLEXPRESS';
+$db['default']['port'] = 1433; //'chilefor_admin21'
+$db['default']['username'] = ''; //'chilefor_admin21'
+$db['default']['password'] = ''; //'^o6_5+TGP8JK';
 $db['default']['database'] = 'remuneraciones'; // 'chilefor_cf_ctz';
 $db['default']['dbdriver'] = 'sqlsrv';
 $db['default']['dbprefix'] = '';

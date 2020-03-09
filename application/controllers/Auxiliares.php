@@ -490,6 +490,9 @@ public function solicita_vacaciones($idpersonal = '',$idcartola = null)
 	{
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
+
+			//echo dias_vacaciones_fechas('2018-07-23','2018-09-21',0); exit;
+
 			if($idpersonal == ''){
 				$this->session->set_flashdata('vacaciones_result', 2);
 				redirect('auxiliares/vacaciones');	

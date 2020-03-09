@@ -332,7 +332,23 @@ public function add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$i
 			//echo "<pre>";
 			//print_r($datos_personal);// exit;
 			//dato fijo, después modificar
-			$linea_encabezado = "01076605109K00100001INMOBILIARIA TU CASA-TU N01201812140000551743600   0                                                                                                                                                                                                                                                                                                                                     0100\r\n";
+			$this->load->model('admin');
+			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
+			echo "<pre>";
+			var_dump($empresa); //exit;
+			$linea_encabezado = "01"; //Tipo Registro
+			$linea_encabezado .= str_pad($empresa->rut,9,"0",STR_PAD_LEFT);//RUT
+			$linea_encabezado .= $empresa->dv;//DV
+			$linea_encabezado .= "001";//codigo convenio**** (VER QUE VALOR CORRESPONDE)
+			$linea_encabezado .= "00001";//NRO NOMINA**** (VER QUE VALOR CORRESPONDE)
+			$linea_encabezado .= str_pad(substr(sanear_string($empresa->nombre),0,25),25," ",STR_PAD_RIGHT);//NOMBRE DE NOMINA
+			$linea_encabezado .= "01";//codigo DE NOMINA (PESOS)
+			$linea_encabezado .= "20190531";//FECHA DEL PAGO
+			$linea_encabezado .= "0000000000000";//MONTO PAGO
+			$linea_encabezado .= "   ";//ESPACIOS EN BLANCO
+			$linea_encabezado .= "N";//TIPO ENDOSO VALE VISTA
+			$linea_encabezado .= "                                                                                                                                                                                                                                                                                                                                    ";//ESPACIOS EN BLANCO
+			$linea_encabezado .= "0101";//TIPO DE PAGO
 			//$linea .= "\r\n";
 
 			fputs($file,$linea_encabezado);

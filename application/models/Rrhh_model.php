@@ -1922,7 +1922,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			}else{
 				if($datos_remuneracion->diastrabajo < 30){
 
-					$sueldo_calculo_sis = $trabajador->sueldobase + $aguinaldo_bruto + $bonos_imponibles + $monto_semana_corrida;
+					$sueldo_calculo_sis = $sueldo_base_mes + $aguinaldo_bruto + $bonos_imponibles + $monto_semana_corrida;
 				}else{
 					$sueldo_calculo_sis = $sueldo_imponible;
 				}
