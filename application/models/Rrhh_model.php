@@ -1706,11 +1706,11 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 				//https://www.dt.gob.cl/portal/1628/w3-article-95276.html
 				if($datos_remuneracion->diastrabajo < 25){
-						$asig_familiar = round(($asig_familiar/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
+						$asig_familiar = round(($asig_familiar/30)*$datos_remuneracion->diastrabajo,0);
 
 				}
 
-								
+
 			}
 
 
