@@ -1703,6 +1703,14 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			if(!is_null($trabajador->idasigfamiliar)){ //BUSCA MONTO DE ASIGNACION FAMILIAR EN BASE A TRAMO SELECCIONADO
 				$tramo_asig_familiar = $this->admin->get_tabla_asig_familiar($trabajador->idasigfamiliar);
 				$asig_familiar += $tramo_asig_familiar->monto*$num_cargas;
+
+				//https://www.dt.gob.cl/portal/1628/w3-article-95276.html
+				if($datos_remuneracion->diastrabajo < 25){
+						$asig_familiar = round(($asig_familiar/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
+
+				}
+
+								
 			}
 
 
