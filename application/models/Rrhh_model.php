@@ -1932,7 +1932,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 					$sueldo_calculo_sis = $sueldo_base_mes + $aguinaldo_bruto + $bonos_imponibles + $monto_semana_corrida;
 				}else{
-					$sueldo_calculo_sis = $sueldo_imponible;
+					$sueldo_calculo_sis = $sueldo_imponible_imposiciones;
 				}
 
 				$sueldo_calculo_sis = $sueldo_calculo_sis > $sueldo_imponible_afp ? $sueldo_imponible_afp : $sueldo_calculo_sis;

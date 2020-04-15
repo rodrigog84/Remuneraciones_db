@@ -248,8 +248,8 @@ class Main extends CI_Controller {
 				
 		
 				if ($periodos_remuneracion == null){
-					$mes_curso = $mes;
-					$anno_curso = $anno;
+					$mes_curso = 01;//$mes;
+					$anno_curso = 2020;//$anno;
 				}else{
 					$mes_curso = $periodos_remuneracion[0]->mes;
 					$anno_curso = $periodos_remuneracion[0]->anno;
