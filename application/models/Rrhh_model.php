@@ -1930,7 +1930,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			}else{
 				if($datos_remuneracion->diastrabajo < 30){
 
-					$sueldo_calculo_sis = $sueldo_base_mes + $aguinaldo_bruto + $bonos_imponibles + $monto_semana_corrida;
+					$sueldo_calculo_sis = $sueldo_base_mes + $aguinaldo_bruto + $bonos_imponibles + $monto_semana_corrida   + $monto_horas50 + $monto_horas100;
 				}else{
 					$sueldo_calculo_sis = $sueldo_imponible_imposiciones;
 				}
@@ -1968,7 +1968,7 @@ limit 1		*/
 			//echo $aportesegcesantia; exit;
 
 			if($tiene_licencia && $datos_remuneracion->diastrabajo < 30){ // SI TIENE LICENCIA SE DEBE SUMAR AL SEGURO LOS DÍAS NO TRABAJADOS POR EL PROPORCIONAL 
-				$imponibles_no_trabajo = round((($trabajador->sueldobase + $aguinaldo_bruto + $bonos_imponibles + $gratificacion)/$diastrabajo)*(30-$datos_remuneracion->diastrabajo),0);
+				$imponibles_no_trabajo = round((($trabajador->sueldobase + $aguinaldo_bruto + $bonos_imponibles + $gratificacion)/$diastrabajo)*($diastrabajo-$datos_remuneracion->diastrabajo),0);
 				if($trabajador->segcesantia == 1){
 					if($trabajador->annos_afc <= 11){
 						
@@ -1979,6 +1979,8 @@ limit 1		*/
 				}else{
 					$aportesegcesantia = 0;	
 				}	
+
+				$seginvalidez += round($imponibles_no_trabajo*($parametros->tasasis/100),0);
 
 			}
 
@@ -4714,7 +4716,9 @@ public function previred($datos_remuneracion){
 
 				$sueldoimponible_fonasa = ($remuneracion->fonasa+$remuneracion->inp) > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				$sueldoimponible_isapre = $remuneracion->cotizacionsalud > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
-				$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
+				//$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
+				$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponible : 0;
+
 				$sueldoimponible_ccaf = $codprev_ccaf != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				$sueldoimponible_segcesantia = $remuneracion->afilsegcesantia == 1 ? $remuneracion->sueldoimponibleafc : 0;
 				$cotccaffon = $codprev_ccaf == 0 ? 0 : $remuneracion->inp;
