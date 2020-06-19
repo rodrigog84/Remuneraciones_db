@@ -11,7 +11,7 @@
   <?php endif; ?>-->
 
 
-<!--sub-heard-part--><form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_trabajador" id="basicBootstrapForm" method="post">
+<!--sub-heard-part--><form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_trabajador" method="post">
 <!--sub-heard-part-->
 								<div class="sub-heard-part">
 									<ul class="nav nav-tabs">
@@ -54,7 +54,7 @@
 								                          </div>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
-								                                <label for="nombre">Número de Ficha</label>  
+								                                <label for="numficha">Número de Ficha</label>  
 								                                 <input type="text" name="numficha" id="numficha" class="form-control" id="" placeholder="Número de Ficha" >
 								                            </div>
 								                          </div>
@@ -91,7 +91,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div> 
-								                                 <input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control mask_date" required type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
+								                                 <input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control mask_date" type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
 								                                 </div>
 								                            </div>
 								                          </div>
@@ -102,7 +102,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Nacionalidad</label>
-								                             	<select name="nacionalidad" id="nacionalidad" class="form-control" required>
+								                             	<select name="nacionalidad" id="nacionalidad" class="form-control" >
 																	<option value="">Seleccione Nacionalidad</option>
 						                                    		<?php foreach ($paises as $pais) { ?>
 								                                      <?php $paisselected = $pais->id_paises == $datos_form['id_nacionalidad'] ? "selected" : ""; ?>
@@ -115,7 +115,7 @@
 								                            <div class="form-group">
 								                                <label for="nombre">Estado Civil</label> 
 
-								                                <select name="ecivil" id="ecivil" class="form-control" required>
+								                                <select name="ecivil" id="ecivil" class="form-control" >
 							                                   <option value="">Seleccione Estado Civil</option>
 								                                    <?php foreach ($estados_civiles as $estado_civil) { ?>
 								                                      <?php $ecivilselected = $estado_civil->id_estado_civil == $datos_form['idecivil'] ? "selected" : ""; ?>
@@ -132,7 +132,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Sexo</label>
-								                             	<select name="sexo" id="sexo"  class="form-control" required>
+								                             	<select name="sexo" id="sexo"  class="form-control" >
 								                                    <option value="">Seleccione Sexo</option>
 								                                    <option value="M" <?php echo $datos_form['sexo'] == 'M' ? 'selected' : ''; ?>>Masculino</option>
 								                                    <option value="F" <?php echo $datos_form['sexo'] == 'F' ? 'selected' : ''; ?>>Femenino</option>
@@ -142,7 +142,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Dirección</label> 
-								                                <input type="text" name="direccion" id="direccion" class="form-control required" placeholder="Dirección" size ="85"  onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+								                                <input type="text" name="direccion" id="direccion" class="form-control" placeholder="Dirección" size ="85"  onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 								                            </div>
 								                          </div>
 
@@ -1888,10 +1888,23 @@ $(document).ready(function() {
 
                     }
 
-                }
+                },
+           
+
+
+            numficha: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'N&uacute;mero de Ficha es requerido'
+                  },
+                  numeric: {
+                  	separator: '.',
+                        message: 'Numero de Ficha s&oacute;lo puede contener n&uacute;meros'
+                  }
+             }
             },
-
-
+             
             rutfp: {
                 row: '.form-group',
                 validators: {
@@ -1907,18 +1920,7 @@ $(document).ready(function() {
                 }
             },
 
-			numficha: {
-                row: '.form-group',
-                validators: {
-                    notEmpty: {
-                        message: 'N&uacute;mero de Ficha es requerido'
-                  },
-                  numeric: {
-                  	separator: '.',
-                        message: 'Numero de Ficha s&oacute;lo puede contener n&uacute;meros'
-                  }
-             }
-            },
+			
            nombre: {
                 row: '.form-group',
                 validators: {
@@ -2407,7 +2409,8 @@ $(document).ready(function() {
                         message: 'El valor ingresado no es num&eacute;rico',
                     },*/
                     regexp: {
-                            regexp: /^[0-9]+([.][0-9]+)?$/,
+                            //regexp: /^[0-9]+([.][0-9]+)?$/,
+                            regexp: /^[0-9]+([,][0-9]+)?$/,
                             message: 'Debe ingresar un valor decimal'
                     },                  
                     between: {
@@ -2428,7 +2431,8 @@ $(document).ready(function() {
                         message: 'El valor ingresado no es num&eacute;rico',
                     } */
                     regexp: {
-                            regexp: /^[0-9]+([.][0-9]+)?$/,
+                            //regexp: /^[0-9]+([.][0-9]+)?$/,
+                            regexp: /^[0-9]+([,][0-9]+)?$/,
                             message: 'Debe ingresar un valor decimal'
                     }                                       
                 }
@@ -2489,6 +2493,7 @@ $(document).ready(function() {
 
                     }
                 },
+            }
         
     })
 

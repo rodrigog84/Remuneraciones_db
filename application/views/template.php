@@ -19,8 +19,8 @@
     <link href="<?php echo base_url(); ?>assets/css/style.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/css/style-responsive.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/css/theme/blue.css" rel="stylesheet" id="theme" />
-    <link href="<?php echo base_url(); ?>assets/css/morris.css" rel="stylesheet" />
-    <link href="<?php echo base_url(); ?>assets/css/metisMenu.css" rel="stylesheet" />
+    <!--link href="<?php echo base_url(); ?>assets/css/morris.css" rel="stylesheet" />
+    <link href="<?php echo base_url(); ?>assets/css/metisMenu.css" rel="stylesheet" /-->
  
     
     <!-- ================== END BASE CSS STYLE ================== -->
@@ -68,7 +68,8 @@
     <?php if(isset($bootstrap_select)){ ?>
     <link href="<?php echo base_url(); ?>assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
     <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/i18n/defaults-es_ES.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/i18n/defaults-es_ES.js"></script>
+
     <?php } ?>
     
 
@@ -318,10 +319,10 @@
 <link rel="stylesheet" href="<?php echo base_url();?>css/bootstrap-multiselect.css" type="text/css"/>
 <!-- Latest compiled and minified JavaScript -->
 <script src="<?php echo base_url();?>js/bootstrap-multiselect.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-es_CL.js"></script>
-<script src="<?php echo base_url();?>js/metisMenu.min.js"></script>
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-es_CL.js"></script-->
+<!--script src="<?php echo base_url();?>js/metisMenu.min.js"></script>
 <script src="<?php echo base_url();?>js/raphael.min.js"></script>
-<script src="<?php echo base_url();?>js/morris.min.js"></script>
+<script src="<?php echo base_url();?>js/morris.min.js"></script-->
 
 
 
@@ -378,7 +379,7 @@
                 <ul class="nav navbar-nav navbar-left">
                     <li class="dropdown">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" style="margin-top: -10px;">
-                            <img src="<?php echo base_url().'images/logos/logo-ecomac-1.png';?>" alt="" style="width: 100px; "  />
+                            <img src="<?php echo base_url().'images/logos/logo-feria.png';?>" alt="" style="width: 100px; "  />
                             <span class="hidden-xs"></span> 
                         </a>
                     </li>
