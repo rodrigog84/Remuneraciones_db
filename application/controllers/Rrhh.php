@@ -1683,9 +1683,10 @@ public function editar_trabajador(){
 
 
 			$diastrabajo = $this->input->post('diastrabajo');
-			$horasdiarias = $this->input->post('horasdiarias');
-			$horassemanales = $this->input->post('horassemanales');
+      $horasdiarias = str_replace(",",".",$this->input->post('horasdiarias')); 
+      $horassemanales = str_replace(",",".",$this->input->post('horassemanales'));
 
+			
 			$motivo_egreso = $this->input->post('motivo_egreso');
 			$tipo_cc = $this->input->post('tipo_cc');
 			$seccion = $this->input->post('seccion');

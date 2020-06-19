@@ -91,7 +91,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div> 
-								                                 <input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control mask_date" required type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
+								                                 <input placeholder="Fecha de Nacimiento" name="fechanacimiento" id="fechanacimiento" class="form-control mask_date"  type="text" value="" onchange="calculaedad(this.value)"> <span id="edad" style="font-style:italic"></span>
 								                                 </div>
 								                            </div>
 								                          </div>
@@ -102,7 +102,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Nacionalidad</label>
-								                             	<select name="nacionalidad" id="nacionalidad" class="form-control" required>
+								                             	<select name="nacionalidad" id="nacionalidad" class="form-control" >
 																	<option value="">Seleccione Nacionalidad</option>
 						                                    		<?php foreach ($paises as $pais) { ?>
 								                                      <?php $paisselected = $pais->id == $datos_form['id_nacionalidad'] ? "selected" : ""; ?>
@@ -114,7 +114,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Estado Civil</label> 
-								                                <select name="ecivil" id="ecivil" class="form-control" required>
+								                                <select name="ecivil" id="ecivil" class="form-control" >
 							                                   <option value="">Seleccione Estado Civil</option>
 								                                    <?php foreach ($estados_civiles as $estado_civil) { ?>
 								                                      <?php $ecivilselected = $estado_civil->id == $datos_form['idecivil'] ? "selected" : ""; ?>
@@ -131,7 +131,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Sexo</label>
-								                             	<select name="sexo" id="sexo"  class="form-control" required>
+								                             	<select name="sexo" id="sexo"  class="form-control" >
 								                                    <option value="">Seleccione Sexo</option>
 								                                    <option value="M" <?php echo $datos_form['sexo'] == 'M' ? 'selected' : ''; ?>>Masculino</option>
 								                                    <option value="F" <?php echo $datos_form['sexo'] == 'F' ? 'selected' : ''; ?>>Femenino</option>
@@ -141,7 +141,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Dirección</label> 
-								                                <input type="text" name="direccion" id="direccion" class="form-control required" placeholder="Dirección" size ="85"  onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+								                                <input type="text" name="direccion" id="direccion" class="form-control" placeholder="Dirección" size ="85"  onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 								                            </div>
 								                          </div>
 
@@ -1806,8 +1806,8 @@ $(document).ready(function(){
         				$("#nombrefp").val(this.nombre_pago);
         				$("#emailfp").val(this.email_pago);
         				$("#diastrabajo").val(this.diastrabajo);
-        				$("#horasdiarias").val(this.horasdiarias);
-        				$("#horassemanales").val(this.horassemanales);
+        				$("#horasdiarias").val(replaceAll(this.horasdiarias,'.',','));
+        				$("#horassemanales").val(replaceAll(this.horassemanales,'.',','));
         				$("#usuario_windows").val(this.usuario_windows);
         				if(this.idjefe == 0){
         					$("#jefe").val('');
@@ -2756,7 +2756,8 @@ $(document).ready(function() {
                         message: 'El valor ingresado no es num&eacute;rico',
                     },*/
                     regexp: {
-                            regexp: /^[0-9]+([.][0-9]+)?$/,
+                            //regexp: /^[0-9]+([.][0-9]+)?$/,
+                            regexp: /^[0-9]+([,][0-9]+)?$/,
                             message: 'Debe ingresar un valor decimal'
                     },                  
                     between: {
@@ -2777,7 +2778,8 @@ $(document).ready(function() {
                         message: 'El valor ingresado no es num&eacute;rico',
                     } */
                     regexp: {
-                            regexp: /^[0-9]+([.][0-9]+)?$/,
+                            //regexp: /^[0-9]+([.][0-9]+)?$/,
+                            regexp: /^[0-9]+([,][0-9]+)?$/,
                             message: 'Debe ingresar un valor decimal'
                     }                                       
                 }
