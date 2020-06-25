@@ -36,57 +36,60 @@
 												                        <th>#</th>
 												                        <th>Tipo</th>
 												                        <th>Instituci&oacute;n</th>
+												                        <th>Cantidad Colaboradores</th>
 												                        <th><center>Descargar</center></th>
 																		</tr> 
 																	</thead> 
 																	<tbody> 
 													                        <?php $i = 1; ?>
-												                        
+												                        <?php foreach ($isapres_planillas as $isapre) { ?>
 												                         <tr >
-												                          <td>1</td>
-												                          <td>ISAPRE</td>
-												                          <td>Colmena</td>         
-												                          <td><center><a href="<?php echo base_url(); ?>rrhh/liquidacion/" target="_blank"><span class="glyphicon glyphicon-book"></span></a></center></td>
+												                          <td><?php echo $i;?></td>
+												                          <td>Isapre</td>
+												                          <td><?php echo $isapre->nombre;?></td>   
+												                          <td><?php echo $isapre->cantidad;?></td>        
+												                          <td><center><a href="<?php echo base_url(); ?>rrhh/planilla_imposiciones/isapre" target="_blank"><span class="glyphicon glyphicon-book"></span></a></center></td>
 												                          
 												                        </tr>
+												                        <?php $i++;?>
+												                        <?php } ?>
+												                         <?php foreach ($afps_planillas as $afp) { ?>
+												                         <tr >
+												                          <td><?php echo $i;?></td>
+												                          <td>Afp</td>
+												                          <td><?php echo $afp->nombre;?></td>   
+												                          <td><?php echo $afp->cantidad;?></td>              
+												                          <td><center><a href="<?php echo base_url(); ?>rrhh/planilla_imposiciones/afp" target="_blank"><span class="glyphicon glyphicon-book"></span></a></center></td>
+												                          
+												                        </tr>
+												                        <?php $i++;?>
+												                        <?php } ?>
 
-												                        <tr >
-												                          <td>2</td>
-												                          <td>ISAPRE</td>
-												                          <td>Nueva M&aacute;s Vida</td>         
-												                          <td><center><a href="<?php echo base_url(); ?>rrhh/liquidacion/" target="_blank"><span class="glyphicon glyphicon-book"></span></a></center></td>
-												                          
-												                        </tr>
-												                        <tr >
-												                          <td>3</td>
-												                          <td>Fonasa</td>
-												                          <td>Fonasa</td>         
-												                          <td><center><a href="<?php echo base_url(); ?>rrhh/liquidacion/" target="_blank"><span class="glyphicon glyphicon-book"></span></a></center></td>
-												                          
-												                        </tr>
-												                         <tr >
-												                          <td>4</td>
-												                          <td>Mutual</td>
-												                          <td>ACHS</td>         
-												                          <td><center><a href="<?php echo base_url(); ?>rrhh/liquidacion/" target="_blank"><span class="glyphicon glyphicon-book"></span></a></center></td>
-												                          
-												                        </tr>
 
+												                          <?php foreach ($caja_planillas as $caja) { ?>
 												                         <tr >
-												                          <td>5</td>
+												                          <td><?php echo $i;?></td>
 												                          <td>Caja</td>
-												                          <td>Caja Los Andes</td>         
-												                          <td><center><a href="<?php echo base_url(); ?>rrhh/liquidacion/" target="_blank"><span class="glyphicon glyphicon-book"></span></a></center></td>
+												                          <td><?php echo $caja->nombre;?></td> 
+												                          <td><?php echo $caja->cantidad;?></td>                
+												                          <td><center><a href="<?php echo base_url(); ?>rrhh/planilla_imposiciones/afp" target="_blank"><span class="glyphicon glyphicon-book"></span></a></center></td>
 												                          
 												                        </tr>
+												                        <?php $i++;?>
+												                        <?php } ?>
 
+
+												                        <?php foreach ($mutual_planillas as $mutual) { ?>
 												                         <tr >
-												                          <td>6</td>
-												                          <td>AFP</td>
-												                          <td>Habitat</td>         
-												                          <td><center><a href="<?php echo base_url(); ?>rrhh/liquidacion/" target="_blank"><span class="glyphicon glyphicon-book"></span></a></center></td>
+												                          <td><?php echo $i;?></td>
+												                          <td>Mutual</td>
+												                          <td><?php echo $mutual->nombre;?></td>   
+												                          <td><?php echo $mutual->cantidad;?></td>              
+												                          <td><center><a href="<?php echo base_url(); ?>rrhh/planilla_imposiciones/afp" target="_blank"><span class="glyphicon glyphicon-book"></span></a></center></td>
 												                          
 												                        </tr>
+												                        <?php $i++;?>
+												                        <?php } ?>
 												                        
 																	</tbody> 
 																</table> 

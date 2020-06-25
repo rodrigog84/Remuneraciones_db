@@ -122,7 +122,7 @@
 											                               <td>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0){ ?>
-											                              <a href="<?php echo base_url(); ?>rrhh/ver_planillas_imposiciones/<?php echo $periodo->id_periodo;?>" ><span class="glyphicon glyphicon-search"></span></a>  
+											                              <a href="<?php echo base_url(); ?>rrhh/ver_planillas_imposiciones/<?php echo $periodo->id_periodo."/".$idcentrocosto;?>" ><span class="glyphicon glyphicon-search"></span></a>  
 											                              <?php }else{ ?>
 											                              		-
 											                              <?php } ?>

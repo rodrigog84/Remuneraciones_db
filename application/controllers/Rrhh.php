@@ -3361,10 +3361,13 @@ public function ver_planillas_imposiciones($idperiodo = '',$idcentrocosto = null
 
 
 
-      $remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,null,$idcentrocosto);
-      $datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+      $isapres_planillas = $this->rrhh_model->get_planillas_imposiciones($idperiodo,$idcentrocosto,'ISAPRE');
+      $afps_planillas = $this->rrhh_model->get_planillas_imposiciones($idperiodo,$idcentrocosto,'AFP');
+      $caja_planillas = $this->rrhh_model->get_planillas_imposiciones($idperiodo,$idcentrocosto,'CAJA');
+      $mutual_planillas = $this->rrhh_model->get_planillas_imposiciones($idperiodo,$idcentrocosto,'MUTUAL');
+
+     
       //$centros_costo = $this->rrhh_model->get_centro_costo();
-      $centros_costo = $this->rrhh_model->get_centro_costo_periodo_abierto($idperiodo);
 
 
       $content = array(
@@ -3374,10 +3377,11 @@ public function ver_planillas_imposiciones($idperiodo = '',$idcentrocosto = null
 
       $vars['content_menu'] = $content;       
       $vars['content_view'] = 'remuneraciones/ver_planillas_imposiciones';
-      $vars['remuneraciones'] = $remuneraciones;
-      $vars['datosperiodo'] = $datosperiodo;
       $vars['idcentrocosto'] = $idcentrocosto;
-      $vars['centros_costo'] = $centros_costo;
+      $vars['isapres_planillas'] = $isapres_planillas;
+      $vars['afps_planillas'] = $afps_planillas;
+      $vars['caja_planillas'] = $caja_planillas;
+      $vars['mutual_planillas'] = $mutual_planillas;
 
       $vars['idperiodo'] = $idperiodo;
 

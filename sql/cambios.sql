@@ -49,6 +49,14 @@ values (
 )
 
 
+## AGREGADAS 24/06/2020
+
+alter table rem_remuneracion add idafp_rem int
+alter table rem_remuneracion add idisapre_rem int
+alter table rem_remuneracion add idmutual_rem int
+alter table rem_remuneracion add idcaja_rem int
+
+
 
 
 

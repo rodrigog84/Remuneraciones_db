@@ -2049,7 +2049,11 @@ limit 1		*/
 					'aportepatronal' => $aportepatronal,
 					'idcentrocosto' => $trabajador->idcentrocosto,
 					'pdf_content' => null,				
-					'active' => 1
+					'active' => 1,
+					'idafp_rem' => $trabajador->idafp,
+					'idisapre_rem' => $trabajador->idisapre,
+					'idmutual_rem' => $empresa->idmutual,
+					'idcaja_rem' => $empresa->idcaja
 				);
 
 			$this->db->where('idpersonal', $datos_remuneracion->idpersonal);
@@ -2105,6 +2109,47 @@ limit 1		*/
 		return $datos;
 
 	}
+
+
+
+public function get_planillas_imposiciones($idperiodo,$idcentrocosto,$tipo){
+
+
+		$idempresa = $this->session->userdata('empresaid');
+		if($tipo == 'ISAPRE'){
+			$campo = 'idisapre_rem';
+			$alias = 'i';
+		}else if($tipo == 'AFP'){
+			$campo = 'idafp_rem';
+			$alias = 'a';
+		}else if($tipo == 'CAJA'){
+			$campo = 'idcaja_rem';
+			$alias = 'c';
+		}else if($tipo == 'MUTUAL'){
+			$campo = 'idmutual_rem';
+			$alias = 'm';
+		}
+	
+		$this->db->select($alias.'.nombre, count(*) as cantidad', false)
+						  ->from('rem_remuneracion as r')
+						  ->join('rem_personal as p','r.idpersonal = p.id_personal')
+						  ->join('rem_afp as a','r.idafp_rem = a.id_afp','LEFT')
+						  ->join('rem_isapre as i','r.idisapre_rem = i.id_isapre','LEFT')
+						  ->join('rem_mutual_seguridad as m','r.idmutual_rem = m.id_mutual_seguridad','LEFT')
+						  ->join('rem_cajas_compensacion as c','r.idcaja_rem = c.id_cajas_compensacion','LEFT')
+						  ->where('p.id_empresa', $idempresa)
+		                  ->where('r.id_periodo',$idperiodo)
+		                  ->group_by($alias.'.nombre')
+		                  ->order_by($alias.'.nombre');
+		
+		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
+		//$datos = is_null($idperiodo) ? $query->result() : $query->row();				                  
+		$datos = $query->result();				                  
+		return $datos;
+
+	}	
+
 
 public function get_periodos_cerrados_detalle($empresaid,$idperiodo = null,$idcentrocosto = null){
 		$sql_centro_costo = is_null($idcentrocosto) ? '' : 'and pe.idcentrocosto = ' . $idcentrocosto;
