@@ -23,3 +23,32 @@ ADD CONSTRAINT df_horassemanales
 DEFAULT 45 FOR horassemanales;
 
 
+## AGREGADAS 22/06/2020
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/ver_planillas_imposiciones'
+,null
+,5
+,0
+,0
+,1
+,null
+)
+
+
+
+
+

@@ -70,6 +70,8 @@ public function get_centro_costo(){
 
 
 	public function get_centro_costo_periodo_abierto($idperiodo = null){
+
+		$sql_centro_costo = $idperiodo != null ? "pr.id_periodo = " . $idperiodo . " and " : "";
 		$data_periodo = "select id_centro_costo, nombre 
 						from rem_centro_costo 
 						where id_empresa =".$this->session->userdata('empresaid')." 
@@ -77,8 +79,7 @@ public function get_centro_costo(){
 						and id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ".$this->session->userdata('empresaid').")						
 						and id_centro_costo  in (select pr.id_centro_costo  
 													from rem_periodo_remuneracion as pr
-													where pr.id_periodo = " . $idperiodo . "
-													and pr.id_empresa =".$this->session->userdata('empresaid')."
+													where " . $sql_centro_costo . " pr.id_empresa =".$this->session->userdata('empresaid')."
 													
 													and cierre is not null)"; 
     //	echo $data_periodo; 

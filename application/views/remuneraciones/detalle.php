@@ -82,6 +82,7 @@
 													                        <th>N&uacute;mero Colaboradores</th>
 													                        <th>Remuneraci&oacute;n Total (L&iacute;quido)</th>
 													                        <th>Detalle Remuneraciones</th>
+													                        <th>Planillas Imposiciones</th>
 													                        <th>Previred</th>
 													                        <th>Pago a Bancos</th>
 													                        <th>Libro Remuneraciones</th>
@@ -113,6 +114,15 @@
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre) && $periodo->numtrabajadores > 0){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/ver_remuneraciones_periodo/<?php echo $periodo->id_periodo."/".$idcentrocosto; ?>" data-toggle="tooltip" title="Ver Remuneraciones Personal"><span class="glyphicon glyphicon-search"></span></a>
+											                              <?php }else{ ?>
+											                              		-
+											                              <?php } ?>
+											                              </center>
+											                              </td>
+											                               <td>
+											                              <center>
+											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0){ ?>
+											                              <a href="<?php echo base_url(); ?>rrhh/ver_planillas_imposiciones/<?php echo $periodo->id_periodo;?>" ><span class="glyphicon glyphicon-search"></span></a>  
 											                              <?php }else{ ?>
 											                              		-
 											                              <?php } ?>

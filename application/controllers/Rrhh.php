@@ -2926,16 +2926,16 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 
-			if(is_null($idperiodo)){
+			/*if(is_null($idperiodo)){
 				redirect('main/dashboard/');
 
-			}
+			}*/
 
 
 			$idcentrocosto = is_null($this->input->post('centrocosto'))  ? $idcentrocosto : $this->input->post('centrocosto');
 
 			$idcentrocosto = $idcentrocosto == 0 ? null : $idcentrocosto;
-
+      
 			$datosperiodo = $this->rrhh_model->get_periodos_cerrados_detalle($this->session->userdata('empresaid'),$idperiodo,$idcentrocosto);
 
 
@@ -2943,7 +2943,7 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 			//$centros_costo = $this->rrhh_model->get_centro_costo();
 			$centros_costo = $this->rrhh_model->get_centro_costo_periodo_abierto($idperiodo);
 
-
+ //echo "asdasd"; exit;
 			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',
@@ -3344,6 +3344,67 @@ public function previred($idperiodo = null)
 
 	}	
 
+
+
+
+public function ver_planillas_imposiciones($idperiodo = '',$idcentrocosto = null)
+  {
+
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+      if($idperiodo == ''){
+        redirect('main/dashboard/');
+      }
+
+      $idcentrocosto = is_null($this->input->post('centrocosto'))  ? $idcentrocosto : $this->input->post('centrocosto');
+      $idcentrocosto = $idcentrocosto == 0 ? null : $idcentrocosto;
+
+
+
+      $remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,null,$idcentrocosto);
+      $datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+      //$centros_costo = $this->rrhh_model->get_centro_costo();
+      $centros_costo = $this->rrhh_model->get_centro_costo_periodo_abierto($idperiodo);
+
+
+      $content = array(
+            'menu' => 'Remuneraciones',
+            'title' => 'Remuneraciones',
+            'subtitle' => 'Ver Planillas Imposiciones');
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'remuneraciones/ver_planillas_imposiciones';
+      $vars['remuneraciones'] = $remuneraciones;
+      $vars['datosperiodo'] = $datosperiodo;
+      $vars['idcentrocosto'] = $idcentrocosto;
+      $vars['centros_costo'] = $centros_costo;
+
+      $vars['idperiodo'] = $idperiodo;
+
+      
+
+      $vars['datatable'] = true;
+      
+      
+      $template = "template";
+      
+
+      $this->load->view($template,$vars); 
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  } 
 
 
 public function ver_remuneraciones_colaborador($idperiodo = '',$idcentrocosto = null)
