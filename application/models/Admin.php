@@ -881,9 +881,9 @@ public function get_cargo_colaborador($idtrabajador = null,$actives = null){
 	}
 
 public function get_personal_total($idtrabajador = null){
-		echo $idtrabajador;
+		//echo $idtrabajador;
 
-		$personal_data = $this->db->select('id_personal, id_empresa, rut, dv, nombre, apaterno, amaterno, fecnacimiento, sexo, idecivil, nacionalidad, direccion, idregion, idcomuna, fono, email, fecingreso, idcargo, tipocontrato, parttime, segcesantia, fecafc, diastrabajo, horasdiarias, horassemanales, sueldobase, tipogratificacion, gratificacion, asigfamiliar, cargassimples, cargasinvalidas, cargasmaternales, cargasretroactivas, idasigfamiliar, movilizacion, colacion, pensionado, idafp, adicafp, tipoahorrovol, ahorrovol, instapv, nrocontratoapv, tipocotapv, cotapv, formapagoapv, depconvapv, idisapre, valorpactado, fecinicvacaciones, saldoinicvacaciones, saldoinicvacprog, active, anticipo_permanente, anticipo')
+		$personal_data = $this->db->select('id_personal, id_empresa, rut, dv, nombre, apaterno, amaterno, fecnacimiento, sexo, idecivil, nacionalidad, direccion, idregion, idcomuna, fono, email, fecingreso, idcargo, tipocontrato, parttime, segcesantia, fecafc, diastrabajo, horasdiarias, horassemanales, sueldobase, tipogratificacion, gratificacion, asigfamiliar, cargassimples, cargasinvalidas, cargasmaternales, cargasretroactivas, idasigfamiliar, movilizacion, colacion, pensionado, idafp, adicafp, tipoahorrovol, ahorrovol, instapv, nrocontratoapv, tipocotapv, cotapv, formapagoapv, depconvapv, idisapre, valorpactado, fecinicvacaciones, saldoinicvacaciones, saldoinicvacprog, active, anticipo_permanente, anticipo, fecrealcontrato, diasvactomados')
 						  ->from('rem_personal p')
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
 						  ->order_by('p.active','desc')
@@ -1172,7 +1172,7 @@ public function get_bonos($idtrabajador = null){
 		$causal_data = $this->db->select('idcausal,motivo, articulo')
 						  ->from('rem_causal_finiquito')
 						  ->where('activo',1)
-		                  ->order_by('motivo');
+		                  ->order_by('articulo');
 		
    		$query = $this->db->get();   		
 		return $query->result();

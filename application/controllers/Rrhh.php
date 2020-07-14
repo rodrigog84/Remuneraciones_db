@@ -5025,14 +5025,48 @@ public function genera_finiquito($idpersonal){
 
 	$idtipo = 2;
 
+  $this->load->model('auxiliar');
+
 	$content = array(
 						'menu' => 'Finiquito',
 						'title' => 'Genera Finiquito Colaborador',
 						'subtitle' => 'Finiquitos Colaboradores');
 	
 	$personal = $this->admin->get_personal_total($idpersonal); 
+  $dias_progresivos = $this->auxiliar->get_dias_progresivos($idpersonal);
+  $array_vacaciones['dias_vacaciones'] = dias_vacaciones($personal->fecinicvacaciones,$personal->saldoinicvacaciones);
+  $array_vacaciones['num_dias_progresivos'] = num_dias_progresivos($personal->fecinicvacaciones,$personal->saldoinicvacprog,$dias_progresivos);
+  $parametros = $this->admin->get_parametros_generales();
 
-	//print_r($personal);
+  if($personal->tipogratificacion == 'SG'){
+        $gratificacion = 0;
+  }else if($personal->tipogratificacion == 'MF'){
+        $gratificacion = $personal->gratificacion;
+  }else if($personal->tipogratificacion == 'TL'){
+        $tope_legal_gratificacion = ($parametros->sueldominimo*4.75)/12;
+        $gratificacion_esperada = $personal->sueldobase*0.25;
+
+       //echo $personal->tipogratificacion;  exit;
+        $gratificacion = $gratificacion_esperada > $tope_legal_gratificacion ? $tope_legal_gratificacion : $gratificacion_esperada;
+
+  }
+
+
+
+
+
+ // $vacaciones = $this->auxiliar->get_cartola_vacaciones($idpersonal);
+
+
+
+  $dias_tomados = 0;
+ /* foreach ($vacaciones as $vacacion) {
+    $dias_tomados += $vacacion->dias;
+  }*/
+
+ // echo"..-". $saldo_dias;
+
+	//print_r($vacaciones);
 
 	//exit;
 
@@ -5041,7 +5075,11 @@ public function genera_finiquito($idpersonal){
 	
 	$vars['personal'] = $personal;
 	$vars['tipocontrato'] = $tipocontrato;
+  $vars['dias_tomados'] = $dias_tomados;
+
+  $vars['array_vacaciones'] = $array_vacaciones;
   $vars['causales_finiquito'] = $causales_finiquito;
+  $vars['gratificacion'] = $gratificacion;
 	$vars['contrato'] = 1;
   $vars['datetimepicker'] = true;
   $vars['maleta'] = true;
