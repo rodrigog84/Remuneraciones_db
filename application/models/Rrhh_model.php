@@ -1782,8 +1782,11 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 			if($trabajador->idisapre == 1){ //FONASA
 				$salud_total = round($sueldo_imponible_imposiciones*0.07,0);
-				$cot_fonasa = $trabajador->idisapre == 1 ? round($sueldo_imponible_imposiciones*0.064,0) : 0;
-				$cot_inp = $trabajador->idisapre == 1 ? round($sueldo_imponible_imposiciones*0.006,0) : 0;				
+				//$cot_fonasa = $trabajador->idisapre == 1 ? round($sueldo_imponible_imposiciones*0.064,0) : 0;
+				//$cot_inp = $trabajador->idisapre == 1 ? round($sueldo_imponible_imposiciones*0.006,0) : 0;		
+
+				$cot_fonasa = $trabajador->idisapre == 1 ? round($sueldo_imponible_imposiciones*0.039,0) : 0;
+				$cot_inp = $trabajador->idisapre == 1 ? round($sueldo_imponible_imposiciones*0.031,0) : 0;			
 
 				$dif_salud = $salud_total - ($cot_fonasa + $cot_inp);
 				$cot_fonasa += $dif_salud; 
