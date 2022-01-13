@@ -246,10 +246,10 @@ class Main extends CI_Controller {
 				$pago_remuneraciones = array_column($pago_remuneraciones,'pago');
 				$meses_x_montopago   = array_column($meses_x_montopago,'mes');
 				
-		
+			
 				if ($periodos_remuneracion == null){
-					$mes_curso = 01;//$mes;
-					$anno_curso = 2020;//$anno;
+					$mes_curso = date('m');//$mes;
+					$anno_curso = date('Y');//$anno;
 				}else{
 					$mes_curso = $periodos_remuneracion[0]->mes;
 					$anno_curso = $periodos_remuneracion[0]->anno;
