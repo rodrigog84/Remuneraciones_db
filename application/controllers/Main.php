@@ -98,7 +98,9 @@ class Main extends CI_Controller {
 			$parametros_generales->utm=number_format($parametros_generales->utm, 2, ',', '.');
 			$parametros_generales->sueldominimo=number_format($parametros_generales->sueldominimo, 0, ',', '.');
 			$parametros_generales->topeimponible=number_format($parametros_generales->topeimponible, 2, ',', '.');
+			$parametros_generales->topeimponibleips=number_format($parametros_generales->topeimponibleips, 2, ',', '.');
 			$parametros_generales->topeimponibleafc=number_format($parametros_generales->topeimponibleafc, 2, ',', '.');
+			$parametros_generales->tasasis=number_format($parametros_generales->tasasis, 2, ',', '.');
 
 			if(count($empresas_asignadas) > 1){ // EN CASO DE TENER MÁS DE UNA COMUNIDAD LO ENVÍA A LA PÁGINA DE SELECCIÓN
 				$content = array(

@@ -113,7 +113,7 @@
                             <h4 class="panel-title">Indicadores</h4>
                         </div>
                         <div class="panel-body">
-                            <div id="container8" class="height-sm">
+                            <div id="container" class="height-sm">
                                
                                <table class="table table-borderless">
                                    
@@ -130,14 +130,22 @@
                                         <td class="text-right">$<?php echo $parametros_generales->sueldominimo;?></td>
                                     </tr>
                                     <tr>
-                                        <td class="text-left">Tope Imponible:</td>
-                                        <td class="text-right"><?php echo $parametros_generales->topeimponible;?>%</td>
+                                        <td class="text-left">Tope Imponible AFP:</td>
+                                        <td class="text-right"><?php echo $parametros_generales->topeimponible;?> UF</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left">Tope Imponible IPS:</td>
+                                        <td class="text-right"><?php echo $parametros_generales->topeimponibleips;?> UF</td>
                                     </tr>
                                     <tr>
                                         <td class="text-left">Tope Seguro de Cesantía:</td>
-                                        <td class="text-right"><?php echo $parametros_generales->topeimponibleafc;?>%</td>
+                                        <td class="text-right"><?php echo $parametros_generales->topeimponibleafc;?> UF</td>
                                     </tr>
                                     <tr>
+                                        <td class="text-left">Tasa SIS:</td>
+                                        <td class="text-right"><?php echo $parametros_generales->tasasis;?></td>
+                                    </tr>
+                                       <tr>
                                         <td class="text-left">Tasa Mutualidad:</td>
                                         <td class="text-right"><?php echo $empresa->porcmutual;?>%</td>
                                     </tr>
