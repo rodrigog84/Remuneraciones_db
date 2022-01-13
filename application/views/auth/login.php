@@ -46,7 +46,7 @@
     <div class="login-header">
       <div class="brand">
         <span class="logo"></span>Remuneraciones
-        <small>Acceso a sistemas de Remuneraciones Infosys</small>
+        <small>Acceso a sistemas de Remuneraciones Arnou</small>
       </div>
       <div class="icon">
         <i class="fa fa-sign-in"></i>

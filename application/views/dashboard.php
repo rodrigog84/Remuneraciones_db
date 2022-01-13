@@ -181,7 +181,7 @@ $(function () {
         text: 'Remuneración Últimos 12 Meses'
     },
     subtitle: {
-        text: 'Fuente: Info-sys.cl'
+        text: 'Fuente: arnou.cl'
     },
     xAxis: {
         categories: meses_x_montopago,/*[
@@ -288,7 +288,7 @@ $(function () {
         text: 'Colaboradores por AFP'
     },
     subtitle: {
-        text: 'Fuente: info-sys.cl'
+        text: 'Fuente: arnou.cl'
     },
     xAxis: {
         type: 'category'
