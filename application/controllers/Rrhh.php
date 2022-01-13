@@ -3722,7 +3722,7 @@ public function liquidacion_colaborador($idremuneracion = null)
 			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno); 
       //echo "<pre>";
       //var_dump($personal); exit;
- 
+      $licencias = array();
       foreach ($personal as $trabajador) {
         $datos_licencia = $this->rrhh_model->get_licencia_medica($trabajador->id_personal); 
         
