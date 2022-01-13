@@ -97,7 +97,8 @@
 																		<tr>
 																			<th>#</th>
 																			<th>Per&iacute;odo</th> 
-																			<th>Estado</th> 
+																			<th>Estado</th>
+																			<th>Centros de Costo Calculados</th> 
 																			<!--th>Acci&oacute;n</th--> 
 																			<th>Ver Detalle Remuneraciones</th> 
 																			<th>Validar</th> 
@@ -115,6 +116,7 @@
 																			 <td><span class="<?php echo $periodo->estado == 'Informaci&oacute;n Completa' ? 'text-green' : 'text-red';?>" /><?php echo $periodo->estado; ?></span>&nbsp;&nbsp;
                         													<?php if($periodo->estado == 'Falta Informaci&oacute;n'){ ?><i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="<?php echo $mensaje_html[$periodo->id];?>" title="Datos Pendientes:"></i><?php } ?>
                         													</td>
+                        													<td><center><?php echo $periodo->ccostocalculados."/".$periodo->ccostoexistentes;?></center></td>
 																			<!--td>
 																					<?php if($periodo->estado == 'Informaci&oacute;n Completa' && is_null($periodo->cierre)){ ?>
 																					<a href="<?php echo base_url(); ?>rrhh/submit_calculo_remuneraciones/<?php echo $periodo->id; ?>" data-toggle="tooltip" title="Calculo Remuneraciones" class="btn btn-block btn-xs btn-primary">Calcular</a>
@@ -200,7 +202,7 @@
             
                 <div class="modal-body">
                     
-                    <p style="font-size:14px;">Antes de Aprobar las Remuneraciones se deben calcular todos los Centros de Costos</p>
+                    <p style="font-size:14px;">Se deben calcular todos los Centros de Costos para aprobar</p>
                     <div id="texto_modal"> </div>
                     <form name="f2" action="<?php echo base_url();?>rrhh/rechaza_remuneraciones" id="f2" method="post">
                     <input type="hidden" name="prueba" value="<?php echo $periodo->id_periodo; ?>">

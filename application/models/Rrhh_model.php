@@ -76,7 +76,7 @@ public function get_centro_costo(){
 						from rem_centro_costo 
 						where id_empresa =".$this->session->userdata('empresaid')." 
 						and valido is not null 
-						and id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ".$this->session->userdata('empresaid').")						
+						and id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ".$this->session->userdata('empresaid')." and active = 1)						
 						and id_centro_costo  in (select pr.id_centro_costo  
 													from rem_periodo_remuneracion as pr
 													where " . $sql_centro_costo . " pr.id_empresa =".$this->session->userdata('empresaid')."
@@ -92,7 +92,7 @@ public function get_centro_costo(){
 						from rem_centro_costo 
 						where id_empresa =".$this->session->userdata('empresaid')." 
 						and valido is not null 
-						and id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ".$this->session->userdata('empresaid').")						
+						and id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ".$this->session->userdata('empresaid')." and active = 1)						
 						and id_centro_costo not in (select pr.id_centro_costo  
 													from rem_periodo_remuneracion as pr
 													join rem_periodo as p on pr.id_periodo = p.id_periodo
@@ -115,8 +115,8 @@ public function get_centro_costo(){
 						from rem_centro_costo 
 						where id_empresa =".$this->session->userdata('empresaid')." 
 						and valido is not null 
-						and id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ".$this->session->userdata('empresaid').")						
-						and id_centro_costo not in (select pr.id_centro_costo  
+						and id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ".$this->session->userdata('empresaid')." and active = 1)						
+						 and id_centro_costo not in (select pr.id_centro_costo  
 													from rem_periodo_remuneracion as pr
 													where pr.id_periodo = ".$idperiodo."
 													and pr.id_empresa =".$this->session->userdata('empresaid')."
@@ -136,13 +136,14 @@ public function get_centro_costo(){
 
 
 	public function get_periodos_remuneracion_abiertos_resumen($idperiodo = null){
-		$data_periodo = $this->db->select('distinct p.id_periodo, p.mes, p.anno',false)
+		$data_periodo = $this->db->select('p.id_periodo, p.mes, p.anno,count(distinct "id_centro_costo") as ccostocalculados,  (select count( distinct idcentrocosto) from rem_personal where id_empresa = ' . $this->session->userdata('empresaid') . ' and active = 1) as ccostoexistentes',false)
 						  ->from('rem_periodo as p')
 						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
 						  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('pr.aprueba is null')
 		                  ->where('pr.cierre is not null')
-		                  ->where('pr.id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ' . $this->session->userdata('empresaid') . ')')
+		                  ->where('pr.id_centro_costo in (select distinct idcentrocosto from rem_personal where id_empresa = ' . $this->session->userdata('empresaid') . ' and active = 1)')
+		                  ->group_by('p.id_periodo, p.mes, p.anno')
 		                  ->order_by('p.anno','asc')
 		                  ->order_by('p.mes','asc');
 
@@ -1303,6 +1304,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			      	'id_centro_costo' => $centro_costo
 				);
 				$this->db->insert('rem_periodo_remuneracion', $data);
+				//echo $this->db->last_query();
 		}
 
 
@@ -1359,16 +1361,20 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	}
 
 
-	public function get_periodos($empresaid,$idperiodo = null){
+	public function get_periodos($empresaid,$idperiodo = null,$idcentrocosto = null){
+		$sql_centro_costo = is_null($idcentrocosto) ? '' : "and pe.idcentrocosto = " . $idcentrocosto;
 
-		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, pr.anticipo, pr.cierre, pr.aprueba, pr.cierre,  (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1) as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1) as sueldoimponible ', false)
+		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, pr.anticipo, max(pr.cierre) as cierre, pr.aprueba, (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' ' . $sql_centro_costo .' and r.active = 1) as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' ' . $sql_centro_costo .' and r.active = 1) as sueldoimponible ', false)
 						  ->from('rem_periodo as p')
 						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
 		                  ->where('pr.id_empresa', $empresaid)
+		                  ->group_by('p.id_periodo, p.mes, p.anno, pr.anticipo, pr.aprueba, p.updated_at')
 		                  ->order_by('p.updated_at desc');
 		$comunidades_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.id_periodo',$idperiodo);
+		$comunidades_data = is_null($idcentrocosto) ? $periodo_data : $periodo_data->where('pr.id_centro_costo',$idcentrocosto);
 		$query = $this->db->get();
-		$datos = is_null($idperiodo) ? $query->result() : $query->row();				                  
+		$datos = is_null($idperiodo) ? $query->result() : $query->row();	
+		//echo $this->db->last_query(); exit;			                  
 		return $datos;
 
 	}	
@@ -1550,7 +1556,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 	public function calcular_remuneraciones($idperiodo,$centro_costo){
-
+		//var_dump_new($centro_costo); exit;
 		$this->db->trans_start();
 
 		$periodo =  $this->get_periodos($this->session->userdata('empresaid'),$idperiodo);
@@ -1590,7 +1596,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 							set r.active = 0
 							from rem_remuneracion r 
 						    inner join rem_personal p on r.idpersonal = p.id_personal
-                            where p.id_empresa = ' . $this->session->userdata('empresaid') . ' and r.id_periodo = ' . $idperiodo );
+                            where p.id_empresa = ' . $this->session->userdata('empresaid') . ' and r.id_periodo = ' . $idperiodo . '
+                            and p.idcentrocosto = ' . $centro_costo);
 
 
 
@@ -1699,7 +1706,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$num_cargas = $num_cargas_simples + $num_cargas_maternales;
 			$monto_ingresos = $trabajador->sueldobase + $trabajador->bonos_fijos;
 
-			$asig_familiar = $trabajador->asigfamiliar;
+			$asig_familiar = $trabajador->asigfamiliar; //Monto cargas retroactivas
 
 			if(!is_null($trabajador->idasigfamiliar)){ //BUSCA MONTO DE ASIGNACION FAMILIAR EN BASE A TRAMO SELECCIONADO
 				$tramo_asig_familiar = $this->admin->get_tabla_asig_familiar($trabajador->idasigfamiliar);
@@ -2155,8 +2162,14 @@ public function get_planillas_imposiciones($idperiodo,$idcentrocosto,$tipo){
 
 
 public function get_periodos_cerrados_detalle($empresaid,$idperiodo = null,$idcentrocosto = null){
-		$sql_centro_costo = is_null($idcentrocosto) ? '' : 'and pe.idcentrocosto = ' . $idcentrocosto;
-		$sql_centro_costo_rem = is_null($idcentrocosto) ? '' : 'and r.idcentrocosto = ' . $idcentrocosto;
+
+
+		$lista_centro_costos_validos = is_null($idperiodo) ? 'select id_centro_costo from rem_centro_costo where id_empresa = ' . $empresaid : 'select pr.id_centro_costo  
+													from rem_periodo_remuneracion as pr
+													where pr.id_periodo = ' . $idperiodo. ' and pr.id_empresa = ' . $empresaid . '		
+													and cierre is not null';
+		$sql_centro_costo = is_null($idcentrocosto) ? 'and pe.idcentrocosto in (' . $lista_centro_costos_validos . ')' : 'and pe.idcentrocosto = ' . $idcentrocosto;
+		$sql_centro_costo_rem = is_null($idcentrocosto) ? 'and pe.idcentrocosto in (' . $lista_centro_costos_validos . ')' : 'and r.idcentrocosto = ' . $idcentrocosto;
 
 
 		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, max(pr.cierre) as cierre, pr.aprueba, (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo_rem . ') as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoliquido', false)
@@ -2169,12 +2182,35 @@ public function get_periodos_cerrados_detalle($empresaid,$idperiodo = null,$idce
 		                  ->order_by('p.mes desc');
 		$periodo_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.id_periodo',$idperiodo);
 		$query = $this->db->get();
-		//echo $this->db->last_query(); exit;
+		//	echo $this->db->last_query(); exit;
 		//$datos = is_null($idperiodo) ? $query->result() : $query->row();				                  
 		$datos = $query->result();				                  
 		return $datos;
 
 	}	
+
+
+public function get_periodos_aprobados_detalle($empresaid,$idperiodo = null,$idcentrocosto = null){
+		$sql_centro_costo = is_null($idcentrocosto) ? '' : 'and pe.idcentrocosto = ' . $idcentrocosto;
+		$sql_centro_costo_rem = is_null($idcentrocosto) ? '' : 'and r.idcentrocosto = ' . $idcentrocosto;
+
+
+		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, max(pr.cierre) as cierre, pr.aprueba, (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo_rem . ') as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoliquido', false)
+						  ->from('rem_periodo as p')
+						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
+						  ->where('pr.id_empresa', $empresaid)
+		                  ->where('pr.aprueba is not null')
+		                  ->group_by('p.id_periodo, p.mes, p.anno, pr.aprueba')
+		                  ->order_by('p.anno desc')
+		                  ->order_by('p.mes desc');
+		$periodo_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.id_periodo',$idperiodo);
+		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
+		//$datos = is_null($idperiodo) ? $query->result() : $query->row();				                  
+		$datos = $query->result();				                  
+		return $datos;
+
+	}		
 	/*public function get_periodos_cerrados($empresaid,$idperiodo = null,$idcentrocosto = null){
 		$sql_centro_costo = is_null($idcentrocosto) ? 'and pe.idcentrocosto = cc.id_centro_costo' : 'and pe.idcentrocosto = ' . $idcentrocosto;
 		$sql_centro_costo_rem = is_null($idcentrocosto) ? 'and pe.idcentrocosto = cc.id_centro_costo' : 'and r.idcentrocosto = ' . $idcentrocosto;
@@ -2204,17 +2240,20 @@ public function get_periodos_cerrados_detalle($empresaid,$idperiodo = null,$idce
 
 	public function get_remuneraciones_by_periodo($idperiodo,$sinsueldo = null,$idcentrocosto = null){
 		
-		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips, pe.direccion, com.nombre as comuna')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips, pe.direccion, com.nombre as comuna, pe.parttime, pe.idregion, pe.idcomuna, a.codlre, i.codlre as codlreisapre, ccaf.codlre as codlrecaja, m.codprevired as codlremutual, f.tramo as tramo_asig_familiar')
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
 						  ->join('rem_empresa as co','pe.id_empresa = co.id_empresa')
-						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and r.idcentrocosto = pr.id_centro_costo')
+						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and r.idcentrocosto = pr.id_centro_costo and pr.cierre is not null')
 						  ->join('rem_isapre as i','pe.idisapre = i.id_isapre')
 						  ->join('rem_cargos as c','pe.idcargo = c.id_cargos')
 						  ->join('rem_afp as a','pe.idafp = a.id_afp')
 						  ->join('rem_apv as ap','pe.instapv = ap.id_apv','left')						  
 						  ->join('rem_comuna as com','pe.idcomuna = com.idcomuna','left')
+						  ->join('rem_cajas_compensacion as ccaf', 'co.idcaja = ccaf.id_cajas_compensacion', 'left')
+						  ->join('rem_mutual_seguridad as m', 'co.idmutual = m.id_mutual_seguridad', 'left')
+						  ->join('rem_tabla_asig_familiar as f', 'pe.idasigfamiliar = f.id_tabla_asig_familiar', 'left')
 		                  ->where('pe.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('r.id_periodo', $idperiodo)
@@ -3466,6 +3505,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 	public function liquidacion($datos_remuneracion){
 
+			//var_dump_new($datos_remuneracion); exit;
 			$this->load->model('admin');
 			$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
 			$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
@@ -3505,7 +3545,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 			$this->mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
 			$this->mpdf->WriteHTML($content->pdf_content);
 
-			if(is_null($datos_periodo->aprueba)){
+			if(is_null($datos_remuneracion->aprueba)){
 				$this->mpdf->SetWatermarkText('BORRADOR');
 				$this->mpdf->watermark_font = 'DejaVuSansCondensed';
 				$this->mpdf->showWatermarkText = true;
@@ -4671,6 +4711,250 @@ public function update_personal_salud($array_trabajadores){
 		$this->db->trans_complete();
 		return 1;
 	}	
+
+
+
+public function lre($datos_remuneracion,$periodo)
+    {
+
+
+        $this->load->model('admin');
+        $datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
+   
+         //echo "<pre>";
+         //var_dump($datos_remuneracion); exit;
+
+        $nombre_archivo = $datos_empresa->rut . $datos_empresa->dv . "_" . $periodo->anno . $periodo->mes .".csv";
+
+        $path_archivo = "./uploads/tmp/";
+        $file = fopen($path_archivo . $nombre_archivo, "w");
+
+        
+        $encabezado = "Rut trabajador(1101);Fecha inicio contrato(1102);Fecha término de contrato(1103);Causal término de contrato(1104);Región prestación de servicios(1105);Comuna prestación de servicios(1106);Tipo impuesto a la renta(1170);Técnico extranjero exención cot. previsionales(1146);Código tipo de jornada(1107);Persona con Discapacidad - Pensionado por Invalidez(1108);Pensionado por vejez(1109);AFP(1141);IPS (ExINP)(1142);FONASA - ISAPRE(1143);AFC(1151);CCAF(1110);Org. administrador ley 16.744(1152);Nro cargas familiares legales autorizadas(1111);Nro de cargas familiares maternales(1112);Nro de cargas familiares invalidez(1113);Tramo asignación familiar(1114);Rut org sindical 1(1171);Rut org sindical 2(1172);Rut org sindical 3(1173);Rut org sindical 4(1174);Rut org sindical 5(1175);Rut org sindical 6(1176);Rut org sindical 7(1177);Rut org sindical 8(1178);Rut org sindical 9(1179);Rut org sindical 10(1180);Nro días trabajados en el mes(1115);Nro días de licencia médica en el mes(1116);Nro días de vacaciones en el mes(1117);Subsidio trabajador joven(1118);Puesto Trabajo Pesado(1154);APVI(1155);APVC(1157);Indemnización a todo evento(1131);Tasa indemnización a todo evento(1132);Sueldo(2101);Sobresueldo(2102);Comisiones(2103);Semana corrida(2104);Participación(2105);Gratificación(2106);Recargo 30% día domingo(2107);Remun. variable pagada en vacaciones(2108);Remun. variable pagada en clausura(2109);Aguinaldo(2110);Bonos u otras remun. fijas mensuales(2111);Tratos(2112);Bonos u otras remun. variables mensuales o superiores a un mes(2113);Ejercicio opción no pactada en contrato(2114);Beneficios en especie constitutivos de remun(2115);Remuneraciones bimestrales(2116);Remuneraciones trimestrales(2117);Remuneraciones cuatrimestral(2118);Remuneraciones semestrales(2119);Remuneraciones anuales(2120);Participación anual(2121);Gratificación anual(2122);Otras remuneraciones superiores a un mes(2123);Pago por horas de trabajo sindical(2124);Subsidio por incapacidad laboral por licencia médica(2201);Beca de estudio(2202);Gratificaciones de zona(2203);Otros ingresos no constitutivos de renta(2204);Colación(2301);Movilización(2302);Viáticos(2303);Asignación de pérdida de caja(2304);Asignación de desgaste herramienta(2305);Asignación familiar legal(2311);Gastos por causa del trabajo(2306);Gastos por cambio de residencia(2307);Sala cuna(2308);Asignación trabajo a distancia o teletrabajo(2309);Depósito convenido hasta UF 900(2347);Alojamiento por razones de trabajo(2310);Asignación de traslación(2312);Indemnización por feriado legal(2313);Indemnización años de servicio(2314);Indemnización sustitutiva del aviso previo(2315);Indemnización fuero maternal(2316);Pago indemnización a todo evento(2331);Indemnizaciones voluntarias tributables(2417);Indemnizaciones contractuales tributables(2418);Cotización obligatoria previsional (AFP o IPS)(3141);Cotización obligatoria salud 7%(3143);Cotización voluntaria para salud(3144);Cotización AFC - trabajador(3151);Cotizaciones técnico extranjero para seguridad social fuera de Chile(3146);Descuento depósito convenido hasta UF 900 anual(3147);Cotización APVi Mod A(3155);Cotización APVi Mod B hasta UF50(3156);Cotización APVc Mod A(3157);Cotización APVc Mod B hasta UF50(3158);Impuesto retenido por remuneraciones(3161);Impuesto retenido por indemnizaciones(3162);Mayor retención de impuestos solicitada por el trabajador(3163);Impuesto retenido por reliquidación remun. devengadas otros períodos(3164);Diferencia impuesto reliquidación remun. devengadas en este período(3165);Cuota sindical 1(3171);Cuota sindical 2(3172);Cuota sindical 3(3173);Cuota sindical 4(3174);Cuota sindical 5(3175);Cuota sindical 6(3176);Cuota sindical 7(3177);Cuota sindical 8(3178);Cuota sindical 9(3179);Cuota sindical 10(3180);Crédito social CCAF(3110);Cuota vivienda o educación(3181);Crédito cooperativas de ahorro(3182);Otros descuentos autorizados y solicitados por el trabajador(3183);Cotización adicional trabajo pesado - trabajador(3154);Donaciones culturales y de reconstrucción(3184);Otros descuentos(3185);Pensiones de alimentos(3186);Descuento mujer casada(3187);Descuentos por anticipos y préstamos(3188);AFC - Aporte empleador(4151);Aporte empleador seguro accidentes del trabajo y Ley SANNA(4152);Aporte empleador indemnización a todo evento(4131);Aporte adicional trabajo pesado - empleador(4154);Aporte empleador seguro invalidez y sobrevivencia(4155);APVC - Aporte Empleador(4157);Total haberes(5201);Total haberes imponibles y tributables(5210);Total haberes imponibles no tributables(5220);Total haberes no imponibles y no tributables(5230);Total haberes no imponibles y tributables(5240);Total descuentos(5301);Total descuentos impuestos a las remuneraciones(5361);Total descuentos impuestos por indemnizaciones(5362);Total descuentos por cotizaciones del trabajador(5341);Total otros descuentos(5302);Total aportes empleador(5410);Total líquido(5501);Total indemnizaciones(5502);Total indemnizaciones tributables(5564);Total indemnizaciones no tributables(5565)\r\n"; //  total indemnizaciones no tributables 
+
+        fputs($file, utf8_decode($encabezado));
+
+        foreach ($datos_remuneracion as $remuneracion) {
+
+        		//var_dump_new($remuneracion); 
+
+               // echo $remuneracion->codlrecaja."<br>";
+                /***************/
+                $tipojornada = $remuneracion->parttime == 0 ? 101 : 201;
+                $pensionadovejez = $remuneracion->idafp == 7 ? 1 : 0;
+
+
+                $movimientos = $this->get_lista_movimientos($remuneracion->idtrabajador, null, $remuneracion->id_periodo, 3);
+
+                $dias_licencia = 0;
+                foreach ($movimientos as $movimiento) {
+                    
+                    $dias = dias_transcurridos($movimiento->fecmovimiento,$movimiento->fechastamovimiento) + 1; // se agrega uno porque se considera el día inicial
+                    $dias_licencia += $dias;
+                }                
+
+
+                if(($dias_licencia + $remuneracion->diastrabajo ) > 30){
+                        $dias_licencia = 30 - $remuneracion->diastrabajo;
+                }
+
+
+                $ahorrovol = $remuneracion->montoahorrovol > 0 ? 1 : 0;
+
+
+                // Categoría 1: Identificación del Trabajador
+                $linea  = $remuneracion->rut."-".$remuneracion->dv.";"; // rut
+                $linea .= $remuneracion->fecingreso.";";// fecha inicio contrato
+                $linea .= ";"; // fecha termino contrato
+                $linea .= ";"; // causal termino contrato
+                $linea .= $remuneracion->idregion.";"; // region prestacion servicios
+                $linea .= $remuneracion->idcomuna.";"; // comuna prestacion servicios
+                $linea .= "1;"; // tipo impuesto a la renta 
+                $linea .= "0;"; // Técnico extranjero exención de cotizaciones previsionales (ley 18.156)
+                $linea .= $tipojornada.";"; // Código tipo de jornada
+                $linea .= "0;"; //  Persona con discapacidad/pensionado por invalidez
+                $linea .= $pensionadovejez.";"; //  Pensionado por vejez
+                $linea .= $remuneracion->codlre == '' ? "0;" : $remuneracion->codlre .";"; //  AFP
+                $linea .= "0;"; //  IPS (ExINP) (*)
+                $linea .= $remuneracion->codlreisapre == '' ? "0;" : $remuneracion->codlreisapre.";"; //   FONASA / ISAPRE 
+                $linea .= $remuneracion->afilsegcesantia.";"; //  AFC
+                $linea .= $remuneracion->codlrecaja == '' ? "0;" : $remuneracion->codlrecaja .";"; //  CCAF
+                $linea .= $remuneracion->codlremutual == '' ? "0;" : $remuneracion->codlremutual.";"; //  Org. administrador ley 16.744
+                $linea .= $remuneracion->cargassimples.";"; //  Número cargas familiares legales autorizadas
+                $linea .= $remuneracion->cargasmaternales.";"; //  Número de cargas familiares maternales 
+                $linea .= $remuneracion->cargasinvalidas.";"; //  Número de cargas familiares invalidez
+                $linea .= ($remuneracion->tramo_asig_familiar == '' ? 'S' : $remuneracion->tramo_asig_familiar).";"; //  Tramo asignación familiar
+                $linea .= ";"; //  Rut organización sindical 1
+                $linea .= ";"; //  Rut organización sindical 2
+                $linea .= ";"; //  Rut organización sindical 3
+                $linea .= ";"; //  Rut organización sindical 4
+                $linea .= ";"; //  Rut organización sindical 5
+                $linea .= ";"; //  Rut organización sindical 6
+                $linea .= ";"; //  Rut organización sindical 7
+                $linea .= ";"; //  Rut organización sindical 8
+                $linea .= ";"; //  Rut organización sindical 9
+                $linea .= ";"; //  Rut organización sindical 10
+                $linea .= $remuneracion->diastrabajo.";"; //  Número días trabajados en el mes
+                $linea .= $dias_licencia.";"; //  Número días de licencia médica en el mes 
+                $linea .= "0;"; //  Número días de vacaciones en el mes ******
+                $linea .= "0;"; //  Subsidio trabajador joven
+                $linea .= "0;"; //  Puesto trabajo pesado 
+                $linea .= $ahorrovol.";"; //  Ahorro previsional voluntario individual 
+                $linea .= "0;"; //   Ahorro previsional voluntario colectivo
+                $linea .= "0;"; //  Indemnización a todo evento (Art. 164)
+                $linea .= ";"; //  Tasa indemnización a todo evento (Art. 164) 
+
+                // Categoría 2: Haberes
+                //Subcategoría N°1: Haberes imponibles y tributables
+
+                $linea .= $remuneracion->sueldobase.";"; //  Sueldo
+                $linea .= "0;"; //  Sobresueldo
+                $linea .= "0;"; //  Comisiones (mensual) 
+                $linea .= "0;"; //  Semana corrida mensual (Art. 45) 
+                $linea .= "0;"; //  Participación (mensual) 
+                $linea .= $remuneracion->gratificacion.";"; //  Gratificación (mensual)  
+                $linea .= "0;"; //  Recargo 30% día domingo (Art. 38) 
+                $linea .= "0;"; //  Remuneración variable pagada en vacaciones (Art. 71)
+                $linea .= "0;"; //  Remuneración variable pagada en clausura (Art. 38 DFL 2) 
+                $linea .= $remuneracion->aguinaldobruto.";"; //  Aguinaldo
+                $linea .= $remuneracion->bonosimponibles.";"; //  Bonos u otras remuneraciones fijas mensuales
+                $linea .= "0;"; //  Tratos (mensual)
+                $linea .= "0;"; //  Bonos u otras remuneraciones variables mensuales o superiores a un mes 
+                $linea .= "0;"; //  Ejercicio opción no pactada en contrato (Art. 17 N°8 LIR)  
+                $linea .= "0;"; //  Beneficios en especie constitutivos de remuneración 
+                $linea .= "0;"; //  Remuneraciones bimestrales (devengo en dos meses)  
+                $linea .= "0;"; //  Remuneraciones trimestrales (devengo en tres meses) 
+                $linea .= "0;"; //  Remuneraciones cuatrimestral (devengo en cuatro meses
+                $linea .= "0;"; //  Remuneraciones semestrales (devengo en seis meses)  
+                $linea .= "0;"; //  Remuneraciones anuales (devengo en doce meses)
+                $linea .= "0;"; //  Participación anual (devengo en doce meses) 
+                $linea .= "0;"; //  Gratificación anual (devengo en doce meses) 
+                $linea .= "0;"; //  Otras remuneraciones superiores a un mes 
+                $linea .= "0;"; //  Pago por horas de trabajo sindical
+
+                //Subcategoría N°2: Haberes imponibles y no tributables
+  
+                $linea .= "0;"; //  Subsidio por incapacidad laboral por licencia médica - total mensual  
+                $linea .= "0;"; //  Beca de estudio (Art. 17 N°18 LIR) 
+                $linea .= "0;"; //  Gratificaciones de zona (Art. 17 N°27) 
+                $linea .= "0;"; //  Otros ingresos no constitutivos de renta (Art. 17 N°29 LIR)
+
+                //Subcategoría N°3: Haberes no imponibles y no tributables
+
+                $linea .= $remuneracion->colacion.";"; //  Colación total mensual (Art. 41)
+                $linea .= $remuneracion->movilizacion.";"; //  Movilización total mensual (Art. 41)
+                $linea .= "0;"; //  Viáticos total mensual (Art. 41)
+                $linea .= "0;"; //  Asignación de pérdida de caja total mensual (Art. 41)
+                $linea .= "0;"; //  Asignación de desgaste herramienta total mensual (Art. 41)
+                $linea .= $remuneracion->asigfamiliar.";"; //  Asignación familiar legal total mensual (Art. 41) 
+                $linea .= "0;"; //  Gastos por causa del trabajo (Art. 41)  
+                $linea .= "0;"; //  Gastos por cambio de residencia (Art. 53)
+                $linea .= "0;"; //  Sala cuna (Art. 203)  
+                $linea .= "0;"; //  Asignación trabajo a distancia o teletrabajo
+                $linea .= "0;"; //  Depósito convenido hasta UF 900 
+                $linea .= "0;"; //  Alojamiento por razones de trabajo (Art. 17 N°14 LIR)
+                $linea .= "0;"; //  Asignación de traslación (Art. 17 N°15 LIR)  
+                $linea .= "0;"; //  BIndemnización por feriado legal 
+                $linea .= "0;"; //  Indemnización años de servicio 
+                $linea .= "0;"; //  Indemnización sustitutiva del aviso previo
+                $linea .= "0;"; //  Indemnización fuero maternal (Art. 163 bis)
+                $linea .= "0;"; //  Indemnización a todo evento (Art. 164)  
+
+
+                // Subcategoría N°4: Haberes no imponibles y tributables
+                $linea .= "0;"; //  Indemnizaciones voluntarias tributables
+                $linea .= "0;"; //  Indemnizaciones contractuales tributables
+
+                //Categoría 3: Descuentos
+                $linea .= ($remuneracion->cotizacionobligatoria + $remuneracion->comisionafp).";"; //  Cotización obligatoria previsional (AFP o IPS
+                $linea .= ($remuneracion->cotizacionsalud + $remuneracion->fonasa + $remuneracion->inp).";"; //  Cotización obligatoria salud 7%  
+                $linea .= $remuneracion->adicsalud.";"; //  Cotización voluntaria para salud
+                $linea .= $remuneracion->segcesantia.";"; //  Cotización AFC - trabajador
+                $linea .= "0;"; //  Cotizaciones técnico extranjero para seguridad social fuera de Chile
+                $linea .= "0;"; //  Descuento depósito convenido hasta UF 900 anual 
+                $linea .= "0;"; //  Cotización ahorro previsional voluntario individual modalidad A
+                $linea .= "0;"; //   Cotización ahorro previsional voluntario individual modalidad B hasta UF 50
+                $linea .= "0;"; //  Cotización ahorro previsional voluntario colectivo modalidad A 
+                $linea .= "0;"; //  Cotización ahorro previsional voluntario colectivo modalidad B hasta UF 50 
+                $linea .= $remuneracion->impuesto.";"; //  Impuesto retenido por remuneraciones 
+                $linea .= "0;"; //  Impuesto retenido por indemnizaciones
+                $linea .= "0;"; //  Mayor retención de impuestos solicitada por el trabajador
+                $linea .= "0;"; //  Impuesto retenido por reliquidación remuneraciones devengadas en otros períodos
+                $linea .= "0;"; //  Diferencia de impuesto por reliquidación remuneraciones devengadas en este período
+                $linea .= "0;"; //  Cuota sindical 1
+                $linea .= "0;"; //  Cuota sindical 2 
+                $linea .= "0;"; //  Cuota sindical 3 
+                $linea .= "0;"; //  Cuota sindical 4 
+                $linea .= "0;"; //  Cuota sindical 5 
+                $linea .= "0;"; //  Cuota sindical 6 
+                $linea .= "0;"; //  Cuota sindical 7 
+                $linea .= "0;"; //  Cuota sindical 8 
+                $linea .= "0;"; //  Cuota sindical 9 
+                $linea .= "0;"; //  Cuota sindical 10 
+                $linea .= "0;"; //  Crédito social CCAF 
+                $linea .= "0;"; //  Cuota vivienda o educación (Art. 58) 
+                $linea .= "0;"; //  Crédito cooperativas de ahorro (Art 54. Ley Coop.)
+                $linea .= "0;"; //  Otros descuentos autorizados y solicitados por el trabajador 
+                $linea .= "0;"; //  Cotización adicional trabajo pesado - trabajador
+                $linea .= "0;"; //  Donaciones culturales y de reconstrucción 
+                $linea .= "0;"; //  Otros descuentos (Art. 58)  
+                $linea .= "0;"; //  Pensiones de alimentos 
+                $linea .= "0;"; //  Descuento mujer casada (Art. 59) 
+                $linea .= $remuneracion->otrosdescuentos.";"; //  Descuentos por anticipos y préstamos 
+
+                //Categoría 4: Aportes del Empleador
+                $linea .= $remuneracion->aportesegcesantia.";"; //  Aporte AFC - empleador 
+                $linea .= $remuneracion->aportepatronal.";"; //  Aporte empleador seguro accidentes del trabajo y Ley SANNA (Ley 16.744)
+                $linea .= "0;"; //  Aporte empleador indemnización a todo evento (Art. 164)
+                $linea .= "0;"; //  Aporte adicional trabajo pesado - empleador 
+                $linea .= $remuneracion->seginvalidez.";"; //  Aporte empleador seguro invalidez y sobrevivencia
+                $linea .= "0;"; //  Aporte empleador ahorro previsional voluntario colectivo
+
+                //Categoría 5: Totales
+                //Subcategoría N°1: Haberes
+                $linea .= $remuneracion->totalhaberes.";"; //  Total haberes
+                $linea .= $remuneracion->sueldoimponible.";"; //  Total haberes imponibles y tributables
+                $linea .= "0;"; //  Total haberes imponibles no tributables
+                $linea .= ($remuneracion->totalhaberes - $remuneracion->sueldoimponible).";"; //  Total haberes no imponibles y no tributables
+                $linea .= "0;"; //  Total haberes no imponibles y tributables
+
+                //Subcategoría N°2: Descuentos
+                $linea .= $remuneracion->totaldescuentos.";"; //  Total descuentos
+                $linea .= $remuneracion->impuesto.";"; //  Total descuentos impuestos a las remuneraciones
+                $linea .= "0;"; //  Total descuentos impuestos por indemnizaciones
+                $linea .= $remuneracion->totalleyessociales.";"; //  Total descuentos por cotizaciones del trabajador
+                $linea .= $remuneracion->otrosdescuentos.";"; //  Total otros descuentos
+
+                //Subcategoría N°3: Aportes
+                $linea .= ($remuneracion->aportepatronal + $remuneracion->aportesegcesantia + $remuneracion->seginvalidez).";"; //  Total aportes empleador
+
+                //Subcategoría N°4: Otros resultados totales
+                $linea .= $remuneracion->sueldoliquido.";"; //  Total líquido
+                $linea .= "0;"; //  Total indemnizaciones
+                $linea .= "0;"; //  Total indemnizaciones tributables
+                $linea .= "0;"; //  total indemnizaciones no tributables 
+
+
+                $linea .= "\r\n";
+                //$linea = $rut.$dv.$apaterno.$amaterno.$nombres."\r\n";
+                fputs($file, utf8_decode($linea));
+               // echo $linea."<br>";
+        }
+
+        //exit;
+        fclose($file);
+
+        $data_archivo = basename($path_archivo . $nombre_archivo);
+        header('Content-Type: text/plain');
+        header('Content-Disposition: attachment; filename=' . $data_archivo);
+        header('Content-Length: ' . filesize($path_archivo . $nombre_archivo));
+        readfile($path_archivo . $nombre_archivo);
+
+
+        unlink($path_archivo . $nombre_archivo);
+    }
+
+
 
 public function previred($datos_remuneracion){
 

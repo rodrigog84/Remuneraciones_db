@@ -231,8 +231,8 @@
 								                              </td>  
 								                              <td>
 								                              	<div class="form-group">
-								                                <input type="text" name="nrocontratoapv_<?php echo $trabajador->id_personal;?>" id="nrocontratoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros nrocontratoapv" value="<?php echo $trabajador->nrocontratoapv; ?>"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> />   
-								                              </div>
+								                                		<input type="text" name="nrocontratoapv_<?php echo $trabajador->id_personal;?>" id="nrocontratoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros nrocontratoapv" value="<?php echo $trabajador->nrocontratoapv; ?>"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> />   
+								                              	</div>
 								                              </td>
 
 								                              <td>
@@ -331,7 +331,9 @@
 								                              </td>
 								                              <td>$&nbsp;<?php echo number_format($trabajador->sueldobase,0,".",".");?></td>
 								                              <td>$&nbsp;<?php echo number_format((int)$trabajador->sueldobase*0.07,0,".",".");?></td>
-								                              <td><input type="text" name="pactado_<?php echo $trabajador->id_personal;?>" id="pactado_<?php echo $trabajador->id_personal;?>" class="form-control valor_pactado miles_decimales_isapre" value="<?php echo !is_null($trabajador->valorpactado) && $trabajador->valorpactado != 0 ? number_format($trabajador->valorpactado,4,",","") : ""; ?>" <?php echo is_null($trabajador->idisapre) || $trabajador->idisapre == 1 ? "disabled" : ""; ?> /></td>
+								                              <td class="form-group">
+								                              	<input type="text" name="pactado_<?php echo $trabajador->id_personal;?>" id="pactado_<?php echo $trabajador->id_personal;?>" class="form-control valor_pactado miles_decimales_isapre" value="<?php echo !is_null($trabajador->valorpactado) && $trabajador->valorpactado != 0 ? number_format($trabajador->valorpactado,4,",","") : ""; ?>" <?php echo is_null($trabajador->idisapre) || $trabajador->idisapre == 1 ? "disabled" : ""; ?> />
+								                              </td>
 								                              <!--td><b><span id="valorplan_<?php echo $trabajador->id;?>"  class="text-right input-sm" >$&nbsp;0</span></b></td>
 								                              <td><b><span id="montodescuento_<?php echo $trabajador->id;?>"  class="text-right input-sm" >$&nbsp;0</span></b></td-->
 								                            </tr>
@@ -882,7 +884,19 @@ $(document).ready(function() {
                           message: 'Selecci&oacute;n de Instituci&oacute;n de Salud es requerida'
                       }
                   }
+                },
+                valor_pactado: {
+                  selector: '.valor_pactado',
+                  row: '.form-group',
+                  validators: {
+                      notEmpty: {
+                          message: 'Valor Pactado Cotizaci&oacute;n de Salud es requerida'
+                      }
+                  }
                 }
+                
+
+
               }
           });           
 });

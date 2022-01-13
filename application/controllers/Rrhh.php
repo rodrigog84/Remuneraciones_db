@@ -2773,25 +2773,28 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 			$anno = $this->input->post('anno');
 			$centro_costo = $this->input->post('centro_costo');
 
+      //var_dump($_POST); exit;
+
 			//if($mes == '' || $anno == ''){
 			if(empty($mes) && empty($anno)){
 				$this->session->set_flashdata('calculo_remuneraciones_result', 2);
 				redirect('rrhh/calculo_remuneraciones');	
 			}else{
 				#EN CASO QUE NO EXISTAN DATOS INICIALES, SE CARGAN AHORA
+        //var_dump_new($centro_costo);
 				foreach ($centro_costo as $centros_costo) {
-					# code...
+					//var_dump_new($centros_costo);
 					$idperiodo = $this->rrhh_model->set_datos_iniciales_periodo_rem($mes,$anno,$centros_costo); 
 				}
 				
 
 			}
-
+      //exit;
 
 
 			set_time_limit(0);
 			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion_by_periodo($idperiodo); 
-
+      //var_dump_new($datos_remuneracion);
 			#SIGNIFICA QUE AÚN NO SE CARGA, POR TANTO SE CARGARÁN DATOS INICIALES
 			/*if(count($datos_remuneracion) == 0){
 				$this->load->model('admin');
@@ -2807,6 +2810,7 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 			}*/
 
 			$periodo_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos($idperiodo); 
+      //var_dump_new($periodo_remuneracion);
 			/*$estado = "Informaci&oacute;n Completa";
 			foreach ($datos_remuneracion as $remuneracion) {
 				if(is_null($remuneracion->diastrabajo) || 
@@ -2829,7 +2833,10 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 			//	
 
 			//}else{
-				 $this->rrhh_model->calcular_remuneraciones($idperiodo,$centro_costo); 
+          //var_dump_new($centro_costo); exit;
+          foreach ($centro_costo as $centros_costo) {
+				    $this->rrhh_model->calcular_remuneraciones($idperiodo,$centros_costo); 
+            }          
 				 $this->session->set_flashdata('calculo_remuneraciones_result', 1);
 
 			//}
@@ -2931,11 +2938,15 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 
 			}*/
 
-
 			$idcentrocosto = is_null($this->input->post('centrocosto'))  ? $idcentrocosto : $this->input->post('centrocosto');
 
 			$idcentrocosto = $idcentrocosto == 0 ? null : $idcentrocosto;
       
+
+//var_dump_new($idperiodo);
+  //    var_dump_new($idcentrocosto); exit;
+
+
 			$datosperiodo = $this->rrhh_model->get_periodos_cerrados_detalle($this->session->userdata('empresaid'),$idperiodo,$idcentrocosto);
 
 
@@ -2949,7 +2960,7 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 						'title' => 'Remuneraciones',
 						'subtitle' => 'Detalle Remuneraciones');
 
-			
+    			
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'remuneraciones/detalle';
 			$vars['datosperiodo'] = $datosperiodo;
@@ -2979,6 +2990,61 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 		}
 
 	}	
+
+
+
+  public function detalle_total($idcentrocosto = null)
+  {
+
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+      $idcentrocosto = is_null($this->input->post('centrocosto'))  ? $idcentrocosto : $this->input->post('centrocosto');
+
+      $idcentrocosto = $idcentrocosto == 0 ? null : $idcentrocosto;
+      
+      $datosperiodo = $this->rrhh_model->get_periodos_aprobados_detalle($this->session->userdata('empresaid'),null,$idcentrocosto);
+
+
+      //var_dump($datosperiodo); exit;
+      //$centros_costo = $this->rrhh_model->get_centro_costo();
+      $centros_costo = $this->rrhh_model->get_centro_costo();
+
+ //echo "asdasd"; exit;
+      $content = array(
+            'menu' => 'Remuneraciones',
+            'title' => 'Remuneraciones',
+            'subtitle' => 'Detalle Remuneraciones');
+
+          
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'remuneraciones/detalle_total';
+      $vars['datosperiodo'] = $datosperiodo;
+      $vars['centros_costo'] = $centros_costo;
+      $vars['idcentrocosto'] = $idcentrocosto;
+
+      $vars['datatable'] = true;
+      //$vars['dataTables'] = true;
+      
+      $template = "template";
+      
+
+      $this->load->view($template,$vars); 
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  }   
 
 	public function listado_hab_descto_variable(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
@@ -3153,21 +3219,58 @@ public function exporta_colaborador($idpersonal = null)
 
 
 
+public function lre($idperiodo = null,$idcentrocosto = null)
+    {
+
+         if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
+
+            set_time_limit(0);
+            
+      
+            $periodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'), $idperiodo,$idcentrocosto);
+
+            if (is_null($periodo->cierre)) {
+                redirect('main/dashboard/');
+            } else {
+                $remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,true,$idcentrocosto);
+                if (count($remuneraciones) == 0) { // SI NO ENCUENTRO NINGUNA REMUNERACION (QUIERE DECIR QUE NO EXISTIAN TRABAJADORES EN ESE PERIODO)
+                    redirect('main/dashboard/');
+                } else {
+                    $datosdetalle = $this->rrhh_model->lre($remuneraciones,$periodo);
+                }
+            }
 
 
-public function previred($idperiodo = null)
+            exit;
+        } else {
+            $content = array(
+                'menu' => 'Error 403',
+                'title' => 'Error 403',
+                'subtitle' => '403 error'
+            );
+
+
+            $vars['content_menu'] = $content;
+            $vars['content_view'] = 'forbidden';
+            $this->load->view('template', $vars);
+        }
+    }
+
+
+public function previred($idperiodo = null,$idcentrocosto = null)
 	{
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 			set_time_limit(0);
-
-			$periodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
-			
+        //var_dump($this->session->userdata('empresaid'));
+        //var_dump($idperiodo); exit;
+			$periodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo,$idcentrocosto);
+			//var_dump($periodo); exit;
 			if(is_null($periodo->cierre)){
 				redirect('main/dashboard/');
 			}else{
-				$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,true);
+				$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,true,$idcentrocosto);
 				if(count($remuneraciones) == 0){ // SI NO ENCUENTRO NINGUNA REMUNERACION (QUIERE DECIR QUE NO EXISTIAN TRABAJADORES EN ESE PERIODO)
 					redirect('main/dashboard/');
 				}else{
@@ -3289,7 +3392,7 @@ public function previred($idperiodo = null)
 	}*/
 
 
-	public function ver_remuneraciones_periodo($idperiodo = '',$idcentrocosto = null)
+	public function ver_remuneraciones_periodo($tipo_visualiza,$idperiodo = '',$idcentrocosto = null)
 	{
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
@@ -3297,7 +3400,17 @@ public function previred($idperiodo = null)
 			$idcentrocosto = is_null($this->input->post('centrocosto'))  ? $idcentrocosto : $this->input->post('centrocosto');
 			$idcentrocosto = $idcentrocosto == 0 ? null : $idcentrocosto;
 
+      if(is_null($tipo_visualiza)){
+        redirect('main/dashboard/');
+      }
 
+      if($tipo_visualiza == 1){
+        $url_back = "rrhh/detalle/".$idperiodo."/".$idcentrocosto;
+      }else if($tipo_visualiza == 2){
+        $url_back = "rrhh/detalle_total";
+      }else{
+        redirect('main/dashboard/');
+      }
 
 			$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,null,$idcentrocosto);
 			$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
@@ -3314,6 +3427,7 @@ public function previred($idperiodo = null)
 			$vars['content_view'] = 'remuneraciones/ver_remuneraciones_periodo';
 			$vars['remuneraciones'] = $remuneraciones;
 			$vars['datosperiodo'] = $datosperiodo;
+      $vars['url_back'] = $url_back;
 			$vars['idcentrocosto'] = $idcentrocosto;
 			$vars['centros_costo'] = $centros_costo;
 
@@ -3461,7 +3575,7 @@ public function ver_remuneraciones_colaborador($idperiodo = '',$idcentrocosto = 
 			$remuneracion = $this->rrhh_model->get_remuneraciones_by_id($idremuneracion);
 			//echo "<pre>";
 			//print_r($remuneracion); exit;
-			if(count($remuneracion) == 0){ // SI NO ENCUENTRO NINGUNA REMUNERACION (CORRESPONDE A OTRA COMUNIDAD POR EJEMPLO)
+			if(count($remuneracion) == 0){ // SI NO ENCUENTRO NINGUNA REMUNERACION (CORRESPONDE A OTRA EMPRESA POR EJEMPLO)
 				redirect('main/dashboard/');
 			}else if(is_null($remuneracion->cierre)){
 				redirect('main/dashboard/'); // SI NO ES UN PERIODO CERRADO, SE ENVÍA AL DASHBOARD

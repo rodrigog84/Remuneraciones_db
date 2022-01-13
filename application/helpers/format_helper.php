@@ -818,6 +818,18 @@ if (!function_exists('num_dias_progresivos'))
 
 }
 
+if (!function_exists('var_dump_new'))
+{
+
+  function var_dump_new($var)
+  {
+
+      echo "<pre>";
+      var_dump($var);
+  }
+}
+
+
 if (!function_exists('dia_progresivo'))
 {
 
@@ -1166,6 +1178,8 @@ if (!function_exists('dias_mes_rango'))
       return $dias_transcurridos_mes+1;
   }
 }
+
+
 
 } 
 

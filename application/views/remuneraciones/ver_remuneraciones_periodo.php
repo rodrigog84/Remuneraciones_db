@@ -122,7 +122,7 @@
 
                       </div><!-- /.box-body -->
                       <div class="panel-footer">
-                      	<a href="<?php echo base_url(); ?>rrhh/detalle/<?php echo $idperiodo."/".$idcentrocosto;?>" class="btn btn-success">Volver</a>
+                      	<a href="<?php echo base_url().$url_back; ?>" class="btn btn-success">Volver</a>
                       </div>
 
                  
