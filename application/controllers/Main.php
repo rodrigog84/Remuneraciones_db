@@ -79,7 +79,7 @@ class Main extends CI_Controller {
 		$template = "template";
 
 		if($this->session->userdata('level') == 2){
-			// SI YA SELECCIONO COMUNIDAD, NO ES NECESARIO ELEGIR NUEVAMENTE
+			// SI YA SELECCIONO EMPRESA, NO ES NECESARIO ELEGIR NUEVAMENTE
 			
 			$unidad_id = $unidad_id == '' && $this->session->userdata('empresaid') ? $this->session->userdata('empresaid') : $unidad_id;
 			//$num_colaboradores = $this->rrhh_model->get_personal_datos('null');
@@ -102,7 +102,7 @@ class Main extends CI_Controller {
 			$parametros_generales->topeimponibleafc=number_format($parametros_generales->topeimponibleafc, 2, ',', '.');
 			$parametros_generales->tasasis=number_format($parametros_generales->tasasis, 2, ',', '.');
 
-			if(count($empresas_asignadas) > 1){ // EN CASO DE TENER MÁS DE UNA COMUNIDAD LO ENVÍA A LA PÁGINA DE SELECCIÓN
+			if(count($empresas_asignadas) > 1){ // EN CASO DE TENER MÁS DE UNA EMPRESA LO ENVÍA A LA PÁGINA DE SELECCIÓN
 				$content = array(
 							'menu' => 'Selecci&oacute;n Empresa',
 							'title' => 'Empresas',
@@ -138,142 +138,148 @@ class Main extends CI_Controller {
 		}
 
 		if ($this->session->userdata('level') == 2 ){
+
 			if ($unidad_id != null ){
-										
-				$unidad_id = $unidad_id == '' && $this->session->userdata('empresaid') ? $this->session->userdata('empresaid') : $unidad_id;
-				$mes = $this->session->flashdata('asistencia_mes') == '' ? date('m') : $this->session->flashdata('asistencia_mes');
-				$anno = $this->session->flashdata('asistencia_anno') == '' ? date('Y') : $this->session->flashdata('asistencia_anno');
-				
-				
+												
+						$unidad_id = $unidad_id == '' && $this->session->userdata('empresaid') ? $this->session->userdata('empresaid') : $unidad_id;
+						$mes = $this->session->flashdata('asistencia_mes') == '' ? date('m') : $this->session->flashdata('asistencia_mes');
+						$anno = $this->session->flashdata('asistencia_anno') == '' ? date('Y') : $this->session->flashdata('asistencia_anno');
+						
+						
 
-				$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
-				$afp = $this->admin->get_afp();	
-				$cant_afp = sizeof($afp);	
-				$colaboradores = $this->rrhh_model->get_personal_datos();
-				$num_colaboradores = sizeof($colaboradores);
-				$centro_costo = $this->rrhh_model->get_centro_costo();
-				$num_centro_costo = sizeof($centro_costo);
-				
-				$parametros_generales = $this->admin->get_parametros_generales();
-				$licencia = $this->auxiliar->get_licencias();
-				$num_licencia = sizeof($licencia);
-				$empresa->porcmutual = number_format($empresa->porcmutual, 2, ',', '.');
+						$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
+						$afp = $this->admin->get_afp();	
+						$cant_afp = sizeof($afp);	
+						$colaboradores = $this->rrhh_model->get_personal_datos();
+						$num_colaboradores = sizeof($colaboradores);
+						$centro_costo = $this->rrhh_model->get_centro_costo();
+						$num_centro_costo = sizeof($centro_costo);
+						
+						
+						$licencia = $this->auxiliar->get_licencias();
+						$num_licencia = sizeof($licencia);
+						$empresa->porcmutual = number_format($empresa->porcmutual, 2, ',', '.');
 
-				$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos_resumen(); 
-				//$num_colaboradores = count($this->rrhh_model->get_personal_datos('null'));
+						$periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos_resumen(); 
+						//$num_colaboradores = count($this->rrhh_model->get_personal_datos('null'));
 
-				$parametros_generales->uf=number_format($parametros_generales->uf, 2, ',', '.');
-				$parametros_generales->utm=number_format($parametros_generales->utm, 2, ',', '.');
-				$parametros_generales->sueldominimo=number_format($parametros_generales->sueldominimo, 0, ',', '.');
-				$parametros_generales->topeimponible=number_format($parametros_generales->topeimponible, 2, ',', '.');
-				$parametros_generales->topeimponibleafc=number_format($parametros_generales->topeimponibleafc, 2, ',', '.');
+						$parametros_generales = $this->admin->get_parametros_generales();
+						$parametros_generales->uf=number_format($parametros_generales->uf, 2, ',', '.');
+						$parametros_generales->utm=number_format($parametros_generales->utm, 2, ',', '.');
+						$parametros_generales->sueldominimo=number_format($parametros_generales->sueldominimo, 0, ',', '.');
+						$parametros_generales->topeimponible=number_format($parametros_generales->topeimponible, 2, ',', '.');
+						$parametros_generales->topeimponibleips=number_format($parametros_generales->topeimponibleips, 2, ',', '.');
+						$parametros_generales->topeimponibleafc=number_format($parametros_generales->topeimponibleafc, 2, ',', '.');
+						$parametros_generales->tasasis=number_format($parametros_generales->tasasis, 2, ',', '.');
+
+						$tabla_asig_familiar = $this->admin->get_tabla_asig_familiar(); 
+						
+						for ($i = 0; $i<$num_centro_costo;$i++){
+								
+
+								$contador_cc[$centro_costo[$i]->id_centro_costo] = 0;
+						}
+
+						for ($i = 0; $i < $num_colaboradores; $i++){
+							$contador_cc[$colaboradores[$i]->idcentrocosto] += 1;
+						}
+
+						for ($i = 0; $i<$num_centro_costo;$i++){
+							$arreglo_cc[$i] = array( 'name' => $centro_costo[$i]->nombre , 'y' =>  $contador_cc[$centro_costo[$i]->id_centro_costo]);
+						}
+						
+
+						
+						$contadores = array();
+						for ($i = 0; $i<$cant_afp;$i++){
+								
+
+								$contadores[$afp[$i]->id_afp] = 0;
+						}
+
+						for ($i = 0; $i < $num_colaboradores; $i++){
+							$contadores[$colaboradores[$i]->idafp] += 1;
+						}
+
+						for ($i = 0; $i<$cant_afp;$i++){
+							$arreglo_afp[$i] = array( 'name' => $afp[$i]->nombre , 'y' =>  $contadores[$afp[$i]->id_afp], 'drilldown' => $afp[$i]->nombre);
+						}
 							
-				
-				for ($i = 0; $i<$num_centro_costo;$i++){
+						
+						foreach ($colaboradores as $colaborador) {
+							# code...
+							if($colaborador->sexo == 'M'){
+								$num_masculino = $num_masculino + 1;
+							}
+							if ($colaborador->sexo == 'F'){
+								$num_femenino = $num_femenino + 1;
+							}
+						}
+						$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'), null);
+
+						$meses_arreglo = array(1 =>'Ene' ,
+									            'Feb',
+									            'Mar',
+									            'Abr',
+									            'May',
+									            'Jun',
+									            'Jul',
+									            'Ago',
+									            'Sep',
+									            'Oct',
+									            'Nov',
+									            'Dic');
+
+						$meses = array();
+						$meses_remunerados = array();
+						$meses_x_montopago = array();
 						
 
-						$contador_cc[$centro_costo[$i]->id_centro_costo] = 0;
-				}
-
-				for ($i = 0; $i < $num_colaboradores; $i++){
-					$contador_cc[$colaboradores[$i]->idcentrocosto] += 1;
-				}
-
-				for ($i = 0; $i<$num_centro_costo;$i++){
-					$arreglo_cc[$i] = array( 'name' => $centro_costo[$i]->nombre , 'y' =>  $contador_cc[$centro_costo[$i]->id_centro_costo]);
-				}
-				
-
-				
-				$contadores = array();
-				for ($i = 0; $i<$cant_afp;$i++){
+						for ($i=1; $i<13 ; $i++){
+							$meses[$i] = array('mes' => number_format(date("m",mktime(0,0,0,date("m")-$i,date("d"),date("Y"))))  , 'anno' => date("Y",mktime(0,0,0,date("m")-$i,date("d"),date("Y"))));
+							$meses_remunerados[$i] = 0;
+						}
+						for ($i=1; $i<13 ; $i++){
+							if(isset($datosperiodo[$i]->mes)){
+								$meses_remunerados[$datosperiodo[$i]->mes] = isset($datosperiodo[$i]->sueldoimponible) ? $datosperiodo[$i]->sueldoimponible : 0;	
+							}
+							
+						}
+						for ($i=1; $i<13 ; $i++){
+							$meses_x_montopago[$i] = array ('mes' => $meses_arreglo[$meses[$i]['mes']].' '.$meses[$i]['anno']);
+							$pago_remuneraciones[$i] =  array ( 'pago' =>$meses_remunerados[$meses[$i]['mes']]);
+						}
 						
-
-						$contadores[$afp[$i]->id_afp] = 0;
-				}
-
-				for ($i = 0; $i < $num_colaboradores; $i++){
-					$contadores[$colaboradores[$i]->idafp] += 1;
-				}
-
-				for ($i = 0; $i<$cant_afp;$i++){
-					$arreglo_afp[$i] = array( 'name' => $afp[$i]->nombre , 'y' =>  $contadores[$afp[$i]->id_afp], 'drilldown' => $afp[$i]->nombre);
-				}
+						$pago_remuneraciones = array_column($pago_remuneraciones,'pago');
+						$meses_x_montopago   = array_column($meses_x_montopago,'mes');
+						
 					
-				
-				foreach ($colaboradores as $colaborador) {
-					# code...
-					if($colaborador->sexo == 'M'){
-						$num_masculino = $num_masculino + 1;
-					}
-					if ($colaborador->sexo == 'F'){
-						$num_femenino = $num_femenino + 1;
-					}
-				}
-				$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'), null);
+						if ($periodos_remuneracion == null){
+							$mes_curso = date('m');//$mes;
+							$anno_curso = date('Y');//$anno;
+						}else{
+							$mes_curso = $periodos_remuneracion[0]->mes;
+							$anno_curso = $periodos_remuneracion[0]->anno;
+						}
+						
+						$mes = array('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
 
-				$meses_arreglo = array(1 =>'Ene' ,
-							            'Feb',
-							            'Mar',
-							            'Abr',
-							            'May',
-							            'Jun',
-							            'Jul',
-							            'Ago',
-							            'Sep',
-							            'Oct',
-							            'Nov',
-							            'Dic');
-
-				$meses = array();
-				$meses_remunerados = array();
-				$meses_x_montopago = array();
-				
-
-				for ($i=1; $i<13 ; $i++){
-					$meses[$i] = array('mes' => number_format(date("m",mktime(0,0,0,date("m")-$i,date("d"),date("Y"))))  , 'anno' => date("Y",mktime(0,0,0,date("m")-$i,date("d"),date("Y"))));
-					$meses_remunerados[$i] = 0;
-				}
-				for ($i=1; $i<13 ; $i++){
-					if(isset($datosperiodo[$i]->mes)){
-						$meses_remunerados[$datosperiodo[$i]->mes] = isset($datosperiodo[$i]->sueldoimponible) ? $datosperiodo[$i]->sueldoimponible : 0;	
-					}
-					
-				}
-				for ($i=1; $i<13 ; $i++){
-					$meses_x_montopago[$i] = array ('mes' => $meses_arreglo[$meses[$i]['mes']].' '.$meses[$i]['anno']);
-					$pago_remuneraciones[$i] =  array ( 'pago' =>$meses_remunerados[$meses[$i]['mes']]);
-				}
-				
-				$pago_remuneraciones = array_column($pago_remuneraciones,'pago');
-				$meses_x_montopago   = array_column($meses_x_montopago,'mes');
-				
-			
-				if ($periodos_remuneracion == null){
-					$mes_curso = date('m');//$mes;
-					$anno_curso = date('Y');//$anno;
-				}else{
-					$mes_curso = $periodos_remuneracion[0]->mes;
-					$anno_curso = $periodos_remuneracion[0]->anno;
-				}
-				
-				$mes = array('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
-
-				$mes_curso = $mes[$mes_curso - 1];
-				
-				$periodo_actual = "".$mes_curso." ".$anno_curso;
-				$vars['empresa'] = $empresa;
-				$vars['parametros_generales'] = $parametros_generales;
-				$vars['periodo_actual'] = $periodo_actual;
-				$vars['num_colaboradores'] = $num_colaboradores;
-				$vars['num_centro_costo'] = $num_centro_costo;
-				$vars['num_masc'] = $num_masculino;
-				$vars['num_fem'] = $num_femenino;
-				$vars['num_licencia'] = $num_licencia;
-				$vars['pago_remuneraciones'] = $pago_remuneraciones;
-				$vars['arreglo_afp'] = $arreglo_afp;
-				$vars['arreglo_cc'] = $arreglo_cc;
-				$vars['meses_x_montopago'] = $meses_x_montopago;
+						$mes_curso = $mes[$mes_curso - 1];
+						
+						$periodo_actual = "".$mes_curso." ".$anno_curso;
+						$vars['empresa'] = $empresa;
+						$vars['parametros_generales'] = $parametros_generales;
+						$vars['periodo_actual'] = $periodo_actual;
+						$vars['num_colaboradores'] = $num_colaboradores;
+						$vars['num_centro_costo'] = $num_centro_costo;
+						$vars['num_masc'] = $num_masculino;
+						$vars['num_fem'] = $num_femenino;
+						$vars['num_licencia'] = $num_licencia;
+						$vars['pago_remuneraciones'] = $pago_remuneraciones;
+						$vars['arreglo_afp'] = $arreglo_afp;
+						$vars['arreglo_cc'] = $arreglo_cc;
+						$vars['meses_x_montopago'] = $meses_x_montopago;
+						$vars['tabla_asig_familiar'] = $tabla_asig_familiar;
 				}else{
 					$periodo_actual = "";
 					$vars['empresa'] = $empresa;

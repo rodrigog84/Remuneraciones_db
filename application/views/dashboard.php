@@ -1,3 +1,5 @@
+
+
 <div class="row">
 
      <!-- end col-3 -->
@@ -83,7 +85,40 @@
                         <div class="panel-body">
                             <div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto" class="height-sm"></div>
                         </div>
-                    </div>                   
+                    </div>   
+
+                     <div class="panel panel-inverse" data-sortable-id="index-1">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Tabla Asignaci&oacute;n Familiar</h4>
+                        </div>
+                        <div class="panel-body">
+                           
+                                                            <div class="tables">
+                                                                <table class="table"> 
+                                                                    <thead> 
+                                                                        <tr>
+                                                                            <th style="width: 10px">#</th>
+                                                                            <th>Desde ($)</th> 
+                                                                            <th>Hasta ($)</th> 
+                                                                            <th>Monto Asignación Familiar ($)</th> 
+                                                                        </tr> 
+                                                                    </thead> 
+                                                                    <tbody> 
+                                                                <?php $i = 1; ?>
+                                                                <?php foreach ($tabla_asig_familiar as $asig_familiar) { ?>           <tr>
+                                                                    <td><?php echo $i;?></td>
+                                                                    <td class="form-group"><?php echo number_format($asig_familiar->desde,0,".","."); ?></td>
+                                                                    <td class="form-group"><?php if($asig_familiar->hasta != 999999999){ ?><?php echo number_format($asig_familiar->hasta,0,".","."); ?><?php }else{ ?>Y m&aacute;s<?php } ?></td>
+                                                                    <td class="form-group"><?php echo number_format($asig_familiar->monto,0,".","."); ?></td>
+                                                                  </tr>
+                                                                  <?php $i++; ?>
+                                                                <?php } ?>                                                                      
+                                                                    </tbody> 
+                                                                </table> 
+                                                              </div>
+
+                        </div>
+                    </div>                  
 
 
                 </div>
@@ -113,7 +148,7 @@
                             <h4 class="panel-title">Indicadores</h4>
                         </div>
                         <div class="panel-body">
-                            <div id="container" class="height-sm">
+                            <div id="container" class="height">
                                
                                <table class="table table-borderless">
                                    
@@ -143,7 +178,7 @@
                                     </tr>
                                     <tr>
                                         <td class="text-left">Tasa SIS:</td>
-                                        <td class="text-right"><?php echo $parametros_generales->tasasis;?></td>
+                                        <td class="text-right"><?php echo $parametros_generales->tasasis;?>%</td>
                                     </tr>
                                        <tr>
                                         <td class="text-left">Tasa Mutualidad:</td>
