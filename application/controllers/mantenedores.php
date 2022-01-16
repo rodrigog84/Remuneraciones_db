@@ -765,7 +765,7 @@ class Mantenedores extends CI_Controller {
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';		
 			}else if($resultid == 2){
-				$vars['message'] = "Empresa editado Correctamente";
+				$vars['message'] = "Empresa editada Correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';		
 
@@ -779,7 +779,7 @@ class Mantenedores extends CI_Controller {
 				$vars['classmessage'] = 'danger';
 				$vars['icon'] = 'fa-ban';				
 			}elseif($resultid == 5){
-				$vars['message'] = "Empresa Eliminado correctamente";
+				$vars['message'] = "Empresa Eliminada correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';								
 			}
@@ -1708,6 +1708,69 @@ class Mantenedores extends CI_Controller {
 
 	}
 
+
+public function submit_empresas(){
+		
+
+
+       		$nombre = $this->input->post('nombre');
+       		$rut_completo = $this->input->post('rut');
+       		$array_rut = explode("-",$rut_completo);
+
+        	$rut = preg_replace('/[^k0-9]/i', '',$array_rut[0]);
+        	$dv  = $array_rut[1];
+        	$direccion = $this->input->post('direccion');
+        	$idcomuna = $this->input->post('comuna');
+        	$idregion = $this->input->post('region');
+        	$fono = $this->input->post('fono');
+        	$idempresa = $this->input->post('idempresas');
+
+        	$existe = $this->Mantenedores_model->valida_existe_empresa($rut);
+
+
+       		$datos = array(
+            		'nombre' => strtolower($nombre),
+            		'rut' => $rut,
+            		'dv' => $dv,
+            		'direccion' => strtolower($direccion),
+            		'fono' => $fono,
+            		'idcomuna' => $idcomuna,
+            		'idregion' => $idregion,
+        			);
+
+			if (!$existe) {
+ 
+
+            		$result = $this->Mantenedores_model->add_empresa($datos, $idempresa);
+
+            		if ($result) {
+                		if ($idempresa === '0') {
+                    		// Se crea empresa
+                    		$this->session->set_flashdata('empresas_result', 1);
+                		} else {
+                    		// Se edita empresa
+                    		$this->session->set_flashdata('empresas_result', 2);
+                		}
+            		}
+        	} else {
+        			if($idempresa == '0'){
+        					$this->session->set_flashdata('empresas_result', 3);
+        			}else{
+        				 $result = $this->Mantenedores_model->add_empresa($datos, $idempresa);
+        				 $this->session->set_flashdata('empresas_result', 2);
+        			}
+
+
+            		
+        	}
+
+        	redirect('mantenedores/empresas');
+												
+			
+
+	}
+
+	/*
 	public function submit_empresas(){
 		
 			$descripcion = $this->input->post('nombre');
@@ -1717,6 +1780,9 @@ class Mantenedores extends CI_Controller {
 			$idregion = $this->input->post('idregion');
 			$fono = $this->input->post('fono');
 			$idempresas = $this->input->post('idempresas');
+
+
+
 												
 			$datos = array();
 			$datos['nombre'] = $descripcion;
@@ -1738,7 +1804,7 @@ class Mantenedores extends CI_Controller {
 				
 			}
 
-	}
+	}*/
 
 	public function submit_comuna(){
 		

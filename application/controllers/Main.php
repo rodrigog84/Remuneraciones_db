@@ -173,6 +173,7 @@ class Main extends CI_Controller {
 						$parametros_generales->tasasis=number_format($parametros_generales->tasasis, 2, ',', '.');
 
 						$tabla_asig_familiar = $this->admin->get_tabla_asig_familiar(); 
+						//$tabla_impuesto = $this->admin->get_tabla_impuesto(); 
 						
 						for ($i = 0; $i<$num_centro_costo;$i++){
 								
@@ -280,6 +281,7 @@ class Main extends CI_Controller {
 						$vars['arreglo_cc'] = $arreglo_cc;
 						$vars['meses_x_montopago'] = $meses_x_montopago;
 						$vars['tabla_asig_familiar'] = $tabla_asig_familiar;
+						//$vars['tabla_impuesto'] = $tabla_impuesto;
 				}else{
 					$periodo_actual = "";
 					$vars['empresa'] = $empresa;

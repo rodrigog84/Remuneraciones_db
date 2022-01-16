@@ -121,6 +121,47 @@
                     </div>                  
 
 
+                        <!--div class="panel panel-inverse" data-sortable-id="index-1">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Tabla Impuesto &Uacute;nico</h4>
+                        </div>
+                        <div class="panel-body">
+                           
+                                                            <div class="tables">
+                                                                
+
+                                                                <table class="table"> 
+                                                                    <thead> 
+                                                                        <tr>
+                                                                            <th style="width: 10px">#</th>
+                                                                            <th>Desde (UTM)</th> 
+                                                                            <th>Hasta (UTM)</th> 
+                                                                            <th>Factor</th> 
+                                                                            <th>Rebajas (UTM)</th> 
+                                                                            
+
+                                                                        </tr> 
+                                                                    </thead> 
+                                                                    <tbody> 
+                                                                    <?php $i = 1; ?>
+                                                                    <?php foreach ($tabla_impuesto as $impuesto) { ?>                                                       
+                                                                        <tr class="active" id="variable">
+                                                                            <td><?php echo $i;?></td>
+                                                                            <td class="form-group"><input type="text" class="form-control miles_decimales2 desde" name="desde_<?php echo $impuesto->id_tabla_impuesto;?>" id="desde_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Monto Desde" value="<?php echo number_format($impuesto->desde,2,",","."); ?>"></td>
+                        <td class="form-group"><?php if($impuesto->hasta != 999999999){ ?><input type="text" class="form-control miles_decimales2 hasta" name="hasta_<?php echo $impuesto->id_tabla_impuesto;?>" id="hasta_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Monto Hasta" value="<?php echo number_format($impuesto->hasta,2,",","."); ?>"><?php }else{ ?>Y m&aacute;s<?php } ?></td>
+                        <td class="form-group"><input type="text" class="form-control miles_decimales factor" name="factor_<?php echo $impuesto->id_tabla_impuesto;?>" id="factor_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Factor" value="<?php echo number_format($impuesto->factor,3,".",","); ?>"></td>
+                        <td class="form-group"><input type="text" class="form-control miles_decimales2 rebaja" name="rebaja_<?php echo $impuesto->id_tabla_impuesto;?>" id="rebaja_<?php echo $impuesto->id_tabla_impuesto;?>" placeholder="Ingrese Monto Rebaja" value="<?php echo number_format($impuesto->rebaja,2,",","."); ?>"></td>               
+                                                                        </tr> 
+                                                                      <?php $i++; ?>
+                                                                    <?php } ?>                                                                      
+                                                                    </tbody> 
+                                                                </table>
+
+                                                              </div>
+
+                        </div>
+                    </div--> 
+
                 </div>
                 <!-- end col-8 -->
                 <!-- begin col-4 -->

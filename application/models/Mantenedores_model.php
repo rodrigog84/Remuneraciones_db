@@ -310,7 +310,7 @@ class Mantenedores_model extends CI_Model
 		$empresa_data = $this->db->select('d.id_empresa, d.nombre, d.rut, d.dv, d.direccion , d.active, c2.nombre as nombrecomuna, c3.nombre as nombreregion')
 			  ->from('rem_empresa d')
 			  ->join('rem_comuna c2','d.idcomuna = c2.idcomuna','left')
-			  ->join('rem_region c3','d.region = c3.id_region','left')
+			  ->join('rem_region c3','d.idregion = c3.id_region','left')
 			  ->where('d.active = 1')
 			  ->order_by('nombre');
 		$empresa_data = is_null($idempresa) ? $empresa_data : $empresa_data->where('id_empresa',$idempresa);  		
@@ -458,6 +458,47 @@ class Mantenedores_model extends CI_Model
 			
 		}
 	}
+
+
+	public function add_empresa($datos, $idempresa)
+    {
+        $array_datos = array(
+            'nombre' => $datos['nombre'],
+            'rut' => $datos['rut'],
+            'dv' => $datos['dv'],
+            'direccion' => $datos['direccion'],
+            'fono' => $datos['fono'],
+            'idregion' => $datos['idregion'],
+            'idcomuna' => $datos['idcomuna'],
+            'active' => 1
+            //'iduser' => $this->session->userdata('user_id'),
+        );
+        //var_dump_new($idempresa);
+        //var_dump_new($array_datos); exit;
+
+        if ($idempresa === '0') {
+            $result = $this->db->insert('rem_empresa', $array_datos);
+        } else {
+            $array_datos['updated_at'] = date('Ymd H:i:s');
+
+            $this->db->where('id_empresa', $idempresa);
+            $result = $this->db->update('rem_empresa', $array_datos);
+        }
+
+        return isset($result) ? $result : false;
+    }
+
+
+    public function valida_existe_empresa($rut)
+    {
+
+        $this->db->select('e.nombre')
+            ->from('rem_empresa e')
+            ->where('e.rut', $rut);
+        $query = $this->db->get();
+
+        return $query->row() ? $query->row() : false;
+    }	
 
 	public function add_cargos($datos,$idcargo){
 

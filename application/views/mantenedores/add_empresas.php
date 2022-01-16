@@ -41,7 +41,7 @@
 		<a href="<?php echo base_url(); ?>mantenedores/empresas" class = "btn btn-primary" >Volver</a>
 		<button type = "submit" class = "btn btn-info" id="comando">Guardar
 		</button>
-		<input type="hidden" name="idempresas" value="<?php echo isset($empresa->id_empresa) ? $empresa->id_empresa: 0 ;?>">
+		<input type="text" name="idempresas" value="<?php echo isset($empresa->id_empresa) ? $empresa->id_empresa: 0 ;?>">
 		</div>
 </form>
 </div>
