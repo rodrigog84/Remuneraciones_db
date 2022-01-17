@@ -28,7 +28,7 @@ class Mantenedores_model extends CI_Model
 	public function get_regiones(){
 		$this->db->select('id_region, nombre')
 						  ->from('rem_region')
-						  ->order_by('nombre','asc');
+						  ->order_by('id_region','asc');
 		 $query = $this->db->get();
 		 return $query->result();
 
@@ -139,6 +139,17 @@ class Mantenedores_model extends CI_Model
 			  ->from('rem_comuna d')
 			  ->join('rem_provincia c2','d.idprovincia = c2.idprovincia','left')
 			  ->order_by('nombre');
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
+
+	public function get_comuna_lista(){
+		$this->db->select('d.idcomuna, d.idprovincia, d.nombre, c2.nombre as provincia')
+			  ->from('rem_comuna d')
+			  ->join('rem_provincia c2','d.idprovincia = c2.idprovincia','left')
+			  ->order_by('d.idcomuna');
 		 $query = $this->db->get();
 		 return $query->result();
 

@@ -196,3 +196,28 @@ values (
 )
 
 insert into rem_role (appid,levelid) values (6098,2)
+
+
+	insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/ver_tablas_anexas_colaboradores'
+,null
+,4
+,0
+,0
+,1
+,null
+)
+
+insert into rem_role (appid,levelid) values (6099,2)

@@ -95,7 +95,7 @@
                         <div class='row'    >
                           <div class='col-md-2'>
                             
-                                <a href="<?php echo base_url(); ?>uploads/ejemploCarga.xls" data-toggle="tooltip" title="Ejemplo" class="btn btn-info">Ver Tablas Anexas&nbsp;<i class="fa fa-check"></i></a>
+                                <a href="<?php echo base_url();?>rrhh/ver_tablas_anexas_colaboradores" data-toggle="tooltip" title="Ejemplo" class="btn btn-info">Ver Tablas Anexas&nbsp;<i class="fa fa-check"></i></a>
 
 
                           </div>  

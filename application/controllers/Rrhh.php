@@ -1013,6 +1013,56 @@ public function ver_formato_carga_colaboradores()
     }
 
   }
+
+
+
+  public function ver_tablas_anexas_colaboradores()
+  {
+
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+      $content = array(
+            'menu' => 'Administraci&oacute;n',
+            'title' => 'Administraci&oacute;n',
+            'subtitle' => 'Formato Carga Masiva Colaboradores');   
+
+        $this->load->model('Mantenedores_model');
+
+        $nacionalidad = $this->Mantenedores_model->get_nacionalidad();
+        $regiones = $this->Mantenedores_model->get_regiones();
+        $comunas = $this->Mantenedores_model->get_comuna_lista();
+
+          
+    
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'rrhh/ver_tablas_anexas_colaboradores';
+      $vars['formValidation'] = true;
+      $vars['dataTables'] = true;
+      $vars['nacionalidad'] = $nacionalidad;
+      $vars['regiones'] = $regiones;
+      $vars['comunas'] = $comunas;
+      $template = "template";
+      
+
+      $this->load->view($template,$vars); 
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  }
+
+
 	public function carga_masiva_asistencia()
 	{
 
