@@ -168,3 +168,31 @@ values (
 ,1
 )
 
+
+
+/*************************************************************/
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/ver_formato_carga_colaboradores'
+,null
+,4
+,0
+,0
+,1
+,null
+)
+
+insert into rem_role (appid,levelid) values (6098,2)

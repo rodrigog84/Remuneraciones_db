@@ -976,6 +976,43 @@ public function submit_salud(){
 
 	}
 
+
+
+
+public function ver_formato_carga_colaboradores()
+  {
+
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+      $content = array(
+            'menu' => 'Administraci&oacute;n',
+            'title' => 'Administraci&oacute;n',
+            'subtitle' => 'Formato Carga Masiva Colaboradores');       
+    
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'rrhh/ver_formato_carga_colaboradores';
+      $vars['formValidation'] = true;
+      $vars['dataTables'] = true;
+      $template = "template";
+      
+
+      $this->load->view($template,$vars); 
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  }
 	public function carga_masiva_asistencia()
 	{
 
