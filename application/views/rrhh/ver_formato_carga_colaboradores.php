@@ -161,9 +161,9 @@
                       <td><span class="label label-primary">Opcional</span></td>
                       <td>Fono del Colaborador</td>
                       <td>Cadena de Texto</td>
-                      <td>12</td>
+                      <td>9</td>
                       <td>&nbsp;</td>
-                      <td>+56999999999</td>
+                      <td>919310209</td>
                     </tr>
                     <tr>
                       <td>14</td>

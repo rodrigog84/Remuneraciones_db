@@ -23,7 +23,7 @@
                           <div class='col-md-6'>
                             <div class="form-group">
                                  <label for="exampleInputFile">Archivo de Carga</label>
-                                  <input type="file" id="userfile" name="userfile">
+                                  <input type="file" id="userfile" name="userfile"><small>(*) Archivo formato .csv</small>
                             </div> 
                           </div>  
                         </div>   
@@ -108,7 +108,7 @@
                         <div class='row'    >
                           <div class='col-md-2'>
                             
-                                <a href="<?php echo base_url(); ?>uploads/ejemploCarga.xls" data-toggle="tooltip" title="Ejemplo" class="btn btn-success">Descargar Ejemplo&nbsp;<i class="fa fa-file-excel-o"></i></a>
+                                <a href="<?php echo base_url(); ?>uploads/ejemploCarga.csv" data-toggle="tooltip" title="Ejemplo" class="btn btn-success">Descargar Ejemplo&nbsp;<i class="fa fa-file-excel-o"></i></a>
 
 
                           </div>  
