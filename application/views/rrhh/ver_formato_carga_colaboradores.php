@@ -7,7 +7,7 @@
 
               <div class="panel panel-inverse">
                 <div class="panel-heading">
-                  <h4 class="panel-title">Formato Carga</h4>
+                  <h4 class="panel-title">Formato Carga - Archivo CSV separado por Punto y Coma ";"</h4>
                   <div class="pull-right box-tools">
 
                     
@@ -127,7 +127,7 @@
                     </tr>
                     <tr>
                       <td>10</td>
-                      <td>Direcci&oacute;n</td>
+                      <td>Direccion</td>
                       <td><span class="label label-primary">Opcional</span></td>
                       <td>Direcci&oacute;n del Colaborador</td>
                       <td>Cadena de Texto</td>
@@ -137,7 +137,7 @@
                     </tr>
                     <tr>
                       <td>11</td>
-                      <td>Regi&oacute;n</td>
+                      <td>Region</td>
                       <td><span class="label label-primary">Opcional</span></td>
                       <td>Regi&oacute;n del Colaborador</td>
                       <td>Num&eacute;rico</td>
@@ -307,7 +307,7 @@
                     </tr>
                     <tr>
                       <td>28</td>
-                      <td>Tipogratificaci&oacute;n</td>
+                      <td>Tipogratificacion</td>
                       <td><span class="label label-info">Obligatorio</span></td>
                       <td>Indica el tipo de gratificaci&oacute;n</td>
                       <td>Car&aacute;cter</td>
@@ -317,7 +317,7 @@
                     </tr>
                     <tr>
                       <td>29</td>
-                      <td>Montogratificaci&oacute;n</td>
+                      <td>Montogratificacion</td>
                       <td><span class="label label-warning">Condicional</span></td>
                       <td>Monto Gratificaci&oacute;n. Obligatorio si Tipogratificaci&oacute;n es MF</td>
                       <td>Num&eacute;rico</td>
@@ -337,7 +337,7 @@
                     </tr>
                     <tr>
                       <td>31</td>
-                      <td>Cargasinv&aacute;lidas</td>
+                      <td>Cargasinvalidas</td>
                       <td><span class="label label-info">Obligatorio</span></td>
                       <td>Cantidad de cargas legales inv&aacute;lidas.  Si no tiene dejar en cero</td>
                       <td>Num&eacute;rico</td>
@@ -367,7 +367,7 @@
                     </tr>
                     <tr>
                       <td>34</td>
-                      <td>Movilizaci&oacute;n</td>
+                      <td>Movilizacion</td>
                       <td><span class="label label-info">Obligatorio</span></td>
                       <td>Monto asignaci&oacute;n movilizaci&oacute;n.  Si no tiene dejar en cero</td>
                       <td>Num&eacute;rico</td>
@@ -377,7 +377,7 @@
                     </tr>
                     <tr>
                       <td>35</td>
-                      <td>Colaci&oacute;n</td>
+                      <td>Colacion</td>
                       <td><span class="label label-info">Obligatorio</span></td>
                       <td>Monto asignaci&oacute;n colaci&oacute;n.  Si no tiene dejar en cero</td>
                       <td>Num&eacute;rico</td>

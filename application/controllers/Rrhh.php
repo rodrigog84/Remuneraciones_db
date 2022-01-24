@@ -951,7 +951,428 @@ public function submit_salud(){
 						'menu' => 'Administraci&oacute;n',
 						'title' => 'Administraci&oacute;n',
 						'subtitle' => 'Carga Masiva de Colaboradores');       
-		
+
+
+
+      set_time_limit(0); // quita limite de tiempo al hacer carga
+
+      $array_errores_estructura = array();
+      $array_errores_contenido = array();
+      $tipo = $this->input->post('tipo');
+      if($tipo != ''){
+            if($tipo == 'validacion'){
+
+
+                    $config['upload_path'] = "./uploads/cargas/colaboradores/";
+
+                    if (!file_exists($config['upload_path'])) {
+                        mkdir($config['upload_path'], 0777, true);
+                    }
+
+                    $config['file_name'] = date("Ymd") . "_" . date("His") . "_" . randomstring(5) . "_COL_" . $this->input->post('empresaid');
+                    $config['allowed_types'] = "*";
+                    $config['max_size'] = "10240";
+
+                    $this->load->library('upload', $config);
+                    $this->upload->do_upload("userfile");
+                    $dataupload = $this->upload->data();
+
+                    $extension = $dataupload['file_ext'];
+
+                    $error_carga = false;
+
+
+                    if ($extension != '.csv') {
+                        $error_carga = true;
+                        $msg = "Archivo debe tener formato csv";
+
+                        $vars['message'] = $msg;
+                        $vars['classmessage'] = 'danger';
+                        $vars['icon'] = 'fa-ban';
+                    }                    
+
+
+
+                    if (!$error_carga) {
+
+                          $definicion_encabezado[0] = "Rut";
+                          $definicion_encabezado[1] = "Dv";
+                          $definicion_encabezado[2] = "Nombres";
+                          $definicion_encabezado[3] = "Apellidop";
+                          $definicion_encabezado[4] = "Apellidom";
+                          $definicion_encabezado[5] = "FecNacimiento";
+                          $definicion_encabezado[6] = "Sexo";
+                          $definicion_encabezado[7] = "EstadoCivil";
+                          $definicion_encabezado[8] = "Nacionalidad";
+                          $definicion_encabezado[9] = "Direccion";
+                          $definicion_encabezado[10] = "Region";
+                          $definicion_encabezado[11] = "Comuna";
+                          $definicion_encabezado[12] = "Fono";
+                          $definicion_encabezado[13] = "Email";
+                          $definicion_encabezado[14] = "FechaIngreso";
+                          $definicion_encabezado[15] = "Fecinicvacaciones";
+                          $definicion_encabezado[16] = "Saldoinicvacaciones";
+                          $definicion_encabezado[17] = "Saldoinicvacprog";
+                          $definicion_encabezado[18] = "Tipocontrato";
+                          $definicion_encabezado[19] = "Parttime";
+                          $definicion_encabezado[20] = "Segcesantia";
+                          $definicion_encabezado[21] = "FecAfc";
+                          $definicion_encabezado[22] = "Pensionado";
+                          $definicion_encabezado[23] = "Diastrabajo";
+                          $definicion_encabezado[24] = "Horasdiarias";
+                          $definicion_encabezado[25] = "Horassemanales";
+                          $definicion_encabezado[26] = "Sueldobase";
+                          $definicion_encabezado[27] = "Tipogratificacion";
+                          $definicion_encabezado[28] = "Montogratificacion";
+                          $definicion_encabezado[29] = "Cargassimples";
+                          $definicion_encabezado[30] = "Cargasinvalidas";
+                          $definicion_encabezado[31] = "Cargasmaternales";
+                          $definicion_encabezado[32] = "Tramoasigfamiliar";
+                          $definicion_encabezado[33] = "Movilizacion";
+                          $definicion_encabezado[34] = "Colacion";
+
+
+                          $array_datos_requeridos = array(1,2,3,4,5,6,7,8,9,10,11,12,15,16,17,18,19,20,21,23,24,25,26,27,28,29,30,31,32,34,35);
+                          // campo 33, sólo si 30 es mayor a cero
+                          $array_numericos = array(1,9,11,12,17,18,24,25,26,27,29,30,31,32,34,35);
+
+                          $array_fechas = array(6,15,16); 
+                          // campo 22, sólo si 21 es 1
+
+                          $array_sn = array(20,21,23); 
+
+                          $array_valores_dv = array('1','2','3','4','5','6','7','8','9','0','K');
+
+
+                          $array_valores_sexo = array('M','F');
+
+                          $array_valores_estado_civil = array('S','C','V','D');
+
+                          $array_valores_tipo_contrato = array('F','I');
+
+
+                          $array_valores_tipo_gratificacion = array('SG','TL','MF');
+
+                          $array_valores_tramos_asigfamiliar = array('A','B','C','D');
+
+
+
+
+
+                          //header('Content-type: text/plain; charset=ISO-8859-1');
+                          
+                          $columnas_requeridas = 35;
+                          $cant_errores_estructura = 0;
+                          $cant_errores_contenido = 0;
+                          $fila = 1;
+                          if (($gestor = fopen($config['upload_path'] . $dataupload['orig_name'], "r")) !== FALSE) {
+                              while (($datos = fgetcsv($gestor, 0, ";")) !== FALSE) {
+                                  $numero = count($datos);
+
+                                  // validar encabezado
+
+
+                                  //echo "<p> $numero de campos en la línea $fila: <br /></p>\n";
+                                 
+                                  for ($c=0; $c < $numero; $c++) {
+
+
+
+                                      // comenzar validaciones
+
+
+                                    // 1.- Validar Estructura.
+                                    //      Validar que todas las filas contengan 35 campos
+                                    //      Validar nombres encabezados
+
+
+                                    if($fila == 1){
+
+                                        if($datos[$c] != utf8_encode($definicion_encabezado[$c])){
+
+                                                  $array_errores_estructura[$cant_errores_estructura]['tipo'] = "Error en fila de encabezados";
+                                                  $array_errores_estructura[$cant_errores_estructura]['descripcion'] = "Se esperaba valor \"" . $definicion_encabezado[$c] . "\" en vez de \"" . utf8_encode($datos[$c]). "\" ";
+                                                  $cant_errores_estructura++;
+
+                                        }
+                                      
+
+                                    }            
+                                   
+                                    // rut
+
+                                    if($fila > 1){
+
+
+
+                                      //validación de datos vacíos
+                                      if(in_array($c+1,$array_datos_requeridos) && $datos[$c] == ''){
+
+                                              $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                              $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Dato es Requerido";
+                                              $cant_errores_contenido++;
+
+                                      } 
+
+                                      // Si tiene cargas familiares simples y no está ingresado el tramo
+                                      if(($c+1) == 33 && $datos[$c] == '' && $datos[29] > 0){
+
+                                              $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                              $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Dato es Requerido si tiene cargas simples";
+                                              $cant_errores_contenido++;
+
+                                      }
+
+
+                                       if(($c+1) == 33 && $datos[$c] != ''){
+
+                                            if(!in_array($datos[$c],$array_valores_tramos_asigfamiliar)){
+
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor Tramo Asig. Familiar Incorrecto";
+                                                    $cant_errores_contenido++;
+
+
+                                            }
+
+
+                                      }
+
+
+                                                                           
+                                      //var_dump_new($c);
+                                      //var_dump_new($datos[$c]);
+                                      //var_dump_new(is_numeric($datos[$c]));
+                                      //validación de datos numéricos
+                                      if(in_array($c+1,$array_numericos) && !is_numeric($datos[$c])){
+                                              $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                              $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor debe ser numérico";
+                                              $cant_errores_contenido++;
+
+                                      }   
+
+                                      // valores si o no
+                                      if(in_array($c+1,$array_sn) && !in_array($datos[$c],array('S','N'))){
+                                              $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                              $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor debe ser S o N";
+                                              $cant_errores_contenido++;
+
+                                      }       
+
+
+
+                                      // validación de fechas
+                                      if(in_array($c+1,$array_fechas)){
+                                            //echo $fila." --- ";
+                                            $array_datos_fecha = explode("-",$datos[$c]);
+                                            //var_dump_new($datos[$c]);
+                                            //var_dump_new($array_datos_fecha);
+
+                                            if(isset($array_datos_fecha[0]) && isset($array_datos_fecha[1]) && isset($array_datos_fecha[2])){
+
+                                                if(!checkdate($array_datos_fecha[1], $array_datos_fecha[0], $array_datos_fecha[2])){
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor debe ser Fecha";
+                                                    $cant_errores_contenido++;
+
+
+                                                }
+
+
+
+                                            }else{
+
+
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor debe ser Fecha";
+                                                    $cant_errores_contenido++;
+
+                                            }
+
+
+                                            
+
+                                      }    
+
+
+
+                                      if(($c+1) == 22 && $datos[20] == 'S'){
+
+                                            $array_datos_fecha = explode("-",$datos[$c]);
+                                            //var_dump_new($datos[$c]);
+                                            //var_dump_new($array_datos_fecha);
+
+                                            if(isset($array_datos_fecha[0]) && isset($array_datos_fecha[1]) && isset($array_datos_fecha[2])){
+
+                                                if(!checkdate($array_datos_fecha[1], $array_datos_fecha[0], $array_datos_fecha[2])){
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor debe ser Fecha si está afiliado a Seguro de Cesantía";
+                                                    $cant_errores_contenido++;
+
+
+                                                }
+
+
+
+                                            }else{
+
+
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor debe ser Fecha si está afiliado a Seguro de Cesantía";
+                                                    $cant_errores_contenido++;
+
+                                            }
+                                          
+
+
+                                      }
+
+
+
+                                      if(($c+1) == 2 && !in_array($datos[$c],$array_valores_dv)){
+
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor DV Incorrecto";
+                                                    $cant_errores_contenido++;
+
+
+                                      }
+
+
+                                      if(($c+1) == 7 && !in_array($datos[$c],$array_valores_sexo)){
+
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor Sexo Incorrecto";
+                                                    $cant_errores_contenido++;
+
+
+                                      }
+
+
+                                      if(($c+1) == 8 && !in_array($datos[$c],$array_valores_estado_civil)){
+
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor Estado Civil Incorrecto";
+                                                    $cant_errores_contenido++;
+
+
+                                      }
+
+
+                                      if(($c+1) == 19 && !in_array($datos[$c],$array_valores_tipo_contrato)){
+
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor Tipo Contrato Incorrecto";
+                                                    $cant_errores_contenido++;
+
+
+                                      }
+
+
+                                      if(($c+1) == 28 && !in_array($datos[$c],$array_valores_tipo_gratificacion)){
+
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor Tipo Gratificacion Incorrecto";
+                                                    $cant_errores_contenido++;
+
+
+                                      }
+
+
+
+
+
+                                      
+
+
+
+
+
+
+
+
+                                    }
+                                                                        
+
+                                    // 2.-  Validar contenido
+                                    //      Validar Valores
+                                    //      Mostrar tabla con todos los errores
+                                    //      Mostrar por cada error:
+                                    //                                Nro Error
+                                    //                                Linea Error
+                                    //                                Rut Colaborador
+                                    //                                Nombre Colaborador
+                                    //                                Nombre Columna incorrecta
+                                    //                                Valor de columna Incorrecta
+
+
+
+
+                                     // echo $datos[$c] . "<br />\n";
+                                  }
+
+
+
+                                  // validar cantidad de columnas
+                                  if ($numero != $columnas_requeridas){
+                                      $fila_error = $fila == 1 ? "de encabezados" : $fila;
+                                      $array_errores_estructura[$cant_errores_estructura]['tipo'] = "Error en fila " . $fila_error;
+                                      $array_errores_estructura[$cant_errores_estructura]['descripcion'] = "Se esperan " . $columnas_requeridas . " campos";
+                                      $cant_errores_estructura++;
+
+                                  }
+                                   $fila++;
+
+                              }
+                              fclose($gestor);
+                          }
+                         // exit;
+                          //var_dump_new($array_errores_estructura); exit;
+
+
+                    }
+
+
+               // echo "validacion"; exit;
+
+            }
+
+
+
+
+      }
+
+      $vars['errores_estructura'] = $array_errores_estructura;
+      $vars['errores_contenido'] = $array_errores_contenido;
+		  $vars['gritter'] = true;
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'rrhh/carga_masiva_personal';
 			$vars['formValidation'] = true;

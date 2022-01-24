@@ -9,7 +9,7 @@
             <div class="col-md-12">
 
 
-<ul class="nav nav-pills">
+          <ul class="nav nav-pills">
             <li class="active"><a href="#nav-pills-tab-1" data-toggle="tab">Ver Tabla Anexa N° 1</a></li>
             <li><a href="#nav-pills-tab-2" data-toggle="tab">Ver Tabla Anexa N° 2</a></li>
             <li><a href="#nav-pills-tab-3" data-toggle="tab">Ver Tabla Anexa N° 3</a></li>
