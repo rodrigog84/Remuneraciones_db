@@ -867,15 +867,17 @@ public function get_cargo_colaborador($idtrabajador = null,$actives = null){
 		p.horassemanales, p.sueldobase, p.tipogratificacion, p.gratificacion, p.asigfamiliar, p.cargassimples, p.cargasinvalidas, p.cargasmaternales, p.cargasretroactivas, 
 		p.idasigfamiliar, p.movilizacion, p.colacion, p.pensionado,p.idafp, p.adicafp, isnull(p.tipoahorrovol,'pesos') as tipoahorrovol, isnull(p.ahorrovol,0) as ahorrovol, p.instapv, p.nrocontratoapv, p.tipocotapv, 
 		p.cotapv, p.formapagoapv, p.depconvapv, p.idisapre, p.valorpactado, p.fecinicvacaciones, p.saldoinicvacaciones, p.saldoinicvacprog, p.active, c.nombre nombre_cargo, p.numficha")
-						  ->from('rem_personal p, rem_cargos c')
+						  ->from('rem_personal p')
+						  ->join('rem_cargos c','p.idcargo = c.id_cargos','LEFT')
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
-						  ->where('c.id_cargos = p.idcargo')
+						  //->where('c.id_cargos = p.idcargo')
 						  ->order_by('p.active','desc')
 		                  ->order_by('p.apaterno');
 		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);  	
 		//$personal_data = is_null($actives) ? $personal_data : $personal_data->where('p.active',1);  		                  
 
 		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
 		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
 		return $datos;
 	}

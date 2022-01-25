@@ -37,7 +37,6 @@
 																	<thead> 
 																		<tr>
 																			<th>#</th>
-																			<th>Nro. Ficha</th>
                             												<th>Nombre Colaborador</th>
                             												<th>Rut</th>
                             												<th>Cargo</th>
@@ -52,7 +51,6 @@
 	                            										<?php foreach ($personal as $trabajador) { ?>				
 																		<tr class="active" id="variable">
 											                              <td><small><?php echo $i ;?></small></td>
-											                              <td><small><?php echo $trabajador->numficha ;?></small></td>
 	                              										  <td><small><?php echo $trabajador->apaterno." ".$trabajador->amaterno." ".$trabajador->nombre;?></small></td>
 	                                									  <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
 	                              										  <td><small><?php echo $trabajador->nombre_cargo;?></small></td>

@@ -277,7 +277,175 @@
         
           </div>
 
+ <?php }else if(count($lista_personal_sin_confirmar) > 0 ){ ?>
+
+      <div class="row">
+
+            <div class="col-md-12">
+              <div class="alert alert-warning fade in m-b-15">
+                <strong>Atenci&oacute;n!</strong>
+                Informaci&oacute;n a&uacute;n no ha sido cargada.  Favor confirmar para realizar carga de colaboradores
+                <span class="close" data-dismiss="alert">&times;</span>
+              </div>
+
+                <div class="panel panel-inverse">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">Listado Colaboradores</h4>                    
+                      </div><!-- /.box-header -->
+                      <!-- form start -->
+
+
+                        <div class="panel-body">
+       
+                              <div class='row'    >
+                                <div class='col-md-12'>
+                                          <div class="table-responsive">
+                      <table class="table" id="detallecarga">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Rut</th>
+                            <th>Dv</th>
+                            <th>Nombres</th>
+                            <th>Ap. Paterno</th>
+                            <th>Ap. Materno</th>
+                            <th>Fec. Nacimiento</th>
+                            <th>Sexo</th>
+                            <th>Estado Civil</th>
+                            <th>Nacionalidad</th>
+                            <th>Direcci&oacute;n</th>
+                            <th>Regi&oacute;n</th>
+                            <th>Comuna</th>
+                            <th>Fono</th>
+                            <th>Email</th>
+                            <th>Fecha Ingreso</th>
+                            <th>Fec. Inic. Vacaciones</th>
+                            <th>Saldo Inic. Vacaciones</th>
+                            <th>Saldo Inic. Vac. Progresivas</th>
+                            <th>Tipo Contrato</th>
+                            <th>Part Time</th>
+                            <th>Seguro Cesant&iacute;a</th>
+                            <th>Fecha AFC</th>
+                            <th>Pensionado</th>
+                            <th>D&iacute;as Trabajo</th>
+                            <th>Horas Diarias</th>
+                            <th>Horas Semanales</th>
+                            <th>Sueldo Base</th>
+                            <th>Tipo Gratificaci&oacute;n</th>
+                            <th>Monto Gratificaci&oacute;n</th>
+                            <th>Cargas Simples</th>
+                            <th>Cargas Inv&aacute;lidas</th>
+                            <th>Cargas Maternales</th>
+                            <th>Tramo Asig. Familiar</th>
+                            <th>Movilizaci&oacute;n</th>
+                            <th>Colaci&oacute;n</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          
+                          <?php
+                              $i = 1; 
+                              foreach ($lista_personal_sin_confirmar as  $personal) { ?> 
+                              <tr>
+                                <td><?php echo $i; ?></td>
+                                <td><?php echo $personal['Rut']; ?></td>
+                                <td><?php echo $personal['Dv']; ?></td>
+                                <td><?php echo $personal['Nombres']; ?></td>
+                                <td><?php echo $personal['Apellidop']; ?></td>
+                                <td><?php echo $personal['Apellidom']; ?></td>
+                                <td><?php echo $personal['FecNacimiento']; ?></td>
+                                <td><?php echo $personal['Sexo']; ?></td>
+                                <td><?php echo $personal['EstadoCivil']; ?></td>
+                                <td><?php echo $personal['Nacionalidad']; ?></td>
+                                <td><?php echo $personal['Direccion']; ?></td>
+                                <td><?php echo $personal['Region']; ?></td>
+                                <td><?php echo $personal['Comuna']; ?></td>
+                                <td><?php echo $personal['Fono']; ?></td>
+                                <td><?php echo $personal['Email']; ?></td>
+                                <td><?php echo $personal['FechaIngreso']; ?></td>
+                                <td><?php echo $personal['Fecinicvacaciones']; ?></td>
+                                <td><?php echo $personal['Saldoinicvacaciones']; ?></td>
+                                <td><?php echo $personal['Saldoinicvacprog']; ?></td>
+                                <td><?php echo $personal['Tipocontrato']; ?></td>
+                                <td><?php echo $personal['Parttime']; ?></td>
+                                <td><?php echo $personal['Segcesantia']; ?></td>
+                                <td><?php echo $personal['FecAfc']; ?></td>
+                                <td><?php echo $personal['Pensionado']; ?></td>
+                                <td><?php echo $personal['Diastrabajo']; ?></td>
+                                <td><?php echo $personal['Horasdiarias']; ?></td>
+                                <td><?php echo $personal['Horassemanales']; ?></td>
+                                <td><?php echo $personal['Sueldobase']; ?></td>
+                                <td><?php echo $personal['Tipogratificacion']; ?></td>
+                                <td><?php echo $personal['Montogratificacion']; ?></td>
+                                <td><?php echo $personal['Cargassimples']; ?></td>
+                                <td><?php echo $personal['Cargasinvalidas']; ?></td>
+                                <td><?php echo $personal['Cargasmaternales']; ?></td>
+                                <td><?php echo $personal['Tramoasigfamiliar']; ?></td>
+                                <td><?php echo $personal['Movilizacion']; ?></td>
+                                <td><?php echo $personal['Colacion']; ?></td>
+                              </tr>
+
+                          <?php $i++;
+                                  } ?>
+                         
+                        </tbody>
+                      </table>
+                    </div>
+
+
+
+
+                                </div>  
+                              </div>   
+                              
+
+                                
+                        </div><!-- /.box-body -->   
+                      <div class="panel-footer">
+                        <a href="#" data-href="<?php echo base_url(); ?>rrhh/confirma_carga_personal" title="Cargar Colaboradores" class="btn btn-success" data-toggle="modal" data-target="#confirm-publish">Confirmar Carga</a>
+                        &nbsp;&nbsp;
+                        <a href="<?php echo base_url();?>rrhh/carga_masiva_personal" class="btn btn-default">Volver</a>
+                      </div>
+
+
+                    </div><!-- /.box -->
+
+
+            </div>
+
+        
+      </div>
+
+
  <?php } ?>
+
+
+
+<!-- MODAL DE RECHAZO DE REMUNERACIÓN POR CENTRO DE COSCO -->
+    <div class="modal fade" id="confirm-publish" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirmar Carga</h4>
+                </div>
+            
+                <div class="modal-body">
+                    
+                   <p>Se cargar&aacute;n los colaboradores tal como se muestran en la tabla.&nbsp;&nbsp;Una vez cargado, no se podr&aacute; podr&aacute; reversar la operaci&oacute;n, y cualquier cambio se deber&aacute; realizar uno a uno.</p>
+                    <p>Desea continuar?</p>
+                    
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-success btn-ok" id="botoncrear">Cargar Colaboradores</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -324,5 +492,47 @@ $(document).ready(function() {
             }, 
         }
     })
+
+
+
+        $('#detallecarga').dataTable({
+            responsive: true,
+            //dom: 'Bfrtip',
+            //buttons: [{ extend: 'excelHtml5', className: 'btn-sm', text: 'Exportar a Excel'}],
+            "bLengthChange": true,
+            "bFilter": true,
+            "bInfo": true,
+            "bSort": false,
+            "bAutoWidth": false,
+            "iDisplayLength": 10,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+                "sZeroRecords": "No se encontraron registros",
+                "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+                "sSearch":        "Buscar:",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":    "Último",
+                    "sNext":    "Siguiente",
+                    "sPrevious": "Anterior"
+                }
+            }
+        });
+
+
 });
 </script>
+   <script>
+        $('#confirm-publish').on('show.bs.modal', function(e) {
+
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+            
+        });
+
+        $('#botoncrear').on('click',function(){
+            $(this).attr('disabled','disabled');
+
+        })
+    </script>

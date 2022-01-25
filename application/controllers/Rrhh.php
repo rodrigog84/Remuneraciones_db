@@ -526,7 +526,16 @@ public function submit_salud(){
 				$vars['message'] = "Colaboradores Cargados correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';		
-			}
+			}elseif($resultid == 9){
+        $vars['message'] = "Carga Masiva realizada correctamente";
+        $vars['classmessage'] = 'success';
+        $vars['icon'] = 'fa-check'; 
+        $vars['mantencion_personal'] = '';        
+        $vars['apv'] = '';    
+        $vars['leyes_sociales'] = '';   
+        $vars['salud'] = 'active';              
+        $vars['otros'] = '';  
+      }
 
 			$this->load->model('admin');
 			
@@ -959,6 +968,7 @@ public function submit_salud(){
       $array_errores_estructura = array();
       $array_errores_contenido = array();
       $tipo = $this->input->post('tipo');
+      $lista_personal_sin_confirmar = array();
       if($tipo != ''){
             if($tipo == 'validacion'){
 
@@ -1102,6 +1112,7 @@ public function submit_salud(){
                                     // rut
 
                                     if($fila > 1){
+
 
 
 
@@ -1308,18 +1319,7 @@ public function submit_salud(){
 
 
 
-
-
-                                      
-
-
-
-
-
-
-
-
-                                    }
+                                    } // if($fila > 1){
                                                                         
 
                                     // 2.-  Validar contenido
@@ -1349,13 +1349,61 @@ public function submit_salud(){
                                       $cant_errores_estructura++;
 
                                   }
+
+
+                                    if($fila > 1){
+
+                                        $array_datos = array(
+                                                            "Rut"                     => $datos[0],
+                                                            "Dv"                      => $datos[1],
+                                                            "Nombres"                 => utf8_encode($datos[2]),
+                                                            "Apellidop"               => utf8_encode($datos[3]),
+                                                            "Apellidom"               => utf8_encode($datos[4]),
+                                                            "FecNacimiento"           => $datos[5],
+                                                            "Sexo"                    => $datos[6],
+                                                            "EstadoCivil"             => $datos[7],
+                                                            "Nacionalidad"            => $datos[8],
+                                                            "Direccion"               => $datos[9],
+                                                            "Region"                  => $datos[10],
+                                                            "Comuna"                  => $datos[11],
+                                                            "Fono"                    => $datos[12],
+                                                            "Email"                   => $datos[13],
+                                                            "FechaIngreso"            => $datos[14],
+                                                            "Fecinicvacaciones"       => $datos[15],
+                                                            "Saldoinicvacaciones"     => $datos[16],
+                                                            "Saldoinicvacprog"        => $datos[17],
+                                                            "Tipocontrato"            => $datos[18],
+                                                            "Parttime"                => $datos[19],
+                                                            "Segcesantia"             => $datos[20],
+                                                            "FecAfc"                  => $datos[21],
+                                                            "Pensionado"              => $datos[22],
+                                                            "Diastrabajo"             => $datos[23],
+                                                            "Horasdiarias"            => $datos[24],
+                                                            "Horassemanales"          => $datos[25],
+                                                            "Sueldobase"              => $datos[26],
+                                                            "Tipogratificacion"       => $datos[27],
+                                                            "Montogratificacion"      => $datos[28],
+                                                            "Cargassimples"           => $datos[29],
+                                                            "Cargasinvalidas"         => $datos[30],
+                                                            "Cargasmaternales"        => $datos[31],
+                                                            "Tramoasigfamiliar"       => $datos[32],
+                                                            "Movilizacion"            => $datos[33],
+                                                            "Colacion"                => $datos[34],
+                                                      );
+
+                                      array_push($lista_personal_sin_confirmar, $array_datos);
+                                      }
+
+
                                    $fila++;
 
                               }
                               fclose($gestor);
                           }
                          // exit;
-                          //var_dump_new($array_errores_estructura); exit;
+                          $this->session->set_flashdata('lista_personal_sin_confirmar', $lista_personal_sin_confirmar);
+                          //echo count($lista_personal_sin_confirmar);
+                          //var_dump_new($lista_personal_sin_confirmar); exit;
 
 
                     }
@@ -1372,11 +1420,15 @@ public function submit_salud(){
 
       $vars['errores_estructura'] = $array_errores_estructura;
       $vars['errores_contenido'] = $array_errores_contenido;
+      $vars['lista_personal_sin_confirmar'] = $lista_personal_sin_confirmar;
+
+
 		  $vars['gritter'] = true;
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'rrhh/carga_masiva_personal';
 			$vars['formValidation'] = true;
-			$vars['dataTables'] = true;
+			//$vars['dataTables'] = true;
+      $vars['datatable'] = true;
 			$template = "template";
 			
 
@@ -1396,6 +1448,153 @@ public function submit_salud(){
 		}
 
 	}
+
+
+public function confirma_carga_personal()
+    {
+
+        if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
+
+            //exit;
+            $arr_data = $this->session->flashdata('lista_personal_sin_confirmar');
+            $lista_propiedades = array();
+            $lista_usuarios = array();
+            /******** ANALISIS DE DATOS************/
+            foreach ($arr_data as $colaborador) {
+
+                $array_fec_nacimiento = explode("-",$colaborador['FecNacimiento']);
+                $array_fec_ini_vacaciones = explode("-",$colaborador['Fecinicvacaciones']);
+                $array_fec_ingreso = explode("-",$colaborador['FechaIngreso']);
+                $array_fec_afc = explode("-",$colaborador['FecAfc']);
+
+               $array_datos = array(
+                'id_empresa' => $this->session->userdata('empresaid'),
+                'rut' => $colaborador['Rut'],
+                'dv' => $colaborador['Dv'],
+                'numficha' => 1,
+                'nombre' => $colaborador['Nombres'],
+                'apaterno' => $colaborador['Apellidop'],
+                'amaterno' => $colaborador['Apellidom'],
+                'fecnacimiento' => $array_fec_nacimiento[2].$array_fec_nacimiento[1].$array_fec_nacimiento[0],
+                'idnacionalidad' => $colaborador['Nacionalidad'],
+                'nacionalidad' => $colaborador['Nacionalidad'] == 46 ? 'C' : 'E', //ELIMINAR DESPUES
+                'idecivil' =>1, //Cambiar $colaborador['EstadoCivil'],
+                'sexo' => $colaborador['Sexo'],
+                'direccion' => $colaborador['Direccion'],
+                'email' => $colaborador['Email'],
+                'tiporenta' => 'Mensual',
+                'idcargo' => 0,
+                'idestudio' => 0,
+                'titulo' => '',
+                'ididioma' => 0,
+                'idjefe' => 0,
+                'idreemplazo' => 0,
+                'idlicencia' => 0,
+                'tallapolera' => '',
+                'tallapantalon' => '',
+                'tipodocumento' => '',
+                'idcentrocosto' => 0,
+                'cbeneficio' => NULL,
+                'fono' => $colaborador['Fono'],
+                'idafp' => 0,
+                'idisapre' => 0,
+                'sueldobase' => $colaborador['Sueldobase'],
+                'tipogratificacion' => $colaborador['Tipogratificacion'],
+                'gratificacion' => $colaborador['Montogratificacion'],
+                'movilizacion' => $colaborador['Movilizacion'],
+                'colacion' => $colaborador['Colacion'],
+                'idasigfamiliar' => 1, // Cambiar
+                'valorpactado' => 0,  //Valor Isapre
+                'segcesantia' => $colaborador['Segcesantia'] == 'S' ? 1 : 0,
+                'pensionado' => $colaborador['Pensionado'] == 'S' ? 1 : 0,
+                'fecinicvacaciones' =>  $array_fec_ini_vacaciones[2].$array_fec_ini_vacaciones[1].$array_fec_ini_vacaciones[0],
+                'saldoinicvacaciones' => $colaborador['Saldoinicvacaciones'],
+                'saldoinicvacprog' => $colaborador['Saldoinicvacprog'],
+                'tipocontrato' => $colaborador['Tipocontrato'],
+                'plazo_contrato' => NULL,
+                'fecingreso' => $array_fec_ingreso[2].$array_fec_ingreso[1].$array_fec_ingreso[0],
+                'fecha_retiro' => NULL,
+                'fecha_finiquito' => NULL,
+                
+                'id_lugar_pago' => 0,
+                'id_categoria' => 0,
+                'jubilado' => NULL,
+                'rol_privado' => 'NO',
+                'sindicato' => 'NO',
+                'semana_corrida' => 'NO',
+                'fecafp' => NULL,
+                'fecafc' => $array_fec_afc[2].$array_fec_afc[1].$array_fec_afc[0],
+                'idregion' => $colaborador['Region'],
+                'idcomuna' => $colaborador['Comuna'],
+                'cargassimples' => $colaborador['Cargassimples'],
+                'cargasinvalidas' => $colaborador['Cargasinvalidas'],
+                'cargasmaternales' => $colaborador['Cargasmaternales'],
+                'idbanco' => 0,
+                'id_plantilla_banco' => 0,
+                'id_tipo_cuenta_bancaria' => 0,
+                'id_forma_pago' => 0,
+                'nrocuentabanco' => '',
+                'instapv' => 0,
+                'nrocontratoapv' => '',
+                'tipocotapv' => NULL,
+                'cotapv' => 0,
+                'regimenapv' => NULL,
+                'formapagoapv' => NULL,
+                'trabajo_pesado' => 0,
+
+                'id_motivo_egreso' => 0,
+                'id_tipocc' => 0,
+                'id_seccion' => 0,
+                'id_situacion' => 0,
+                'id_clase' => 0,
+                'id_ine' => 0,
+                'id_zona' => 0,
+                'fecrealcontrato' => $array_fec_ingreso[2].$array_fec_ingreso[1].$array_fec_ingreso[0],
+                'primervenc' => NULL,
+                'fun' => 0,
+                'fecvencplan' => NULL,
+                'fecapvc' => NULL,
+                'fectermsubsidio' => NULL,
+                'rut_pago' => NULL,
+                'dv_pago' => NULL,                
+                'nombre_pago' => '',
+                'email_pago' => '',
+                'usuario_windows' => '',
+                //DATOS POR DEFECTO
+                'diasprogresivos' => 0,
+                'diasvactomados' => 0,
+                'diasprogtomados' => 0,
+                'parttime' =>$colaborador['Parttime'] == 'S' ? 1 : 0,
+                //'pensionado' => 0,
+                'diastrabajo' => $colaborador['Diastrabajo'],
+                'horasdiarias' => $colaborador['Horasdiarias'],
+                'horassemanales' => $colaborador['Horassemanales'],
+                'cargasretroactivas' => 0,
+                'asigfamiliar' => 0,
+                'active' => 1,
+                'adicafp' => 0
+                );
+
+
+
+            $result = $this->rrhh_model->add_personal($array_datos,0);
+
+            } //end foreach
+            $this->session->set_flashdata('personal_result', 9);
+            redirect('rrhh/mantencion_personal');
+        } else {
+            $content = array(
+                'menu' => 'Error 403',
+                'title' => 'Error 403',
+                'subtitle' => '403 error'
+            );
+
+
+            $vars['content_menu'] = $content;
+            $vars['content_view'] = 'forbidden';
+            $this->load->view('template', $vars);
+        }
+    }
 
 
 
