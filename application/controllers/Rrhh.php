@@ -1467,6 +1467,31 @@ public function confirma_carga_personal()
                 $array_fec_ingreso = explode("-",$colaborador['FechaIngreso']);
                 $array_fec_afc = explode("-",$colaborador['FecAfc']);
 
+                if($colaborador['EstadoCivil'] == 'S'){
+                  $estadoCivil = 1;
+                }else if ($colaborador['EstadoCivil'] == 'C'){
+                    $estadoCivil = 2;
+                }else if ($colaborador['EstadoCivil'] == 'V'){
+                    $estadoCivil = 3;
+                }else if ($colaborador['EstadoCivil'] == 'D'){
+                    $estadoCivil = 4;
+                }else{
+                    $estadoCivil = 1;
+                }
+
+                if($colaborador['Tramoasigfamiliar'] == 'A'){
+                  $idasigfamiliar = 1;
+                }else if ($colaborador['EstadoCivil'] == 'B'){
+                    $idasigfamiliar = 2;
+                }else if ($colaborador['EstadoCivil'] == 'C'){
+                    $idasigfamiliar = 3;
+                }else if ($colaborador['EstadoCivil'] == 'D'){
+                    $idasigfamiliar = 4;
+                }else{
+                    $idasigfamiliar = 0;
+                }
+
+
                $array_datos = array(
                 'id_empresa' => $this->session->userdata('empresaid'),
                 'rut' => $colaborador['Rut'],
@@ -1478,7 +1503,7 @@ public function confirma_carga_personal()
                 'fecnacimiento' => $array_fec_nacimiento[2].$array_fec_nacimiento[1].$array_fec_nacimiento[0],
                 'idnacionalidad' => $colaborador['Nacionalidad'],
                 'nacionalidad' => $colaborador['Nacionalidad'] == 46 ? 'C' : 'E', //ELIMINAR DESPUES
-                'idecivil' =>1, //Cambiar $colaborador['EstadoCivil'],
+                'idecivil' =>$estadoCivil, //Cambiar $colaborador['EstadoCivil'],
                 'sexo' => $colaborador['Sexo'],
                 'direccion' => $colaborador['Direccion'],
                 'email' => $colaborador['Email'],
@@ -1503,7 +1528,7 @@ public function confirma_carga_personal()
                 'gratificacion' => $colaborador['Montogratificacion'],
                 'movilizacion' => $colaborador['Movilizacion'],
                 'colacion' => $colaborador['Colacion'],
-                'idasigfamiliar' => 1, // Cambiar
+                'idasigfamiliar' => $idasigfamiliar, // Cambiar
                 'valorpactado' => 0,  //Valor Isapre
                 'segcesantia' => $colaborador['Segcesantia'] == 'S' ? 1 : 0,
                 'pensionado' => $colaborador['Pensionado'] == 'S' ? 1 : 0,
