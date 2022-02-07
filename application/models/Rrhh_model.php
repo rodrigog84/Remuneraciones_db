@@ -1708,13 +1708,27 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 			$asig_familiar = $trabajador->asigfamiliar; //Monto cargas retroactivas
 
+
+
+            $movimientos = $this->get_lista_movimientos($trabajador->id, null, $idperiodo, 3);
+
+            $dias_licencia = 0;
+            foreach ($movimientos as $movimiento) {
+                
+                $dias = dias_transcurridos($movimiento->fecmovimiento,$movimiento->fechastamovimiento) + 1; // se agrega uno porque se considera el día inicial
+                $dias_licencia += $dias;
+            }
+
+
 			if(!is_null($trabajador->idasigfamiliar)){ //BUSCA MONTO DE ASIGNACION FAMILIAR EN BASE A TRAMO SELECCIONADO
 				$tramo_asig_familiar = $this->admin->get_tabla_asig_familiar($trabajador->idasigfamiliar);
 				$asig_familiar += $tramo_asig_familiar->monto*$num_cargas;
 
+				$dias_calculo_asig = $datos_remuneracion->diastrabajo + $dias_licencia;
+
 				//https://www.dt.gob.cl/portal/1628/w3-article-95276.html
-				if($datos_remuneracion->diastrabajo < 25){
-						$asig_familiar = round(($asig_familiar/30)*$datos_remuneracion->diastrabajo,0);
+				if($dias_calculo_asig < 25){
+						$asig_familiar = round(($asig_familiar/30)*$dias_calculo_asig,0);
 
 				}
 
@@ -1811,7 +1825,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				$cot_adic_isapre = 0; // tributable
 				$adic_salud = 0;					
 			}else{
-				$dif_isapre = round($trabajador->valorpactado*$parametros->uf,0) - $cot_salud_oblig;
+				//$dif_isapre = round($trabajador->valorpactado*$parametros->uf,0) - $cot_salud_oblig;
+				$dif_isapre = $datos_remuneracion->diastrabajo > 0 ? (round($trabajador->valorpactado * $parametros->uf, 0) - $cot_salud_oblig) : 0;
 				//echo $trabajador->valorpactado; exit;
 				$adic_isapre = $dif_isapre > 0 ? $dif_isapre : 0;
 
