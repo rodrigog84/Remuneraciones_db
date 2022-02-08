@@ -20,7 +20,7 @@
 * Requirements: PHP5 or above
 *
 */
-
+$config['database_group_name'] = '';
 /*
 | -------------------------------------------------------------------------
 | Tables.

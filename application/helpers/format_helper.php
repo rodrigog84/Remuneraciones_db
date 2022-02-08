@@ -68,7 +68,7 @@ if (!function_exists('randomstring'))
     $pattern1 = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     $key = "";
     for($i=0;$i<$large;$i++){
-      $key .= $pattern1{rand(0,35)};
+      $key .= $pattern1[rand(0,35)];
     }
     return $key;
   }
@@ -83,7 +83,7 @@ if (!function_exists('randomstring_mm'))
     $pattern1 = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     $key = "";
     for($i=0;$i<$large;$i++){
-      $key .= $pattern1{rand(0,61)};
+      $key .= $pattern1[rand(0,61)];
     }
     return $key;
   }

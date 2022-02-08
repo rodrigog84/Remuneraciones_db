@@ -7,7 +7,8 @@ class Auth extends CI_Controller {
 		parent::__construct();
 		$this->load->database();
 		$this->load->library(array('ion_auth','form_validation'));
-		$this->load->helper(array('url','language'));
+		//$this->load->helper(array('url','language'));
+		$this->load->helper(['url', 'language']);
 
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -17,6 +18,7 @@ class Auth extends CI_Controller {
 	//redirect if needed, otherwise display the user list
 	function index()
 	{
+
 		if (!$this->ion_auth->logged_in())
 		{
 
@@ -64,6 +66,7 @@ class Auth extends CI_Controller {
 			//check to see if the user is logging in
 			//check for "remember me"
 			$remember = (bool) $this->input->post('remember');
+
 			if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
 			{
 				//if the login is successful
@@ -71,7 +74,10 @@ class Auth extends CI_Controller {
 
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
 				//$idlog = $this->ion_auth->log('login'); //genera log de acceso
+				//$this->session->set_userdata('hola','prueba');
+				//print_r($this->session->all_userdata());
 				redirect('/', 'refresh');
+
 			}
 			else
 			{

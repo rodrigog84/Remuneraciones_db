@@ -285,7 +285,8 @@ public function add_personal($array_datos,$idtrabajador){
 		                  ->where('p.id_empresa', $this->session->userdata('empresaid'));		
 		$query = $this->db->get();
 		$datos = $query->row();
-		if(count($datos) == 0){ // nuevo trabajador no existe
+	
+		if(count(array($datos)) == 0){ // nuevo trabajador no existe
 			if($idtrabajador == 0){
 				$array_datos['updated_at'] = date('Ymd H:i:s');
 				$array_datos['created_at'] = date('Ymd H:i:s');
