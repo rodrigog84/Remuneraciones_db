@@ -1,6 +1,12 @@
+      <div class="panel panel-inverse">                       
+          <div class="panel-heading">
+                <h4 class="panel-title">Creaci&oacute;n Centros de Costo</h4>
+            </div>
+<div class="panel-body">
+  <div class='row'>
+
 <div class="graph-visual tables-main">
 											
-		<h3 class="inner-tittle two">Creación de Centro de Costos</h3>
 		<div class="graph">
 		<form id="basicBootstrapForm" action="<?php echo base_url();?>configuraciones/submit_centro_costo" method="post">
 		<div class="tables">
@@ -29,6 +35,10 @@
 		<input type="hidden" name="idcentro" value="<?php echo isset($centro_costo->id_centro_costo) ? $centro_costo->id_centro_costo: 0 ;?>">
 		</div>
 </form>
+</div>
+</div>
+
+</div>
 </div>
 </div>
 <script>

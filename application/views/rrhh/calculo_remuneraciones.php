@@ -25,8 +25,8 @@
 									            <div class="row">
 
 									                <div class="col-md-6">
-									                  <div class="panel panel-primary">
-									                    <div class="panel-header">
+									                  <div class="panel panel-inverse">
+									                    <div class="panel-heading">
 									                      <h3 class="panel-title">Per&iacute;odo&nbsp;&nbsp;<span class="label " id="span_status"></span></h3>
 									                    </div><!-- /.box-header -->
 
@@ -77,7 +77,9 @@
 									                      </div>
 									                      <div class="row">
 									                      	<div class='col-md-3'>
-									                      			<button name="button_submit" id="button_submit" type="button" class="btn btn-primary">Calcular</button>&nbsp;&nbsp;
+									                      		  <?php if(count($mensajes) == 0){ ?>
+									                      			<button name="button_submit" id="button_submit" type="button" class="btn btn-primary"  >Calcular</button>&nbsp;&nbsp;
+									                      		  <?php  } ?>
 									                      	</div>
 									                      </div>                    
 									                    </div><!-- /.box-body -->
@@ -87,6 +89,86 @@
 
 									            </div>
 									            </form>
+
+									            <?php if(count($mensajes) > 0){ ?>
+
+
+														<div class="row">
+
+												            <div class="col-md-12">
+												              <div class="alert alert-danger fade in m-b-15">
+												                <strong>Atenci&oacute;n!</strong>
+												                Existe informaci&oacute;n pendiente que es requerida para calcular remuneraciones
+												                <span class="close" data-dismiss="alert">&times;</span>
+												              </div>
+
+												                <div class="panel panel-inverse">
+												                      <div class="panel-heading">
+												                        <h4 class="panel-title">Listado de datos Pendientes</h4>                    
+												                      </div><!-- /.box-header -->
+												                      <!-- form start -->
+
+
+												                        <div class="panel-body">
+												       
+												                              <div class='row'    >
+												                                <div class='col-md-12'>
+												                                          <div class="table-responsive">
+												                      <table class="table" id="detallecarga">
+												                        <thead>
+												                          <tr>
+												                            <th>#</th>
+												                            <th>Mensaje</th>			
+												                          </tr>
+												                        </thead>
+												                        <tbody>
+												                          
+												                          <?php
+												                              $i = 1; 
+												                              foreach ($mensajes as  $mensaje) { ?> 
+												                              <tr>
+												                                <td><?php echo $i; ?></td>
+												                                <td><?php echo $mensaje; ?></td>
+												                              </tr>
+
+												                          <?php $i++;
+												                                  } ?>
+												                         
+												                        </tbody>
+												                      </table>
+												                    </div>
+
+
+
+
+												                                </div>  
+												                              </div>   
+												                              
+
+												                                
+												                        </div><!-- /.box-body -->  
+
+
+												                    </div><!-- /.box -->
+
+
+												            </div>
+
+												        
+												      </div>									            	
+
+
+									            <?php } ?>
+
+                            <div class="panel panel-inverse">                       
+                                <div class="panel-heading">
+                                      <h4 class="panel-title">Remuneraciones Calculadas</h4>
+                                  </div>									            
+
+											<div class="panel-body">
+									             <div class='row'>
+
+									            	<div class="graph-visual tables-main">
 											
 														  <div class="graph">
 
@@ -109,7 +191,8 @@
 																	<tbody> 
                     												<?php if(count($periodos_remuneracion) > 0){ ?>	
                     													<?php $i = 1; ?>	
-                      													<?php foreach($periodos_remuneracion as $periodo){ ?>															
+                      													<?php foreach($periodos_remuneracion as $periodo){ ?>
+                      																												
 																		<tr class="active" id="variable">
 																			<td><?php echo $i;?></td>
 																			<td><?php echo date2string($periodo->mes,$periodo->anno); ?></td> 
@@ -164,6 +247,10 @@
 													</div>
 													
 											</div>
+
+										</div>
+									</div>
+								</div>
 									<!--/charts-inner-->
 <!-- MODAL DE APROBACIÓN DE REMUNERACIONES -->
     <div class="modal fade" id="confirm-publish" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

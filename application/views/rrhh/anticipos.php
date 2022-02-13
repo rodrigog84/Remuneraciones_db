@@ -2,8 +2,8 @@
             <div class="row">
 
                                   <div class="col-md-6">
-                                    <div class="panel panel-primary">
-                                      <div class="panel-header">
+                                   <div class="panel panel-inverse">
+                                      <div class="panel-heading">
                                         <h3 class="panel-title">Per&iacute;odo&nbsp;&nbsp;<span class="label " id="span_status"></span></h3>
                                       </div><!-- /.box-header -->
 
@@ -42,7 +42,7 @@
                                         </div>                    
                                       </div><!-- /.box-body -->
                                     </div>
-                                    <a href="<?php echo base_url();?>rrhh/carga_masiva_anticipos" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a> 
+                                    <!--a href="<?php echo base_url();?>rrhh/carga_masiva_anticipos" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a--> 
 
                                   </div>
 
@@ -53,10 +53,11 @@
             <div class="row">
 
                 <div class="col-md-12">
-                  <div class="box box-primary">
-                    <div class="box-header">
-                      <h3 class="box-title">Ingreso de Anticipos</h3>  
-                    </div><!-- /.box-header -->
+
+                  <div class="panel panel-inverse">                       
+                        <div class="panel-heading">
+                              <h4 class="panel-title">Ingreso de Anticipos</h4>
+                          </div>
 
                     <div class="box-body" >
                           <table  class="table table-bordered table-striped dt-responsive">
@@ -114,7 +115,7 @@
                           </table>
                     </div><!-- /.box-body -->
                     <?php if(count($personal) > 0 ){ ?>
-                      <div class="box-footer">
+                      <div class="panel-footer">
                         <button type="submit" class="btn btn-primary">Guardar</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       </div>
                     <?php } ?>

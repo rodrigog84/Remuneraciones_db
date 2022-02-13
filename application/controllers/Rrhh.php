@@ -1599,7 +1599,7 @@ public function confirma_carga_personal()
                 'active' => 1,
                 'adicafp' => 0
                 );
-
+           
 
 
             $result = $this->rrhh_model->add_personal($array_datos,0);
@@ -2074,7 +2074,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 
 			$valor_hora = $parametros_generales->sueldominimo/45;
 			$sueldominimo_proporcional = (int)($valor_hora*$horassemanales);
-
+      $data = array();
 			if($parttime == 'on'){
 				$data['result'] = "ok";
 			}else{
@@ -3300,6 +3300,52 @@ public function editar_trabajador(){
 			$array_remuneracion_trabajador = array();
 			$mensajes = array();
 			$mensaje_html = array();
+
+
+      /***** ANALIZAR DATOS DE EMPRESA *****/
+
+
+      $lista_centros_costo = $this->rrhh_model->get_centro_costo();
+      $cant_centros_costo = count($lista_centros_costo);
+      $cant_mensajes = 0;
+      $array_mensajes = array();
+      if($cant_centros_costo == 0){
+          $array_mensajes[$cant_mensajes] = "No existen centros de costo creados";
+          $cant_mensajes++;
+      }
+
+      $lista_col_sin_ccosto = $this->rrhh_model->get_colaborador_sin_centro_costo();
+      $cant_col_sin_ccosto = count($lista_col_sin_ccosto);
+      if($cant_col_sin_ccosto > 0){
+          $array_mensajes[$cant_mensajes] = "<b>" . $cant_col_sin_ccosto."</b> Colaboradores sin centro de costo asociado"; 
+          $cant_mensajes++;
+      }
+
+      $lista_col_sin_afp = $this->rrhh_model->get_colaborador_sin_afp();
+      $cant_col_sin_afp = count($lista_col_sin_afp);
+      if($cant_col_sin_afp > 0){
+          $array_mensajes[$cant_mensajes] = "<b>" . $cant_col_sin_afp."</b> Colaboradores sin AFP asociada"; 
+          $cant_mensajes++;
+      }
+
+
+      $lista_col_sin_isapre = $this->rrhh_model->get_colaborador_sin_isapre();
+      $cant_col_sin_isapre = count($lista_col_sin_isapre);
+      if($cant_col_sin_isapre > 0){
+          $array_mensajes[$cant_mensajes] = "<b>" . $cant_col_sin_isapre."</b> Colaboradores sin Instituci&oacute;n de Salud asociada"; 
+          $cant_mensajes++;
+      }
+
+      
+
+        // mensaje afp
+          // mensaje isapre
+
+
+
+  
+
+
 			
 			/*var_dump(json_encode($periodos_remuneracion));
 				die();*/
@@ -3419,7 +3465,7 @@ public function editar_trabajador(){
 			}
 
 	
-
+     // var_dump_new($periodos_remuneracion); exit;
 
 			//$estado = "Informaci&oacute;n Completa";
 			//$periodos->estado = $estado;
@@ -3431,6 +3477,9 @@ public function editar_trabajador(){
 
 			$vars['mes_curso'] = $mes_curso;
 			$vars['anno_curso'] = $anno_curso;
+      $vars['mensajes'] = $array_mensajes;
+
+
 			$vars['content_menu'] = $content;				
 			$vars['mes'] = $mes;	
 			$vars['anno'] = $anno;	
@@ -3477,6 +3526,7 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 
 	public function get_datos_remuneracion($mes,$anno){
 		$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno);
+
 		$array_remuneracion_trabajador = array();
 		foreach ($datos_remuneracion as $remuneracion) {
 
@@ -3887,7 +3937,8 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 				if(count($remuneraciones) == 0){ // SI NO ENCUENTRO NINGUNA REMUNERACION (QUIERE DECIR QUE NO EXISTIAN TRABAJADORES EN ESE PERIODO)
 					redirect('main/dashboard/');
 				}else{
-					$datosdetalle = $this->rrhh_model->libro($remuneraciones);
+          $this->load->model('excel_model');
+					$datosdetalle = $this->excel_model->libro($remuneraciones);
 				}
 
 			}
@@ -3921,13 +3972,13 @@ public function exporta_colaborador($idpersonal = null)
 
 			//$periodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
 			$datos_colaborador = $this->rrhh_model->get_personal_datos($idpersonal);
-
+      $this->load->model('excel_model');
 			if(is_null($idpersonal)){
 				//redirect('main/dashboard/');
-				$datosdetalle = $this->rrhh_model->exporta_colaborador($datos_colaborador);
+				$datosdetalle = $this->excel_model->exporta_colaborador($datos_colaborador);
 			}else{
 				
-					$datosdetalle = $this->rrhh_model->exporta_colaborador($datos_colaborador);
+					$datosdetalle = $this->excel_model->exporta_colaborador($datos_colaborador);
 				}
 
 		
@@ -4145,6 +4196,7 @@ public function previred($idperiodo = null,$idcentrocosto = null)
       }
 
 			$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,null,$idcentrocosto);
+      //var_dump_new($remuneraciones); exit;
 			$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
 			//$centros_costo = $this->rrhh_model->get_centro_costo();
 			$centros_costo = $this->rrhh_model->get_centro_costo_periodo_abierto($idperiodo);
@@ -4306,8 +4358,9 @@ public function ver_remuneraciones_colaborador($idperiodo = '',$idcentrocosto = 
 
 			$remuneracion = $this->rrhh_model->get_remuneraciones_by_id($idremuneracion);
 			//echo "<pre>";
-			//print_r($remuneracion); exit;
-			if(count($remuneracion) == 0){ // SI NO ENCUENTRO NINGUNA REMUNERACION (CORRESPONDE A OTRA EMPRESA POR EJEMPLO)
+     // print_r($remuneracion);
+			//print_r(count(get_object_vars($remuneracion))); exit;
+			if(!isset($remuneracion)){ // SI NO ENCUENTRO NINGUNA REMUNERACION (CORRESPONDE A OTRA EMPRESA POR EJEMPLO)
 				redirect('main/dashboard/');
 			}else if(is_null($remuneracion->cierre)){
 				redirect('main/dashboard/'); // SI NO ES UN PERIODO CERRADO, SE ENVÍA AL DASHBOARD
@@ -4360,11 +4413,10 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 
 
-	public function aprueba_remuneraciones($idperiodo){
+	public function aprueba_remuneraciones($idperiodo = 0){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 			
 			$idperiodo = $this->input->post('id_periodo3');
-
 
 			$publicar = $this->rrhh_model->aprobar_remuneracion($idperiodo);
 
@@ -4390,13 +4442,13 @@ public function liquidacion_colaborador($idremuneracion = null)
 	}
 
 
-	public function rechaza_remuneraciones($idperiodo){
+	public function rechaza_remuneraciones($idperiodo = 0){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 			set_time_limit(0);
 
 			$centro_costo = $this->input->post('centro_costo2');
 			$id_periodo = $this->input->post('id_periodo2');
-
+      var_dump_new($_POST);
 			foreach ($centro_costo as $centros_costo) {
 				# code...
 				$publicar = $this->rrhh_model->rechazar_remuneracion($id_periodo,$centros_costo);
@@ -4698,16 +4750,49 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 
 		if($tipo_status == 'calculo'){
+
+
+      $lista_centros_costo = $this->rrhh_model->get_centro_costo();
+      $lista_col_sin_ccosto = $this->rrhh_model->get_colaborador_sin_centro_costo();
+
+
+      $cant_centros_costo = count($lista_centros_costo); 
+      $cant_col_sin_ccosto = count($lista_col_sin_ccosto);
+
+
+      
+
+      //obtiene centros de costo sin calcular
 			$centros_costo = $this->rrhh_model->get_centro_costo_no_calculado($mes,$anno);
-			$estado_periodo = count($centros_costo) > 0 ? 2 : 0;
+      // si no existen centros de costo sin calcular, se asume que está listo
+      // esto es incorrecto en caso de que colaboradores no estén asociados a un centro de costo
+
+      //asociar a un centro de costo genérico
+      if($cant_centros_costo == 0){
+          $estado_periodo = 1; // no existen centros de costo
+      }else if ($cant_col_sin_ccosto > 0){
+          $estado_periodo = 3;  // existen colaboradores sin centros de costo
+      }else if (count($centros_costo) > 0){
+          $estado_periodo = 2; //existen centro de costo, colaboradores están asociados, pero no se han calculado
+      }else{
+          $estado_periodo = 0;
+      }
+			//$estado_periodo = count($centros_costo) > 0 ? 2 : 0;
 		}else{
 			$estado_periodo = $this->rrhh_model->get_estado_periodo($mes,$anno);
 		}
 		
-
 		//OPCIONES:  ES NUEVO, YA SE CREO, YA ESTÁ CERRADO
+    if($estado_periodo == 1){
+        $array_result['label_style'] = 'label-danger';
+        $array_result['label_text'] = 'No existen centros de costo creados';
+        $array_result['status'] = 'nuevo';    
+    }else if($estado_periodo == 3){ // NO EXISTE, ES NUEVO
 
-		if($estado_periodo == 2){ // NO EXISTE, ES NUEVO
+        $array_result['label_style'] = 'label-danger';
+        $array_result['label_text'] = 'Existen colaboradores sin centro de costo asociado';
+        $array_result['status'] = 'nuevo';
+    }else if($estado_periodo == 2){ // NO EXISTE, ES NUEVO
 			if($tipo_status == 'calculo'){
 				$array_result['label_style'] = 'label-primary';
 				$array_result['label_text'] = 'Per&iacute;odo en condiciones de calcular';
@@ -4733,7 +4818,8 @@ public function liquidacion_colaborador($idremuneracion = null)
 				$personal = $this->rrhh_model->get_personal(); 
 				foreach ($personal as $trabajador) {
 					$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno,$trabajador->id_personal); 
-					if(count($datos_remuneracion) == 0){
+
+					if(count(get_object_vars($datos_remuneracion)) == 0){
 	                   $datos_pendientes = true;
 	               	   break;
 					}else{
@@ -4811,11 +4897,31 @@ public function liquidacion_colaborador($idremuneracion = null)
 		//NO SE CONSIDERARÁ AÚN EL PERÍODO DE INICIO
 		//$valid = $this->admin->get_permite_periodo($this->input->post('mes'),$this->input->post('anno'));
 		$valid = true;
+   // var_dump_new ($_POST); exit;
 		if($valid){
 
 			if($tipo_status == 'calculo'){
+
+        $lista_centros_costo = $this->rrhh_model->get_centro_costo();
+        $lista_col_sin_ccosto = $this->rrhh_model->get_colaborador_sin_centro_costo();
+
+        $cant_centros_costo = count($lista_centros_costo); 
+        $cant_col_sin_ccosto = count($lista_col_sin_ccosto);
+
 				$centros_costo = $this->rrhh_model->get_centro_costo_no_calculado($this->input->post('mes'),$this->input->post('anno'));
-				$estado_periodo = count($centros_costo) > 0 ? 2 : 0;
+
+        if($cant_centros_costo == 0){
+            $estado_periodo = 5; // no existen centros de costo
+        }else if ($cant_col_sin_ccosto > 0){
+            $estado_periodo = 4;  // existen colaboradores sin centros de costo
+        }else if (count($centros_costo) > 0){
+            $estado_periodo = 2; //existen centro de costo, colaboradores están asociados, pero no se han calculado
+        }else{
+            $estado_periodo = 0;
+        }
+
+
+				 //$estado_periodo = count($centros_costo) > 0 ? 2 : 0;
 			}else{
 				$estado_periodo = $this->rrhh_model->get_estado_periodo($this->input->post('mes'),$this->input->post('anno'));	
 			}

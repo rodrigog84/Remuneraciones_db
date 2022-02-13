@@ -1,10 +1,23 @@
 /<!--sub-heard-part-->
 								  <!--//sub-heard-part-->
-								
+		 <div class="row">
+       <div class='col-md-6'>
+
+                <a href="<?php echo base_url();?>configuraciones/add_haber_descuento" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Haber / Descuento</a>
+        </div>
+      </div><br>                        
+
+                  <div class="panel panel-inverse">                       
+                      <div class="panel-heading">
+                            <h4 class="panel-title">Creaci&oacute;n Haberes y Descuentos</h4>
+                        </div>
+            <div class="panel-body">
+              <div class='row'>
+
+
 									<div class="graph-visual tables-main">
 											
-													<a href="<?php echo base_url();?>configuraciones/add_haber_descuento" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Haber / Descuento</a>
-													<h3 class="inner-tittle two">Descripción</h3>
+
 														  <div class="graph">
 
 														  	
@@ -38,7 +51,7 @@
                                                       <td>
                                                            <a href="<?php echo base_url(); ?>configuraciones/add_haber_descuento/<?php echo $haber_descuento->id;?>" data-toggle="tooltip" title="Editar Haber/Descuento"><i class="fa fa-lg fa-edit"></i></a>
                                                           &nbsp;&nbsp;
-                                                          <i class="fa fa-lg fa-trash"></i>
+                                                          <!--i class="fa fa-lg fa-trash"></i-->
                                                       </td>          
                                                       <?php } ?>                                            
 																		</tr> 
@@ -51,9 +64,17 @@
 																	</tbody> 
 																</table> 
 															</div>
+
+
+
+
 												
 													</div>
 											</div>
+
+                  </div>
+                </div>
+              </div>                      
 
 
 <script>

@@ -1,6 +1,13 @@
-<div class="graph-visual tables-main">
+                  <div class="panel panel-inverse">                       
+                      <div class="panel-heading">
+                            <h4 class="panel-title">Creaci&oacute;n Haberes y Descuentos Variables</h4>
+                        </div>
+            <div class="panel-body">
+              								<div class='row'>
+
+
+													<div class="graph-visual tables-main">
 											
-													<h3 class="inner-tittle two">Creación de Haberes y Descuentos Variables</h3>
 
 													
 														  <div class="graph">
@@ -296,66 +303,27 @@
 																					</div>
 																				</div>
 																			</td>
-
-																			<!--td>
-																				<select name="selector1" id="selector1" class="form-control1">
-																					<option>Seleccione.</option>
-																					<option>Dolore, ab unde modi est!</option>
-																					<option>Illum, fuga minus sit eaque.</option>
-																					<option>Consequatur ducimus maiores voluptatum min</option>
-																				</select>
-
-																				<input type="text" name="" class="form-control" placeholder="Descripción">
-																			</td--> 
 																		</tr>  	
 																	</tbody> 
 																</table>
-
-																<!--table class="table"> 
-																	<thead> 
-																		<tr>
-																			<th>Empresa:</th> 
-																			<th>Cuenta Contable:</th>
-																			<th>Descripción:</th> 
-																		</tr> 
-																	</thead> 
-																	<tbody> 
-																		<tr class="active" id="variable">
-																			<td>
-																				<select name="selector1" id="selector1" class="form-control1">
-																					<option>Seleccione.</option>
-																					<option>Dolore, ab unde modi est!</option>
-																					<option>Illum, fuga minus sit eaque.</option>
-																					<option>Consequatur ducimus maiores voluptatum min</option>
-																				</select>
-																			</td>
-
-																			<td>
-																				<select name="selector1" id="selector1" class="form-control1">
-																					<option>Seleccione.</option>
-																					<option>Dolore, ab unde modi est!</option>
-																					<option>Illum, fuga minus sit eaque.</option>
-																					<option>Consequatur ducimus maiores voluptatum min</option>
-																				</select>
-
-																			</td>
-
-																			<td>
-																				<textarea class="form-control" placeholder="Descripción" ></textarea>
-																			</td> 
-																		</tr>  	
-																	</tbody> 
-																</table-->
 																<br>
-																<a href="<?php echo base_url(); ?>configuraciones/hab_descto" class = "btn btn-primary" >Volver</a>
-																<button type = "submit" class = "btn btn-info" id="comando">Guardar
-																</button>
-																<input type="hidden" name="idhab" value="<?php echo isset($haberes_descuentos->id) ? $haberes_descuentos->id: 0 ;?>">
+																
 															</div>
 
 														</form>
 															
 													</div>
+											</div>
+											</div>
+											</div>
+											 <div class="panel-footer">
+<a href="<?php echo base_url(); ?>configuraciones/hab_descto" class = "btn btn-primary" >Volver</a>
+																<button type = "submit" class = "btn btn-info" id="comando">Guardar
+																</button>
+																<input type="hidden" name="idhab" value="<?php echo isset($haberes_descuentos->id) ? $haberes_descuentos->id: 0 ;?>">
+
+											  </div> 
+
 											</div>
 
 

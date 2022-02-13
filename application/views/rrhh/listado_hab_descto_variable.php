@@ -1,10 +1,24 @@
 /<!--sub-heard-part-->
 								  <!--//sub-heard-part-->
-								
+		
+    						<div class="row">
+       <div class='col-md-6'>
+
+               <a href="<?php echo base_url();?>rrhh/hab_descto_variable" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Haber / Descuento Variable</a>
+        </div>
+      </div><br>  
+
+            <div class="panel panel-inverse">                       
+                      <div class="panel-heading">
+                            <h4 class="panel-title">Listado de Haberes y Descuentos</h4>
+                        </div>
+            <div class="panel-body">
+              <div class='row'>
+
+
 									<div class="graph-visual tables-main">
-											
-													<a href="<?php echo base_url();?>rrhh/hab_descto_variable" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Haber / Descuento Variable</a>
-                          <a href="<?php echo base_url();?>rrhh/carga_masiva_haberes_descuentos" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a> 
+
+                          <!--a href="<?php echo base_url();?>rrhh/carga_masiva_haberes_descuentos" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a--> 
 													<h3 class="inner-tittle two">Descripción</h3>
 														  <div class="graph">
 
@@ -48,6 +62,10 @@
 													</div>
 
 											</div>
+                    </div>
+                  </div>
+                </div>
+
 
 
 <script>

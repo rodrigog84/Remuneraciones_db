@@ -1,6 +1,20 @@
-<div class="container">
+		
+    						<div class="row">
+       <div class='col-md-6'>
 
-	<a class="btn btn-primary" href="<?php echo base_url();?>auxiliares/add_licencias"><i class="fa fa-plus" aria-hidden="true"></i> Agregar Licencia</a>
+               <a class="btn btn-primary" href="<?php echo base_url();?>auxiliares/add_licencias"><i class="fa fa-plus" aria-hidden="true"></i> Agregar Licencia</a>
+        </div>
+      </div><br>  
+
+
+            <div class="panel panel-inverse">                       
+                      <div class="panel-heading">
+                            <h4 class="panel-title">Listado de Licencias</h4>
+                        </div>
+            <div class="panel-body">
+              <div class='row'>
+
+	
 
 	<div class="graph">
 		<div class="tables">
@@ -46,11 +60,13 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
+
 
 
 </div>
-
+</div>
+</div>
+</div>
 
 
 <script>

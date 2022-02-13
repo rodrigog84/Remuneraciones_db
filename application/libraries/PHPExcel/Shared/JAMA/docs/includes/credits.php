@@ -1,4 +1,4 @@
-	<div id="credits">
+<div id="credits">
   <p>
   Brought to you by:
   </p>

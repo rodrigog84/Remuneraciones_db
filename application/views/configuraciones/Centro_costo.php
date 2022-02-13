@@ -1,10 +1,25 @@
-/<!--sub-heard-part-->
+
+<div class="row">
+       <div class='col-md-6'>
+
+                          <a href="<?php echo base_url();?>configuraciones/add_centro_costo" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Centro de Costo</a>
+
+        </div>
+      </div><br>  
+
+
+<!--sub-heard-part-->
 								  <!--//sub-heard-part-->
-								
+                  <div class="panel panel-inverse">                       
+                      <div class="panel-heading">
+                            <h4 class="panel-title">Creaci&oacute;n Centros de Costo</h4>
+                        </div>
+            <div class="panel-body">
+              <div class='row'>							
+
 									<div class="graph-visual tables-main">
 											
-													<a href="<?php echo base_url();?>configuraciones/add_centro_costo" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Centro de Costo</a>
-													<h3 class="inner-tittle two">Descripción</h3>
+
 														  <div class="graph">														  	
 															<div class="tables">
 																<table id="listado" class="table"> 
@@ -32,6 +47,9 @@
 															</div>												
 													</div>
 											</div>
+                </div>
+                </div>
+                </div>              
 
 <script>
 

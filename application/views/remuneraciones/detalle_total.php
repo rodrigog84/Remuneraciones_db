@@ -144,7 +144,7 @@
 											                              <td>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0 && is_null($idcentrocosto)){ ?>
-											                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-book"></span></a>  
+											                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo;?>" ><span class="glyphicon glyphicon-book"></span></a>  
 											                              <?php }else{ ?>
 											                              		-
 											                              <?php } ?>

@@ -53,6 +53,41 @@ public function get_centro_costo(){
 	}
 
 
+
+public function get_colaborador_sin_centro_costo(){
+		$this->db->select('id_personal, rut')
+						  ->from('rem_personal')
+						  ->where('id_empresa', $this->session->userdata('empresaid'))
+						  ->where('idcentrocosto', 0)
+		                  ->order_by('nombre','asc');
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
+
+public function get_colaborador_sin_afp(){
+		$this->db->select('id_personal, rut')
+						  ->from('rem_personal')
+						  ->where('id_empresa', $this->session->userdata('empresaid'))
+						  ->where('idafp = 0 or idafp is null')
+		                  ->order_by('nombre','asc');
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
+
+public function get_colaborador_sin_isapre(){
+		$this->db->select('id_personal, rut')
+						  ->from('rem_personal')
+						  ->where('id_empresa', $this->session->userdata('empresaid'))
+						  ->where('idisapre = 0 or idisapre is null')
+		                  ->order_by('nombre','asc');
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
 	/*public function get_centro_costo_periodo_abierto($idperiodo = null){
 		$data_periodo = $this->db->select('cc.nombre, pr.id_periodo, pr.id_empresa, pr.id_centro_costo')
 						  ->from('rem_periodo_remuneracion pr')
@@ -124,7 +159,7 @@ public function get_centro_costo(){
 													and cierre is not null)";
 
         $query= $this->db->query($data_periodo);
-   		if(count($query->result()) == 0){
+   		if($query->num_rows() == 0){
 			return 0;
 		}else{
 
@@ -186,7 +221,7 @@ public function verificar_personal($rut){
 		                  ->where('p.active = 1');		
 		$query = $this->db->get();
 		$datos = $query->row();
-		if(count($datos) == 0){
+		if($query->num_rows() == 0){
 			return 0;
 		}
 		else{
@@ -209,7 +244,7 @@ public function desactivar_personal($rut){
 		                  ->where('p.active = 1');		
 		$query = $this->db->get();
 		$datos = $query->row();
-		if(count($datos) == 0){
+		if($query->num_rows() == 0){
 			return 0;
 		}else{
 			$this->db->where('rut', $rut);
@@ -235,7 +270,7 @@ public function activar_personal($rut){
 		                  ->where('p.active = 0');		
 		$query = $this->db->get();
 		$datos = $query->row();
-		if(count($datos) == 0){
+		if($query->num_rows() == 0){
 			return 0;
 		}else{
 			$this->db->where('rut', $rut);
@@ -262,7 +297,7 @@ public function edit_personal($array_datos,$idtrabajador){
 		                  ->where('p.id_empresa', $this->session->userdata('empresaid'));		
 		$query = $this->db->get();
 		$datos = $query->row();
-		if(count($datos) == 1){ // nuevo trabajador no existe
+		if($query->num_rows() == 1){ // nuevo trabajador no existe
 				$this->db->where('rut', $array_datos['rut']);
 				$this->db->where('id_empresa', $this->session->userdata('empresaid'));
 				$this->db->update('rem_personal',$array_datos); 
@@ -285,8 +320,7 @@ public function add_personal($array_datos,$idtrabajador){
 		                  ->where('p.id_empresa', $this->session->userdata('empresaid'));		
 		$query = $this->db->get();
 		$datos = $query->row();
-	
-		if(count(array($datos)) == 0){ // nuevo trabajador no existe
+		if($query->num_rows() == 0){ // nuevo trabajador no existe
 			if($idtrabajador == 0){
 				$array_datos['updated_at'] = date('Ymd H:i:s');
 				$array_datos['created_at'] = date('Ymd H:i:s');
@@ -401,7 +435,7 @@ public function add_personal($array_datos,$idtrabajador){
 		$query = $this->db->get();
 		$datos_periodo = $query->row();
 		$idperiodo = 0;
-		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'mes' => $mes,
 			      	'anno' =>  $anno
@@ -451,7 +485,7 @@ public function add_personal($array_datos,$idtrabajador){
 		$query = $this->db->get();
 		$datos_periodo = $query->row();
 		$idperiodo = 0;
-		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'mes' => $mes,
 			      	'anno' =>  $anno
@@ -483,7 +517,7 @@ public function add_personal($array_datos,$idtrabajador){
 				'created_at' => date('Ymd H:i:s'),
 			);
 			
-			if(count($datos_bonos) == 0){ 
+			if($query->num_rows() == 0){ 
 
 		      $this->db->insert('rem_bonos_personal',$array_datos);
 		       //print_r($array_datos);	
@@ -540,7 +574,7 @@ public function add_personal($array_datos,$idtrabajador){
 		                  //->where('pr.cierre is null');
 		$query = $this->db->get();
 		$datos_periodo = $query->row();
-		if(count($datos_periodo) == 0){
+		if($query->num_rows() == 0){
 			return 2;
 		}else{
 			
@@ -566,7 +600,8 @@ public function save_asistencia($array_trabajadores,$mes,$anno){
 		$query = $this->db->get();
 		$datos_periodo = $query->row();
 		//$idperiodo = 0;
-		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+		//if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'mes' => $mes,
 			      	'anno' =>  $anno
@@ -585,7 +620,7 @@ public function save_asistencia($array_trabajadores,$mes,$anno){
 		                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
 		$query = $this->db->get();
 		$datos_periodo_remuneracion = $query->row();
-		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'id_periodo' => $idperiodo,
 			      	'id_empresa' => $this->session->userdata('empresaid')
@@ -612,7 +647,7 @@ public function save_asistencia($array_trabajadores,$mes,$anno){
 			                  ->where('r.id_periodo', $idperiodo);
 			$query = $this->db->get();
 			$datos_remuneracion = $query->row();
-			if(count($datos_remuneracion) == 0){ // si no existe periodo, se crea
+			if($query->num_rows() == 0){ // si no existe periodo, se crea
 
 					$data = array(
 				      	'idpersonal' => $idtrabajador,
@@ -654,7 +689,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$query = $this->db->get();
 		$datos_periodo = $query->row();
 		$idperiodo = 0;
-		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'mes' => $mes,
 			      	'anno' =>  $anno
@@ -674,7 +709,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
 		$query = $this->db->get();
 		$datos_periodo_remuneracion = $query->row();
-		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'id_periodo' => $idperiodo,
 			      	'id_empresa' => $this->session->userdata('empresaid')
@@ -692,7 +727,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			                  ->where('r.id_periodo', $idperiodo);
 			$query = $this->db->get();
 			$datos_remuneracion = $query->row();
-			if(count($datos_remuneracion) == 0){ // si no existe periodo, se crea
+			if($query->num_rows() == 0){ // si no existe periodo, se crea
 
 					$data = array(
 						'idpersonal' => $idtrabajador,
@@ -738,7 +773,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$query = $this->db->get();
 		$datos_periodo = $query->row();
 		$idperiodo = 0;
-		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'mes' => $mes,
 			      	'anno' =>  $anno
@@ -758,7 +793,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
 		$query = $this->db->get();
 		$datos_periodo_remuneracion = $query->row();
-		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'id_periodo' => $idperiodo,
 			      	'id_empresa' => $this->session->userdata('empresaid')
@@ -776,7 +811,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			                  ->where('r.id_periodo', $idperiodo);
 			$query = $this->db->get();
 			$datos_remuneracion = $query->row();
-			if(count($datos_remuneracion) == 0){ // si no existe periodo, se crea
+			if($query->num_rows() == 0){ // si no existe periodo, se crea
 
 					$data = array(
 						'idpersonal' => $info_trabajador['idtrabajador'],
@@ -824,7 +859,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$query = $this->db->get();
 		$datos_periodo = $query->row();
 		$idperiodo = 0;
-		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'mes' => $mes,
 			      	'anno' =>  $anno
@@ -843,7 +878,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
 		$query = $this->db->get();
 		$datos_periodo_remuneracion = $query->row();
-		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'id_periodo' => $idperiodo,
 			      	'id_empresa' => $this->session->userdata('empresaid')
@@ -862,7 +897,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			                  ->where('r.id_periodo', $idperiodo);
 			$query = $this->db->get();
 			$datos_remuneracion = $query->row();
-			if(count($datos_remuneracion) == 0){ // si no existe periodo, se crea
+			if($query->num_rows() == 0){ // si no existe periodo, se crea
 					$data = array(
 				      	'idpersonal' => $idtrabajador,
 				      	'id_periodo' => $idperiodo,
@@ -900,7 +935,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$query = $this->db->get();
 		$datos_periodo = $query->row();
 		$idperiodo = 0;
-		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'mes' => $mes,
 			      	'anno' =>  $anno
@@ -919,7 +954,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
 		$query = $this->db->get();
 		$datos_periodo_remuneracion = $query->row();
-		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'id_periodo' => $idperiodo,
 			      	'id_empresa' => $this->session->userdata('empresaid')
@@ -946,7 +981,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			//print_r($idtrabajador);
 		    //exit;
 
-			if(count($datos_remuneracion) == 0){ // si no existe periodo, se crea
+			if($query->num_rows() == 0){ // si no existe periodo, se crea
 					$data = array(
 				      	'idpersonal' => $info_trabajador['idtrabajador'],
 				      	'id_periodo' => $idperiodo,
@@ -1278,7 +1313,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$query = $this->db->get();
 		$datos_periodo = $query->row();
 		$idperiodo = 0;
-		if(count($datos_periodo) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'mes' => $mes,
 			      	'anno' =>  $anno
@@ -1298,7 +1333,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
 		$query = $this->db->get();
 		$datos_periodo_remuneracion = $query->row();
-		if(count($datos_periodo_remuneracion) == 0){ // si no existe periodo, se crea
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
 				$data = array(
 			      	'id_periodo' => $idperiodo,
 			      	'id_empresa' => $this->session->userdata('empresaid'),
@@ -1325,7 +1360,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			                  ->where('r.id_empresa', $this->session->userdata('empresaid'));
 			$query = $this->db->get();
 			$datos_remuneracion = $query->row();
-			if(count($datos_remuneracion) == 0){ // si no existe periodo, se crea
+			if($query->num_rows() == 0){ // si no existe periodo, se crea
 
 					$datos_licencia = $this->rrhh_model->get_licencia_medica($trabajador->id_personal); 
 			        $dias_licencia = 0;
@@ -1381,7 +1416,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	}	
 
 
-	public function aprobar_remuneracion($idperiodo,$centro_costo){
+	public function aprobar_remuneracion($idperiodo){
 
 		$this->db->where('id_periodo', $idperiodo);
 		//$this->db->where('id_centro_costo', $centro_costo);
@@ -1424,8 +1459,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$remuneraciones = $this->get_remuneraciones_reversa($idperiodo,$centro_costo);
 
 		//echo "<pre>";
-		//print_r($remuneraciones); exit;
-		if(count($remuneraciones) > 0){ // SÓLO REALIZA REVERSA EN CASO DE QUE EL PERÍODO CORRESPONDA
+		if(count($remuneraciones) > 0){
+		//if(count($remuneraciones) > 0){ // SÓLO REALIZA REVERSA EN CASO DE QUE EL PERÍODO CORRESPONDA
 
 			foreach ($remuneraciones as $remuneracion) {
 				#elimino los bonos cargados a la remuneracion
@@ -1606,7 +1641,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 		foreach ($personal as $trabajador) { // calculo de sueldos por cada trabajador
-
+			//var_dump_new($trabajador); exit;
 			$datos_remuneracion = $this->get_datos_remuneracion_by_periodo($idperiodo,$trabajador->id_personal);
 			//print_r($datos_remuneracion); exit;
 			$datos_bonos = array();
@@ -1677,6 +1712,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 			$datos_afp = $this->admin->get_afp($trabajador->idafp);
+			//var_dump_new($datos_afp); exit;
 
 
 			//$valor_hora = $trabajador->parttime == 1 ? ((($trabajador->sueldobase + $trabajador->bonos_fijos)/$trabajador->diastrabajo)/$trabajador->horasdiarias) : ((($trabajador->sueldobase + $trabajador->bonos_fijos)/30)*7)/45;
@@ -1711,7 +1747,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 
-            $movimientos = $this->get_lista_movimientos($trabajador->id, null, $idperiodo, 3);
+            $movimientos = $this->get_lista_movimientos($trabajador->id_personal, null, $idperiodo, 3);
 
             $dias_licencia = 0;
             foreach ($movimientos as $movimiento) {
@@ -1972,9 +2008,10 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 			#1.- VERIFICAR SI TIENE LICENCIA EN EL PERÍODO
 			$movimientos = $this->get_lista_movimientos($trabajador->id_personal,null,$idperiodo,3);
-			//$movimientos = array();
-			$tiene_licencia = count($movimientos) > 0 ? true : false;
 
+			//$movimientos = array();
+			//$tiene_licencia = count($movimientos) > 0 ? true : false;
+			$tiene_licencia = count($movimientos)  > 0 ? true : false;
 			//ocupo esta query para sacar el ultimo sueldo imponible, sino tomar suedo base según contrato.
 			/*select r.sueldoimponible from gc_remuneracion r
 inner join gc_periodo p on r.id_periodo = p.id
@@ -2263,7 +2300,7 @@ public function get_periodos_aprobados_detalle($empresaid,$idperiodo = null,$idc
 						  ->join('rem_empresa as co','pe.id_empresa = co.id_empresa')
 						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and r.idcentrocosto = pr.id_centro_costo and pr.cierre is not null')
 						  ->join('rem_isapre as i','pe.idisapre = i.id_isapre')
-						  ->join('rem_cargos as c','pe.idcargo = c.id_cargos')
+						  ->join('rem_cargos as c','pe.idcargo = c.id_cargos','left')
 						  ->join('rem_afp as a','pe.idafp = a.id_afp')
 						  ->join('rem_apv as ap','pe.instapv = ap.id_apv','left')						  
 						  ->join('rem_comuna as com','pe.idcomuna = com.idcomuna','left')
@@ -2318,398 +2355,6 @@ public function get_periodos_aprobados_detalle($empresaid,$idperiodo = null,$idc
 
 
 	}
-
-
-	public function libro($datos_remuneracion){
-
-			$this->load->library('PHPExcel');
-	  	    $this->phpexcel->setActiveSheetIndex(0);
-	        $sheet = $this->phpexcel->getActiveSheet();
-	        $sheet->setTitle("libro_remuneraciones");
-
-
-
-
-			$this->load->model('admin');
-			$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
-			//echo "<pre>";
-			//print_r($this->session->all_userdata());
-			//print_r($datos_empresa); exit;
-
-			/********* COMIENZA A CREAR EXCEL *******/
-	        // DATOS INICIALES
-			$sheet->getColumnDimension('A')->setWidth(5);
-
-
-	        $sheet->mergeCells('B2:D2');
-	        $sheet->setCellValue('B2', 'Libro Remuneraciones');
-	        $sheet->getColumnDimension('B')->setWidth(20);
-	        $sheet->setCellValue('B3', 'Nombre Empresa');
-	        $sheet->setCellValue('C3',html_entity_decode($this->session->userdata('empresanombre')));
-	        $sheet->mergeCells('C3:D3');
-	        $sheet->setCellValue('B4', 'Rut Empresa');
-	        $sheet->setCellValue('C4',number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);	        
-	        $sheet->mergeCells('C4:D4');
-	        $sheet->setCellValue('B5', 'Direccion Empresa');
-	        $sheet->setCellValue('C5',$datos_empresa->direccion.", ".$datos_empresa->comuna);	        	        
-	        $sheet->mergeCells('C5:D5');
-	        $sheet->setCellValue('B6', 'Fecha emision Reporte');
-	        $sheet->setCellValue('C6',date('d/m/Y') );
-	        $sheet->mergeCells('C6:D6');
-	        
- 
-			$sheet->getStyle("B2:B6")->getFont()->setBold(true);
-			$sheet->getStyle("B2:D6")->getFont()->setSize(10);    	
-
-			//D7E4BC
-
-
-			/****************** TABLA INICIAL ****************/
-
-			/*************************todos los bordes internos *************************************/
-			$sheet->getStyle("B2:D6")->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-
-
-			/*************************bordes cuadro principal (externo) *************************************/
-			$sheet->getStyle("B2:D2")->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-			$sheet->getStyle("B2:D2")->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-			$sheet->getStyle("B6:D6")->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-			$sheet->getStyle("B2:B6")->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-			$sheet->getStyle("B2:B6")->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-			$sheet->getStyle("D2:D6")->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-		
-			/**********************************************************************************************************/			        
-				
-			/***** COLOR TABLA ****************/
-			$sheet->getStyle("B2:D2")->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-			$sheet->getStyle("B2:D2")->getFill()->getStartColor()->setRGB('FA8D72');
-
-			$sheet->getStyle("B2:B6")->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-			$sheet->getStyle("B2:B6")->getFill()->getStartColor()->setRGB('FA8D72');			
-
-
-			$i = 8;
-
-
-
-			//ENCABEZADO REPORTE
-
-			 $sheet->getColumnDimension('B')->setWidth(10);
-			 $sheet->setCellValue('B'.$i, '#');
-			 $sheet->getColumnDimension('C')->setWidth(15);
-			 $sheet->setCellValue('C'.$i, 'Rut');
-			 $sheet->getColumnDimension('D')->setWidth(35);
-			 $sheet->setCellValue('D'.$i, 'Nombre');
-			 $sheet->getColumnDimension('E')->setWidth(15);
-			 $sheet->setCellValue('E'.$i, 'Fecha Ingreso');
-			 $sheet->getColumnDimension('F')->setWidth(15);			
-			 $sheet->setCellValue('F'.$i, 'Sueldo Base');
-			 $sheet->getColumnDimension('G')->setWidth(15);			
-			 $sheet->setCellValue('G'.$i, 'Gratificación');	
-			 $sheet->getColumnDimension('H')->setWidth(15);			
-			 $sheet->setCellValue('H'.$i, 'Movilización');	
-			 $sheet->getColumnDimension('I')->setWidth(15);			
-			 $sheet->setCellValue('I'.$i, 'Colación');		
-			 $sheet->getColumnDimension('J')->setWidth(15);			
-			 $sheet->setCellValue('J'.$i, 'Bonos Imponibles');				 			 			 		 
-			 $sheet->getColumnDimension('K')->setWidth(15);			
-			 $sheet->setCellValue('K'.$i, 'Bonos No Imponibles');	
-			 $sheet->getColumnDimension('L')->setWidth(15);			
-			 $sheet->setCellValue('L'.$i, 'Horas Extras 50%');	
-			 $sheet->getColumnDimension('M')->setWidth(15);			
-			 $sheet->setCellValue('M'.$i, 'Horas Extras 100%');	
-			 $sheet->getColumnDimension('N')->setWidth(15);			
-			 $sheet->setCellValue('N'.$i, 'Semana Corrida');				 
-			 $sheet->getColumnDimension('O')->setWidth(15);			
-			 $sheet->setCellValue('O'.$i, 'Aguinaldo');	
-			 $sheet->getColumnDimension('P')->setWidth(15);			
-			 $sheet->setCellValue('P'.$i, 'Asignación Familiar');		
-			 $sheet->getColumnDimension('Q')->setWidth(15);			
-			 $sheet->setCellValue('Q'.$i, 'Total Haberes');				 			 
-			 $sheet->getColumnDimension('R')->setWidth(15);			
-			 $sheet->setCellValue('R'.$i, 'Cotización Obligatoria');				 			 
-			 $sheet->getColumnDimension('S')->setWidth(15);			
-			 $sheet->setCellValue('S'.$i, 'Comisión AFP');				 			 
-			 $sheet->getColumnDimension('T')->setWidth(15);			
-			 $sheet->setCellValue('T'.$i, 'Adicional AFP');				 			 
-			 $sheet->getColumnDimension('U')->setWidth(15);			
-			 $sheet->setCellValue('U'.$i, 'Ahorro Voluntario');	
-			 $sheet->getColumnDimension('V')->setWidth(15);			
-			 $sheet->setCellValue('V'.$i, 'APV');	
-			 $sheet->getColumnDimension('W')->setWidth(15);			
-			 $sheet->setCellValue('W'.$i, 'Cotización Salud Obligatoria');	
-			 $sheet->getColumnDimension('X')->setWidth(15);			
-			 $sheet->setCellValue('X'.$i, 'Cotización Adicional Isapre');	
-			 $sheet->getColumnDimension('Y')->setWidth(15);			
-			 $sheet->setCellValue('Y'.$i, 'Adicional Salud');	
-			 $sheet->getColumnDimension('Z')->setWidth(15);			
-			 $sheet->setCellValue('Z'.$i, 'Fonasa');	
-			 $sheet->getColumnDimension('AA')->setWidth(15);			
-			 $sheet->setCellValue('AA'.$i, 'Seguro Cesantía');	
-			 $sheet->getColumnDimension('AB')->setWidth(15);			
-			 $sheet->setCellValue('AB'.$i, 'Impuesto');	
-			 $sheet->getColumnDimension('AC')->setWidth(15);			
-			 $sheet->setCellValue('AC'.$i, 'Total Leyes Sociales');	
-			 $sheet->getColumnDimension('AD')->setWidth(15);			
-			 $sheet->setCellValue('AD'.$i, 'Anticipo');	
-			 $sheet->getColumnDimension('AE')->setWidth(15);			
-			 $sheet->setCellValue('AE'.$i, 'Descuento por Aguinaldo');	
-			 $sheet->getColumnDimension('AF')->setWidth(15);			
-			 $sheet->setCellValue('AF'.$i, 'Horas Descuento');	
-			 $sheet->getColumnDimension('AG')->setWidth(15);			
-			 $sheet->setCellValue('AG'.$i, 'Otros Descuentos');	
-			 $sheet->getColumnDimension('AH')->setWidth(15);			
-			 $sheet->setCellValue('AH'.$i, 'Préstamos');	
-			 $sheet->getColumnDimension('AI')->setWidth(15);			
-			 $sheet->setCellValue('AI'.$i, 'Total Otros Descuentos');				 			 			 			 		
-			 $sheet->getColumnDimension('AJ')->setWidth(15);			
-			 $sheet->setCellValue('AJ'.$i, 'Líquido a Pagar');				 			 			 			 		
-			 $sheet->getColumnDimension('AK')->setWidth(15);	
-			 $sheet->setCellValue('AK'.$i, 'Aporte Seguro Cesantía');	 
-			 $sheet->getColumnDimension('AL')->setWidth(15);			
-			 $sheet->setCellValue('AL'.$i, 'Aporte SIS');	 
-			 $sheet->getColumnDimension('AM')->setWidth(15);			
-			 $sheet->setCellValue('AM'.$i, 'Mutual de Seguridad');	 
-			 $sheet->getColumnDimension('AN')->setWidth(15);			
-			 $sheet->setCellValue('AN'.$i, 'Total Aportes Empresa');	 
-
-
-
-			 $columnaFinal = 39;
-			 $mergeTotal = 40;
-			 $columnaTotales = 39;
-			 $sheet->getStyle("B".$i.":".ordenLetrasExcel($columnaFinal).$i)->getFont()->setBold(true);
-			 $i++;
-			$filaInicio = $i-1; 
-			
-			//$sheet->getStyle("B7:I7")->getFont()->setSize(11);  
-			$linea = 1;
-            foreach ($datos_remuneracion as $remuneracion) {
-
-            	$datos_bonos_imponibles = $this->get_bonos_by_remuneracion($remuneracion->id_remuneracion,true);
-            	//$datos_bonos_imponibles = array();
-            	$bonos_imponibles = 0;
-            	foreach ($datos_bonos_imponibles as $bono_imponible) {
-            		$bonos_imponibles += $bono_imponible->monto;
-            	}
-
-
-            	$datos_bonos_no_imponibles = $this->get_bonos_by_remuneracion($remuneracion->id_remuneracion,false);
-            	$datos_bonos_no_imponibles = array();
-            	$bonos_no_imponibles = 0;
-            	foreach ($datos_bonos_no_imponibles as $bono_no_imponible) {
-            		$bonos_no_imponibles += $bono_no_imponible->monto;
-            	}
-
-				//$datos_descuentos = $this->get_descuento($remuneracion->idperiodo,'D',$remuneracion->idtrabajador);
-				$datos_descuentos = $this->get_haberes_descuentos($remuneracion->idtrabajador,null,'DESCUENTO');	
-				//$datos_descuentos = array();
-				$monto_descuento = 0;
-            	foreach ($datos_descuentos as $dato_descuento) {
-            		$monto_descuento += $dato_descuento->monto;
-            	}           	
-
-            	//$datos_prestamos = $this->get_descuento($remuneracion->idperiodo,'P',$remuneracion->idtrabajador);
-            	$datos_prestamos = array();
-            	$monto_prestamo = 0;
-            	foreach ($datos_prestamos as $dato_prestamo) {
-            		$monto_prestamo += $dato_prestamo->monto;
-            	}   
-
-            	$sheet->setCellValue("B".$i,$linea);
-            	$sheet->setCellValue("C".$i,$remuneracion->rut."-".$remuneracion->dv);
-            	$sheet->setCellValue("D".$i,$remuneracion->nombre." ".$remuneracion->apaterno." ".$remuneracion->amaterno);
-            	$sheet->setCellValue("E".$i,$remuneracion->fecingreso);
-            	$sheet->setCellValue("F".$i,$remuneracion->sueldobase);
-            	$sheet->getStyle('F'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("G".$i,$remuneracion->gratificacion);
-            	$sheet->getStyle('G'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("H".$i,$remuneracion->movilizacion);
-            	$sheet->getStyle('H'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("I".$i,$remuneracion->colacion);
-            	$sheet->getStyle('I'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("J".$i,$bonos_imponibles);
-            	$sheet->getStyle('J'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("K".$i,$bonos_no_imponibles);
-            	$sheet->getStyle('K'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("L".$i,$remuneracion->montohorasextras50);
-            	$sheet->getStyle('L'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("M".$i,$remuneracion->montohorasextras100);
-            	$sheet->getStyle('M'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("N".$i,$remuneracion->semana_corrida);
-            	$sheet->getStyle('N'.$i)->getNumberFormat()->setFormatCode('#,##0');            	
-            	$sheet->setCellValue("O".$i,$remuneracion->aguinaldobruto);
-            	$sheet->getStyle('O'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("P".$i,$remuneracion->asigfamiliar);
-            	$sheet->getStyle('P'.$i)->getNumberFormat()->setFormatCode('#,##0');      
-            	$sheet->setCellValue("Q".$i,$remuneracion->totalhaberes);
-            	$sheet->getStyle('Q'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("R".$i,$remuneracion->cotizacionobligatoria);
-            	$sheet->getStyle('R'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("S".$i,$remuneracion->comisionafp);
-            	$sheet->getStyle('S'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("T".$i,$remuneracion->adicafp);
-            	$sheet->getStyle('T'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("U".$i,$remuneracion->montoahorrovol);
-            	$sheet->getStyle('U'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("V".$i,$remuneracion->montocotapv);
-            	$sheet->getStyle('V'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("W".$i,$remuneracion->cotizacionsalud);
-            	$sheet->getStyle('W'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("X".$i,$remuneracion->cotadicisapre);
-            	$sheet->getStyle('X'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("Y".$i,$remuneracion->adicsalud);
-            	$sheet->getStyle('Y'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("Z".$i,$remuneracion->fonasa + $remuneracion->inp);
-            	$sheet->getStyle('Z'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AA".$i,$remuneracion->segcesantia);
-            	$sheet->getStyle('AA'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AB".$i,$remuneracion->impuesto);
-            	$sheet->getStyle('AB'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AC".$i,$remuneracion->totalleyessociales);
-            	$sheet->getStyle('AC'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AD".$i,$remuneracion->anticipo);
-            	$sheet->getStyle('AD'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AE".$i,$remuneracion->aguinaldo);
-            	$sheet->getStyle('AE'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AF".$i,$remuneracion->montodescuento);
-            	$sheet->getStyle('AF'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AG".$i,$monto_descuento);
-            	$sheet->getStyle('AG'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AH".$i,$monto_prestamo);
-            	$sheet->getStyle('AH'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AI".$i,$remuneracion->otrosdescuentos);
-            	$sheet->getStyle('AI'.$i)->getNumberFormat()->setFormatCode('#,##0');             	            	            	
-            	$sheet->setCellValue("AJ".$i,$remuneracion->sueldoliquido);
-            	$sheet->getStyle('AJ'.$i)->getNumberFormat()->setFormatCode('#,##0');              	
-            	$sheet->setCellValue("AK".$i,$remuneracion->aportesegcesantia);
-            	$sheet->getStyle('AK'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AL".$i,$remuneracion->seginvalidez);
-            	$sheet->getStyle('AL'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AM".$i,$remuneracion->aportepatronal);
-            	$sheet->getStyle('AM'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AN".$i,$remuneracion->aportesegcesantia + $remuneracion->seginvalidez + $remuneracion->aportepatronal);
-            	$sheet->getStyle('AN'.$i)->getNumberFormat()->setFormatCode('#,##0');              	            	            	
-
-	 			if($i % 2 != 0){
-	 				//echo "consulta 4: -- i : ".$i. "  -- mod : ". ($i % 2)."<br>";
-					$sheet->getStyle("B".$i.":".ordenLetrasExcel($columnaFinal).$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-					$sheet->getStyle("B".$i.":".ordenLetrasExcel($columnaFinal).$i)->getFill()->getStartColor()->setRGB('F7F9FD');	  				
-	 			}	            	
-            	$i++;
-            	$linea++;
-              }
-             $i--;
-
-
-
-			         	
-			$sheet->getStyle("B" . $filaInicio . ":".ordenLetrasExcel($columnaFinal).$i)->getFont()->setSize(10);
-
-			/*************************todos los bordes internos *************************************/
-			$sheet->getStyle("B".$filaInicio.":".ordenLetrasExcel($columnaFinal).$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-
-
-			/*************************bordes cuadro principal (externo) *************************************/
-					for($j=1;$j<=$columnaFinal;$j++){ //borde superior
-						$sheet->getStyle(ordenLetrasExcel($j).$filaInicio)->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-					}
-			
-					for($j=1;$j<=$columnaFinal;$j++){ //borde inferior
-						$sheet->getStyle(ordenLetrasExcel($j).$i)->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-					}
-			
-					for($n=$filaInicio;$n<=$i;$n++){ //borde izquierdo
-						$sheet->getStyle("B".$n)->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-					}
-			
-					for($n=$filaInicio;$n<=$i;$n++){ //borde derecho
-						$sheet->getStyle(ordenLetrasExcel($columnaFinal).$n)->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-					}
-			
-			/**********************************************************************************************************/			        
-				
-
-			/***************************** Segundo borde superior********************************************************/
-			
-					for($j=1;$j<=$columnaFinal;$j++){ //borde inferior
-						$sheet->getStyle(ordenLetrasExcel($j).$filaInicio)->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-					}
-			
-			/******************************************************************************************************/
-			
-
-		/***************************** Penultimo borde izquierdo ********************************************************/
-			
-					for($n=$filaInicio;$n<=$i;$n++){ //borde derecho
-						$sheet->getStyle("B".$n)->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-					}
-			
-		/******************************************************************************************************/			
-
-
-
-		/***************************** Penultimo borde derecho ********************************************************/
-			
-					for($n=$filaInicio;$n<=$i;$n++){ //borde derecho
-						$sheet->getStyle(ordenLetrasExcel($columnaFinal).$n)->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_MEDIUM);
-					}
-			
-		/******************************************************************************************************/			
-
-			/***************************** Color fila superior********************************************************/
-			
-					for($j=1;$j<=$columnaFinal;$j++){ //color fondo inferior
-						$sheet->getStyle(ordenLetrasExcel($j).$filaInicio)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle(ordenLetrasExcel($j).$filaInicio)->getFill()->getStartColor()->setRGB('E8EDFF');
-					}
-			
-			/******************************************************************************************************/
-
-
-		/***************************** Color primera columna ********************************************************/
-						$sheet->getStyle("B".$filaInicio.":B".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle("B".$filaInicio.":B".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
-			
-			/******************************************************************************************************/
-
-
-		/***************************** Color montos ********************************************************/
-
-						$sheet->getStyle("Q".$filaInicio.":Q".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle("Q".$filaInicio.":Q".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
-	
-						$sheet->getStyle("AC".$filaInicio.":AC".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle("AC".$filaInicio.":AC".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
-
-						$sheet->getStyle("AI".$filaInicio.":AI".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle("AI".$filaInicio.":AI".$i)->getFill()->getStartColor()->setRGB('E8EDFF');									
-						$sheet->getStyle("AJ".$filaInicio.":AJ".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle("AJ".$filaInicio.":AJ".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
-
-
-						$sheet->getStyle("AN".$filaInicio.":AN".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-						$sheet->getStyle("AN".$filaInicio.":AN".$i)->getFill()->getStartColor()->setRGB('E8EDFF');											
-			/******************************************************************************************************/
-
-
-			$sheet->setSelectedCells('E1'); //celda seleccionada
-
-
-
-	        header("Content-Type: application/vnd.ms-excel");
-	        $nombreArchivo = 'libro_remuneraciones';
-	        header("Content-Disposition: attachment; filename=\"$nombreArchivo.xls\"");
-	        header("Cache-Control: max-age=0");
-	        // Genera Excel
-	        $writer = new PHPExcel_Writer_Excel5($this->phpexcel); //objeto de PHPExcel, para escribir en el excel
-	        //$writer = new PHPExcel_Writer_Excel2007($this->phpexcel); //objeto de PHPExcel, para escribir en el excel
-	        // Escribir
-	        //$writer->setIncludeCharts(TRUE);			
-	        $writer->save('php://output');
-	        exit;			
-	}		
-
 
 public function exporta_colaborador($datos_colaborador){
 
@@ -3479,12 +3124,13 @@ public function get_remuneraciones_by_id($idremuneracion){
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
 						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and pr.id_empresa = ' . $this->session->userdata('empresaid') . ' and pe.idcentrocosto = pr.id_centro_costo')
 						  ->join('rem_isapre as i','pe.idisapre = i.id_isapre')
-						  ->join('rem_cargos as c','pe.idcargo = c.id_cargos')
+						  ->join('rem_cargos as c','pe.idcargo = c.id_cargos','left')
 						  ->join('rem_afp as a','pe.idafp = a.id_afp')
 		                  ->where('pe.id_empresa', $this->session->userdata('empresaid'))
 		                  ->where('r.id_remuneracion', $idremuneracion);
 
 		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
 		return $query->row();
 
 
@@ -3539,9 +3185,17 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 			//Variable para PDF 		
 
-		
-			$this->load->library("mpdf");
-			$this->mpdf->mPDF(
+			$mpdf = new \Mpdf\Mpdf(['default_font_size' => 7,
+									'margin-top' => 16,
+									'margin-bottom' => 16,
+									'margin-header' => 9,
+									'margin-footer' => 9,
+									'margin-left' => 10,
+									'margin-right' => 5,
+									]);
+		//	$mpdf->orientation = "L";
+				//$this->load->library("Mpdf");
+			/*$this->mpdf->Mpdf(
 				'',    // mode - default ''
 				'',    // format - A4, for example, default ''
 				8,     // font size - default 0
@@ -3554,21 +3208,21 @@ public function get_remuneraciones_by_id($idremuneracion){
 				9,     // margin footer
 				'L'    // L - landscape, P - portrait
 				);
-			  
+			  */
 	
 			//echo $html; exit;
-			$this->mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
-			$this->mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
-			$this->mpdf->WriteHTML($content->pdf_content);
+			$mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
+			$mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$mpdf->WriteHTML($content->pdf_content);
 
 			if(is_null($datos_remuneracion->aprueba)){
-				$this->mpdf->SetWatermarkText('BORRADOR');
-				$this->mpdf->watermark_font = 'DejaVuSansCondensed';
-				$this->mpdf->showWatermarkText = true;
+				$mpdf->SetWatermarkText('BORRADOR');
+				$mpdf->watermark_font = 'DejaVuSansCondensed';
+				$mpdf->showWatermarkText = true;
 			}
 
 			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_sueldos_".$datos_remuneracion->id.".pdf";
-			$this->mpdf->Output($nombre_archivo, "I");
+			$mpdf->Output($nombre_archivo, "I");
 			
 	}	
 

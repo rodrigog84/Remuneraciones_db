@@ -64,13 +64,13 @@ class PHPExcel_IOFactory
 	 * @static
 	 */
 	private static $_autoResolveClasses = array(
-		'Excel2007',
-		'Excel5',
-		'Excel2003XML',
-		'OOCalc',
-		'SYLK',
+		'Xlsx',
+		'Xls',
+		'Xml',
+		'Ods',
+		'Slk',
 		'Gnumeric',
-		'CSV',
+		'Csv',
 	);
 
     /**
@@ -227,20 +227,20 @@ class PHPExcel_IOFactory
 		if (isset($pathinfo['extension'])) {
 			switch (strtolower($pathinfo['extension'])) {
 				case 'xlsx':
-					$reader = self::createReader('Excel2007');
+					$reader = self::createReader('Xlsx');
 					break;
 				case 'xls':
 				case 'xlsm':
-					$reader = self::createReader('Excel5');
+					$reader = self::createReader('Xls');
 					break;
 				case 'ods':
-					$reader = self::createReader('OOCalc');
+					$reader = self::createReader('Ods');
 					break;
 				case 'slk':
-					$reader = self::createReader('SYLK');
+					$reader = self::createReader('Slk');
 					break;
 				case 'xml':
-					$reader = self::createReader('Excel2003XML');
+					$reader = self::createReader('Xml');
 					break;
 				case 'gnumeric':
 					$reader = self::createReader('Gnumeric');
