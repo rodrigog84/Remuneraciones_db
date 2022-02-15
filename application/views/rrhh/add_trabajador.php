@@ -2693,6 +2693,7 @@ $('#tipo_cotizacion').change(function(){
 
 $('#isapre').change(function(){
   if($(this).val() == '' || $(this).val() == 1){ // sin selección o marcó sin mutual
+  	$('#basicBootstrapForm').formValidation('updateStatus', 'monto_pactado','NOT_VALIDATED');  
     $('#monto_pactado').val('');
     $('#monto_pactado').attr('disabled',true);
   }else{
@@ -2706,14 +2707,17 @@ $('#isapre').change(function(){
 
 $('#tipocontrato').change(function(){
   if($(this).val() == '' || $(this).val() == 'I'){ // sin selección o marcó sin mutual
+  	$('#basicBootstrapForm').formValidation('updateStatus', 'plazo_contrato','NOT_VALIDATED');  
     $('#plazo_contrato').val('');
     $('#plazo_contrato').attr('disabled',true);
+
   }else{
     $('#plazo_contrato').attr('disabled',false);
     $('#plazo_contrato').val('');
   }
 
 });
+
 
 
 	
