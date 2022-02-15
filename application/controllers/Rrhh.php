@@ -5416,7 +5416,7 @@ public function mov_personal($resultid = '')
 			}
 
 			$movimientos = $this->rrhh_model->get_lista_movimientos($idpersonal);
-
+     
 			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',
@@ -5481,7 +5481,7 @@ public function add_movimiento_personal($idpersonal = null,$idmovimiento = null)
 
 
 
-			$movimientos = $this->rrhh_model->get_movimiento();
+			$movimientos = $this->rrhh_model->get_movimiento(null,true);
 			if(!is_null($idmovimiento)){
 				$movimiento_realizado = $this->rrhh_model->get_lista_movimientos($idpersonal,$idmovimiento);
 

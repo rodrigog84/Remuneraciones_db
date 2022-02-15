@@ -4109,13 +4109,32 @@ public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$i
 		return is_null($idmovimiento) ? $query->result() : $query->row();
 	}
 
-	public function get_movimiento($idmovimiento = null){
+
+	public function get_max_movimiento_licencia_colaborador($idpersonal){
+
+
+
+		$movimiento_data = $this->db->select('max(id) as id_movimiento',false)
+						  ->from('rem_lista_movimiento_personal lm')
+						  ->join('rem_personal p','lm.idpersonal = p.id_personal')
+						  ->where('lm.idpersonal',$idpersonal)
+						  ->where('lm.active',1)
+						  ->where('lm.idmovimiento',3)
+						  ->where('p.id_empresa',$this->session->userdata('empresaid'));
+
+
+		$query = $this->db->get();
+		return $query->row();
+	}
+
+	public function get_movimiento($idmovimiento = null,$sinlicencia = false){
 
 		$movimiento_data = $this->db->select('id, nombre, rango, codprevired')
 						  ->from('rem_movimientos_personal')
 						  ->where('active = 1')
 		                  ->order_by('codprevired','asc');
-		$movimiento_data = is_null($idmovimiento) ? $movimiento_data : $movimiento_data->where('id',$idmovimiento);  		                  
+		$movimiento_data = is_null($idmovimiento) ? $movimiento_data : $movimiento_data->where('id',$idmovimiento);  
+		$movimiento_data = $sinlicencia ? $movimiento_data->where('id <> 3') : $movimiento_data;  		                  
 		$query = $this->db->get();
 		$datos = is_null($idmovimiento) ? $query->result() : $query->row();
 		return $datos;
@@ -4140,6 +4159,7 @@ public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$i
 
 		$this->db->trans_start();
 
+		//var_dump_new($array_datos); exit; 
 		# YA SEA PARA EDITAR O AGREGAR, EL PERIODO AGREGADO NO PUEDE SER DE UN PERIODO CERRADO
 		$mes = substr($array_datos['fecmovimiento'],5,2);
 		$anno = substr($array_datos['fecmovimiento'],0,4);
@@ -4148,8 +4168,9 @@ public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$i
 		if(!is_null($periodo)){
 			$idperiodo = $periodo->id_periodo;
 			$periodo_cerrado = $this->get_periodos_cerrados($this->session->userdata('empresaid'),$idperiodo);
+			//if(!is_null($periodo_cerrado)){
+			if(count($periodo_cerrado) > 0){
 
-			if(!is_null($periodo_cerrado)){
 				$this->db->trans_complete();
 				return 5;
 			}
@@ -4158,14 +4179,15 @@ public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$i
 
 		$mes_hasta = substr($array_datos['fechastamovimiento'],5,2);
 		$anno_hasta = substr($array_datos['fechastamovimiento'],0,4);
-
+		//var_dump_new($mes_hasta);
+		//var_dump_new($anno_hasta);
 
 		if($anno.$mes != $anno_hasta.$mes_hasta){
 			return 6;
 		}
 
 		
-
+		//echo $array_datos['idmovimiento']; exit;
 
 		if($array_datos['idmovimiento'] == 0){
 
@@ -4185,14 +4207,14 @@ public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$i
 							);
 			$this->db->insert('rem_lista_movimiento_personal',$array_movimiento);
 
-
+			//echo $this->db->last_query()."----";
 			$this->db->trans_complete();
 			return 1;
 
 		}else{
 
 			$movimiento_realizado = $this->get_lista_movimientos($array_datos['idpersonal'],$array_datos['idmovimiento']);
-
+			//var_dump_new($movimiento_realizado); exit;
 			if(is_null($movimiento_realizado)){
 				$this->db->trans_complete();
 				return 3;
@@ -4205,10 +4227,9 @@ public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$i
 				$periodo = $this->admin->get_periodo_by_mes($mes,$anno);
 
 				if(!is_null($periodo)){
-					$idperiodo = $periodo->id;
+					$idperiodo = $periodo->id_periodo;
 					$periodo_cerrado = $this->get_periodos_cerrados($this->session->userdata('empresaid'),$idperiodo);
-
-					if(!is_null($periodo_cerrado)){
+					if(count($periodo_cerrado) > 0){
 						$this->db->trans_complete();
 						return 4;
 					}
@@ -4260,10 +4281,10 @@ public function delete_movimiento_personal($idpersonal,$idmovimiento){
 		$periodo = $this->admin->get_periodo_by_mes($mes,$anno);
 
 		if(!is_null($periodo)){
-			$idperiodo = $periodo->id;
-			$periodo_cerrado = $this->get_periodos_cerrados($this->session->userdata('comunidadid'),$idperiodo);
+			$idperiodo = $periodo->id_periodo;
+			$periodo_cerrado = $this->get_periodos_cerrados($this->session->userdata('empresaid'),$idperiodo);
 
-			if(!is_null($periodo_cerrado)){
+			if(count($periodo_cerrado) > 0){
 				$this->db->trans_complete();
 				return 3;
 			}

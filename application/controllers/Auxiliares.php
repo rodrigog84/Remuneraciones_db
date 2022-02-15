@@ -766,6 +766,8 @@ public function submit_solicita_vacaciones(){
 	public function submit_licencia(){
 
 
+		//var_dump_new($_POST); exit;
+
 		// A1
 		$numero_licencia = $this->input->post("numero_licencia");
 		$idtrabajador = $this->input->post("id_trabajador");
@@ -780,8 +782,12 @@ public function submit_solicita_vacaciones(){
 		$amaterno_hijo = $this->input->post("amaterno_hijo");
 		$nombre_hijo = $this->input->post("nombre_hijo");
 		$fecnachijo = $this->input->post("fecnachijo");
+
 		$rut_hijo = str_replace(".","",$this->input->post("rut_hijo"));
-		$arrayRutHijo = explode("-",$rut_hijo);
+		if(isset($rut_hijo)) {
+			$arrayRutHijo = explode("-",$rut_hijo);
+		}
+
 		// A3
 		$tipo_licencia = $this->input->post("tipo_licencia");
 		$responsabilidad_laboral = $this->input->post("responsabilidad_laboral");
@@ -865,8 +871,8 @@ public function submit_solicita_vacaciones(){
 								'amaterno_hijo' => $amaterno_hijo,
 								'nombre_hijo' => $nombre_hijo,
 								'fecnachijo' => $fecnachijo,
-								'rut_hijo' => $arrayRutHijo[0],
-								'dv_hijo' => $arrayRutHijo[1], 
+								'rut_hijo' => isset($arrayRutHijo[0]) ? $arrayRutHijo[0] : '',
+								'dv_hijo' => isset($arrayRutHijo[1]) ? $arrayRutHijo[1] : '', 
 							 //A3
 								'tipo_licencia' => $tipo_licencia,
 								'responsabilidad_laboral' => $responsabilidad_laboral,
@@ -886,8 +892,8 @@ public function submit_solicita_vacaciones(){
 								'nombre_profesional' => $nombre_profesional,
 								'apaterno_profesional' => $apaterno_profesional,
 								'amaterno_profesional' => $amaterno_profesional,
-								'rut_profesional' => $arrayRutProfesional[0],
-								'dv_profesional' => $arrayRutProfesional[1],
+								'rut_profesional' => isset($arrayRutProfesional[0]) ? $arrayRutProfesional[0] : '',
+								'dv_profesional' => isset($arrayRutProfesional[1]) ? $arrayRutProfesional[1] : '',
 								'especialidad_profesional' => $especialidad_profesional,
 								'tipo_profesional' => $tipo_profesional,
 								'registro_profesional' => $registro_profesional,
@@ -905,7 +911,7 @@ public function submit_solicita_vacaciones(){
 
 
 		$result = $this->auxiliar->add_licencia($array_datos);
-
+		//exit;
 			if($result == -1){
 				$this->session->set_flashdata('personal_result', 2);
 			}else{
@@ -1022,8 +1028,8 @@ public function submit_mod_licencia(){
 								'amaterno_hijo' => $amaterno_hijo,
 								'nombre_hijo' => $nombre_hijo,
 								'fecnachijo' => $fecnachijo,
-								'rut_hijo' => $arrayRutHijo[0],
-								'dv_hijo' => $arrayRutHijo[1], 
+								'rut_hijo' => isset($arrayRutHijo[0]) ? $arrayRutHijo[0]: '',
+								'dv_hijo' => isset($arrayRutHijo[1]) ? $arrayRutHijo[1] : '', 
 							 //A3
 								'tipo_licencia' => $tipo_licencia,
 								'responsabilidad_laboral' => $responsabilidad_laboral,
@@ -1043,8 +1049,8 @@ public function submit_mod_licencia(){
 								'nombre_profesional' => $nombre_profesional,
 								'apaterno_profesional' => $apaterno_profesional,
 								'amaterno_profesional' => $amaterno_profesional,
-								'rut_profesional' => $arrayRutProfesional[0],
-								'dv_profesional' => $arrayRutProfesional[1],
+								'rut_profesional' => isset($arrayRutProfesional[0]) ? $arrayRutProfesional[0] : '',
+								'dv_profesional' => isset($arrayRutProfesional[1]) ? $arrayRutProfesional[1] : '',
 								'especialidad_profesional' => $especialidad_profesional,
 								'tipo_profesional' => $tipo_profesional,
 								'registro_profesional' => $registro_profesional,

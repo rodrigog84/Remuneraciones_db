@@ -52,9 +52,10 @@
                       <div class="panel-heading">
                             <h4 class="panel-title">Datos Licencia</h4>
                         </div>
+				<form  class="form" role="form" id="ingresar_licencia2" name="ingresar_licencia2"  method="post" action="<?php echo base_url();?>auxiliares/submit_mod_licencia">
             <div class="panel-body">
               <div class='row'>
-				<form  class="form" role="form" id="ingresar_licencia2" name="ingresar_licencia2"  method="post" action="<?php echo base_url();?>auxiliares/submit_mod_licencia">
+
 					
 						<div class="sub-heard-part">
 							<ul class="nav nav-tabs">
@@ -338,13 +339,14 @@
 
 					
 
-				</form>
+
 		</div>
 	</div>
 	<div class="panel-footer">
       			<a href="<?php echo base_url();?>auxiliares/licencias" class="btn btn-success">Volver</a>
       			<button type="submit" class="btn btn-info">Guardar</button>
 	</div>
+					</form>
 </div>
 
 <!--date-piker-->

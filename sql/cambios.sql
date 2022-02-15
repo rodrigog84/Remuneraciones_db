@@ -221,3 +221,8 @@ values (
 )
 
 insert into rem_role (appid,levelid) values (6099,2)
+
+/*****************************************************/
+
+alter table rem_licencias_medicas add idmovimiento int
+alter table rem_licencias_medicas add active smallint

@@ -60,7 +60,11 @@
         </div>
         </form>
 
-
+<div class="alert alert-info fade in m-b-15">
+                <strong>Atenci&oacute;n!</strong>
+                Licencias M&eacute;dicas s&oacute;lo pueden ser modificadas desde el m&oacute;dulo de Licencias
+                <span class="close" data-dismiss="alert">&times;</span>
+              </div>
 
 <div class="panel panel-inverse">                       
     <div class="panel-heading">
@@ -96,8 +100,10 @@
                         <td><?php echo $movimiento->rango == 1 ? formato_fecha($movimiento->fechastamovimiento,'Y-m-d','d/m/Y') : "-";?></td>
                         <td><?php echo $movimiento->comentario; ?></td>
                         <td>
+                           <?php if($movimiento->idmovimiento != 3){ ?>
                            <a href="<?php echo base_url();?>rrhh/add_movimiento_personal/<?php echo $personal->id_personal;?>/<?php echo $movimiento->id;?>" data-toggle="tooltip" title="Editar Movimiento" ><span class="glyphicon glyphicon-edit"></span></a>&nbsp;&nbsp;
-                           <a href="<?php echo base_url();?>rrhh/delete_movimiento_personal/<?php echo $personal->id_personal;?>/<?php echo $movimiento->id;?>" data-toggle="tooltip" title="Eliminar Movimiento" ><span class="glyphicon glyphicon-trash"></span></a>                           
+                           <a href="<?php echo base_url();?>rrhh/delete_movimiento_personal/<?php echo $personal->id_personal;?>/<?php echo $movimiento->id;?>" data-toggle="tooltip" title="Eliminar Movimiento" ><span class="glyphicon glyphicon-trash"></span></a>    
+                           <?php } ?>                       
                         </td>                        
                       </tr>
                         <?php $i++; ?>

@@ -110,7 +110,7 @@ function eliminar_licencia(rut){
 
 bootbox.confirm({
 	    title: "Eliminar Licencia",
-	    message: "¿Desea Elimnar Licencia?",
+	    message: "¿Desea Eliminar Licencia?",
 	    size: 'small',
 	    buttons: {
 	        cancel: {

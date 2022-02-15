@@ -594,6 +594,18 @@ if (!function_exists('dias_transcurridos'))
 }  
 
 
+if (!function_exists('sumar_dias'))
+{
+
+  function sumar_dias($fecha_i,$num_dias)
+  {
+
+    return date("d-m-Y",strtotime($fecha_i."+ ". $num_dias ." days"));
+  }
+
+}  
+
+
 
 if (!function_exists('bussiness_days'))
 {

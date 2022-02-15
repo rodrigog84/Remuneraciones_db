@@ -500,9 +500,37 @@ public function solicita_vacaciones($array_datos){
 	public function add_licencia($array_datos){
 
 		$this->db->trans_start();
+
+		$date_fin_reposo = sumar_dias($array_datos['fec_inicio_reposo'],$array_datos['numero_dias']);
+		$fecfinreposo = substr($date_fin_reposo,6,4)."-".substr($date_fin_reposo,3,2)."-".substr($date_fin_reposo,0,2);
+		$fecinireposo = substr($array_datos['fec_inicio_reposo'],0,4)."-".substr($array_datos['fec_inicio_reposo'],4,2)."-".substr($array_datos['fec_inicio_reposo'],6,2);
+		//var_dump_new($array_datos); exit;
+		$array_movimiento = array(
+								'idpersonal' => $array_datos['id_personal'],
+								'idmovimiento' => 0,
+								'movimientos' => 3,
+								'comentarios' => 'Ingreso de Licencia Médica',
+								'fecmovimiento' => $fecinireposo,
+								'fechastamovimiento' => $fecfinreposo,
+								'created_at' => date("Ymd H:i:s")
+								);
+
+		$this->load->model('rrhh_model');
+		$result = $this->rrhh_model->add_movimiento_personal($array_movimiento);
+		$movimiento = $this->rrhh_model->get_max_movimiento_licencia_colaborador($array_datos['id_personal']);
+
+		//var_dump_new($movimiento);
+		//var_dump_new($movimiento->id_movimiento); exit;
+		$idmovimiento = isset($movimiento->id_movimiento) ? $movimiento->id_movimiento : 0;
+
+
+
+		$array_datos['idmovimiento'] = $idmovimiento;
+		$array_datos['active'] = 1;
 		$array_datos['updated_at'] = date('Ymd H:i:s');
 		$array_datos['created_at'] = date('Ymd H:i:s');
 		$this->db->insert('rem_licencias_medicas', $array_datos);
+		//echo $this->db->last_query();
 		$this->db->trans_complete();
 		return 1;
 		
@@ -511,6 +539,31 @@ public function solicita_vacaciones($array_datos){
 	public function mod_licencia($array_datos,$id_licencia_medica){
 
 		$this->db->trans_start();
+
+		$datos_licencia = $this->get_licencia_datos($id_licencia_medica);
+
+
+
+
+		$date_fin_reposo = sumar_dias($array_datos['fec_inicio_reposo'],$array_datos['numero_dias']);
+		$fecfinreposo = substr($date_fin_reposo,6,4)."-".substr($date_fin_reposo,3,2)."-".substr($date_fin_reposo,0,2);
+		$fecinireposo = substr($array_datos['fec_inicio_reposo'],0,4)."-".substr($array_datos['fec_inicio_reposo'],4,2)."-".substr($array_datos['fec_inicio_reposo'],6,2);
+		//var_dump_new($array_datos); exit;		
+
+		$array_movimiento = array(
+								'idpersonal' => $array_datos['id_personal'],
+								'idmovimiento' => $datos_licencia[0]->idmovimiento,
+								'movimientos' => 3,
+								'comentarios' => 'Ingreso de Licencia Médica',
+								'fecmovimiento' => $fecinireposo,
+								'fechastamovimiento' => $fecfinreposo,
+								'created_at' => date("Ymd H:i:s")
+								);
+		//var_dump_new($array_movimiento); exit;
+		$this->load->model('rrhh_model');
+		$result = $this->rrhh_model->add_movimiento_personal($array_movimiento);
+
+
 		$array_datos['updated_at'] = date('Ymd H:i:s');
 		$this->db->where('id_licencia_medica',$id_licencia_medica);		
 		$this->db->update('rem_licencias_medicas', $array_datos);
@@ -537,6 +590,7 @@ public function solicita_vacaciones($array_datos){
 						  ->where('lic.id_empresa', $this->session->userdata('empresaid'))
 						  ->where('lic.id_empresa = p.id_empresa')
 						  ->where('lic.id_personal = p.id_personal')
+						   ->where('lic.active = 1')
 		                  ->order_by('lic.fec_emision_licencia','desc');
 		 $query = $this->db->get();
 		 return $query->result();
@@ -602,7 +656,8 @@ public function get_licencia_datos($id_licencia_medica){
 				'c.amaterno as amaterno',
 				'c.fecnacimiento as fecnacimiento',
 				'c.rut as rut',
-				'c.dv as dv'
+				'c.dv as dv',
+				'p.idmovimiento'
 				//'format(c.fecnacimiento,\'dd/MM/yyyy\',\'en-US\') as fecnacimiento'			
 
 			);
@@ -623,8 +678,19 @@ public function get_licencia_datos($id_licencia_medica){
 	public function del_licencia_medica($id_licencia_medica){
 
 		$this->db->trans_start();
+
+		$datos_licencia = $this->get_licencia_datos($id_licencia_medica);
+
+
+
+		//var_dump_new($datos_licencia[0]->id_personal); exit;		
+
+		$this->load->model('rrhh_model');
+		$this->rrhh_model->delete_movimiento_personal($datos_licencia[0]->id_personal,$datos_licencia[0]->idmovimiento);
+
+
 		$this->db->where('id_licencia_medica',$id_licencia_medica);
-		$this->db->delete('rem_licencias_medicas');
+		$this->db->update('rem_licencias_medicas',array('active' => 0));
 
 
 
