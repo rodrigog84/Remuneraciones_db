@@ -4343,6 +4343,27 @@ public function delete_haber_descto_variable($id_hab_descto){
 	}	
 
 
+	public function update_personal_data($array_trabajadores){
+
+
+		$this->db->trans_start();
+
+		foreach ($array_trabajadores as $idtrabajador => $info_trabajador) {
+
+			$trabajador_data = array(
+								'idcargo' => $info_trabajador['cargo'] == '' ? 0 : $info_trabajador['cargo'],
+								'idcentrocosto' => $info_trabajador['centrocosto'] == '' ? 0 : $info_trabajador['centrocosto']
+								);
+
+			$this->db->where('id_personal', $idtrabajador);
+			$this->db->update('rem_personal',$trabajador_data); 
+		}
+
+		$this->db->trans_complete();
+		return 1;
+	}	
+
+
 	public function update_personal_apv($array_trabajadores){
 
 

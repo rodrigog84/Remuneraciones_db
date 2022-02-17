@@ -866,9 +866,10 @@ public function get_cargo_colaborador($idtrabajador = null,$actives = null){
 		p.idregion, p.idcomuna, p.fono, p.email, p.fecingreso, p.idcargo, p.tipocontrato, p.parttime, p.segcesantia, p.fecafc, p.diastrabajo, p.horasdiarias, 
 		p.horassemanales, p.sueldobase, p.tipogratificacion, p.gratificacion, p.asigfamiliar, p.cargassimples, p.cargasinvalidas, p.cargasmaternales, p.cargasretroactivas, 
 		p.idasigfamiliar, p.movilizacion, p.colacion, p.pensionado,p.idafp, p.adicafp, isnull(p.tipoahorrovol,'pesos') as tipoahorrovol, isnull(p.ahorrovol,0) as ahorrovol, p.instapv, p.nrocontratoapv, p.tipocotapv, 
-		p.cotapv, p.formapagoapv, p.depconvapv, p.idisapre, p.valorpactado, p.fecinicvacaciones, p.saldoinicvacaciones, p.saldoinicvacprog, p.active, c.nombre nombre_cargo, p.numficha")
+		p.cotapv, p.formapagoapv, p.depconvapv, p.idisapre, p.valorpactado, p.fecinicvacaciones, p.saldoinicvacaciones, p.saldoinicvacprog, p.active, c.nombre nombre_cargo, p.numficha, p.idcentrocosto, cc.nombre as centro_costo")
 						  ->from('rem_personal p')
 						  ->join('rem_cargos c','p.idcargo = c.id_cargos','LEFT')
+						  ->join('rem_centro_costo cc','p.idcentrocosto = cc.id_centro_costo','LEFT')
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
 						  //->where('c.id_cargos = p.idcargo')
 						  ->order_by('p.active','desc')

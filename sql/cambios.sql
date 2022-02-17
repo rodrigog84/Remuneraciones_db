@@ -226,3 +226,28 @@ insert into rem_role (appid,levelid) values (6099,2)
 
 alter table rem_licencias_medicas add idmovimiento int
 alter table rem_licencias_medicas add active smallint
+
+
+	insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/submit_personal_data'
+,null
+,4
+,0
+,0
+,1
+,null
+)
+
+insert into rem_role (appid,levelid) values (6101,2)

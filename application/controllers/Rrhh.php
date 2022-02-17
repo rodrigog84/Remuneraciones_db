@@ -362,6 +362,37 @@ class Rrhh extends CI_Controller {
 	}	
 
 
+
+public function submit_personal_data(){
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+      $array_elem = $this->input->post(NULL,true);
+      //var_dump_new($array_elem); exit;
+      $array_trabajadores = array();
+      foreach($array_elem as $elem => $value_elem){
+        $arr_el = explode("_",$elem);
+        if($arr_el[0] == 'cargo' || $arr_el[0] == 'centrocosto'){
+          $array_trabajadores[$arr_el[1]][$arr_el[0]] = $value_elem;
+        }
+      }
+
+
+      $this->load->model('rrhh_model');
+      $this->rrhh_model->update_personal_data($array_trabajadores);
+
+      $this->session->set_flashdata('personal_result', 10);
+      redirect('rrhh/mantencion_personal'); 
+
+
+    }else{
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }   
+
+
+  } 
+
 	public function submit_personal_afp(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
@@ -530,12 +561,21 @@ public function submit_salud(){
         $vars['message'] = "Carga Masiva realizada correctamente";
         $vars['classmessage'] = 'success';
         $vars['icon'] = 'fa-check'; 
-        $vars['mantencion_personal'] = '';        
+        $vars['mantencion_personal'] = 'active';        
         $vars['apv'] = '';    
         $vars['leyes_sociales'] = '';   
-        $vars['salud'] = 'active';              
+        $vars['salud'] = '';              
         $vars['otros'] = '';  
-      }
+      }elseif($resultid == 10){
+        $vars['message'] = "Datos del Trabajador actualizados correctamente";
+        $vars['classmessage'] = 'success';
+        $vars['icon'] = 'fa-check'; 
+        $vars['mantencion_personal'] = 'active';        
+        $vars['apv'] = '';    
+        $vars['leyes_sociales'] = '';   
+        $vars['salud'] = '';              
+        $vars['otros'] = '';  
+       } 
 
 			$this->load->model('admin');
 			
@@ -548,6 +588,11 @@ public function submit_salud(){
 			$afps = $this->admin->get_afp(); 
 			$apvs = $this->admin->get_apv(); 
 			$isapres = $this->admin->get_isapre(); 
+
+      $cargos = $this->admin->get_cargos();
+      $centros_costo = $this->admin->get_centro_costo();
+
+      //var_dump_new($personal); exit;
 			//$cajas = $this->admin->get_cajas_compensacion(); 
 			//$mutuales = $this->admin->get_mutual_seguridad(); 
 
@@ -565,8 +610,10 @@ public function submit_salud(){
 			$vars['mask'] = true;
 			$vars['formValidation'] = true;
 			$vars['gritter'] = true;
-			$vars['empresa'] = $empresa;
+			$vars['centros_costo'] = $centros_costo;
+      $vars['cargos'] = $cargos;
 			$vars['personal'] = $personal;
+      $vars['empresa'] = $empresa;
 			$vars['afps'] = $afps;
 			$vars['apvs'] = $apvs;
 			$vars['isapres'] = $isapres;
@@ -5416,7 +5463,7 @@ public function mov_personal($resultid = '')
 			}
 
 			$movimientos = $this->rrhh_model->get_lista_movimientos($idpersonal);
-     
+
 			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',

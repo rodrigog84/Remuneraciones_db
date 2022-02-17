@@ -20,6 +20,7 @@
 									<div class="graph">
 										<div class="tab-content">
 											<div class="tab-pane <?php echo $mantencion_personal; ?>" id="personal">
+												 <form id="formprevafp" action="<?php echo base_url();?>rrhh/submit_personal_data" method="post" role="form" enctype="multipart/form-data">
 												<section id="personales">										
 											
 													<h3 class="inner-tittle two">Ficha Colaborador 
@@ -40,6 +41,7 @@
                             												<th>Nombre Colaborador</th>
                             												<th>Rut</th>
                             												<th>Cargo</th>
+                            												<th>Centro de Costo</th>
                             												<th>Estado</th>
 																			<th>Opciones</th>
 
@@ -53,7 +55,39 @@
 											                              <td><small><?php echo $i ;?></small></td>
 	                              										  <td><small><?php echo $trabajador->apaterno." ".$trabajador->amaterno." ".$trabajador->nombre;?></small></td>
 	                                									  <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
-	                              										  <td><small><?php echo $trabajador->nombre_cargo;?></small></td>
+	                              										  <!--td><small><?php echo $trabajador->nombre_cargo;?></small></td-->
+	                              										   <!--td><small><?php echo $trabajador->centro_costo;?></small></td-->
+	                              										   <td><small>
+																			<select name="cargo_<?php echo $trabajador->id_personal;?>" id="cargo_<?php echo $trabajador->id_personal;?>"  class="form-control"  >
+											                                  <option value="">Seleccione un Cargo</option>
+											                                  <?php foreach ($cargos as $cargo) { ?>
+											                                      <?php if($cargo->idpadre != $label_cargo){
+											                                              if($label_cargo != ''){
+											                                                  echo "</optgroup>";
+											                                              }
+											                                              echo "<optgroup label='". $cargo->nombrepadre . "''>";
+											                                              $label_cargo = $cargo->idpadre;
+											                                      } ?>
+											                                      <?php if(!($cargo->idpadre == '' && $cargo->hijos > 0)){ ?>
+											                                        <?php $cargoselected = $cargo->id_cargos == $trabajador->idcargo ? "selected" : ""; ?>
+											                                        <option value="<?php echo $cargo->id_cargos;?>" <?php echo $cargoselected;?> ><?php echo $cargo->nombre;?></option>
+											                                      <?php } ?>
+											                                  <?php } 
+											                                        if($label_cargo != ''){
+											                                          echo "</optgroup>";
+											                                        }
+											                                        ?>                                
+											                              </select>
+	                              										   </small></td>
+	                              										   <td><small>
+																				<select name="centrocosto_<?php echo $trabajador->id_personal;?>" id="centrocosto_<?php echo $trabajador->id_personal;?>" class="form-control">
+																					<option value="">Seleccione Centro Costo</option>
+										                                    		<?php foreach ($centros_costo as $centro_costo) { ?>
+												                                      <?php $centrocostoselected = $centro_costo->id_centro_costo == $trabajador->idcentrocosto ? "selected" : ""; ?>
+												                                      <option value="<?php echo $centro_costo->id_centro_costo;?>" <?php echo $centrocostoselected;?> ><?php echo $centro_costo->nombre;?></option>
+												                                    <?php } ?>
+																				</select>
+	                              										   </small></td>
 	                              										  <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo";?></small></td>
 																			<td>
 																				<!--<a href="<?php echo base_url();?>rrhh/mod_trabajador" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>-->
@@ -71,9 +105,11 @@
 																		
 																	</tbody> 
 																</table> 
+																 <button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>" >Guardar</button>&nbsp;&nbsp
 															</div>
 
 															</section>
+														</form>
 														</div>	
 
 
@@ -372,8 +408,8 @@ $(function () {
           "bInfo": true,
           "bSort": false,
           "bAutoWidth": false,
-          "aLengthMenu" : [[5,15,30,45,100,-1],[5,15,30,45,100,'Todos']],
-          "iDisplayLength": 5,
+          "aLengthMenu" : [[5,15,30,50,100,-1],[5,15,30,50,100,'Todos']],
+          "iDisplayLength": 50,
           "oLanguage": {
               "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
               "sZeroRecords": "No se encontraron registros",
@@ -402,8 +438,8 @@ $(document).ready(function() {
           "bInfo": true,
           "bSort": false,
           "bAutoWidth": false,
-          "aLengthMenu" : [[5,15,30,45,100,-1],[5,15,30,45,100,'Todos']],
-          "iDisplayLength": 5,
+          "aLengthMenu" : [[5,15,30,50,100,-1],[5,15,30,50,100,'Todos']],
+          "iDisplayLength": 50,
           "oLanguage": {
               "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
               "sZeroRecords": "No se encontraron registros",
@@ -418,7 +454,7 @@ $(document).ready(function() {
                 "sPrevious": "Anterior"}            } ,
         		initComplete: function () {
                		var div=$('#listado_wrapper');
-    				div.find("#listado_filter").prepend("<label for='idEstado'>Estado:</label> <select id='idEstado' name='idEstado' class='form-control' required><option value='' selected='selected'>Todos</option><option value='Activo'>Activo</option><option value='Inactivo'>Inactivo</option></select>");
+    				/*div.find("#listado_filter").prepend("<label for='idEstado'>Estado:</label> <select id='idEstado' name='idEstado' class='form-control' required><option value='' selected='selected'>Todos</option><option value='Activo'>Activo</option><option value='Inactivo'>Inactivo</option></select>");
             		this.api().column(4).each(function () {
                 	var column = this;
                		console.log(column.data());
@@ -427,7 +463,7 @@ $(document).ready(function() {
                 		column.search( val ? '^'+val+'$' : '', true, false )
                             .draw();
                 });
-            });
+            });*/
         }
     });
     });
