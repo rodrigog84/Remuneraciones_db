@@ -58,7 +58,7 @@
 	                              										  <!--td><small><?php echo $trabajador->nombre_cargo;?></small></td-->
 	                              										   <!--td><small><?php echo $trabajador->centro_costo;?></small></td-->
 	                              										   <td><small>
-																			<select name="cargo_<?php echo $trabajador->id_personal;?>" id="cargo_<?php echo $trabajador->id_personal;?>"  class="form-control"  >
+																			<select name="cargo_<?php echo $trabajador->id_personal;?>" id="cargo_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm"  >
 											                                  <option value="">Seleccione un Cargo</option>
 											                                  <?php foreach ($cargos as $cargo) { ?>
 											                                      <?php if($cargo->idpadre != $label_cargo){
@@ -80,7 +80,7 @@
 											                              </select>
 	                              										   </small></td>
 	                              										   <td><small>
-																				<select name="centrocosto_<?php echo $trabajador->id_personal;?>" id="centrocosto_<?php echo $trabajador->id_personal;?>" class="form-control">
+																				<select name="centrocosto_<?php echo $trabajador->id_personal;?>" id="centrocosto_<?php echo $trabajador->id_personal;?>" class="form-control input-sm">
 																					<option value="">Seleccione Centro Costo</option>
 										                                    		<?php foreach ($centros_costo as $centro_costo) { ?>
 												                                      <?php $centrocostoselected = $centro_costo->id_centro_costo == $trabajador->idcentrocosto ? "selected" : ""; ?>
@@ -91,10 +91,10 @@
 	                              										  <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo";?></small></td>
 																			<td>
 																				<!--<a href="<?php echo base_url();?>rrhh/mod_trabajador" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>-->
-																				<a href="<?php echo base_url();?>rrhh/mod_trabajador/<?php echo $trabajador->rut ?>" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>
+																				<a href="<?php echo base_url();?>rrhh/mod_trabajador/<?php echo $trabajador->rut ?>" class="opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>&nbsp;&nbsp;
         																		<!--<a href="#" class="btn btn-info" role="button">Link Button</a>-->
-        																		<a href="<?php echo base_url();?>rrhh/exporta_colaborador/<?php echo $trabajador->rut ?>" class="btn btn-success" id="Exportar_excel" title="Exportar a Excel"><i class="fa fa-file-excel-o" aria-hidden="true" type="button"></i></a>
-        																		<a href="#" onclick="desactivar_colaborador(<?php echo $trabajador->rut;?>)" class="btn btn-danger" id="Desactivar" title="Activar/Desactivar" data-toggle="modal" data-target="#myModalElim"><i class="fa fa-times" aria-hidden="true" type="button"></i></a>
+        																		<a href="<?php echo base_url();?>rrhh/exporta_colaborador/<?php echo $trabajador->rut ?>" class="" id="Exportar_excel" title="Exportar a Excel"><i class="fa fa-file-excel-o" aria-hidden="true" type="button"></i></a>&nbsp;&nbsp;
+        																		<a href="#" onclick="desactivar_colaborador(<?php echo $trabajador->rut;?>)" class="" id="Desactivar" title="Activar/Desactivar" data-toggle="modal" data-target="#myModalElim"><i class="glyphicon glyphicon-trash" aria-hidden="true" type="button"></i></a>
 
 																			</td>
 																		</tr> 
