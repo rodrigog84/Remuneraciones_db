@@ -589,7 +589,7 @@ public function submit_salud(){
 			$apvs = $this->admin->get_apv(); 
 			$isapres = $this->admin->get_isapre(); 
 
-      $cargos = $this->admin->get_cargos();
+      $cargos = $this->admin->get_cargos_empresa();
       $centros_costo = $this->admin->get_centro_costo();
 
       //var_dump_new($personal); exit;
@@ -1952,7 +1952,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
 			$regiones = $this->admin->get_regiones();
 			$estados_civiles = $this->admin->get_estado_civil();
-			$cargos = $this->admin->get_cargos();
+			$cargos = $this->admin->get_cargos_empresa();
 			$paises = $this->admin->get_paises();
 			$idiomas = $this->admin->get_idiomas();
 			$personal = $this->admin->get_personal_total();
@@ -2166,7 +2166,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
 			$regiones = $this->admin->get_regiones();
 			$estados_civiles = $this->admin->get_estado_civil();
-			$cargos = $this->admin->get_cargos();
+			$cargos = $this->admin->get_cargos_empresa();
 			$paises = $this->admin->get_paises();
 			$idiomas = $this->admin->get_idiomas();
 			$personal = $this->admin->get_personal_total();

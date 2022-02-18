@@ -251,3 +251,92 @@ values (
 )
 
 insert into rem_role (appid,levelid) values (6101,2)
+
+
+
+/*****************************************************************************/
+
+	insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'configuraciones/cargos'
+,'Cargos'
+,2
+,0
+,1
+,1
+,5
+)
+
+
+insert into rem_role (appid,levelid) values (6102,2)
+
+
+
+	insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'configuraciones/add_cargo'
+,null
+,2
+,0
+,0
+,1
+,null
+)
+
+insert into rem_role (appid,levelid) values (6103,2)
+
+
+
+
+	insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'configuraciones/submit_cargo'
+,null
+,2
+,0
+,0
+,1
+,null
+)
+
+insert into rem_role (appid,levelid) values (6104,2)
+
+
+
+
+ALTER TABLE rem_cargos
+ADD CONSTRAINT df_UD
+DEFAULT GETDATE() FOR updated_at;

@@ -73,6 +73,19 @@ class Admin extends CI_Model
 	}		
 
 
+	public function get_cargos_empresa($idcargo = null){
+		$cargos_data = $this->db->select('id_cargos, nombre, activo')
+						  ->from('rem_cargos')
+						  ->where('activo = 1')
+						  ->where('id_empresa',$this->session->userdata('empresaid'))
+						  ->order_by('nombre','asc');
+		$cargos_data = is_null($idcargo) ? $cargos_data : $cargos_data->where('id_cargos',$idcargo); 
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
+
 	public function get_periodo_by_mes($mes,$anno){
 
 			$this->db->select('id_periodo ')

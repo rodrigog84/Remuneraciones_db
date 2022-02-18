@@ -591,7 +591,153 @@ public function add_plantilla(){
 
 	}
 
+
+
+
+public function cargos(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			
+			$resultid = $this->session->flashdata('cargos_result');
+			if($resultid == 1){
+				$vars['message'] = "Cargo Agregado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}else if($resultid == 2){
+				$vars['message'] = "Cargo editado Correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+
+			}else if($resultid == 3){
+				$vars['message'] = "Cargo ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
+			}else if($resultid == 4){
+				$vars['message'] = "Cargo a editar no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
+			}
+
+			$this->load->model('admin');
+			$cargos = $this->admin->get_cargos_empresa();
+			
+			//print_r($centrocosto);
+			//exit; 
+
+
+			$content = array(
+						'menu' => 'Configuraciones Generales',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Cargos');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'configuraciones/cargos';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+
+			$vars['cargos'] = $cargos;
+			
+			$template = "template";
+			
+
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}	
+
+
+	}
+
+
+public function add_cargo($idcargo = null){
+
+
+			$cargo = array();
+			if(!is_null($idcargo)){
+					$this->load->model('admin');
+					$cargos = $this->admin->get_cargos_empresa($idcargo);
+								
+			}
+
+
+			if(count($cargos) == 0){ // no existe cargo
+	            $this->session->set_flashdata('cargos_result', 4);
+	            redirect('configuraciones/cargos');
+			}else{
+				$cargo = $cargos[0];
+			}
+
+
+            $datos_form = array(
+                'idcargo' => count($cargos) == 0 ? 0 : $cargo->id_cargos,
+                'nombre' => count($cargos) == 0 ? '' : $cargo->nombre,
+            );
+
+
+			//print_r($centro_costo);
+			//exit;			
+
+			$content = array(
+						'menu' => 'Configuraciones Generales',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Cargos');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'configuraciones/add_cargo';
+			$vars['formValidation'] = true;
+			$vars['datos_form'] = $datos_form;
+			$vars['gritter'] = true;
+
+			$template = "template";			
+
+			$this->load->view($template,$vars);	
+
+	}	
+
 	
+public function submit_cargo(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+ 			$cargo = $this->input->post('nombrecargo');
+            $idcargo = $this->input->post('idcargo');
+
+            $array_datos = array(
+                'idcargo' => $idcargo,
+                'cargo' => $cargo,
+            );
+
+            $result = $this->configuracion->add_cargo($array_datos);
+            $this->session->set_flashdata('cargos_result', $result);
+
+            redirect('configuraciones/cargos');
+
+
+
+		}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}	
+
 
 	public function hab_descto(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){

@@ -526,6 +526,50 @@ public function add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$i
 	}
 
 
+
+
+
+	public function add_cargo($array_datos)
+    {
+
+
+        $this->db->select('c.id_cargos')
+            ->from('rem_cargos as c')
+            ->where('upper(c.nombre)', strtoupper($array_datos['cargo']))
+            ->where('c.activo = 1')
+            ->where('id_empresa',$this->session->userdata('empresaid'));
+            //->where('(idcomunidad = ' . $this->session->userdata('comunidadid') . ' or idcomunidad is null)');
+        $query = $this->db->get();
+        $datos = $query->row();
+        if ($query->num_rows() == 0) { // nuevo cargo no existe
+            if ($array_datos['idcargo'] == 0) {
+                $data = array(
+                    'nombre' => $array_datos['cargo'],
+                    'id_empresa' => $this->session->userdata('empresaid'),
+                    'activo' => 1
+                );
+
+                $this->db->insert('rem_cargos', $data);
+
+                $idcargo = $this->db->insert_id();
+                return 1;
+            } else {
+                $data = array(
+                    'nombre' => $array_datos['cargo'],
+                );
+
+                $this->db->where('id_cargos', $array_datos['idcargo']);
+                $this->db->where('id_empresa', $this->session->userdata('empresaid'));
+                $this->db->update('rem_cargos', $data);
+                return 2;
+            }
+        } else { // ya existe cargo
+             return 3;
+        }
+    }
+
+
+
 }
 
 

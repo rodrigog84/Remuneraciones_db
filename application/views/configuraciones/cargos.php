@@ -2,7 +2,7 @@
 <div class="row">
        <div class='col-md-6'>
 
-                          <a href="<?php echo base_url();?>configuraciones/add_centro_costo" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Centro de Costo</a>
+                          <a href="<?php echo base_url();?>configuraciones/add_cargo" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Cargo</a>
 
         </div>
       </div><br>  
@@ -12,7 +12,7 @@
 								  <!--//sub-heard-part-->
                   <div class="panel panel-inverse">                       
                       <div class="panel-heading">
-                            <h4 class="panel-title">Creaci&oacute;n Centros de Costo</h4>
+                            <h4 class="panel-title">Creaci&oacute;n Cargos</h4>
                         </div>
             <div class="panel-body">
               <div class='row'>							
@@ -26,20 +26,18 @@
 																	<thead> 
 																		<tr>
 																			<th>#</th>
-                												<th>C&oacute;digo</th>
                 												<th>Nombre</th>
                                         <th>Opciones</th>
 																		</tr> 
 																	</thead> 
 																	<tbody> 
 	                            			<?php $i = 1; ?>
-	                            			<?php foreach ($centro_costo as $centro_costo) { ?>
+	                            			<?php foreach ($cargos as $cargo) { ?>
 																		<tr class="active" id="variable">
 											              <td><small><?php echo $i ;?></small></td>
-	                              		<td><small><?php echo $centro_costo->codigo;?></small>
-	                              		<td><small><?php echo $centro_costo->nombre;?></small></td>
+	                              		<td><small><?php echo $cargo->nombre;?></small></td>
                                     <td>
-                                    <a href="<?php echo base_url();?>configuraciones/add_centro_costo/<?php echo $centro_costo->id_centro_costo?>" class="opciones" id="opciones" title="Editar Centro de Costo"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>
+                                    <a href="<?php echo base_url();?>configuraciones/add_cargo/<?php echo $cargo->id_cargos?>" class="opciones" id="opciones" title="Editar Cargo"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>
                                     </td>
                                     </tr> 									                            <?php $i++;?>						                            <?php } ?>																		
 																	</tbody> 

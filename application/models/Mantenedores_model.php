@@ -52,6 +52,9 @@ class Mantenedores_model extends CI_Model
 
 	}
 
+
+
+
 	public function get_cargos(){
 		$this->db->select('id_cargos, nombre, activo')
 						  ->from('rem_cargos')
@@ -61,6 +64,10 @@ class Mantenedores_model extends CI_Model
 		 return $query->result();
 
 	}
+
+
+
+
 
 	public function get_bancos(){
 		$this->db->select('id_banco, cod_sbif, nombre, activo')
