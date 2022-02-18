@@ -179,7 +179,7 @@
 									                              </td>
 									                              <td class="text-right" ><b><span id="cotobligatoria_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo $porc_afp;?>&nbsp;%</span></b></td>
 									                              <td>
-									                              	<div class=form-group">
+									                              	<div class="form-group">
 									                                	<input type="text" name="cotadic_<?php echo $trabajador->id_personal;?>" id="cotadic_<?php echo $trabajador->id_personal;?>" class="form-control input-sm cot_adic" value="<?php echo $trabajador->adicafp; ?>"  />   
 									                            	  </td>
 									                          		</div>
@@ -231,15 +231,15 @@
 								                        <table  id="listado_apv_colaborador" class="table table-bordered table-striped dt-responsive">
 								                        <thead>
 								                          <tr>
-								                            <th style="width: 3%;"><small>#</small></th>
-								                            <th style="width: 8%;"><small>Rut</small></th>
-								                            <th style="width: 21%;"><small>Nombre Colaborador</small></th>
-								                            <th style="width: 20%;"><small>Instituci&oacute;n</small></th>
-								                            <th style="width: 9%;"><small>Nro. Contrato</small></th>
-								                            <th style="width: 9%;"><small>Tipo Cotizaci&oacute;n</small></th>
-								                            <th style="width: 10%;"><small>Valor</small></th>
-								                            <th style="width: 10%;"><small>Forma Pago</small></th>
-								                            <th style="width: 10%;"><small>Dep&oacute;sitos Convenidos ($)</small></th>
+								                            <th><small>#</small></th>
+								                            <th><small>Rut</small></th>
+								                            <th><small>Nombre Colaborador</small></th>
+								                            <th><small>Instituci&oacute;n</small></th>
+								                            <th><small>Nro. Contrato</small></th>
+								                            <th><small>Tipo Cotizaci&oacute;n</small></th>
+								                            <th><small>Valor</small></th>
+								                            <th><small>Forma Pago</small></th>
+								                            <th><small>Dep&oacute;sitos Convenidos ($)</small></th>
 								                          </tr>
 								                        </thead>
 								                        <tbody>
@@ -253,7 +253,7 @@
 								                              <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
 								                              <td>
 								                              	<div class="form-group">
-								                                	<select style="width: 100%; name="instapv_<?php echo $trabajador->id_personal;?>" id="instapv_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm dapv_list"  >
+								                                	<select style="width: 100%;" name="instapv_<?php echo $trabajador->id_personal;?>" id="instapv_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm dapv_list"  >
 								                                    <option value="">Seleccione Instituci&oacute;n</option>
 								                                    <?php foreach ($apvs as $dapv) { ?>
 								                                          <?php $apvselected = $dapv->id_apv == $trabajador->instapv ? "selected" : ""; ?>
@@ -264,8 +264,8 @@
 								                            	</div>
 								                              </td>  
 								                              <td>
-								                              	<div class="form-group">
-								                                		<input type="text" name="nrocontratoapv_<?php echo $trabajador->id_personal;?>" id="nrocontratoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros nrocontratoapv" value="<?php echo $trabajador->nrocontratoapv; ?>"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> />   
+								                              	<div class="form-group ">
+								                                		<input type="text" name="nrocontratoapv_<?php echo $trabajador->id_personal;?>" id="nrocontratoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros nrocontratoapv" width="15px" value="<?php echo $trabajador->nrocontratoapv; ?>"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> />   
 								                              	</div>
 								                              </td>
 
@@ -751,7 +751,7 @@ $(document).ready(function() {
                   validating: 'glyphicon glyphicon-refresh'
               },
               fields: {
-                afp_list: {
+                /*afp_list: {
                   selector: '.afp_list',
                   row: '.form-group',
                   validators: {
@@ -759,7 +759,7 @@ $(document).ready(function() {
                           message: 'Selecci&oacute;n de Afp es requerida'
                       }
                   }
-                },
+                },*/
                 cotadic: {
                     // The children's full name are inputs with class .childFullName
                     selector: '.cot_adic',
@@ -910,7 +910,7 @@ $(document).ready(function() {
                   validating: 'glyphicon glyphicon-refresh'
               },
               fields: {
-                isapre_list: {
+                /*isapre_list: {
                   selector: '.isapre_list',
                   row: '.form-group',
                   validators: {
@@ -918,7 +918,7 @@ $(document).ready(function() {
                           message: 'Selecci&oacute;n de Instituci&oacute;n de Salud es requerida'
                       }
                   }
-                },
+                },*/
                 valor_pactado: {
                   selector: '.valor_pactado',
                   row: '.form-group',
