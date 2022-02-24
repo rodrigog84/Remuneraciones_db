@@ -2,10 +2,15 @@
     						<div class="row">
        <div class='col-md-6'>
 
-               <a class="btn btn-primary" href="<?php echo base_url();?>auxiliares/add_licencias"><i class="fa fa-plus" aria-hidden="true"></i> Agregar Licencia</a>
+               <a class="btn btn-primary" href="<?php echo base_url();?>auxiliares/colaborador_licencias"><i class="fa fa-plus" aria-hidden="true"></i> Agregar Licencia</a>
         </div>
       </div><br>  
-
+<div class="alert alert-info fade in m-b-15">
+                <strong>Atenci&oacute;n!</strong>
+                No es posible editar o eliminar Licencias M&eacute;dicas correspondientes a per&iacute;odos de remuneraciones ya cerrados
+                <span class="close" data-dismiss="alert">&times;</span>
+              </div>
+	
 
             <div class="panel panel-inverse">                       
                       <div class="panel-heading">
@@ -14,7 +19,6 @@
             <div class="panel-body">
               <div class='row'>
 
-	
 
 	<div class="graph">
 		<div class="tables">
@@ -25,9 +29,10 @@
 	                    <th scope="col">Nombre Colaborador</th>
 	                    <th scope="col">Rut</th>
 	                    <th scope="col">Numero Licencia</th>
-	                    <th scope="col">Fecha Licencia</th>
+	                    <th scope="col">Fecha Emisi&oacute;n Licencia</th>
+	                    <th scope="col">Fecha Inicio Reposo</th>
 	                    <th scope="col">Numero Días</th>
-	                    <th scope="col">Estado</th>
+	                    <!--th scope="col">Estado</th-->
 	                    <th scope="col">Opciones</th>
 					</tr> 
 				</thead>
@@ -41,14 +46,15 @@
 	                                <td><small><?php echo $licencias->rut;?></small></td>
 	                              	<td><small><?php echo $licencias->numero_licencia;?></small></td>
 	                              	<td><small><?php echo $licencias->fec_emision_licencia;?></small></td>
+	                              	<td><small><?php echo $licencias->fec_inicio_reposo;?></small></td>
 	                              	<td><small><?php echo $licencias->numero_dias;?></small></td>
-	                              	<td><small><?php if ($licencias->estado == 'I'){
+	                              	<!--td><small><?php if ($licencias->estado == 'I'){
 	                              			echo 'INGRESADA';
 	                              	}elseif($licencias->estado == 'A'){
 	                              			echo 'APROBADA';
-	                              	}?></small></td>
-	                              	<td><a href="<?php echo base_url();?>auxiliares/edit_licencias/<?php echo $licencias->id_licencia_medica ?>" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>
-        							<a href="#" onclick="eliminar_licencia(<?php echo $licencias->id_licencia_medica;?>)" class="btn btn-danger" id="Desactivar" title="Eliminar Licencia"><i class="fa fa-times" aria-hidden="true" type="button"></i></a>
+	                              	}?></small></td-->
+	                              	<td><a href="<?php echo base_url();?>auxiliares/edit_licencias/<?php echo $licencias->id_licencia_medica ?>" class="opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>&nbsp;&nbsp;
+        							<a href="<?php echo base_url();?>auxiliares/del_licencia/<?php echo $licencias->id_licencia_medica ?>"   id="Desactivar" title="Eliminar Licencia"><i class="fa fa-times" aria-hidden="true" type="button"></i></a>
 									</td>
 								</tr> 
 							<?php $i++;?>
@@ -80,7 +86,7 @@ $(document).ready(function() {
           "bSort": false,
           "bAutoWidth": false,
           "aLengthMenu" : [[5,15,30,45,100,-1],[5,15,30,45,100,'Todos']],
-          "iDisplayLength": 5,
+          "iDisplayLength": 15,
           "columnDefs": [
 		        {"className": "dt-center", "targets": "_all"}
 		      ],
@@ -130,4 +136,28 @@ bootbox.confirm({
 		})
 }
 
+</script>
+
+
+<script>
+
+    $(document).ready(function() {
+        <?php if(isset($message)){ ?>
+
+          $.gritter.add({
+            title: 'Atención',
+            text: '<?php echo $message;?>',
+            sticky: false,
+            image: '<?php echo base_url();?>images/logos/<?php echo $classmessage == 'success' ? 'check_ok_accept_apply_1582.png' : 'alert-icon.png';?>',
+            time: 5000,
+            class_name: 'my-sticky-class'
+        });
+        /*setTimeout(redirige, 1500);
+        function redirige(){
+            location.href = '<?php //echo base_url();?>welcome/dashboard';
+        }*/
+        <?php } ?>
+
+
+    });
 </script>

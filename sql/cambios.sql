@@ -340,3 +340,139 @@ insert into rem_role (appid,levelid) values (6104,2)
 ALTER TABLE rem_cargos
 ADD CONSTRAINT df_UD
 DEFAULT GETDATE() FOR updated_at;
+
+/*********************************************************************************/
+
+
+	
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'auxiliares/colaborador_licencias'
+,null
+,9
+,0
+,0
+,1
+,null
+)
+
+insert into rem_role (appid,levelid) values (6105,2)
+
+
+	insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'auxiliares/add_licencias'
+,null
+,9
+,0
+,0
+,1
+,null
+)
+
+insert into rem_role (appid,levelid) values (6106,2)
+
+
+
+
+create table rem_tipo_licencia (
+	idtipolicencia int identity,
+	nombre varchar(50),
+	activo tinyint default 1,
+	created_at datetime default getdate()
+)
+
+insert into rem_tipo_licencia (nombre) values ('Enfermedad o Accidente Común')
+insert into rem_tipo_licencia (nombre) values ('Prorroga Medicina Preventiva')
+insert into rem_tipo_licencia (nombre) values ('Licencia Pre y Post Natal')
+insert into rem_tipo_licencia (nombre) values ('Enfermedad Grave Hijo menor de 1 año')
+insert into rem_tipo_licencia (nombre) values ('Accidente del Trabajo o Trayecto')
+insert into rem_tipo_licencia (nombre) values ('Enfermedad Profesional')
+insert into rem_tipo_licencia (nombre) values ('Patologias del Embarazo')
+
+
+
+
+EXEC sp_rename 'dbo.rem_licencias_medicas.responsabilidad_laboral', 'recuperabilidad_laboral', 'COLUMN';
+EXEC sp_rename 'dbo.rem_licencias_medicas.direccion_otro_domicilio', 'direccion_reposo', 'COLUMN';
+EXEC sp_rename 'dbo.rem_licencias_medicas.telefono_contacto', 'telefono_reposo', 'COLUMN';
+EXEC sp_rename 'dbo.rem_licencias_medicas.direccion_profesional', 'direccion_emision_licencia', 'COLUMN';
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'auxiliares/edit_licencias'
+,null
+,9
+,0
+,0
+,1
+,null
+)
+
+insert into rem_role (appid,levelid) values (6107,2)
+
+ALTER TABLE rem_licencias_medicas DROP COLUMN idmovimiento
+alter table rem_lista_movimiento_personal add idlicenciamedica int
+
+
+
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'auxiliares/del_licencia'
+,null
+,9
+,0
+,0
+,1
+,null
+)
+
+
+insert into rem_role (appid,levelid) values (6108,2)
