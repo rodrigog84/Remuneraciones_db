@@ -86,6 +86,19 @@ class Admin extends CI_Model
 	}
 
 
+	public function get_tipos_licencia_medica($idtipolicencia = null){
+		$licencias_data = $this->db->select('idtipolicencia, nombre')
+						  ->from('rem_tipo_licencia')
+						  ->where('activo = 1')
+						  ->order_by('idtipolicencia','asc');
+		$cargos_data = is_null($idtipolicencia) ? $licencias_data : $licencias_data->where('idtipolicencia',$idtipolicencia); 
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
+
+
 	public function get_periodo_by_mes($mes,$anno){
 
 			$this->db->select('id_periodo ')
@@ -602,8 +615,9 @@ public function add_apv($array_datos){
 		                  ->order_by('c.nombre asc');
 		$empresa_data = is_null($empresaid) ? $empresa_data : $empresa_data->where('c.id_empresa',$empresaid);  				                 
 		$query = $this->db->get();
-		$datos = $query->num_rows() == 1 ? $datos = $query->row() : $query->result();
-		return $datos;
+		//$datos = $query->num_rows() == 1 ? $datos = $query->row() : $query->result();
+		//return $datos;
+		return $query->result();
 
 	}
 

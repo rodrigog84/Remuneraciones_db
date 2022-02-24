@@ -290,6 +290,10 @@
     <script src="<?php echo base_url(); ?>js/maleta.js"></script>
     <?php } ?>    
 
+    <?php if(isset($numeroaletras)){ ?>     
+    <script src="<?php echo base_url(); ?>js/NumeroALetras.js"></script>
+    <?php } ?>    
+
       <?php if(isset($mask)){ ?>
             <script src="<?php echo base_url(); ?>plugins/jquery.mask.min.js"></script>
       <?php } ?>    

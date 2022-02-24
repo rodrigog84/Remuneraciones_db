@@ -101,7 +101,6 @@ class Main extends CI_Controller {
 			$parametros_generales->topeimponibleips=number_format($parametros_generales->topeimponibleips, 2, ',', '.');
 			$parametros_generales->topeimponibleafc=number_format($parametros_generales->topeimponibleafc, 2, ',', '.');
 			$parametros_generales->tasasis=number_format($parametros_generales->tasasis, 2, ',', '.');
-
 			if(count($empresas_asignadas) > 1){ // EN CASO DE TENER MÁS DE UNA EMPRESA LO ENVÍA A LA PÁGINA DE SELECCIÓN
 				$content = array(
 							'menu' => 'Selecci&oacute;n Empresa',
@@ -125,7 +124,9 @@ class Main extends CI_Controller {
 				$template = "template_lock";
 
 				//$this->load->view('template_lock',$vars);	
-			}else if(count($empresas_asignadas) == 1){ 			
+			}else if(count($empresas_asignadas) == 1){ 	
+				//var_dump_new($empresas_asignadas);
+				$empresas_asignadas = $empresas_asignadas[0];		
 				$this->session->set_userdata('empresaid',$empresas_asignadas->id_empresa);
 				$this->session->set_userdata('empresanombre',$empresas_asignadas->nombre);
 

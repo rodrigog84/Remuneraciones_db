@@ -4636,7 +4636,7 @@ public function liquidacion_colaborador($idremuneracion = null)
 			}elseif($resultid == 3){
 				$vars['message'] = "Horas Extraordinarias agregadas correctamente";
 				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-ban';
+				$vars['icon'] = 'fa-check';
 			}
 
 			//$this->load->model('admin');

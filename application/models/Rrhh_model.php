@@ -1156,6 +1156,10 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'amaterno', 
 				'fecnacimiento', 
 				'sexo', 
+				"case when sexo = 'F' then 'Femenino' 
+					  when sexo = 'M' then 'Masculino'
+					  else 'S/I'
+				end as sexo_traducido",
 				'idecivil', 
 				'nacionalidad', 
 				'direccion', 
@@ -1195,18 +1199,21 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				"COALESCE((select sum(per.monto) as monto from rem_bonos_personal per
 							inner join rem_conf_haber_descuento h on per.idconf = h.id
  							where per.valido = 1 and per.idpersonal = p.id_personal and h.tipo = 'HABER' and h.fijo = 1 and h.imponible = 1),0) as bonos_fijos",
-				'DATEDIFF(YY,fecafc,getdate()) as annos_afc,
-				DATEDIFF(MM,fecinicvacaciones,getdate()) as meses_vac,
-				fecinicvacaciones,
-				saldoinicvacaciones,
-				diasvactomados,
-				diasprogresivos,
-				diasprogtomados,
-				saldoinicvacprog,
-				idcentrocosto,
-				semana_corrida'
+				'DATEDIFF(YY,fecafc,getdate()) as annos_afc',
+				'DATEDIFF(MM,fecinicvacaciones,getdate()) as meses_vac',
+				'fecinicvacaciones',
+				'saldoinicvacaciones',
+				'diasvactomados',
+				'diasprogresivos',
+				'diasprogtomados',
+				'saldoinicvacprog',
+				'idcentrocosto',
+				'semana_corrida',
+				 "case when fecnacimiento is null then 'S/I' else (((365* year(getdate()))-(365*(year(fecnacimiento))))+ (month(getdate())-month(fecnacimiento))*30
+				+(day(getdate()) -  day(fecnacimiento)))/365 end as edad"
 			);
 		
+		//var_dump_new($array_campos); exit;
 		$personal_data = $this->db->select($array_campos)
 						  ->from('rem_personal p')
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
@@ -4208,6 +4215,10 @@ public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$i
 			$this->db->insert('rem_lista_movimiento_personal',$array_movimiento);
 
 			//echo $this->db->last_query()."----";
+			//echo $this->db->last_query()." --- ";
+
+			//echo $this->db->insert_id()." ---  ";
+
 			$this->db->trans_complete();
 			return 1;
 
@@ -4260,6 +4271,161 @@ public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$i
 		}
 		return 1;
 	}
+
+// se crea esta función, quitando los trans_start, debido a que al llamarlos desde otra función que también los usa, no genera las transacciones
+public function add_movimiento_personal_licencia($array_datos){
+
+		//$this->db->trans_start();
+
+		//var_dump_new($array_datos); exit; 
+		# YA SEA PARA EDITAR O AGREGAR, EL PERIODO AGREGADO NO PUEDE SER DE UN PERIODO CERRADO
+		$mes = substr($array_datos['fecmovimiento'],5,2);
+		$anno = substr($array_datos['fecmovimiento'],0,4);
+		$this->load->model('admin');
+		$periodo = $this->admin->get_periodo_by_mes($mes,$anno);
+		if(!is_null($periodo)){
+			$idperiodo = $periodo->id_periodo;
+			$periodo_cerrado = $this->get_periodos_cerrados($this->session->userdata('empresaid'),$idperiodo);
+			//if(!is_null($periodo_cerrado)){
+			if(count($periodo_cerrado) > 0){
+
+				//$this->db->trans_complete();
+				return 5;
+			}
+
+		}
+
+		$mes_hasta = substr($array_datos['fechastamovimiento'],5,2);
+		$anno_hasta = substr($array_datos['fechastamovimiento'],0,4);
+		//var_dump_new($mes_hasta);
+		//var_dump_new($anno_hasta);
+
+		if($anno.$mes != $anno_hasta.$mes_hasta){
+			return 6;
+		}
+
+		
+		//echo $array_datos['idmovimiento']; exit;
+
+		if($array_datos['idmovimiento'] == 0){
+
+
+			// validar si movimiento corresponde a un período ya cerrado
+
+			$array_movimiento = array(
+							'idpersonal' => $array_datos['idpersonal'],
+							'idmovimiento' => $array_datos['movimientos'],
+							'comentario' => $array_datos['comentarios'],
+							//'fecmovimiento' => formato_fecha($array_datos['fecmovimiento'],'d/m/Y','Y-m-d'),
+							'fecmovimiento' => str_replace("-","",$array_datos['fecmovimiento']),
+							'fechastamovimiento' => str_replace("-","",$array_datos['fechastamovimiento']),
+							'active' => 1,
+							'created_at' => $array_datos['created_at'],
+							'updated_at' => $array_datos['created_at']
+							);
+			$this->db->insert('rem_lista_movimiento_personal',$array_movimiento);
+
+			//echo $this->db->last_query()."----";
+			echo $this->db->last_query()." --- ";
+
+			echo $this->db->insert_id()." ---  ";
+
+			//$this->db->trans_complete();
+			return 1;
+
+		}else{
+
+			$movimiento_realizado = $this->get_lista_movimientos($array_datos['idpersonal'],$array_datos['idmovimiento']);
+			//var_dump_new($movimiento_realizado); exit;
+			if(is_null($movimiento_realizado)){
+			//	$this->db->trans_complete();
+				return 3;
+			}else{
+
+				// validar si movimiento corresponde a un período ya cerrado
+				$mes = substr($movimiento_realizado->fecmovimiento,5,2);
+				$anno = substr($movimiento_realizado->fecmovimiento,0,4);
+
+				$periodo = $this->admin->get_periodo_by_mes($mes,$anno);
+
+				if(!is_null($periodo)){
+					$idperiodo = $periodo->id_periodo;
+					$periodo_cerrado = $this->get_periodos_cerrados($this->session->userdata('empresaid'),$idperiodo);
+					if(count($periodo_cerrado) > 0){
+					//	$this->db->trans_complete();
+						return 4;
+					}
+
+				}
+
+
+
+							
+				$array_movimiento = array(
+								'idpersonal' => $array_datos['idpersonal'],
+								'idmovimiento' => $array_datos['movimientos'],
+								'comentario' => $array_datos['comentarios'],
+								'fecmovimiento' => str_replace("-","",$array_datos['fecmovimiento']),
+								'fechastamovimiento' => str_replace("-","",$array_datos['fechastamovimiento'])
+								);
+
+				$this->db->where('id',$array_datos['idmovimiento']);
+				$this->db->where('idpersonal',$array_datos['idpersonal']);				
+				$this->db->update('rem_lista_movimiento_personal',$array_movimiento);
+			//	$this->db->trans_complete();
+				return 2;				
+
+			}
+
+
+
+		}
+		return 1;
+	}	
+
+
+public function delete_movimiento_personal_licencia($idpersonal,$idmovimiento){
+		//$this->db->trans_start();
+
+		$movimiento = $this->get_lista_movimientos($idpersonal,$idmovimiento);
+
+		if(is_null($movimiento)){ // movimiento no existe
+			//$this->db->trans_complete();
+			return 2;
+
+		}
+
+		// validar si movimiento corresponde a un período ya cerrado
+		$mes = substr($movimiento->fecmovimiento,5,2);
+		$anno = substr($movimiento->fecmovimiento,0,4);
+
+		$this->load->model('admin');
+		$periodo = $this->admin->get_periodo_by_mes($mes,$anno);
+
+		if(!is_null($periodo)){
+			$idperiodo = $periodo->id_periodo;
+			$periodo_cerrado = $this->get_periodos_cerrados($this->session->userdata('empresaid'),$idperiodo);
+
+			if(count($periodo_cerrado) > 0){
+				//$this->db->trans_complete();
+				return 3;
+			}
+
+		}
+
+		
+		$this->db->where('id', $idmovimiento);
+		$this->db->where('idpersonal', $idpersonal);
+		$this->db->update('rem_lista_movimiento_personal',array('active' => '0')); 
+
+		//$this->db->trans_complete();
+
+		return 1;
+
+	}	
+
+
+
 
 
 public function delete_movimiento_personal($idpersonal,$idmovimiento){

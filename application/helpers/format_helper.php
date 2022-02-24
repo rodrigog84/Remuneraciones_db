@@ -816,6 +816,96 @@ if (!function_exists('dias_vacaciones_fechas'))
   }
 }
 
+
+
+if (!function_exists('periodos_entre_fechas'))
+{
+
+  function periodos_entre_fechas($fecinicio,$fecfin)
+  {
+
+
+    $anno_inicio = substr($fecinicio,0,4);
+    $mes_inicio = substr($fecinicio,5,2);
+
+    $anno_fin = substr($fecfin,0,4);
+    $mes_fin = substr($fecfin,5,2);
+
+
+    
+ 
+
+    if($anno_inicio.$mes_inicio != $anno_fin.$mes_fin){
+
+       $array_periodos = array();
+        $array_datos_periodos = array(
+                                  'periodo' => $anno_inicio.$mes_inicio,
+                                  'fecha_desde' => $fecinicio,
+                                  'fecha_hasta' => $anno_inicio."-".$mes_inicio."-".ultimo_dia_mes($anno_inicio,$mes_inicio) //ultimo día del mes
+                                );
+        array_push($array_periodos,$array_datos_periodos);      
+
+        $flag = true;
+        $mes_evalua = $mes_inicio;
+        $anno_evalua = $anno_inicio;
+        while($flag){
+
+          //obtiene el período siguiente
+          $anno_evalua = (int) $mes_evalua < 12 ? $anno_evalua : $anno_evalua + 1;
+          $mes_evalua = (int) $mes_evalua < 12 ? $mes_evalua + 1 : 1;          
+          $mes_evalua = str_pad($mes_evalua, 2, "0", STR_PAD_LEFT);
+
+
+          //si periodo siguiente es igual al final, considera sólo hasta la fecha fin
+          if($anno_evalua.$mes_evalua == $anno_fin.$mes_fin){
+              $array_datos_periodos = array(
+                                        'periodo' => $anno_evalua.$mes_evalua,
+                                        'fecha_desde' => $anno_evalua."-".$mes_evalua."-01",
+                                        'fecha_hasta' => $fecfin //ultimo día del mes
+                                      );
+              array_push($array_periodos,$array_datos_periodos);          
+              $flag = false;
+          }else{ // en caso contrario se considera todo el período
+
+              $array_datos_periodos = array(
+                                        'periodo' => $anno_evalua.$mes_evalua,
+                                        'fecha_desde' => $anno_evalua."-".$mes_evalua."-01",
+                                        'fecha_hasta' => $anno_evalua."-".$mes_evalua."-".ultimo_dia_mes($anno_evalua,$mes_evalua) //ultimo día del mes
+                                      );
+              array_push($array_periodos,$array_datos_periodos);  
+
+          }
+
+
+        }
+
+
+
+    }else{
+
+
+        $array_periodos = array();
+        $array_datos_periodos = array(
+                                  'periodo' => $anno_inicio.$mes_inicio,
+                                  'fecha_desde' => $fecinicio,
+                                  'fecha_hasta' => $fecfin
+                                );
+        array_push($array_periodos,$array_datos_periodos);
+
+
+    }
+
+    
+
+    //var_dump($vacaciones_totales); exit;
+    return $array_periodos;
+
+
+
+
+  }
+}
+
 if (!function_exists('num_dias_progresivos'))
 {
 
