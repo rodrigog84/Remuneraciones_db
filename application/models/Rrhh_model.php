@@ -3171,6 +3171,71 @@ public function get_remuneraciones_by_id($idremuneracion){
 	}
 
 
+	public function liquidaciones($datos_remuneraciones){
+			//echo count($datos_remuneraciones); exit;
+		
+			$this->load->model('admin');
+			$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
+
+
+			//Variable para PDF 		
+
+			$mpdf = new \Mpdf\Mpdf(['default_font_size' => 7,
+									'margin-top' => 16,
+									'margin-bottom' => 16,
+									'margin-header' => 9,
+									'margin-footer' => 9,
+									'margin-left' => 10,
+									'margin-right' => 5,
+									]);
+		//	$mpdf->orientation = "L";
+				//$this->load->library("Mpdf");
+			/*$this->mpdf->Mpdf(
+				'',    // mode - default ''
+				'',    // format - A4, for example, default ''
+				8,     // font size - default 0
+				'',    // default font family
+				10,    // margin_left
+				5,    // margin right
+				16,    // margin top
+				16,    // margin bottom
+				9,     // margin header
+				9,     // margin footer
+				'L'    // L - landscape, P - portrait
+				);
+			  */
+	
+			//echo $html; exit;
+			$mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
+			$mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$mpdf->SetFooter('http://www.arnou.cl');
+			$cantidad = count($datos_remuneraciones);
+			$i = 0;
+
+			foreach ($datos_remuneraciones as $datos_remuneracion) {
+
+					//var_dump_new($datos_remuneracion); exit;
+					$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
+
+					if($content->pdf_content == ''){ // EN CASO QUE POR ALGUN MOTIVO FALLARA LA EJECUCION INICIAL, SE CREA AHORA
+						$this->generar_contenido_comprobante($datos_remuneracion);
+						$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
+					}
+					$mpdf->WriteHTML($content->pdf_content);
+					$i++;
+
+					if($i < $cantidad){
+						$mpdf->AddPage();
+					}					
+
+			}
+
+
+			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_sueldos_total.pdf";
+			$mpdf->Output($nombre_archivo, "I");
+			
+	}
+
 
 	public function liquidacion($datos_remuneracion){
 
@@ -3220,6 +3285,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 			//echo $html; exit;
 			$mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
 			$mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$mpdf->mpdf->SetFooter('http://www.arnou.cl');
 			$mpdf->WriteHTML($content->pdf_content);
 
 			if(is_null($datos_remuneracion->aprueba)){

@@ -1,17 +1,5 @@
 									<div class="graph-visual tables-main">
 											
-									        <?php 
-									        if(isset($message)): ?>
-									         <div class="row">
-									            <div class="col-md-12">
-									                      <div class="alert alert-<?php echo $classmessage; ?> alert-dismissable">
-									                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-									                        <h4><i class="icon fa <?php echo $icon;?>"></i> Alerta!</h4>
-									                        <?php echo $message;?>
-									                      </div>
-									            </div>            
-									          </div>
-									          <?php endif; ?>
 
 											
 														  <div class="graph">
@@ -77,18 +65,18 @@
 																<table class="table" id="detalle_remuneracion"> 
 																	<thead> 
 																		<tr>
-																			<th>#</th>
-																			<th>Mes</th> 
-																			<th>A&ntilde;o</th> 
-													                        <th>N&uacute;mero Colaboradores</th>
-													                        <th>Remuneraci&oacute;n Total (L&iacute;quido)</th>
-													                        <th>Detalle Remuneraciones</th>
+																			<th><small>#</small></th>
+																			<th><small>Mes</small></th> 
+																			<th><small>A&ntilde;o</small></th> 
+													                        <th><small>N&uacute;mero Colaboradores</small></th>
+													                        <th><small>Remuneraci&oacute;n Total (L&iacute;quido)</small></th>
+													                        <th><small>Detalle</small></th>
 													                        <!--th>Planillas Imposiciones</th-->
-													                        <th>Previred</th>
-													                        <th>Pago a Bancos</th>
-													                        <th>Libro Remuneraciones</th>
-													                        <th>LRE</th>
-													                        <th>Estado</th>
+													                        <th><small>Previred</small></th>
+													                        <th><small>Pago a Bancos</small></th>
+													                        <th><small>Libro Remuneraciones</small></th>
+													                        <th><small>LRE</small></th>
+													                        <th><small>Liquidaciones</small></th>
 																		</tr> 
 																	</thead> 
 																	<tbody> 
@@ -100,19 +88,19 @@
 											                          <?php foreach ($datosperiodo as $periodo) { ?>
                        
 											                           <tr>
-											                            <td><?php echo $i;?></td>
-											                            <td><?php echo date2string($periodo->mes,$periodo->anno) == 'Saldo Inicial' ? 'Saldo' : month2string($periodo->mes);?></td>
-											                            <td><?php echo date2string($periodo->mes,$periodo->anno) == 'Saldo Inicial' ? 'Inicial' : $periodo->anno;?></td>
-											                            <td><?php echo number_format($periodo->numtrabajadores,0,".",".");?></td>
-											                            <td>$&nbsp;<?php echo number_format($periodo->sueldoliquido,0,".",".");?></td>
-											                              <td>
+											                            <td><small><?php echo $i;?></small></td>
+											                            <td><small><?php echo month2string($periodo->mes);?></small></td>
+											                            <td><small><?php echo $periodo->anno;?></small></td>
+											                            <td><small><?php echo number_format($periodo->numtrabajadores,0,".",".");?></small></td>
+											                            <td><small>$&nbsp;<?php echo number_format($periodo->sueldoliquido,0,".",".");?></small></td>
+											                              <td><small>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre) && $periodo->numtrabajadores > 0){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/ver_remuneraciones_periodo/2/<?php echo $periodo->id_periodo."/".$idcentrocosto; ?>" data-toggle="tooltip" title="Ver Remuneraciones Personal"><span class="glyphicon glyphicon-search"></span></a>
 											                              <?php }else{ ?>
 											                              		-
 											                              <?php } ?>
-											                              </center>
+											                              </center></small>
 											                              </td>
 											                               <!--td>
 											                              <center>
@@ -123,43 +111,51 @@
 											                              <?php } ?>
 											                              </center>
 											                              </td-->
-											                              <td>
+											                              <td><small>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0 && is_null($idcentrocosto)){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/previred/<?php echo $periodo->id_periodo;?>/<?php echo $idcentrocosto;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
 											                              <?php }else{ ?>
 											                              		-
 											                              <?php } ?>
-											                              </center>
+											                              </center></small>
 											                              </td>
-											                              <td>
+											                              <td><small>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0 && is_null($idcentrocosto)){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/pago_bancos/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
 											                              <?php }else{ ?>
 											                              		-
 											                              <?php } ?>
-											                              </center>
+											                              </center></small>
 											                              </td>
-											                              <td>
+											                              <td><small>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0 && is_null($idcentrocosto)){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo;?>" ><span class="glyphicon glyphicon-book"></span></a>  
 											                              <?php }else{ ?>
 											                              		-
 											                              <?php } ?>
-											                              </center>
+											                              </center></small>
 											                              </td>
-											                               <td>
+											                               <td><small>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0 && is_null($idcentrocosto)){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/lre/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
 											                              <?php }else{ ?>
 											                              		-
 											                              <?php } ?>
-											                              </center>
+											                              </center></small>
 											                              </td>  
-											                              <td><center><span class="<?php echo is_null($periodo->aprueba) ? 'text-yellow fa fa-exclamation ' : 'text-green fa fa-check';?>" data-toggle="tooltip" title="<?php echo is_null($periodo->aprueba) ? 'En revisi&oacute;n' : 'Aprobada';?>"/></span></center></td>                        
+											                              <td><small>
+											                              	<center>
+											                              	 <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0 ){ ?>
+											                              		<a href="<?php echo base_url(); ?>rrhh/liquidaciones/<?php echo $periodo->id_periodo."/".$idcentrocosto; ?>" target="_blank"><span class="glyphicon glyphicon-paperclip"></span>
+
+											                              	 <?php }else{ ?>
+											                              		-
+											                              <?php } ?>
+											                              		</center></td>   </small>                     
 											                          </tr>
 											                          <?php $i++; } ?>
 											                        <?php }else{ ?>
@@ -240,3 +236,27 @@
         });
 
 </script>   
+
+
+<script>
+
+    $(document).ready(function() {
+        <?php if(isset($message)){ ?>
+
+          $.gritter.add({
+            title: 'Atención',
+            text: '<?php echo $message;?>',
+            sticky: false,
+            image: '<?php echo base_url();?>images/logos/<?php echo $classmessage == 'success' ? 'check_ok_accept_apply_1582.png' : 'alert-icon.png';?>',
+            time: 5000,
+            class_name: 'my-sticky-class'
+        });
+        /*setTimeout(redirige, 1500);
+        function redirige(){
+            location.href = '<?php //echo base_url();?>welcome/dashboard';
+        }*/
+        <?php } ?>
+
+
+    });
+</script>
