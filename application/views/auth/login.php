@@ -15,7 +15,11 @@
     <!-- Login CSS -->
     <link href="<?= base_url('assets/css/login.css') ?>" rel="stylesheet">
 
-    <title>Arnou | Facturacion Electronica</title>
+    <!-- Notify -->
+    <link href="<?= base_url('assets/css/notify.min.css') ?>" rel="stylesheet"/>
+    <script src="<?= base_url('assets/js/notify.min.js') ?>"></script>
+
+    <title>Arnou | Remuneraciones</title>
 </head>
 
 <body>
@@ -23,6 +27,12 @@
         <div class="row align-items-center" style="min-height: 100vh">
             <div class="col-md-2 col-lg-3 col-xl-4"></div>
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+            <?php if ($_SESSION['message']) : ?>
+                    <div class="alert alert-danger mt-2 mb-2 alert-dismissible fade show text-center">
+                        <?= $_SESSION['message'] ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
                 <div class="card">
                     <img src="<?= base_url('assets/img/logo_complete.png') ?>" class="card-img-top" alt="Logo">
                     <div class="card-body">
@@ -46,5 +56,10 @@
         </div>
     </div>
 </body>
+<script>
+    window.onload(){
+        notify('success', 'Excelente')
+    }
+</script>
 </html> 
 </html>

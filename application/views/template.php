@@ -5,10 +5,11 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8" />
-    <title>Sistema de Remuneraciones Infosys</title>
+    <title>Arnou | Remuneraciones</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
+    <link rel='icon' href="<?php echo base_url(); ?>assets/img/favicon.ico"/>
     
     <!-- ================== BEGIN BASE CSS STYLE ================== -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
@@ -409,6 +410,9 @@
                        }?></em>
                   </div>    
                                 
+                  <li>
+                    <img src="<?php echo base_url().'assets/img/logo-side.png';?>" alt="" style="width: 150px;position: absolute; left: -1022px; top: -30px"  />
+                  </li>
 
                     <li>
 

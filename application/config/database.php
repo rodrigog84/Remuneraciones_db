@@ -62,10 +62,10 @@ $db['default']['password'] = '1234';
 //$db['default']['password'] = '1QAZxsw2';
 
 
-$db['default']['hostname'] = 'DESKTOP-G1TA7KF\SQLEXPRESS';
+$db['default']['hostname'] = 'LOCALHOST\SQLEXPRESS';
 $db['default']['port'] = 1433; //'chilefor_admin21'
-$db['default']['username'] = ''; //'chilefor_admin21'
-$db['default']['password'] = ''; //'^o6_5+TGP8JK';
+$db['default']['username'] = 'sa'; //'chilefor_admin21'
+$db['default']['password'] = 'Esperpento_1209.'; //'^o6_5+TGP8JK';
 $db['default']['database'] = 'remuneraciones'; // 'chilefor_cf_ctz';
 $db['default']['dbdriver'] = 'sqlsrv';
 $db['default']['dbprefix'] = '';
