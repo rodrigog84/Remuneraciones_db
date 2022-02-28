@@ -125,10 +125,6 @@ if (!function_exists('date2string'))
 
     $text = '';
 
-    if($month == 1 and $year == 2010){
-      return "Saldo Inicial";
-    }else{
-
       switch ($month)
       {
         case 1:
@@ -175,7 +171,6 @@ if (!function_exists('date2string'))
       return $text." de ".$year;
     }
     
-  }
 
 }
 

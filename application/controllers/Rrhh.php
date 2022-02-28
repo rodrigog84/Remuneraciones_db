@@ -3828,6 +3828,22 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
     if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 
+      $resultid = $this->session->flashdata('detalle_total_result');
+      if($resultid == 1){
+        $vars['message'] = "Error al imprimir liquidaciones.  No se especifica per&iacute;odo";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';   
+      }else if($resultid == 2){
+        $vars['message'] = "Error al imprimir liquidaciones.  Per&iacute;odo no se encuentra aprobado";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';   
+      }else if($resultid == 3){
+        $vars['message'] = "Error al imprimir liquidaciones.  No se encontraron datos para el per&iacute;odo";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';   
+      }
+
+
       $idcentrocosto = is_null($this->input->post('centrocosto'))  ? $idcentrocosto : $this->input->post('centrocosto');
 
       $idcentrocosto = $idcentrocosto == 0 ? null : $idcentrocosto;
@@ -3851,6 +3867,7 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
       $vars['datosperiodo'] = $datosperiodo;
       $vars['centros_costo'] = $centros_costo;
       $vars['idcentrocosto'] = $idcentrocosto;
+      $vars['gritter'] = true;
 
       $vars['datatable'] = true;
       //$vars['dataTables'] = true;
@@ -3874,6 +3891,52 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
     }
 
   }   
+
+
+  public function liquidaciones($idperiodo = null,$idcentrocosto = null)
+  {
+
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+      set_time_limit(0);
+      if(is_null($idperiodo)){
+        $this->session->set_flashdata('detalle_total_result',1);
+        redirect('rrhh/detalle_total/'); 
+      }
+
+
+      //no es necesario validar centro de costo.  Si no viene, se imprime todo
+      $periodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'), $idperiodo,$idcentrocosto);
+
+      if(is_null($periodo->aprueba)){
+        $this->session->set_flashdata('detalle_total_result',2);
+        redirect('rrhh/detalle_total/'); 
+      }
+
+
+      $remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,null,$idcentrocosto);
+
+      if(count($remuneraciones) == 0){
+        $this->session->set_flashdata('detalle_total_result',3);
+        redirect('rrhh/detalle_total/');
+      }
+      $datosdetalle = $this->rrhh_model->liquidaciones($remuneraciones);
+      exit;
+
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  }  
 
 	public function listado_hab_descto_variable(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
@@ -4402,7 +4465,7 @@ public function ver_remuneraciones_colaborador($idperiodo = '',$idcentrocosto = 
 	{
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-
+      set_time_limit(0);
 			$remuneracion = $this->rrhh_model->get_remuneraciones_by_id($idremuneracion);
 			//echo "<pre>";
      // print_r($remuneracion);
@@ -4433,6 +4496,10 @@ public function ver_remuneraciones_colaborador($idperiodo = '',$idcentrocosto = 
 		}
 
 	}	
+
+
+
+ 
 
 public function liquidacion_colaborador($idremuneracion = null)
 	{
