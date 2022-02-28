@@ -27,7 +27,7 @@
         <div class="row align-items-center" style="min-height: 100vh">
             <div class="col-md-2 col-lg-3 col-xl-4"></div>
             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
-            <?php if ($_SESSION['message']) : ?>
+            <?php if (isset($_SESSION['message'])) : ?>
                     <div class="alert alert-danger mt-2 mb-2 alert-dismissible fade show text-center">
                         <?= $_SESSION['message'] ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
