@@ -411,7 +411,11 @@
                   </div>    
                                 
                   <li>
-                    <img src="<?php echo base_url().'assets/img/logo-side.png';?>" alt="" style="width: 150px;position: absolute; left: -1022px; top: -30px"  />
+                    <?php if ($this->session->userdata('level_name') === 'Administrador'): ?>
+                        <img src="<?php echo base_url().'assets/img/logo-side.png';?>" alt="" style="width: 150px;position: absolute; left: -1342px; top: -30px"  />
+                    <?php else : ?>
+                        <img src="<?php echo base_url().'assets/img/logo-side.png';?>" alt="" style="width: 150px;position: absolute; left: -1022px; top: -30px"  />
+                    <?php endif  ?>
                   </li>
 
                     <li>
