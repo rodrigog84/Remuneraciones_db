@@ -8,7 +8,9 @@
 								  <!--//sub-heard-part-->
 									<div class="sub-heard-part">
 										<ul class="nav nav-tabs">
+
 	  										<li class="<?php echo $mantencion_personal; ?>"><a href="#personal" data-toggle="tab">Mantenci&oacute;n de Personal&nbsp;&nbsp;<i class="fa"></i> </a></li>
+	  										<li class="<?php echo $ccostocargo; ?>"><a href="#ccostocargo" data-toggle="tab">Cargo/Centro de Costo&nbsp;&nbsp;<i class="fa"></i> </a></li>
 	  										<li class="<?php echo $leyes_sociales; ?>"><a href="#leyes_sociales" data-toggle="tab">Previsi&oacute;n Afp&nbsp;&nbsp;<i class="fa"></i></a></li>
 	  										<li class="<?php echo $apv; ?>"><a href="#apv" data-toggle="tab">A.P.V.&nbsp;&nbsp;<i class="fa"></i></a></li>
 	  										<li class="<?php echo $salud; ?>"><a href="#cotizacion_salud" data-toggle="tab">Cotizaci&oacute;n de Salud&nbsp;&nbsp;<i class="fa"></i></a></li>
@@ -20,8 +22,8 @@
 									<div class="graph">
 										<div class="tab-content">
 											<div class="tab-pane <?php echo $mantencion_personal; ?>" id="personal">
-												 <form id="formprevafp" action="<?php echo base_url();?>rrhh/submit_personal_data" method="post" role="form" enctype="multipart/form-data">
-												<section id="personales">										
+												 
+													<section id="personales">										
 											
 													<h3 class="inner-tittle two">Ficha Colaborador 
 														<a href="<?php echo base_url();?>rrhh/add_trabajador" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Colaborador</a>
@@ -40,11 +42,81 @@
 																			<th>#</th>
                             												<th>Nombre Colaborador</th>
                             												<th>Rut</th>
+                            												<th>Estado</th>
+                            												<th>&Uacute;ltima Liquidaci&oacute;n</th>
+                            												<th>Hist&oacute;rico Sueldos</th>
+                            												<th>Licencias</th>
+                            												<th>Vacaciones</th>
+																			<th>Opciones</th>
+
+																		</tr> 
+																	</thead> 
+																	<tbody> 
+	                          										<?php if(count($personal) > 0 ){ ?>
+	                            										<?php $i = 1; ?>
+	                            										<?php foreach ($personal as $trabajador) { ?>				
+																		<tr class="active" id="variable">
+											                              <td><small><?php echo $i ;?></small></td>
+	                              										  <td><small><?php echo $trabajador->apaterno." ".$trabajador->amaterno." ".$trabajador->nombre;?></small></td>
+	                                									  <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
+	                                									  <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo";?></small></td>
+																		<td><small>
+											                              	<center>
+											                              		<a href="<?php echo base_url(); ?>rrhh/ultima_liquidacion/<?php echo $trabajador->id_personal;?>" target="_blank"><span class="glyphicon glyphicon-paperclip"></span>
+											                             </center></small></td>
+	                              										 <td><small>
+											                              	<center>
+											                              		<a href="<?php echo base_url(); ?>rrhh/historico_sueldos/<?php echo $trabajador->id_personal;?>"><span class="fa fa-list"></span>
+											                             </center></small></td>
+	                              										 <td><small>
+											                              	<center>
+											                              		<a href="<?php echo base_url(); ?>rrhh/licencias_colaborador/<?php echo $trabajador->id_personal;?>" ><span class="fa fa-list-ol"></span>
+											                             </center></small></td>
+	                              										 <td><small>
+											                              	<center>
+											                              		<a href="<?php echo base_url(); ?>auxiliares/cartola_vacaciones/<?php echo $trabajador->id_personal;?>"><span class="fa fa-calendar"></span>
+											                             </center></small></td>
+	                              										   
+	                              										  
+																			<td>
+																				<!--<a href="<?php echo base_url();?>rrhh/mod_trabajador" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>-->
+																				<a href="<?php echo base_url();?>rrhh/mod_trabajador/<?php echo $trabajador->rut ?>" class="opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>&nbsp;&nbsp;
+        																		<!--<a href="#" class="btn btn-info" role="button">Link Button</a>-->
+        																		<a href="<?php echo base_url();?>rrhh/exporta_colaborador/<?php echo $trabajador->rut ?>" class="" id="Exportar_excel" title="Exportar a Excel"><i class="fa fa-file-excel-o" aria-hidden="true" type="button"></i></a>&nbsp;&nbsp;
+        																		<a href="#" onclick="desactivar_colaborador(<?php echo $trabajador->rut;?>)" class="" id="Desactivar" title="Activar/Desactivar" data-toggle="modal" data-target="#myModalElim"><i class="glyphicon glyphicon-trash" aria-hidden="true" type="button"></i></a>
+
+																			</td>
+																		</tr> 
+
+											                            <?php $i++;?>
+												                       <?php } ?>
+                          												<?php } ?>		
+																		
+																	</tbody> 
+																</table>
+															</div>
+
+															</section>
+														</div>	
+
+												<div class="tab-pane <?php echo $ccostocargo; ?>" id="ccostocargo">
+												 <form id="formpersonaldata" action="<?php echo base_url();?>rrhh/submit_personal_data" method="post" role="form" enctype="multipart/form-data">
+													<section id="personales">										
+
+													  <div class="graph">
+
+														  	
+															<div class="tables">
+																<table id="listado" class="table"> 
+																	<thead> 
+																		<tr>
+																			<th>#</th>
+                            												<th>Nombre Colaborador</th>
+                            												<th>Rut</th>
                             												<th>Cargo</th>
                             												<th>Centro de Costo</th>
                             												<th>Estado</th>
-																			<th>Opciones</th>
-
+				
 																		</tr> 
 																	</thead> 
 																	<tbody> 
@@ -89,14 +161,6 @@
 																				</select>
 	                              										   </small></td>
 	                              										  <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo";?></small></td>
-																			<td>
-																				<!--<a href="<?php echo base_url();?>rrhh/mod_trabajador" class="btn btn-info opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>-->
-																				<a href="<?php echo base_url();?>rrhh/mod_trabajador/<?php echo $trabajador->rut ?>" class="opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>&nbsp;&nbsp;
-        																		<!--<a href="#" class="btn btn-info" role="button">Link Button</a>-->
-        																		<a href="<?php echo base_url();?>rrhh/exporta_colaborador/<?php echo $trabajador->rut ?>" class="" id="Exportar_excel" title="Exportar a Excel"><i class="fa fa-file-excel-o" aria-hidden="true" type="button"></i></a>&nbsp;&nbsp;
-        																		<a href="#" onclick="desactivar_colaborador(<?php echo $trabajador->rut;?>)" class="" id="Desactivar" title="Activar/Desactivar" data-toggle="modal" data-target="#myModalElim"><i class="glyphicon glyphicon-trash" aria-hidden="true" type="button"></i></a>
-
-																			</td>
 																		</tr> 
 
 											                            <?php $i++;?>

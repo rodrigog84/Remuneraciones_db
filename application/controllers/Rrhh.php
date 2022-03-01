@@ -484,17 +484,20 @@ public function submit_salud(){
 	public function mantencion_personal(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
-			$vars['mantencion_personal'] = 'active';				
+			$vars['mantencion_personal'] = 'active';			
+      $vars['ccostocargo'] = ''; 	
 			$vars['leyes_sociales'] = '';		
 			$vars['salud'] = '';	
 			$vars['otros'] = '';	
 			$vars['apv'] = '';
+
 			$resultid = $this->session->flashdata('personal_result');
 			if($resultid == 1){
 				$vars['message'] = "Trabajador Agregado correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = 'active';				
+				$vars['mantencion_personal'] = 'active';		
+        $vars['ccostocargo'] = '';    		
 				$vars['leyes_sociales'] = '';		
 				$vars['apv'] = '';		
 				$vars['salud'] = '';		
@@ -503,7 +506,8 @@ public function submit_salud(){
 				$vars['message'] = "Error al agregar Trabajador. Trabajador ya existe";
 				$vars['classmessage'] = 'danger';
 				$vars['icon'] = 'fa-ban';
-				$vars['mantencion_personal'] = 'active';				
+				$vars['mantencion_personal'] = 'active';	
+        $vars['ccostocargo'] = '';   			
 				$vars['leyes_sociales'] = '';		
 				$vars['apv'] = '';		
 				$vars['salud'] = '';
@@ -512,7 +516,8 @@ public function submit_salud(){
 				$vars['message'] = "Leyes sociales actualizadas correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';
-				$vars['mantencion_personal'] = '';				
+				$vars['mantencion_personal'] = '';	
+        $vars['ccostocargo'] = '';   			
 				$vars['apv'] = '';		
 				$vars['leyes_sociales'] = 'active';		
 				$vars['salud'] = '';	
@@ -521,7 +526,8 @@ public function submit_salud(){
 				$vars['message'] = "Datos de Cotizaciones de Salud actualizados correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';	
-				$vars['mantencion_personal'] = '';				
+				$vars['mantencion_personal'] = '';		
+        $vars['ccostocargo'] = '';   		
 				$vars['apv'] = '';		
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = 'active';							
@@ -530,7 +536,8 @@ public function submit_salud(){
 				$vars['message'] = "Mutual de Seguridad/Caja de Compensaci&oacute;n actualizados correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = '';				
+				$vars['mantencion_personal'] = '';		
+        $vars['ccostocargo'] = '';   		
 				$vars['apv'] = '';		
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = '';							
@@ -539,7 +546,8 @@ public function submit_salud(){
 				$vars['message'] = "Trabajador Editado correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = 'active';				
+				$vars['mantencion_personal'] = 'active';		
+        $vars['ccostocargo'] = '';   		
 				$vars['apv'] = '';		
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = '';	
@@ -548,7 +556,8 @@ public function submit_salud(){
 				$vars['message'] = "A.P.V. Editado correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = '';				
+				$vars['mantencion_personal'] = '';			
+        $vars['ccostocargo'] = '';   	
 				$vars['apv'] = 'active';		
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = '';	
@@ -561,7 +570,8 @@ public function submit_salud(){
         $vars['message'] = "Carga Masiva realizada correctamente";
         $vars['classmessage'] = 'success';
         $vars['icon'] = 'fa-check'; 
-        $vars['mantencion_personal'] = 'active';        
+        $vars['mantencion_personal'] = 'active';    
+        $vars['ccostocargo'] = '';       
         $vars['apv'] = '';    
         $vars['leyes_sociales'] = '';   
         $vars['salud'] = '';              
@@ -570,12 +580,73 @@ public function submit_salud(){
         $vars['message'] = "Datos del Trabajador actualizados correctamente";
         $vars['classmessage'] = 'success';
         $vars['icon'] = 'fa-check'; 
-        $vars['mantencion_personal'] = 'active';        
+        $vars['mantencion_personal'] = '';   
+        $vars['ccostocargo'] = 'active';        
         $vars['apv'] = '';    
         $vars['leyes_sociales'] = '';   
         $vars['salud'] = '';              
         $vars['otros'] = '';  
-       } 
+       }elseif($resultid == 11){
+        $vars['message'] = "Error al imprimir liquidac&oacute;n. Debe seleccionar colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+        $vars['mantencion_personal'] = 'active';  
+        $vars['ccostocargo'] = '';        
+        $vars['leyes_sociales'] = '';   
+        $vars['apv'] = '';    
+        $vars['salud'] = '';
+        $vars['otros'] = '';              
+      }elseif($resultid == 12){
+        $vars['message'] = "Error al imprimir liquidac&oacute;n. No existen liquidaciones para el colaborador seleccionado";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+        $vars['mantencion_personal'] = 'active';  
+        $vars['ccostocargo'] = '';        
+        $vars['leyes_sociales'] = '';   
+        $vars['apv'] = '';    
+        $vars['salud'] = '';
+        $vars['otros'] = '';              
+      }elseif($resultid == 13){
+        $vars['message'] = "Error al ver informaci&oacute;n hist&oacute;rica. Debe seleccionar colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+        $vars['mantencion_personal'] = 'active';  
+        $vars['ccostocargo'] = '';        
+        $vars['leyes_sociales'] = '';   
+        $vars['apv'] = '';    
+        $vars['salud'] = '';
+        $vars['otros'] = '';             
+      }elseif($resultid == 14){
+        $vars['message'] = "Error al ver informaci&oacute;n hist&oacute;rica. No existe colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+        $vars['mantencion_personal'] = 'active';  
+        $vars['ccostocargo'] = '';        
+        $vars['leyes_sociales'] = '';   
+        $vars['apv'] = '';    
+        $vars['salud'] = '';
+        $vars['otros'] = '';             
+      }elseif($resultid == 15){
+        $vars['message'] = "Error al ver Licencias. Debe seleccionar colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+        $vars['mantencion_personal'] = 'active';  
+        $vars['ccostocargo'] = '';        
+        $vars['leyes_sociales'] = '';   
+        $vars['apv'] = '';    
+        $vars['salud'] = '';
+        $vars['otros'] = '';             
+      }elseif($resultid == 16){
+        $vars['message'] = "Error al ver Licencias. No existe colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+        $vars['mantencion_personal'] = 'active';  
+        $vars['ccostocargo'] = '';        
+        $vars['leyes_sociales'] = '';   
+        $vars['apv'] = '';    
+        $vars['salud'] = '';
+        $vars['otros'] = '';             
+      }
 
 			$this->load->model('admin');
 			
@@ -622,7 +693,7 @@ public function submit_salud(){
 			//$vars['parametros_generales'] = $parametros_generales;
 			
 			$template = "template";
-			
+			//var_dump_new($vars); exit;
 
 			
 
@@ -4355,6 +4426,9 @@ public function previred($idperiodo = null,$idcentrocosto = null)
 
 
 
+
+
+
 public function ver_planillas_imposiciones($idperiodo = '',$idcentrocosto = null)
   {
 
@@ -4496,6 +4570,164 @@ public function ver_remuneraciones_colaborador($idperiodo = '',$idcentrocosto = 
 		}
 
 	}	
+
+
+  public function ultima_liquidacion($idpersonal = null)
+  {
+
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+      set_time_limit(0);
+      
+      //echo "<pre>";
+     // print_r($remuneracion);
+      //print_r(count(get_object_vars($remuneracion))); exit;
+     if(is_null($idpersonal)){ // SI NO ENCUENTRO NINGUNA REMUNERACION (CORRESPONDE A OTRA EMPRESA POR EJEMPLO)
+            $this->session->set_flashdata('personal_result', 11);
+           redirect('rrhh/mantencion_personal'); 
+     }
+
+     $ultima_remuneracion = $this->rrhh_model->get_ultima_remuneracion($idpersonal);
+     
+
+     if(count($ultima_remuneracion) == 0){
+          $this->session->set_flashdata('personal_result', 12);
+           redirect('rrhh/mantencion_personal'); 
+     }
+
+     $idremuneracion = $ultima_remuneracion[0]->id_remuneracion;
+     $remuneracion = $this->rrhh_model->get_remuneraciones_by_id($idremuneracion);
+     $datosdetalle = $this->rrhh_model->liquidacion($remuneracion);
+
+      exit;
+
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  } 
+
+
+
+
+public function historico_sueldos($idpersonal = null)
+  {
+
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+     if(is_null($idpersonal)){ // SI NO ENCUENTRO NINGUNA REMUNERACION (CORRESPONDE A OTRA EMPRESA POR EJEMPLO)
+            $this->session->set_flashdata('personal_result', 13);
+           redirect('rrhh/mantencion_personal'); 
+     }
+
+     $personal = $this->rrhh_model->get_personal($idpersonal);
+      if(is_null($personal)){
+        $this->session->set_flashdata('personal_result', 14);
+        redirect('rrhh/mantencion_personal');  
+      }
+
+
+
+     $remuneraciones = $this->rrhh_model->get_remuneraciones_by_colaborador($idpersonal,null);
+     //var_dump_new($remuneraciones); exit;
+      $content = array(
+            'menu' => 'Remuneraciones',
+            'title' => 'Remuneraciones',
+            'subtitle' => 'Ver Hist&oacute;rico Sueldos');
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'rrhh/historico_sueldos';
+      $vars['remuneraciones'] = $remuneraciones;
+      $vars['personal'] = $personal;
+
+      
+
+      $vars['datatable'] = true;
+      
+      
+      $template = "template";
+      
+
+      $this->load->view($template,$vars); 
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  }   
+
+
+
+ public function licencias_colaborador($idpersonal = null)
+  {
+
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+  
+      //echo "<pre>";
+     // print_r($remuneracion);
+      //print_r(count(get_object_vars($remuneracion))); exit;
+     if(is_null($idpersonal)){ // SI NO ENCUENTRO NINGUNA REMUNERACION (CORRESPONDE A OTRA EMPRESA POR EJEMPLO)
+            $this->session->set_flashdata('personal_result', 15);
+           redirect('rrhh/mantencion_personal'); 
+     }
+
+     $personal = $this->rrhh_model->get_personal($idpersonal);
+      if(is_null($personal)){
+        $this->session->set_flashdata('personal_result', 16);
+        redirect('rrhh/mantencion_personal');  
+      }
+
+
+     $this->load->model('auxiliar'); 
+     $licencias = $this->auxiliar->get_licencias_by_colaborador($idpersonal);
+  
+     $content = array(
+            'menu' => 'Remuneraciones',
+            'title' => 'Remuneraciones',
+            'subtitle' => 'Ver Licencias Colaborador');
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'rrhh/licencias_colaborador';
+      $vars['licencias'] = $licencias;
+      $vars['personal'] = $personal;
+
+      $vars['datatable'] = true;
+
+      $template = "template";
+      $this->load->view($template,$vars); 
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  }  
 
 
 

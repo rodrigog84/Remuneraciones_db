@@ -710,6 +710,37 @@ public function solicita_vacaciones($array_datos){
 						  ->where('lic.id_personal = p.id_personal')
 						   ->where('lic.active = 1')
 		                  ->order_by('lic.fec_emision_licencia','desc');
+
+
+		 $query = $this->db->get();
+		 return $query->result();
+
+	}
+
+
+public function get_licencias_by_colaborador($idpersonal){
+
+		$array_datos=array(	'p.id_personal',
+							'p.nombre', 
+							'p.apaterno', 
+							'p.amaterno',
+							'concat(cast(p.rut as varchar),\'-\',p.dv) as rut',
+							'lic.numero_licencia',
+							'lic.id_licencia_medica',
+							'format(lic.fec_emision_licencia,\'dd/MM/yyyy\',\'en-US\') as fec_emision_licencia',
+							'format(lic.fec_inicio_reposo,\'dd/MM/yyyy\',\'en-US\') as fec_inicio_reposo',
+							'lic.estado',
+							'numero_dias',
+							'tl.nombre as tipo_licencia');
+		 $this->db->select($array_datos)
+						  ->from('rem_personal p')
+						  ->join('rem_licencias_medicas lic','p.id_empresa =lic.id_empresa and p.id_personal = lic.id_personal')
+						  ->join('rem_tipo_licencia tl','lic.tipo_licencia =tl.idtipolicencia')
+						  ->where('lic.id_empresa', $this->session->userdata('empresaid'))
+						   ->where('lic.active = 1')
+						  ->where('lic.id_personal',$idpersonal)
+		                  ->order_by('lic.fec_emision_licencia','desc');
+
 		 $query = $this->db->get();
 		 return $query->result();
 

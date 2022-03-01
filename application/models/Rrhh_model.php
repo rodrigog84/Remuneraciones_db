@@ -143,6 +143,35 @@ public function get_colaborador_sin_isapre(){
 	}
 
 
+	public function get_ultima_remuneracion($idpersonal){
+
+		$data_periodo = "	select		r.id_remuneracion
+							from		rem_remuneracion r
+							where		r.id_empresa = ".$this->session->userdata('empresaid')."
+							and			r.idpersonal = ".$idpersonal."
+							and			r.id_periodo = (
+														select		p.id_periodo
+														from		rem_periodo p
+														inner join (
+																		select		max(cast(
+																							(cast(p.anno as varchar) +
+																							case when p.mes < 10 then '0' + cast(mes as varchar)
+																								 else cast(p.mes as varchar)
+																							end) as int)) as periodo
+																		from		rem_periodo p
+																		inner join	rem_periodo_remuneracion pr on p.id_periodo = pr.id_periodo and pr.id_empresa = ".$this->session->userdata('empresaid')." and pr.aprueba is not null
+																		inner join	rem_remuneracion r on pr.id_periodo = r.id_periodo and pr.id_empresa = r.id_empresa
+																		where		r.idpersonal = ".$idpersonal." 
+																	) m on p.anno = left(m.periodo,4) and p.mes = cast(right(m.periodo,2) as int)
+														)"; 
+    //	echo $data_periodo; 
+    	$query= $this->db->query($data_periodo);
+   		return $query->result();
+
+
+	}
+
+
 
 	public function get_centro_costo_pendiente($idperiodo =null){
 
@@ -2332,6 +2361,40 @@ public function get_periodos_aprobados_detalle($empresaid,$idperiodo = null,$idc
 	}	
 
 
+
+	public function get_remuneraciones_by_colaborador($idpersonal,$sinsueldo = null){
+		
+		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips, pe.direccion, com.nombre as comuna, pe.parttime, pe.idregion, pe.idcomuna, a.codlre, i.codlre as codlreisapre, ccaf.codlre as codlrecaja, m.codprevired as codlremutual, f.tramo as tramo_asig_familiar')
+						  ->from('rem_periodo as p')
+						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
+						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
+						  ->join('rem_empresa as co','pe.id_empresa = co.id_empresa')
+						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and r.idcentrocosto = pr.id_centro_costo and pr.aprueba is not null')
+						  ->join('rem_isapre as i','pe.idisapre = i.id_isapre')
+						  ->join('rem_cargos as c','pe.idcargo = c.id_cargos','left')
+						  ->join('rem_afp as a','pe.idafp = a.id_afp')
+						  ->join('rem_apv as ap','pe.instapv = ap.id_apv','left')						  
+						  ->join('rem_comuna as com','pe.idcomuna = com.idcomuna','left')
+						  ->join('rem_cajas_compensacion as ccaf', 'co.idcaja = ccaf.id_cajas_compensacion', 'left')
+						  ->join('rem_mutual_seguridad as m', 'co.idmutual = m.id_mutual_seguridad', 'left')
+						  ->join('rem_tabla_asig_familiar as f', 'pe.idasigfamiliar = f.id_tabla_asig_familiar', 'left')
+		                  ->where('pe.id_empresa', $this->session->userdata('empresaid'))
+		                  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
+		                  ->where('r.idpersonal', $idpersonal)
+		                  //->where('pe.idcentrocosto',1)
+		                  ->where('r.active = 1')
+		                  //->where('r.sueldoliquido <> 0')  //valida que se haya creado sueldo
+		                  ->order_by('p.anno desc, p.mes desc');
+
+		$periodo_data = is_null($sinsueldo) ? $periodo_data->where('r.sueldoliquido <> 0') : $periodo_data;			                  
+		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
+		return $query->result();
+
+
+	}	
+
+
 	public function get_remuneracion_colaborador(){
 		
 		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones')
@@ -3143,7 +3206,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 	}	
 
-	public function get_remuneraciones_by_colaborador($idremuneracion){
+	public function get_remuneraciones_by_colaborador_2($idremuneracion){
 		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.semana_corrida,  r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentos, r.prestamos, pr.id_periodo, pr.cierre, pr.aprueba')
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
@@ -3285,7 +3348,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 			//echo $html; exit;
 			$mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
 			$mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
-			$mpdf->mpdf->SetFooter('http://www.arnou.cl');
+			$mpdf->SetFooter('http://www.arnou.cl');
 			$mpdf->WriteHTML($content->pdf_content);
 
 			if(is_null($datos_remuneracion->aprueba)){
