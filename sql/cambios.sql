@@ -505,3 +505,86 @@ values (
 
 
 insert into rem_role (appid,levelid) values (6109,2)
+
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/ultima_liquidacion'
+,null
+,5
+,0
+,0
+,1
+,null
+)
+
+
+
+insert into rem_role (appid,levelid) values (6110,2)
+
+
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/historico_sueldos'
+,null
+,5
+,0
+,0
+,1
+,null
+)
+
+
+insert into rem_role (appid,levelid) values (6111,2)
+
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/licencias_colaborador'
+,null
+,5
+,0
+,0
+,1
+,null
+)
+
+
+insert into rem_role (appid,levelid) values (6112,2)
