@@ -384,7 +384,7 @@
                 <ul class="nav navbar-nav navbar-left">
                     <li class="dropdown">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" style="margin-top: -10px;">
-                            <img src="<?php echo base_url().'images/logos/logo-feria.png';?>" alt="" style="width: 100px; "  />
+                            <img src="<?php echo base_url().'assets/img/logo-side.png';?>" alt="" style="width: 150px; position: absolute; top: -20px; left: -20px; "  />
                             <span class="hidden-xs"></span> 
                         </a>
                     </li>
