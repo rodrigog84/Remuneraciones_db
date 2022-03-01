@@ -675,12 +675,19 @@ public function add_cargo($idcargo = null){
 			}
 
 
-			if(count($cargos) == 0){ // no existe cargo
-	            $this->session->set_flashdata('cargos_result', 4);
-	            redirect('configuraciones/cargos');
+			if(is_null($idcargo)){
+				$cargos = array();
+
 			}else{
-				$cargo = $cargos[0];
+				if(count($cargos) == 0){ // no existe cargo
+		            $this->session->set_flashdata('cargos_result', 4);
+		            redirect('configuraciones/cargos');
+				}else{
+					$cargo = $cargos[0];
+				} 
+
 			}
+
 
 
             $datos_form = array(
