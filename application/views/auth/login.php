@@ -56,10 +56,5 @@
         </div>
     </div>
 </body>
-<script>
-    window.onload(){
-        notify('success', 'Excelente')
-    }
-</script>
 </html> 
 </html>
