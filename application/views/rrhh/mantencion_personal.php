@@ -24,14 +24,12 @@
             <!-- BEGIN Mantencion Personal -->
             <div class="tab-pane <?php echo $mantencion_personal; ?>" id="personal">
                 <section id="personales">
-                    <!-- BEGIN Buttons-->
                     <h3 class="inner-tittle two">Ficha Colaborador
                         <a href="<?php echo base_url(); ?>rrhh/add_trabajador" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Colaborador</a>
                         &nbsp;&nbsp;
                         <a href="<?php echo base_url(); ?>rrhh/carga_masiva_personal" type="submit" class="btn btn-info"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a>
                         <a href="<?php echo base_url(); ?>rrhh/exporta_colaborador/" type="button" class="btn btn-success"><span class="fa fa-file-excel-o"></span>&nbsp;&nbsp;Exportar a Excel</a>
                     </h3>
-                    <!-- END Buttons-->
 
                     <div class="graph">
                         <div class="tables table-responsive">
@@ -161,11 +159,9 @@
                                                         </small></td>
                                                     <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo"; ?></small></td>
                                                 </tr>
-
                                                 <?php $i++; ?>
                                             <?php } ?>
                                         <?php } ?>
-
                                     </tbody>
                                 </table>
                                 <button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>">Guardar</button>&nbsp;&nbsp
@@ -247,29 +243,30 @@
                                                     <input type="text" name="cotadic_<?php echo $trabajador->id_personal; ?>" id="cotadic_<?php echo $trabajador->id_personal; ?>" class="form-control input-sm cot_adic" value="<?php echo $trabajador->adicafp; ?>" />
                                             </td>
                                         </tr>
-                                        <td>
-                                            <div class="form-group">
-                                                <select name="tipcotvol_<?php echo $trabajador->id_personal; ?>" id="tipcotvol_<?php echo $trabajador->id_personal; ?>" class="form-control  input-sm tipcotvol_list">
-                                                    <option value="pesos" <?php echo $trabajador->tipoahorrovol == 'pesos' ? 'selected' : ''; ?>>($) Pesos</option>
-                                                    <option value="porcentaje" <?php echo $trabajador->tipoahorrovol == 'porcentaje' ? 'selected' : ''; ?>>(%) Porcentaje</option>
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
+                                        <tr>
+                                            <td>
+                                                <div class="form-group">
+                                                    <select name="tipcotvol_<?php echo $trabajador->id_personal; ?>" id="tipcotvol_<?php echo $trabajador->id_personal; ?>" class="form-control  input-sm tipcotvol_list">
+                                                        <option value="pesos" <?php echo $trabajador->tipoahorrovol == 'pesos' ? 'selected' : ''; ?>>($) Pesos</option>
+                                                        <option value="porcentaje" <?php echo $trabajador->tipoahorrovol == 'porcentaje' ? 'selected' : ''; ?>>(%) Porcentaje</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
 
-                                                <?php if ($trabajador->tipoahorrovol == 'pesos' && !is_null($trabajador->ahorrovol)) {
-                                                    $ahorrovol = number_format($trabajador->ahorrovol, 0, ".", ".");
-                                                    $class1 = "miles";
-                                                    $class2 = "cot_vol";
-                                                } else {
-                                                    $ahorrovol = $trabajador->ahorrovol;
-                                                    $class1 = "";
-                                                    $class2 = "cot_vol";
-                                                } ?>
-                                                <input type="text" name="cotvol_<?php echo $trabajador->id_personal; ?>" id="cotvol_<?php echo $trabajador->id_personal; ?>" class="form-control <?php echo $class1 . " " . $class2; ?> input-sm numeros" value="<?php echo $ahorrovol; ?>" />
-                                            </div>
-                                        </td>
+                                                    <?php if ($trabajador->tipoahorrovol == 'pesos' && !is_null($trabajador->ahorrovol)) {
+                                                        $ahorrovol = number_format($trabajador->ahorrovol, 0, ".", ".");
+                                                        $class1 = "miles";
+                                                        $class2 = "cot_vol";
+                                                    } else {
+                                                        $ahorrovol = $trabajador->ahorrovol;
+                                                        $class1 = "";
+                                                        $class2 = "cot_vol";
+                                                    } ?>
+                                                    <input type="text" name="cotvol_<?php echo $trabajador->id_personal; ?>" id="cotvol_<?php echo $trabajador->id_personal; ?>" class="form-control <?php echo $class1 . " " . $class2; ?> input-sm numeros" value="<?php echo $ahorrovol; ?>" />
+                                                </div>
+                                            </td>
                                         </tr>
                                         <?php $i++; ?>
                                     <?php } ?>
@@ -404,6 +401,10 @@
                                     <th>Sueldo Base</th>
                                     <th>7% Imponible</th>
                                     <th>Pactado (UF)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
                                     <td><small>
                                             <select name="cargo_<?php echo $trabajador->id_personal; ?>" id="cargo_<?php echo $trabajador->id_personal; ?>" class="form-control input-sm">
                                                 <option value="">Seleccione un Cargo</option>
@@ -446,7 +447,8 @@
                                     </td>
                                 </tr>
                                 <?php $i++; ?>
-                                </tbody>
+                                </tr>
+                            </tbody>
                         </table>
                         <button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>">Guardar</button>&nbsp;&nbsp
                     </section>
@@ -461,7 +463,7 @@
 
 <script>
     $(function() {
-        $('#listado_prevision_afp,#cotizacion_de_salud,#listado_apv_colaborador').dataTable({
+        $('#listado_prevision_afp, #cotizacion_de_salud, #listado_apv_colaborador').dataTable({
             "bLengthChange": true,
             "bFilter": true,
             "bInfo": true,
