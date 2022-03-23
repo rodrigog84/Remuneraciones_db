@@ -344,7 +344,7 @@ DEFAULT GETDATE() FOR updated_at;
 /*********************************************************************************/
 
 
-	
+
 insert into rem_app (
 
 funcion
@@ -588,3 +588,13 @@ values (
 
 
 insert into rem_role (appid,levelid) values (6112,2)
+
+--  Agregado 18/03/2022
+CREATE TABLE rem_parametros (
+    id int identity NOT NULL,
+    nombre varchar(20) NOT NULL,
+    valor float NOT NULL,
+    fecha datetime NOT NULL,
+    created_at datetime default getdate(),
+    updated_at datetime
+)
