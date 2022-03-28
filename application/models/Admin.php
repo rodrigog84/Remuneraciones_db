@@ -1001,6 +1001,17 @@ public function get_parametros_generales(){
 	}	
 
 
+
+
+public function get_parametros_generales_by_periodo($idperiodo){
+
+		$comunidades_data = $this->db->select('uf , sueldominimo, tasasis, topeimponible, topeimponibleips, topeimponibleafc, utm')
+						  ->from('rem_parametros_generales');
+		$query = $this->db->get();						  
+		return $query->row();
+
+	}	
+
 	public function edit_parametros_generales($parametros){
 
 

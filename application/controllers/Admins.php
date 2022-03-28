@@ -1083,6 +1083,8 @@ public function submit_parametros_generales()
 
 			$result = $this->ion_auth->hash_password_db($this->session->userdata('user_id'),$this->input->post('password_actual'));
 
+			$data = array();
+
 			if(!$result){
 				$data['result'] = "error";
 				$data['fields']['password_actual'] = "Clave actual es incorrecta";	
