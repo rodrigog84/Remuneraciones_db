@@ -598,3 +598,9 @@ CREATE TABLE rem_parametros (
     created_at datetime default getdate(),
     updated_at datetime
 )
+
+
+
+
+alter table rem_periodo add periodo int
+ALTER TABLE rem_parametros ALTER COLUMN fecha DATE
