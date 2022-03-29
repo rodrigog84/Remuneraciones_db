@@ -3396,7 +3396,11 @@ public function editar_trabajador(){
 				$vars['message'] = "Remuneracion rechazada.  Puede corregir los valores necesarios para calcular nuevamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';					
-			}
+			}else if($resultid == 5){
+        $vars['message'] = "Error al Calcular Remuneraciones. No se encuentran algunos indicadores para el per&iacute;odo seleccionado";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';         
+      }
 			$mes = $this->session->flashdata('asistencia_mes') == '' ? date('m') : $this->session->flashdata('asistencia_mes');
 			$anno = $this->session->flashdata('asistencia_anno') == '' ? date('Y') : $this->session->flashdata('asistencia_anno');
 			$this->load->model('admin');
@@ -3604,6 +3608,7 @@ public function editar_trabajador(){
 			$vars['periodos_remuneracion'] = $periodos_remuneracion;	
 			$vars['formValidation'] = true;
 			$vars['centros_costo'] = $centros_costo;
+      $vars['gritter'] = true;
 			//$vars['multipleSelect'] = true;
 			//$vars['centro_costo_periodo'] = $centro_costo_periodo;	
 			$vars['content_view'] = 'rrhh/calculo_remuneraciones';
@@ -3734,6 +3739,27 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 
 			//}else{
           //var_dump_new($centro_costo); exit;
+
+
+        $parametros = array();
+        $parametros['uf'] = $this->admin->get_indicadores_by_periodo($idperiodo,'UF');
+        $parametros['topeimponible'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tope Imponible AFP');
+        $parametros['topeimponibleips'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tope Imponible IPS');
+        $parametros['topeimponibleafc'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tope Imponible AFC');
+        $parametros['sueldominimo'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Sueldo Minimo');
+        $parametros['utm'] = $this->admin->get_indicadores_by_periodo($idperiodo,'UTM');
+        $parametros['tasasis'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tasa SIS');
+
+
+        if($parametros['uf'] == -1 || $parametros['topeimponible'] == -1 ||  $parametros['topeimponibleips'] == -1 ||  $parametros['topeimponibleafc'] == -1 ||  $parametros['sueldominimo'] == -1 ||  $parametros['utm'] == -1){
+              $this->session->set_flashdata('calculo_remuneraciones_result', 5);
+              redirect('rrhh/calculo_remuneraciones');
+
+
+        }
+
+
+
           foreach ($centro_costo as $centros_costo) {
 				    $this->rrhh_model->calcular_remuneraciones($idperiodo,$centros_costo); 
             }          

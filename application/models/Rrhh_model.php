@@ -1643,11 +1643,18 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 		$tabla_impuesto = $this->admin->get_tabla_impuesto();
 		
+		$parametros = array();
+		$parametros['uf'] = $this->admin->get_indicadores_by_periodo($idperiodo,'UF');
+		$parametros['topeimponible'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tope Imponible AFP');
+		$parametros['topeimponibleips'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tope Imponible IPS');
+		$parametros['topeimponibleafc'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tope Imponible AFC');
+		$parametros['sueldominimo'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Sueldo Minimo');
+		$parametros['utm'] = $this->admin->get_indicadores_by_periodo($idperiodo,'UTM');
+		$parametros['tasasis'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tasa SIS');
 
-
-		$parametros = $this->admin->get_parametros_generales();
+		//$parametros = $this->admin->get_parametros_generales();
 		$monto_total_sueldos = 0;
-		$tope_legal_gratificacion = ($parametros->sueldominimo*4.75)/12;
+		$tope_legal_gratificacion = ($parametros['sueldominimo']*4.75)/12;
 
 
 
@@ -1660,9 +1667,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$suma_asig_familiar = 0;
 		$suma_ips = 0;
 		$suma_impuesto = 0;
-		$tope_imponible = (int)($parametros->uf*$parametros->topeimponible);
-		$tope_imponible_ips = (int)($parametros->uf*$parametros->topeimponibleips);
-		$tope_imponible_afc = (int)($parametros->uf*$parametros->topeimponibleafc);
+		$tope_imponible = (int)($parametros['uf']*$parametros['topeimponible']);
+		$tope_imponible_ips = (int)($parametros['uf']*$parametros['topeimponibleips']);
+		$tope_imponible_afc = (int)($parametros['uf']*$parametros['topeimponibleafc']);
 
 		$this->db->query('update r 
 							set r.active = 0
@@ -1902,12 +1909,12 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				$adic_salud = 0;					
 			}else{
 				//$dif_isapre = round($trabajador->valorpactado*$parametros->uf,0) - $cot_salud_oblig;
-				$dif_isapre = $datos_remuneracion->diastrabajo > 0 ? (round($trabajador->valorpactado * $parametros->uf, 0) - $cot_salud_oblig) : 0;
+				$dif_isapre = $datos_remuneracion->diastrabajo > 0 ? (round($trabajador->valorpactado * $parametros['uf'], 0) - $cot_salud_oblig) : 0;
 				//echo $trabajador->valorpactado; exit;
 				$adic_isapre = $dif_isapre > 0 ? $dif_isapre : 0;
 
 				if($adic_isapre > 0){
-					$tope_salud_tributable = round(($parametros->topeimponible*0.07)*$parametros->uf,0);
+					$tope_salud_tributable = round(($parametros['topeimponible']*0.07)*$parametros['uf'],0);
 					$sobre_tope = ($cot_salud_oblig + $adic_isapre) - $tope_salud_tributable;
 					if($sobre_tope > 0){ // nos pasamos del tope
 						$cot_adic_isapre = $adic_isapre - $sobre_tope; // tributable
@@ -1942,7 +1949,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				//REVISAR TOPE
 				$cotapv = round($sueldo_imponible*($trabajador->cotapv/100),0);	
 			}else if($trabajador->tipocotapv == 'uf'){
-				$cotapv = round($trabajador->cotapv*$parametros->uf,0);
+				$cotapv = round($trabajador->cotapv*$parametros['uf'],0);
 			}
 
 
@@ -1956,9 +1963,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$impuesto = 0;
 			foreach ($tabla_impuesto as $rango) {
 				//echo $base_tributaria." - ".$rango->desde." - ".$rango->hasta." - ".$rebaja."<br>";
-				$desde = $rango->desde*$parametros->utm;
-				$hasta = $rango->hasta*$parametros->utm;
-				$rebaja = $rango->rebaja*$parametros->utm;
+				$desde = $rango->desde*$parametros['utm'];
+				$hasta = $rango->hasta*$parametros['utm'];
+				$rebaja = $rango->rebaja*$parametros['utm'];
 
 
 				$rango_desde = round(($desde/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
@@ -2038,7 +2045,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				}
 
 				$sueldo_calculo_sis = $sueldo_calculo_sis > $sueldo_imponible_afp ? $sueldo_imponible_afp : $sueldo_calculo_sis;
-				$seginvalidez = round($sueldo_calculo_sis*($parametros->tasasis/100),0);
+				$seginvalidez = round($sueldo_calculo_sis*($parametros['tasasis']/100),0);
 
 			}
 			#$seginvalidez = $trabajador->pensionado == 1 ? 0 : round($sueldo_imponible*($parametros->tasasis/100),0);
@@ -2083,7 +2090,7 @@ limit 1		*/
 					$aportesegcesantia = 0;	
 				}	
 
-				$seginvalidez += round($imponibles_no_trabajo*($parametros->tasasis/100),0);
+				$seginvalidez += round($imponibles_no_trabajo*($parametros['tasasis']/100),0);
 
 			}
 
@@ -2094,7 +2101,7 @@ limit 1		*/
 			$suma_impuesto += $impuesto;
 
 			$data_remuneracion = array(
-					'ufperiodo' => $parametros->uf,
+					'ufperiodo' => $parametros['uf'],
 					'sueldobase' => $sueldo_base_mes,
 					'valorhora' => $valor_hora,
 					'montodescuento' => $descuentos,

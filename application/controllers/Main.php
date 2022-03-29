@@ -95,14 +95,36 @@ class Main extends CI_Controller
             $num_centro_costo = sizeof($centro_costo);
             //
             //$num_colaboradores = count($this->rrhh_model->get_personal_datos('null'));
+
+            $fechoy = date('Ymd');
+            $fechoy_format = date('d/m/Y');
+            //$fechoy = '20220501';
+            $parametros = array();
+            $parametros['uf'] = $this->admin->get_indicadores_by_day($fechoy,'UF');
+            $parametros['max_uf'] = $this->admin->get_max_indicadores_by_periodo($fechoy,'UF');
+            $parametros['topeimponible'] = $this->admin->get_indicadores_by_day($fechoy,'Tope Imponible AFP');
+            $parametros['topeimponibleips'] = $this->admin->get_indicadores_by_day($fechoy,'Tope Imponible IPS');
+            $parametros['topeimponibleafc'] = $this->admin->get_indicadores_by_day($fechoy,'Tope Imponible AFC');
+            $parametros['sueldominimo'] = $this->admin->get_indicadores_by_day($fechoy,'Sueldo Minimo');
+            $parametros['utm'] = $this->admin->get_indicadores_by_day($fechoy,'UTM');
+            $parametros['tasasis'] = $this->admin->get_indicadores_by_day($fechoy,'Tasa SIS');
+
+            //var_dump_new(count($parametros['max_uf'])); exit;
             $parametros_generales = $this->admin->get_parametros_generales();
-            $parametros_generales->uf = number_format($parametros_generales->uf, 2, ',', '.');
-            $parametros_generales->utm = number_format($parametros_generales->utm, 2, ',', '.');
-            $parametros_generales->sueldominimo = number_format($parametros_generales->sueldominimo, 0, ',', '.');
-            $parametros_generales->topeimponible = number_format($parametros_generales->topeimponible, 2, ',', '.');
-            $parametros_generales->topeimponibleips = number_format($parametros_generales->topeimponibleips, 2, ',', '.');
-            $parametros_generales->topeimponibleafc = number_format($parametros_generales->topeimponibleafc, 2, ',', '.');
-            $parametros_generales->tasasis = number_format($parametros_generales->tasasis, 2, ',', '.');
+            $parametros_generales = array();
+            $parametros_generales['uf'] = count($parametros['uf']) == 0 ? 'Sin Dato' : number_format($parametros['uf'][0]->valor, 2, ',', '.');
+            $parametros_generales['max_uf_valor'] = count($parametros['max_uf']) == 0 ? 'Sin Dato' : number_format($parametros['max_uf'][0]->valor, 2, ',', '.');
+            $parametros_generales['max_uf_fecha'] = count($parametros['max_uf']) == 0 ? 'Sin Dato' : substr($parametros['max_uf'][0]->fecha,8,2).'/'.substr($parametros['max_uf'][0]->fecha,5,2).'/'.substr($parametros['max_uf'][0]->fecha,0,4);
+            $parametros_generales['utm'] = count($parametros['utm']) == 0 ? 'Sin Dato' : number_format($parametros['utm'][0]->valor, 2, ',', '.');
+            $parametros_generales['sueldominimo'] =  count($parametros['sueldominimo']) == 0 ? 'Sin Dato' : number_format($parametros['sueldominimo'][0]->valor, 0, ',', '.');
+            $parametros_generales['topeimponible'] = count($parametros['topeimponible']) == 0 ? 'Sin Dato' :  number_format($parametros['topeimponible'][0]->valor, 2, ',', '.');
+            $parametros_generales['topeimponibleips'] = count($parametros['topeimponibleips']) == 0 ? 'Sin Dato' : number_format($parametros['topeimponibleips'][0]->valor, 2, ',', '.');
+            $parametros_generales['topeimponibleafc'] = count($parametros['topeimponibleafc']) == 0 ? 'Sin Dato' :  number_format($parametros['topeimponibleafc'][0]->valor, 2, ',', '.');
+            $parametros_generales['tasasis'] = count($parametros['tasasis']) == 0 ? 'Sin Dato' : number_format($parametros['tasasis'][0]->valor, 2, ',', '.');
+
+
+
+
             if (count($empresas_asignadas) > 1) { // EN CASO DE TENER MÁS DE UNA EMPRESA LO ENVÍA A LA PÁGINA DE SELECCIÓN
                 $content = array(
                     'menu' => 'Selecci&oacute;n Empresa',
@@ -122,6 +144,8 @@ class Main extends CI_Controller
                 $vars['num_centro_costo'] = $num_centro_costo;
                 $vars['content_menu'] = $content;
                 $vars['empresas'] = $empresas_asignadas;
+                $vars['fechoy_format'] = $fechoy_format;
+
 
                 $vars['content_view'] = 'admins/asigna_empresa';
                 $template = "template_lock";
@@ -162,15 +186,32 @@ class Main extends CI_Controller
 
                 $periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos_resumen();
                 //$num_colaboradores = count($this->rrhh_model->get_personal_datos('null'));
+                $fechoy = date('Ymd');
+                $fechoy_format = date('d/m/Y');
+                //$fechoy = '20220501';
+                $parametros = array();
+                $parametros['uf'] = $this->admin->get_indicadores_by_day($fechoy,'UF');
+                $parametros['max_uf'] = $this->admin->get_max_indicadores_by_periodo($fechoy,'UF');
+                $parametros['topeimponible'] = $this->admin->get_indicadores_by_day($fechoy,'Tope Imponible AFP');
+                $parametros['topeimponibleips'] = $this->admin->get_indicadores_by_day($fechoy,'Tope Imponible IPS');
+                $parametros['topeimponibleafc'] = $this->admin->get_indicadores_by_day($fechoy,'Tope Imponible AFC');
+                $parametros['sueldominimo'] = $this->admin->get_indicadores_by_day($fechoy,'Sueldo Minimo');
+                $parametros['utm'] = $this->admin->get_indicadores_by_day($fechoy,'UTM');
+                $parametros['tasasis'] = $this->admin->get_indicadores_by_day($fechoy,'Tasa SIS');
 
+                //var_dump_new(count($parametros['max_uf'])); exit;
                 $parametros_generales = $this->admin->get_parametros_generales();
-                $parametros_generales->uf = number_format($parametros_generales->uf, 2, ',', '.');
-                $parametros_generales->utm = number_format($parametros_generales->utm, 2, ',', '.');
-                $parametros_generales->sueldominimo = number_format($parametros_generales->sueldominimo, 0, ',', '.');
-                $parametros_generales->topeimponible = number_format($parametros_generales->topeimponible, 2, ',', '.');
-                $parametros_generales->topeimponibleips = number_format($parametros_generales->topeimponibleips, 2, ',', '.');
-                $parametros_generales->topeimponibleafc = number_format($parametros_generales->topeimponibleafc, 2, ',', '.');
-                $parametros_generales->tasasis = number_format($parametros_generales->tasasis, 2, ',', '.');
+                $parametros_generales = array();
+                $parametros_generales['uf'] = count($parametros['uf']) == 0 ? 'Sin Dato' : number_format($parametros['uf'][0]->valor, 2, ',', '.');
+                $parametros_generales['max_uf_valor'] = count($parametros['max_uf']) == 0 ? 'Sin Dato' : number_format($parametros['max_uf'][0]->valor, 2, ',', '.');
+                $parametros_generales['max_uf_fecha'] = count($parametros['max_uf']) == 0 ? 'Sin Dato' : substr($parametros['max_uf'][0]->fecha,8,2).'/'.substr($parametros['max_uf'][0]->fecha,5,2).'/'.substr($parametros['max_uf'][0]->fecha,0,4);
+                $parametros_generales['utm'] = count($parametros['utm']) == 0 ? 'Sin Dato' : number_format($parametros['utm'][0]->valor, 2, ',', '.');
+                $parametros_generales['sueldominimo'] =  count($parametros['sueldominimo']) == 0 ? 'Sin Dato' : number_format($parametros['sueldominimo'][0]->valor, 0, ',', '.');
+                $parametros_generales['topeimponible'] = count($parametros['topeimponible']) == 0 ? 'Sin Dato' :  number_format($parametros['topeimponible'][0]->valor, 2, ',', '.');
+                $parametros_generales['topeimponibleips'] = count($parametros['topeimponibleips']) == 0 ? 'Sin Dato' : number_format($parametros['topeimponibleips'][0]->valor, 2, ',', '.');
+                $parametros_generales['topeimponibleafc'] = count($parametros['topeimponibleafc']) == 0 ? 'Sin Dato' :  number_format($parametros['topeimponibleafc'][0]->valor, 2, ',', '.');
+                $parametros_generales['tasasis'] = count($parametros['tasasis']) == 0 ? 'Sin Dato' : number_format($parametros['tasasis'][0]->valor, 2, ',', '.');
+
 
                 $tabla_asig_familiar = $this->admin->get_tabla_asig_familiar();
                 //$tabla_impuesto = $this->admin->get_tabla_impuesto();
@@ -282,6 +323,7 @@ class Main extends CI_Controller
                 $vars['arreglo_cc'] = $arreglo_cc;
                 $vars['meses_x_montopago'] = $meses_x_montopago;
                 $vars['tabla_asig_familiar'] = $tabla_asig_familiar;
+                $vars['fechoy_format'] = $fechoy_format;
                 //$vars['tabla_impuesto'] = $tabla_impuesto;
             } else {
                 $periodo_actual = "";
@@ -297,6 +339,7 @@ class Main extends CI_Controller
                 $vars['arreglo_afp'] = $arreglo_afp;
                 $vars['arreglo_cc'] = $arreglo_cc;
                 $vars['meses_x_montopago'] = $meses_x_montopago;
+                $vars['fechoy_format'] = $fechoy_format;
             }
         } else {
             //$num_colaboradores = count($this->rrhh_model->get_personal_datos('null'));
@@ -308,12 +351,32 @@ class Main extends CI_Controller
             $num_centro_costo = sizeof($centro_costo);
             //
             //$num_colaboradores = count($this->rrhh_model->get_personal_datos('null'));
+            $fechoy = date('Ymd');
+            $fechoy_format = date('d/m/Y');
+            //$fechoy = '20220501';
+            $parametros = array();
+            $parametros['uf'] = $this->admin->get_indicadores_by_day($fechoy,'UF');
+            $parametros['max_uf'] = $this->admin->get_max_indicadores_by_periodo($fechoy,'UF');
+            $parametros['topeimponible'] = $this->admin->get_indicadores_by_day($fechoy,'Tope Imponible AFP');
+            $parametros['topeimponibleips'] = $this->admin->get_indicadores_by_day($fechoy,'Tope Imponible IPS');
+            $parametros['topeimponibleafc'] = $this->admin->get_indicadores_by_day($fechoy,'Tope Imponible AFC');
+            $parametros['sueldominimo'] = $this->admin->get_indicadores_by_day($fechoy,'Sueldo Minimo');
+            $parametros['utm'] = $this->admin->get_indicadores_by_day($fechoy,'UTM');
+            $parametros['tasasis'] = $this->admin->get_indicadores_by_day($fechoy,'Tasa SIS');
+
+            //var_dump_new(count($parametros['max_uf'])); exit;
             $parametros_generales = $this->admin->get_parametros_generales();
-            $parametros_generales->uf = number_format($parametros_generales->uf, 2, ',', '.');
-            $parametros_generales->utm = number_format($parametros_generales->utm, 2, ',', '.');
-            $parametros_generales->sueldominimo = number_format($parametros_generales->sueldominimo, 0, ',', '.');
-            $parametros_generales->topeimponible = number_format($parametros_generales->topeimponible, 2, ',', '.');
-            $parametros_generales->topeimponibleafc = number_format($parametros_generales->topeimponibleafc, 2, ',', '.');
+            $parametros_generales = array();
+            $parametros_generales['uf'] = count($parametros['uf']) == 0 ? 'Sin Dato' : number_format($parametros['uf'][0]->valor, 2, ',', '.');
+            $parametros_generales['max_uf_valor'] = count($parametros['max_uf']) == 0 ? 'Sin Dato' : number_format($parametros['max_uf'][0]->valor, 2, ',', '.');
+            $parametros_generales['max_uf_fecha'] = count($parametros['max_uf']) == 0 ? 'Sin Dato' : substr($parametros['max_uf'][0]->fecha,8,2).'/'.substr($parametros['max_uf'][0]->fecha,5,2).'/'.substr($parametros['max_uf'][0]->fecha,0,4);
+            $parametros_generales['utm'] = count($parametros['utm']) == 0 ? 'Sin Dato' : number_format($parametros['utm'][0]->valor, 2, ',', '.');
+            $parametros_generales['sueldominimo'] =  count($parametros['sueldominimo']) == 0 ? 'Sin Dato' : number_format($parametros['sueldominimo'][0]->valor, 0, ',', '.');
+            $parametros_generales['topeimponible'] = count($parametros['topeimponible']) == 0 ? 'Sin Dato' :  number_format($parametros['topeimponible'][0]->valor, 2, ',', '.');
+            $parametros_generales['topeimponibleips'] = count($parametros['topeimponibleips']) == 0 ? 'Sin Dato' : number_format($parametros['topeimponibleips'][0]->valor, 2, ',', '.');
+            $parametros_generales['topeimponibleafc'] = count($parametros['topeimponibleafc']) == 0 ? 'Sin Dato' :  number_format($parametros['topeimponibleafc'][0]->valor, 2, ',', '.');
+            $parametros_generales['tasasis'] = count($parametros['tasasis']) == 0 ? 'Sin Dato' : number_format($parametros['tasasis'][0]->valor, 2, ',', '.');
+
 
             $empresa = '';
 
@@ -330,6 +393,7 @@ class Main extends CI_Controller
             $vars['arreglo_cc'] = $arreglo_cc;
             $vars['meses_x_montopago'] = $meses_x_montopago;
             $vars['content_view'] = 'dashboard-admin';
+            $vars['fechoy_format'] = $fechoy_format;
         }
 
         /*** SI YA SE HABIA SELECCIONADO UN MODULO, REDIRECCIONA ****/

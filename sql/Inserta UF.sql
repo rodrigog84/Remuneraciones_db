@@ -1,4 +1,3 @@
-ALTER TABLE rem_parametros ALTER COLUMN fecha DATE
 
 insert into rem_parametros (nombre, valor, fecha) values ('UF',	29069.39	,'20210101');
 insert into rem_parametros (nombre, valor, fecha) values ('UF',	29068.46	,'20210102');

@@ -11,7 +11,7 @@
 									<div class="graph-visual tables-main">
 											
 									        <?php if(isset($message)): ?>
-									         <div class="row">
+									         <!--div class="row">
 									            <div class="col-md-12">
 									                      <div class="alert alert-<?php echo $classmessage; ?> alert-dismissable">
 									                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -19,7 +19,7 @@
 									                        <?php echo $message;?>
 									                      </div>
 									            </div>            
-									          </div>
+									          </div-->
 									          <?php endif; ?>
 												<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_calculo_remuneraciones" name="basicBootstrapForm" method="post" > 
 									            <div class="row">
@@ -593,3 +593,26 @@ $(document).ready(function() {
 </script>
 
 
+
+<script>
+
+    $(document).ready(function() {
+        <?php if(isset($message)){ ?>
+
+          $.gritter.add({
+            title: 'Atención',
+            text: '<?php echo $message;?>',
+            sticky: false,
+            image: '<?php echo base_url();?>images/logos/<?php echo $classmessage == 'success' ? 'check_ok_accept_apply_1582.png' : 'alert-icon.png';?>',
+            time: 5000,
+            class_name: 'my-sticky-class'
+        });
+        /*setTimeout(redirige, 1500);
+        function redirige(){
+            location.href = '<?php //echo base_url();?>welcome/dashboard';
+        }*/
+        <?php } ?>
+
+
+    });
+</script>

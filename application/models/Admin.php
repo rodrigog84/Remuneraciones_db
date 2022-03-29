@@ -1001,16 +1001,73 @@ public function get_parametros_generales(){
 	}	
 
 
+public function get_indicadores_by_day($date,$indicador){
 
 
-public function get_parametros_generales_by_periodo($idperiodo){
 
-		$comunidades_data = $this->db->select('uf , sueldominimo, tasasis, topeimponible, topeimponibleips, topeimponibleafc, utm')
-						  ->from('rem_parametros_generales');
-		$query = $this->db->get();						  
-		return $query->row();
+		$indicadores_data = $this->db->select('nombre , valor, fecha')
+						  ->from('rem_parametros')
+						  ->where('fecha',$date)
+						  ->where('nombre',$indicador);
 
+		$query = $this->db->get();	
+		return $query->result();
 	}	
+
+public function get_indicadores_by_periodo($idperiodo,$indicador){
+
+		$sql = "select		t.nombre, t.valor, t.fecha
+											  from		rem_parametros t
+												inner join	(
+															select		p.id_periodo
+																		,p.periodo
+																		,c.fecha
+															from		rem_periodo p
+															inner join	(
+																		select		periodo, max(fecha) as fecha
+																		from		rem_calendario
+																		group by	periodo
+																		) c on p.periodo = c.periodo	
+															where		p.id_periodo = " . $idperiodo ."
+															) p on t.fecha = p.fecha
+				where		t.nombre = '" . $indicador . "'";
+
+		//echo $sql.'<br>';
+		$parametros_data = $this->db->query($sql);
+		$result = $parametros_data->result();
+
+		if(count($result) == 0){
+			return -1;
+		}else{
+			$datos = $result[0];
+			return $datos->valor;
+		}
+	}	
+
+
+public function get_max_indicadores_by_periodo($date,$indicador){
+
+		$sql = "select	p.valor, p.fecha
+				from	rem_parametros p
+				where	p.nombre = '" . $indicador . "'
+				and		p.fecha = (
+									select		max(p.fecha) as maxfecha
+									from		rem_parametros p
+									inner join	rem_calendario c on p.fecha = c.fecha 
+									where		p.nombre = '" . $indicador . "'
+									and			c.periodo = (
+																select		PERIODO
+																from		rem_calendario
+																where		fecha = '" . $date . "'	
+															)	
+									)";
+
+		//echo $sql.'<br>';
+		$parametros_data = $this->db->query($sql);
+		$result = $parametros_data->result();
+		return $result;
+
+	}
 
 	public function edit_parametros_generales($parametros){
 

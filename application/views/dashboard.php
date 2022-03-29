@@ -1,3 +1,4 @@
+<?php //var_dump_new($parametros_generales); exit; ?>
 <!-- BEGIN Row -->
 <div class="row">
     <!-- BEGIN Numero Colaboradores -->
@@ -158,36 +159,40 @@
                     <table class="table table-borderless">
 
                         <tr>
-                            <td class="text-left">Unidad de Fomento (UF):</td>
-                            <td class="text-right" id="uf">$<?php echo $parametros_generales->uf; ?></td>
+                            <td class="text-left"><small>UF Hoy (<?php echo $fechoy_format;?>):</small></td>
+                            <td class="text-right" id="uf"><small>$<?php echo $parametros_generales['uf']; ?></small></td>
                         </tr>
                         <tr>
-                            <td class="text-left">Unidad Tributaria Mensual(UTM):</td>
-                            <td class="text-right" id="">$<?php echo $parametros_generales->utm; ?></td>
+                            <td class="text-left"><small>UF Fin Per&iacute;odo (<?php echo $parametros_generales['max_uf_fecha'];?>):</small></td>
+                            <td class="text-right" id="uf"><small>$<?php echo $parametros_generales['max_uf_valor']; ?></small></td>
                         </tr>
                         <tr>
-                            <td class="text-left">Sueldo Minimo</td>
-                            <td class="text-right">$<?php echo $parametros_generales->sueldominimo; ?></td>
+                            <td class="text-left"><small>Unidad Tributaria Mensual(UTM):</small></td>
+                            <td class="text-right" id=""><small>$<?php echo $parametros_generales['utm']; ?></small></td>
                         </tr>
                         <tr>
-                            <td class="text-left">Tope Imponible AFP:</td>
-                            <td class="text-right"><?php echo $parametros_generales->topeimponible; ?> UF</td>
+                            <td class="text-left"><small>Sueldo Minimo</small></td>
+                            <td class="text-right"><small>$<?php echo $parametros_generales['sueldominimo']; ?></small></td>
                         </tr>
                         <tr>
-                            <td class="text-left">Tope Imponible IPS:</td>
-                            <td class="text-right"><?php echo $parametros_generales->topeimponibleips; ?> UF</td>
+                            <td class="text-left"><small>Tope Imponible AFP:</small></td>
+                            <td class="text-right"><small><?php echo $parametros_generales['topeimponible']; ?> UF</small></td>
                         </tr>
                         <tr>
-                            <td class="text-left">Tope Seguro de Cesantía:</td>
-                            <td class="text-right"><?php echo $parametros_generales->topeimponibleafc; ?> UF</td>
+                            <td class="text-left"><small>Tope Imponible IPS:</small></td>
+                            <td class="text-right"><small><?php echo $parametros_generales['topeimponibleips']; ?> UF</small></td>
                         </tr>
                         <tr>
-                            <td class="text-left">Tasa SIS:</td>
-                            <td class="text-right"><?php echo $parametros_generales->tasasis; ?>%</td>
+                            <td class="text-left"><small>Tope Seguro de Cesantía:</small></td>
+                            <td class="text-right"><small><?php echo $parametros_generales['topeimponibleafc']; ?> UF</small></td>
                         </tr>
                         <tr>
-                            <td class="text-left">Tasa Mutualidad:</td>
-                            <td class="text-right"><?php echo $empresa->porcmutual; ?>%</td>
+                            <td class="text-left"><small>Tasa SIS:</small></td>
+                            <td class="text-right"><small><?php echo $parametros_generales['tasasis']; ?>%</small></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left"><small>Tasa Mutualidad:</small></td>
+                            <td class="text-right"><small><?php echo $empresa->porcmutual; ?>%</small></td>
                         </tr>
 
                     </table>
