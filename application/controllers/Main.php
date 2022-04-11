@@ -175,6 +175,7 @@ class Main extends CI_Controller
                 $afp = $this->admin->get_afp();
                 $cant_afp = sizeof($afp);
                 $colaboradores = $this->rrhh_model->get_personal_datos();
+                
                 $num_colaboradores = sizeof($colaboradores);
                 $centro_costo = $this->rrhh_model->get_centro_costo();
                 $num_centro_costo = sizeof($centro_costo);
@@ -215,7 +216,7 @@ class Main extends CI_Controller
 
                 $tabla_asig_familiar = $this->admin->get_tabla_asig_familiar();
                 //$tabla_impuesto = $this->admin->get_tabla_impuesto();
-
+                $contador_cc[0] = 0;
                 for ($i = 0; $i < $num_centro_costo; $i++) {
 
 
@@ -223,8 +224,10 @@ class Main extends CI_Controller
                 }
 
                 for ($i = 0; $i < $num_colaboradores; $i++) {
+                    
                     $contador_cc[$colaboradores[$i]->idcentrocosto] += 1;
                 }
+                
 
                 for ($i = 0; $i < $num_centro_costo; $i++) {
                     $arreglo_cc[$i] = array('name' => $centro_costo[$i]->nombre, 'y' =>  $contador_cc[$centro_costo[$i]->id_centro_costo]);
@@ -233,6 +236,7 @@ class Main extends CI_Controller
 
 
                 $contadores = array();
+                $contadores[0] = 0;
                 for ($i = 0; $i < $cant_afp; $i++) {
 
 
