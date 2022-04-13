@@ -1007,7 +1007,7 @@ public function submit_parametros_generales()
 
 			$idempresa = '';
 			$array_empresas = array();
-			if(count($user) > 0){
+			if(!is_null($user)){
 				if(isset($user->level)){
 					if($user->level == 2){
 						$lista_empresas = $this->admin->empresas_asignadas($user->id,$user->level);
@@ -1036,13 +1036,15 @@ public function submit_parametros_generales()
 
 
 			$datos_form = array(
-							'iduser' => count($user) == 0 ? 0 : $user->id,
-							'nombre' => count($user) == 0 ? '' : $user->first_name,
-							'apellido' => count($user) == 0 ? '' : $user->last_name,
-							'email' => count($user) == 0 ? '' : $user->email,
-							'perfil' => count($user) == 0 ? '' : $user->level,
+							'iduser' => is_null($user) ? 0 : $user->id,
+							'nombre' => is_null($user) ? '' : $user->first_name,
+							'apellido' => is_null($user) ? '' : $user->last_name,
+							'email' => is_null($user) ? '' : $user->email,
+							'perfil' => is_null($user) ? '' : $user->level,
 							'idempresa' => $idempresa,
 							);
+
+	
 			
 			$vars['content_menu'] = $content;				
 			$vars['empresas'] = $empresas;
