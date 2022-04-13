@@ -5077,6 +5077,7 @@ public function previred($datos_remuneracion){
 				$cotccaffon = $codprev_ccaf == 0 ? 0 : $remuneracion->inp;
 				$aportepatronal = $codprev_mutual == 0 ? 0 : $remuneracion->aportepatronal;
 				$asigfamiliar_ccaf = $codprev_ccaf != 0 ? $asigfamiliar : 0;
+				$asigfamiliar_mes = $codprev_ccaf != 0 ? $remuneracion->asigfamiliar : 0;
 
 
 
@@ -5097,7 +5098,7 @@ public function previred($datos_remuneracion){
 					$cargassimples = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cargassimples : 0;
 					$cargasmaternales = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cargasmaternales : 0;
 					$cargasinvalidas = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cargasinvalidas : 0;
-					$$asigfamiliar  = $linea_trabajador['tipo_linea'] == "00" ? $asigfamiliar : 0;
+					$asigfamiliar  = $linea_trabajador['tipo_linea'] == "00" ? $asigfamiliar : 0;
 					$montocargaretroactiva = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->montocargaretroactiva : 0;
 					$solicitud_trabajador_joven = $linea_trabajador['tipo_linea'] == "00" ? "N" : " ";
 
@@ -5121,6 +5122,7 @@ public function previred($datos_remuneracion){
 
 					$monto_prestamos = $linea_trabajador['tipo_linea'] == "00" ? $monto_prestamos : 0;
 					$cotccaffon = $linea_trabajador['tipo_linea'] == "00" ? $cotccaffon : 0;
+					$asigfamiliar_mes = $linea_trabajador['tipo_linea'] == "00" ? $asigfamiliar_mes : 0;
 					$asigfamiliar_ccaf = $linea_trabajador['tipo_linea'] == "00" ? $asigfamiliar_ccaf : 0;
 
 					$aportepatronal = $linea_trabajador['tipo_linea'] == "00" ? $aportepatronal : 0;
@@ -5251,7 +5253,7 @@ public function previred($datos_remuneracion){
 					$linea .= "00000000"; //Descuentos por seguro de vida CCAF*****************
 					$linea .= "00000000"; //Otros descuentos CCAF *****************
 					$linea .= str_pad($cotccaffon,8,"0",STR_PAD_LEFT); //Cotización a CCAF de no afiliados a Isapres
-					$linea .= str_pad($asigfamiliar_ccaf,8,"0",STR_PAD_LEFT); //Descuento Cargas Familiares CCAF 
+					$linea .= str_pad($asigfamiliar_mes,8,"0",STR_PAD_LEFT); //Descuento Cargas Familiares CCAF 
 					$linea .= "00000000"; //Otros descuentos CCAF 1 (Uso Futuro) *****************
 					$linea .= "00000000"; //Otros descuentos CCAF 2 (Uso Futuro) *****************
 					$linea .= "00000000"; //Bonos Gobierno (Uso Futuro) *****************
