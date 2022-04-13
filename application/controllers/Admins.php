@@ -1011,8 +1011,10 @@ public function submit_parametros_generales()
 				if(isset($user->level)){
 					if($user->level == 2){
 						$lista_empresas = $this->admin->empresas_asignadas($user->id,$user->level);
+
 						if(count($lista_empresas) == 1){
-							array_push($array_empresas,$lista_empresas->id_empresa);
+
+							array_push($array_empresas,$lista_empresas[0]->id_empresa);
 						}else if(count($lista_empresas) > 1){
 							foreach ($lista_empresas as $empresa) {
 								array_push($array_empresas,$empresa->id_empresa);
@@ -1044,7 +1046,7 @@ public function submit_parametros_generales()
 							'idempresa' => $idempresa,
 							);
 
-	
+
 			
 			$vars['content_menu'] = $content;				
 			$vars['empresas'] = $empresas;
@@ -1200,6 +1202,7 @@ public function cambio_clave($resultid = '')
 
 			$this->load->model('admin');
 			$existe = $this->admin->valida_existe_mail($email,$iduser);
+			$data = array();
 			if($existe){
 				$data['result'] = "error";
 				$data['fields']['email'] = "Email ya est&aacute; asociado a otro usuario.    Favor contactar con el administrador";	
