@@ -395,6 +395,7 @@ update		r
 set			NOMBRE_MES = 'Octubre'
 --SELECT		*
 FROM		rem_calendario r
+WHERE		NOMBRE_MES = 'October'
 
 update		r
 set			NOMBRE_MES = 'Noviembre'

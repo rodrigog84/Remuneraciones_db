@@ -570,6 +570,37 @@ public function add_plantilla_banco($array_datos_maestro,$array_datos_detalle,$i
 
 
 
+	public function imprime_formato_documento($documento){
+
+			//var_dump_new($documento[0]); exit;
+			$this->load->model('admin');
+			$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
+			$content = $documento[0];
+			
+
+			$mpdf = new \Mpdf\Mpdf(['default_font_size' => 10,
+									'margin-top' => 16,
+									'margin-bottom' => 16,
+									'margin-header' => 9,
+									'margin-footer' => 9,
+									'margin-left' => 10,
+									'margin-right' => 5,
+									]);
+
+			$pdf_content = "<p align='justify'>".$content->txt_documento."</p>";
+			//echo $pdf_content; exit;
+			$mpdf->SetTitle('Arnou RRHH - Documento Colaborador');
+			$mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$mpdf->SetFooter('http://www.arnou.cl');
+			$mpdf->WriteHTML($pdf_content);
+
+
+			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_doctocolaborador_".$content->id_formato.".pdf";
+			$mpdf->Output($nombre_archivo, "I");
+			
+	}	
+
+
 }
 
 

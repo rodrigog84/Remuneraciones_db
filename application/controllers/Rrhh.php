@@ -718,100 +718,15 @@ public function submit_salud(){
 	public function contratos(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
-			$vars['mantencion_personal'] = 'active';				
-			$vars['leyes_sociales'] = '';		
-			$vars['salud'] = '';	
-			$vars['otros'] = '';	
-			$vars['apv'] = '';
-			$resultid = $this->session->flashdata('personal_result');
-			if($resultid == 1){
-				$vars['message'] = "Trabajador Agregado correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = 'active';				
-				$vars['leyes_sociales'] = '';		
-				$vars['apv'] = '';		
-				$vars['salud'] = '';		
-				$vars['otros'] = '';	
-			}elseif($resultid == 2){
-				$vars['message'] = "Error al agregar Trabajador. Trabajador ya existe";
-				$vars['classmessage'] = 'danger';
-				$vars['icon'] = 'fa-ban';
-				$vars['mantencion_personal'] = 'active';				
-				$vars['leyes_sociales'] = '';		
-				$vars['apv'] = '';		
-				$vars['salud'] = '';
-				$vars['otros'] = '';							
-			}elseif($resultid == 3){
-				$vars['message'] = "Leyes sociales actualizadas correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';
-				$vars['mantencion_personal'] = '';				
-				$vars['apv'] = '';		
-				$vars['leyes_sociales'] = 'active';		
-				$vars['salud'] = '';	
-				$vars['otros'] = '';						
-			}elseif($resultid == 4){
-				$vars['message'] = "Datos de Cotizaciones de Salud actualizados correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';	
-				$vars['mantencion_personal'] = '';				
-				$vars['apv'] = '';		
-				$vars['leyes_sociales'] = '';		
-				$vars['salud'] = 'active';							
-				$vars['otros'] = '';	
-			}elseif($resultid == 5){
-				$vars['message'] = "Mutual de Seguridad/Caja de Compensaci&oacute;n actualizados correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = '';				
-				$vars['apv'] = '';		
-				$vars['leyes_sociales'] = '';		
-				$vars['salud'] = '';							
-				$vars['otros'] = 'active';											
-			}elseif($resultid == 6){
-				$vars['message'] = "Trabajador Editado correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = 'active';				
-				$vars['apv'] = '';		
-				$vars['leyes_sociales'] = '';		
-				$vars['salud'] = '';	
-				$vars['otros'] = '';							
-			}elseif($resultid == 7){
-				$vars['message'] = "A.P.V. Editado correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = '';				
-				$vars['apv'] = 'active';		
-				$vars['leyes_sociales'] = '';		
-				$vars['salud'] = '';	
-				$vars['otros'] = '';							
-			}elseif($resultid == 8){
-				$vars['message'] = "Colaboradores Cargados correctamente";
-				$vars['classmessage'] = 'success';
-				$vars['icon'] = 'fa-check';		
-			}
-
-			$this->load->model('admin');
-			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
-
-
+		
 			$this->load->model('admin');
 			$personal = $this->admin->get_personal_total(); 
-			//$afps = $this->admin->get_afp(); 
-			//$apvs = $this->admin->get_apv(); 
-			//$isapres = $this->admin->get_isapre(); 
-			//$cajas = $this->admin->get_cajas_compensacion(); 
-			//$mutuales = $this->admin->get_mutual_seguridad(); 
-
-			//$parametros_generales = $this->admin->get_parametros_generales(); 
 
 
 			$content = array(
 						'menu' => 'Remuneraciones',
 						'title' => 'Remuneraciones',
-						'subtitle' => 'Personal');
+						'subtitle' => 'Contratos');
 
 			$vars['content_menu'] = $content;				
 			$vars['content_view'] = 'rrhh/contratos_personal';
@@ -820,14 +735,7 @@ public function submit_salud(){
 			$vars['formValidation'] = true;
 			$vars['gritter'] = true;
 
-			$vars['empresa'] = $empresa;
 			$vars['personal'] = $personal;
-			//$vars['afps'] = $afps;
-			//$vars['apvs'] = $apvs;
-			//$vars['isapres'] = $isapres;
-			//$vars['cajas'] = $cajas;
-			//$vars['mutuales'] = $mutuales;
-			//$vars['parametros_generales'] = $parametros_generales;
 			
 			$template = "template";
 			
@@ -5733,6 +5641,300 @@ public function mov_personal($resultid = '')
 		}
 
 	}
+
+
+
+ public function documentos_colaborador($resultid = '')
+  {
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+      $resultid = $this->session->flashdata('documentos_colaborador_result');
+      if($resultid == 1){
+        $vars['message'] = "Error al crear documento.  Colaborador no existe";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }else if($resultid == 2){
+        $vars['message'] = "Error al eliminar documento.  Debe indicar Colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }else if($resultid == 3){
+        $vars['message'] = "Error al imprimir documento.  Debe indicar Colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }        
+
+
+      $personal = $this->rrhh_model->get_personal(); 
+
+
+
+      $content = array(
+            'menu' => 'Remuneraciones',
+            'title' => 'Remuneraciones',
+            'subtitle' => 'Documentos del Colaborador');
+
+      $vars['content_menu'] = $content;       
+      $vars['personal'] = $personal;  
+      $vars['content_view'] = 'rrhh/documentos_colaborador';
+      $vars['datatable'] = true;
+      $vars['gritter'] = true;
+
+      $template = "template";
+      
+
+      $this->load->view($template,$vars); 
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  } 
+
+
+public function crear_documentos_colaborador($idtrabajador = null){
+    
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){  
+
+
+      $resultid = $this->session->flashdata('crear_documentos_colaborador_result');
+      if($resultid == 1){
+        $vars['message'] = "Documento Creado Correctamente";
+        $vars['classmessage'] = 'success';
+        $vars['icon'] = 'fa-check';
+      }else if($resultid == 2){
+        $vars['message'] = "Error al eliminar Documento.  Debe indicar documento";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }else if($resultid == 3){
+        $vars['message'] = "Error al eliminar Documento.  Documento no existe";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }else if($resultid == 4){
+        $vars['message'] = "Documento eliminado correctamente";
+        $vars['classmessage'] = 'success';
+        $vars['icon'] = 'fa-check';
+      }else if($resultid == 5){
+        $vars['message'] = "Error al imprimir documento. Documento no existe";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }
+
+
+
+
+      if(is_null($idtrabajador)){
+        $this->session->set_flashdata('documentos_colaborador_result', 1);
+        redirect('rrhh/documentos_colaborador'); 
+
+      }
+
+      $this->load->model('admin');
+      $formatos_documentos = $this->admin->get_formatos_documentos();
+      //var_dump_new($formatos_documentos); exit;
+
+
+      $documentos_colaborador = $this->admin->get_documentos_colaborador($idtrabajador);
+      //var_dump_new($documentos_colaborador); exit;
+
+
+
+
+      $this->load->model('rrhh_model');
+      $personal = $this->rrhh_model->get_personal($idtrabajador);
+      //var_dump_new($personal); exit;
+
+
+      if(is_null($personal)){
+        $this->session->set_flashdata('documentos_colaborador_result', 1);
+        redirect('rrhh/documentos_colaborador'); 
+      }
+
+
+      $content = array(
+            'menu' => 'Remuneraciones',
+            'title' => 'Remuneraciones',
+            'subtitle' => 'Crear Documento Colaborador');
+
+      $vars['content_menu'] = $content; 
+
+      
+      $vars['content_view'] = 'rrhh/crear_documentos_colaborador';
+      $vars['formValidation'] = true;
+      $vars['personal'] = $personal;
+      $vars['formatos_documentos'] = $formatos_documentos;
+      $vars['documentos_colaborador'] = $documentos_colaborador;
+      $vars['gritter'] = true;
+      $template = "template";
+      
+
+      $this->load->view($template,$vars); 
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+
+  }  
+
+
+public function submit_documento_colaborador()
+    {
+
+       if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
+
+
+        
+        $tipo_documento = $this->input->post('tipo_documento');
+        $id_trabajador = $this->input->post('id_trabajador');
+
+
+
+            $datos_documento = array(
+                'tipo_documento' => $tipo_documento,
+                'id_trabajador' => $id_trabajador
+            );
+
+
+            $this->rrhh_model->save_documentos_colaborador($datos_documento);
+
+            $this->session->set_flashdata('crear_documentos_colaborador_result', 1);
+
+            redirect('rrhh/crear_documentos_colaborador/'.$id_trabajador);
+
+        } else {
+            $content = array(
+                'menu' => 'Error 403',
+                'title' => 'Error 403',
+                'subtitle' => '403 error'
+            );
+
+
+            $vars['content_menu'] = $content;
+            $vars['content_view'] = 'forbidden';
+            $this->load->view('template', $vars);
+        }
+    }  
+
+
+public function ver_documento_colaborador($idtrabajador = null,$iddocumento = null)
+  {
+
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+      set_time_limit(0);
+
+
+
+      if(is_null($idtrabajador)){
+          $this->session->set_flashdata('documentos_colaborador_result', 3);
+          redirect('rrhh/documentos_colaborador'); 
+
+        }
+
+
+      if(is_null($iddocumento)){
+            $this->session->set_flashdata('crear_documentos_colaborador_result', 5);
+            redirect('rrhh/crear_documentos_colaborador/'.$idtrabajador);
+      }
+     // $iddocumento = 9999;
+
+      $this->load->model('admin');
+      $documento = $this->admin->get_documentos_colaborador($idtrabajador,$iddocumento);
+      //var_dump_new($documento); exit;
+       if(count($documento) == 0){
+            $this->session->set_flashdata('crear_documentos_colaborador_result', 5);
+            redirect('rrhh/crear_documentos_colaborador/'.$idtrabajador);
+      }
+
+      $datosdetalle = $this->rrhh_model->imprime_documentos_colaborador($documento);
+      exit;
+
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  }  
+
+
+
+public function del_documento_colaborador($idtrabajador = null,$iddocumento = null)
+    {
+
+       if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
+
+
+
+        if(is_null($idtrabajador)){
+            $this->session->set_flashdata('documentos_colaborador_result', 2);
+            redirect('rrhh/documentos_colaborador'); 
+
+          }
+
+
+        if(is_null($iddocumento)){
+
+          $this->session->set_flashdata('crear_documentos_colaborador_result', 2);
+
+          redirect('rrhh/crear_documentos_colaborador/'.$idtrabajador); 
+
+        }
+
+
+          //$iddocumento = 1212;
+        $documentos_colaborador = $this->admin->get_documentos_colaborador($idtrabajador,$iddocumento);
+         // var_dump_new($documentos_colaborador); exit;
+          if(count($documentos_colaborador) == 0 ){
+                $this->session->set_flashdata('crear_documentos_colaborador_result', 3);                
+                redirect('rrhh/crear_documentos_colaborador/'.$idtrabajador); 
+
+          }
+
+        
+
+          $this->rrhh_model->delete_documentos_colaborador($idtrabajador,$iddocumento);
+          $this->session->set_flashdata('crear_documentos_colaborador_result', 4);
+          redirect('rrhh/crear_documentos_colaborador/'.$idtrabajador);
+
+        } else {
+            $content = array(
+                'menu' => 'Error 403',
+                'title' => 'Error 403',
+                'subtitle' => '403 error'
+            );
+
+
+            $vars['content_menu'] = $content;
+            $vars['content_view'] = 'forbidden';
+            $this->load->view('template', $vars);
+        }
+    }  
 
 
 	public function get_colaboradores($centrocosto){

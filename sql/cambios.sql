@@ -604,3 +604,321 @@ CREATE TABLE rem_parametros (
 
 alter table rem_periodo add periodo int
 ALTER TABLE rem_parametros ALTER COLUMN fecha DATE
+
+
+/********************************************************************/
+
+update	a	
+	set		funcion = 'configuraciones/tipos_documentos'
+--select		*
+	from		rem_app a
+	where		nombre = 'Tipos de Documentos'
+
+
+update		t
+		set			id_empresa = null
+		--select		*
+		from		rem_tipo_doc_colaborador t	
+
+
+	update		t
+	set			tipo = 'Contrato'
+	--select		*
+	from		rem_tipo_doc_colaborador t
+	where		tipo = 'CONTRATO'
+
+
+	update		t
+	set			tipo = 'Finiquito'
+	--select		*
+	from		rem_tipo_doc_colaborador t
+	where		tipo = 'FINIQUITOS'
+
+	update		t
+	set			tipo = 'Carta Aviso'
+	--select		*
+	from		rem_tipo_doc_colaborador t
+	where		tipo = 'CARTA AVISO'
+
+	alter table rem_tipo_doc_colaborador drop column id_empresa
+	insert into rem_tipo_doc_colaborador ( tipo, created_at, updated_at) values ('Anexos Contrato',getdate(), getdate())
+
+
+EXEC sp_rename 'dbo.rem_tipo_doc_colaborador', 'rem_tipo_documentos';
+
+EXEC sp_rename 'dbo.rem_tipo_documentos.id_tipo_doc_colaborador', 'id_tipo_documento', 'COLUMN';
+
+create table rem_formato_documentos (
+id_formato int identity,
+id_tipo_documento int,
+nombre varchar(100),
+txt_documento varchar(max),
+id_empresa int,
+created_at datetime default getdate(),
+updated_at datetime default getdate()
+)
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'configuraciones/add_formato_documento'
+,null
+,7
+,0
+,0
+,1
+,null
+)
+
+insert into rem_role (appid,levelid) values (7109,2)
+
+
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'configuraciones/ver_formato_documento'
+,null
+,7
+,0
+,0
+,1
+,null
+)
+
+
+insert into rem_role (appid,levelid) values (7110,2)
+
+
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'configuraciones/submit_documentos'
+,null
+,7
+,0
+,0
+,1
+,null
+)
+
+
+insert into rem_role (appid,levelid) values (7111,2)
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/documentos_colaborador'
+,'Documentos Colaborador'
+,4
+,0
+,1
+,1
+,5
+)
+insert into rem_role (appid,levelid) values (7112,2)
+
+
+create table rem_documentos_colaborador (
+id_documento int identity,
+id_personal int,
+id_formato int,
+pdf_content varchar(max),
+activo tinyint default 1,
+created_at datetime default getdate(),
+updated_at datetime default getdate()
+)
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/crear_documentos_colaborador'
+,null
+,4
+,0
+,0
+,1
+,null
+)
+insert into rem_role (appid,levelid) values (7113,2)
+
+
+
+	
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/submit_documento_colaborador'
+,null
+,4
+,0
+,0
+,1
+,null
+)
+
+insert into rem_role (appid,levelid) values (7114,2)
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/del_documento_colaborador'
+,null
+,4
+,0
+,0
+,1
+,null
+)
+insert into rem_role (appid,levelid) values (7115,2)
+
+
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/ver_documento_colaborador'
+,null
+,4
+,0
+,0
+,1
+,null
+)
+insert into rem_role (appid,levelid) values (7116,2)
+
+
+
+	insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'configuraciones/ejemplo_formato_documento'
+,null
+,7
+,0
+,0
+,1
+,null
+)
+insert into rem_role (appid,levelid) values (7117,2)
+
+
+
+
+delete		r
+--select		*
+from		rem_role r
+where		appid in (
+						select		id
+						from		rem_app
+						where		funcion = 'rrhh/contratos' 
+						and			visible = 1
+						union
+						select		id
+						from		rem_app
+						where		funcion = 'rrhh/finiquitos' 
+						and			visible = 1
+						union
+						select		id
+						from		rem_app
+						where		funcion = 'rrhh/cartas' 
+						and			visible = 1
+						)

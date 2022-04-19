@@ -1,18 +1,10 @@
-<!--sub-heard-part-->
-									  <div class="sub-heard-part">
-									   		<ol class="breadcrumb m-b-0">
-												<li><a href="<?php echo base_url();?>main/dashboard">Inicio</a></li>
-												<li class="active">Contratos Colaborador</li>
-											</ol>
-									   </div>
-								  <!--//sub-heard-part-->
-								
-									<div class="graph-visual tables-main">
-											
-									
-									<h3 class="inner-tittle two">Descripción</h3>
-										  <div class="graph">
 
+                          <div class="panel panel-inverse">                       
+                                <div class="panel-heading">
+                                      <h4 class="panel-title">Listado Colaboradores</h4>
+                                  </div>
+                      <div class="panel-body">
+                        <div class='row'>	
 										  	
 											<div class="tables">
 										<table id="listado" class="table"> 
@@ -38,7 +30,7 @@
 	                              										  <td><small><?php echo $trabajador->direccion;?></small></td>
 	                              										  <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo";?></small></td>
 								<td>			
-								<a href="<?php echo base_url();?>rrhh/contrato_colaborador/<?php echo $trabajador->id_personal?>" class="btn btn-info opciones" id="opciones" title="Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>						
+								<a href="<?php echo base_url();?>rrhh/contrato_colaborador/<?php echo $trabajador->id_personal?>" class="opciones" id="opciones" title="Contrato"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>						
 								</td>
 								</tr> 
 
@@ -49,9 +41,13 @@
 							</tbody> 
 						</table> 
 					</div>
-												
-													</div>
-											</div>
+
+</div>
+
+                      </div><!-- /.box-body -->
+
+                 
+                  </div> 
 
 
 <script>
@@ -64,8 +60,8 @@ $(function () {
           "bInfo": true,
           "bSort": false,
           "bAutoWidth": false,
-          "aLengthMenu" : [[5,15,30,45,100,-1],[5,15,30,45,100,'Todos']],
-          "iDisplayLength": 5,
+          "aLengthMenu" : [[5,15,30,50,100,-1],[5,15,30,50,100,'Todos']],
+          "iDisplayLength": 50,
           "oLanguage": {
               "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
               "sZeroRecords": "No se encontraron registros",

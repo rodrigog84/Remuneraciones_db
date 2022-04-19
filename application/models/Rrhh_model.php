@@ -499,6 +499,77 @@ public function add_personal($array_datos,$idtrabajador){
 
 	}
 
+
+
+    public function save_documentos_colaborador($datos_documento)
+    {
+
+
+        $this->db->trans_start();
+        	$this->load->model('admin');
+
+        	
+        	$formatosdocumentos = $this->admin->get_formatos_documentos($datos_documento['tipo_documento']);
+
+        	$pdf_content = $formatosdocumentos[0]->txt_documento;
+
+        	$personal = $this->admin->get_personal_total($datos_documento['id_trabajador']);
+        	//var_dump_new($personal); exit;
+
+        	$pdf_content = str_replace("@FechaActual",date('d/m/Y'),$pdf_content);
+        	$pdf_content = str_replace("@TextoFechaActual",date('d') . ' de ' . month2string((int)date('m')) . ' de ' . date('Y'),$pdf_content);
+			$pdf_content = str_replace("@Nombre",$personal->nombre.' '.$personal->apaterno.' '.$personal->amaterno,$pdf_content);
+			$pdf_content = str_replace("@Rut",$personal->rut.'-'.$personal->dv,$pdf_content);
+			$pdf_content = str_replace("@Direccion",$personal->direccion.', '.$personal->nombrecomuna,$pdf_content);
+			$pdf_content = str_replace("@FechaNacimiento",$personal->fecnacimiento_format,$pdf_content);
+			$pdf_content = str_replace("@Cargo",$personal->nombrecargo,$pdf_content);
+			$pdf_content = str_replace("@SueldoBase",'$ ' . number_format($personal->sueldobase,0,'.','.'),$pdf_content);
+			$pdf_content = str_replace("@TextoSueldoBase",valorEnLetras($personal->sueldobase),$pdf_content);
+			$tipo_contrato = '';
+			if($personal->tipocontrato == 'I'){
+				$tipo_contrato = 'Indefinido';
+			}else if($personal->tipocontrato == 'F'){
+				$tipo_contrato = 'Plazo Fijo';
+			}
+
+			$pdf_content = str_replace("@TipoContrato",$tipo_contrato,$pdf_content);
+			$pdf_content = str_replace("@FechaIngreso",$personal->fecingreso_format,$pdf_content);
+
+
+
+        	
+
+        	/* reemplazar valores por los datos *****/
+            $array_datos = array(
+                'id_formato' => $datos_documento['tipo_documento'],
+                'id_personal' => $datos_documento['id_trabajador'],
+                'pdf_content' => $pdf_content
+            );
+
+            $this->db->insert('rem_documentos_colaborador', $array_datos);
+        $this->db->trans_complete();
+        return 1;
+    }	
+
+
+
+    public function delete_documentos_colaborador($idtrabajador,$iddocumento)
+    {
+
+
+        $this->db->trans_start();
+
+			$this->db->where('id_documento', $iddocumento);
+            $this->db->where('id_personal', $idtrabajador);
+            $this->db->update('rem_documentos_colaborador', array('activo' => 0));
+
+        $this->db->trans_complete();
+        return 1;
+    }	
+
+
+
+
 	public function save_hab_descto_variable2($array_datos_hab_descto,$mes,$anno){
 
 		$this->db->trans_start();
@@ -3371,6 +3442,60 @@ public function get_remuneraciones_by_id($idremuneracion){
 			$mpdf->Output($nombre_archivo, "I");
 			
 	}	
+
+
+
+	public function imprime_documentos_colaborador($documento){
+
+			//var_dump_new($documento[0]); exit;
+			$this->load->model('admin');
+			$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
+			$content = $documento[0];
+		
+
+			/*if($content->pdf_content == ''){ // EN CASO QUE POR ALGUN MOTIVO FALLARA LA EJECUCION INICIAL, SE CREA AHORA
+				$this->generar_contenido_comprobante($datos_remuneracion);
+				$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
+			}*/
+
+			//Variable para PDF 		
+
+			$mpdf = new \Mpdf\Mpdf(['default_font_size' => 11,
+									'margin-top' => 16,
+									'margin-bottom' => 16,
+									'margin-header' => 9,
+									'margin-footer' => 9,
+									'margin-left' => 10,
+									'margin-right' => 5,
+									]);
+		//	$mpdf->orientation = "L";
+				//$this->load->library("Mpdf");
+			/*$this->mpdf->Mpdf(
+				'',    // mode - default ''
+				'',    // format - A4, for example, default ''
+				8,     // font size - default 0
+				'',    // default font family
+				10,    // margin_left
+				5,    // margin right
+				16,    // margin top
+				16,    // margin bottom
+				9,     // margin header
+				9,     // margin footer
+				'L'    // L - landscape, P - portrait
+				);
+			  */
+	
+			//echo $html; exit;
+			$mpdf->SetTitle('Arnou RRHH - Documento Colaborador');
+			$mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$mpdf->SetFooter('http://www.arnou.cl');
+			$mpdf->WriteHTML($content->pdf_content);
+
+
+			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_doctocolaborador_".$content->id_personal.".pdf";
+			$mpdf->Output($nombre_archivo, "I");
+			
+	}		
 
 	public function generar_contrato($personal,$tipo,$fecha,$idtrabajador){	
 	

@@ -35,53 +35,53 @@ class Configuraciones extends CI_Controller {
 		redirect('main/dashboard');	
 	}
 
-	public function tipos_contrato(){
-		//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+	public function tipos_documentos(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
-			$vars['mantencion_personal'] = 'active';				
-			$vars['leyes_sociales'] = '';		
-			$vars['salud'] = '';	
-			$vars['otros'] = '';	
-			$vars['apv'] = '';
-			$resultid = $this->session->flashdata('personal_result');
+
+
+			$resultid = $this->session->flashdata('tipos_documentos_result');
 			if($resultid == 1){
 				$vars['message'] = "Documento Agregado correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';		
-				$vars['mantencion_personal'] = 'active';				
-				$vars['leyes_sociales'] = '';		
-				$vars['apv'] = '';		
-				$vars['salud'] = '';		
-				$vars['otros'] = '';	
+			}elseif($resultid == 2){
+				$vars['message'] = "Error al editar documento.  Debe seleccionar un documento";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 3){
+				$vars['message'] = "Error al editar documento.  Documento no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
+			}elseif($resultid == 3){
+				$vars['message'] = "Documento Editado correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';	
+			}elseif($resultid == 4){
+				$vars['message'] = "Error al imprimir formato de documentos.  Tipo de Documento no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';
 			}
 			$this->load->model('admin');
-			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
 
 			
-			$tipocontrato = $this->admin->get_contratos(); 
+
+			$formatosdocumentos = $this->admin->get_formatos_documentos(); 
 
 						
 			$content = array(
 						'menu' => 'Remuneraciones',
-						'title' => 'Remuneraciones',
-						'subtitle' => 'Acceso Carga Documentacion');
+						'title' => 'Opciones de Configuraci&oacute;n',
+						'subtitle' => 'Creaci&oacute;n Formatos de Documentos');
 
 			$vars['content_menu'] = $content;
-			$vars['tipocontrato'] = $tipocontrato;				
-			$vars['content_view'] = 'rrhh/tipos_de_contratos';
+			$vars['formatosdocumentos'] = $formatosdocumentos;					
+			$vars['content_view'] = 'configuraciones/tipos_documentos';
 			$vars['datatable'] = true;
 			$vars['mask'] = true;
 			$vars['formValidation'] = true;
 			$vars['gritter'] = true;
 
-			$vars['empresa'] = $empresa;
-			//$vars['personal'] = $personal;
-			//$vars['afps'] = $afps;
-			//$vars['apvs'] = $apvs;
-			//$vars['isapres'] = $isapres;
-			//$vars['cajas'] = $cajas;
-			//$vars['mutuales'] = $mutuales;
-			//$vars['parametros_generales'] = $parametros_generales;
 			
 			$template = "template";
 			
@@ -90,7 +90,7 @@ class Configuraciones extends CI_Controller {
 
 			$this->load->view($template,$vars);	
 
-		/*}else{
+		}else{
 			$content = array(
 						'menu' => 'Error 403',
 						'title' => 'Error 403',
@@ -101,10 +101,243 @@ class Configuraciones extends CI_Controller {
 			$vars['content_view'] = 'forbidden';
 			$this->load->view('template',$vars);
 
-		}*/	
+		}
 
 
 	}
+
+
+public function ejemplo_formato_documento($idformato = null)
+  {
+
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+      set_time_limit(0);
+
+
+
+      if(is_null($idformato)){
+          $this->session->set_flashdata('tipos_documentos_result', 4);
+          redirect('configuraciones/tipos_documentos'); 
+
+        }
+
+        //$idformato = 9999;
+       $documento = $this->admin->get_formatos_documentos($idformato);
+
+
+       if(count($documento) == 0){
+            $this->session->set_flashdata('tipos_documentos_result', 4);
+            redirect('configuraciones/tipos_documentos');
+      }
+
+
+      //var_dump_new($documento); exit;
+      //$this->load->model('configuracion');
+      $datosdetalle = $this->configuracion->imprime_formato_documento($documento);
+      exit;
+
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  } 	
+
+
+
+
+public function add_formato_documento(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+			$this->load->model('admin');
+
+
+			$array_datos = array(
+                    'id' => 0,
+                    'nombre' => '',
+                    'txt_documento' => '',
+                    'id_tipo_documento' => 0,
+                    'txt_encabeza' => 'Creaci&oacute;n Documento',
+                    'txt_button' => 'Agregar'
+                );		
+
+			$tiposdocumentos = $this->admin->get_tipos_documentos(); 
+
+						
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Opciones de Configuraci&oacute;n',
+						'subtitle' => 'Creaci&oacute;n Formatos de Documentos');
+
+			$vars['content_menu'] = $content;
+			$vars['tiposdocumentos'] = $tiposdocumentos;					
+			$vars['content_view'] = 'configuraciones/add_formato_documento';
+			$vars['datos_documento'] = $array_datos;
+			$vars['ckeditor'] = true;
+
+			$vars['formValidation'] = true;
+			$vars['gritter'] = true;
+
+			
+			$template = "template";
+			
+
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+
+	}
+
+
+
+
+
+public function ver_formato_documento($iddocumento = null){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+
+            if (!is_null($iddocumento)) {
+                $this->load->model('admin');
+                $documento = $this->admin->get_formatos_documentos($iddocumento);
+                if (count($documento) == 0) {
+                    $this->session->set_flashdata('tipos_documentos_result', 3);
+                    redirect('configuraciones/tipos_documentos');
+                }
+                $documento = $documento[0];
+                $array_datos = array(
+                    'id' => $documento->id_formato,
+                    'nombre' => $documento->nombre,
+                    'txt_documento' => $documento->txt_documento,
+                    'id_tipo_documento' => $documento->id_tipo_documento,
+                    'txt_encabeza' => 'Editar Documento',
+                    'txt_button' => 'Editar'
+                );
+            } else {
+                $this->session->set_flashdata('tipos_documentos_result', 2);
+                redirect('configuraciones/tipos_documentos');
+            }
+
+
+
+			$this->load->model('admin');
+
+
+			$tiposdocumentos = $this->admin->get_tipos_documentos(); 
+
+						
+			$content = array(
+						'menu' => 'Remuneraciones',
+						'title' => 'Opciones de Configuraci&oacute;n',
+						'subtitle' => 'Creaci&oacute;n Formatos de Documentos');
+
+			$vars['content_menu'] = $content;
+			$vars['tiposdocumentos'] = $tiposdocumentos;	
+			$vars['datos_documento'] = $array_datos;				
+			$vars['content_view'] = 'configuraciones/add_formato_documento';
+			//$vars['wysihtml5'] = true;
+			$vars['ckeditor'] = true;
+
+			$vars['formValidation'] = true;
+			$vars['gritter'] = true;
+
+			
+			$template = "template";
+			
+
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+
+	}
+
+
+
+
+public function submit_documentos()
+    {
+
+       if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
+
+
+    		
+    		$tipo_documento = $this->input->post('tipo_documento');
+    		$nombre_documento = $this->input->post('nombre_documento');
+            $txt_formato = $this->input->post('txt_formato');
+            $iddocumento = $this->input->post('iddocumento');
+            
+
+            $datos_documento = array(
+                'txt_formato' => $txt_formato,
+                'iddocumento' => $iddocumento,
+                'tipo_documento' => $tipo_documento,
+                'nombre_documento' => $nombre_documento
+            );
+
+
+            $this->load->model('admin');
+            $this->admin->save_documentos($datos_documento);
+
+            if ($idcomunicado == 0) {
+                $this->session->set_flashdata('tipos_documentos_result', 1);
+            } else {
+                $this->session->set_flashdata('tipos_documentos_result', 4);
+            }
+
+
+            redirect('configuraciones/tipos_documentos');
+        } else {
+            $content = array(
+                'menu' => 'Error 403',
+                'title' => 'Error 403',
+                'subtitle' => '403 error'
+            );
+
+
+            $vars['content_menu'] = $content;
+            $vars['content_view'] = 'forbidden';
+            $this->load->view('template', $vars);
+        }
+    }
+
 
 
 	public function plantilla_banco(){

@@ -913,8 +913,10 @@ public function get_cargo_colaborador($idtrabajador = null,$actives = null){
 public function get_personal_total($idtrabajador = null){
 		//echo $idtrabajador;
 
-		$personal_data = $this->db->select('id_personal, id_empresa, rut, dv, nombre, apaterno, amaterno, fecnacimiento, sexo, idecivil, nacionalidad, direccion, idregion, idcomuna, fono, email, fecingreso, idcargo, tipocontrato, parttime, segcesantia, fecafc, diastrabajo, horasdiarias, horassemanales, sueldobase, tipogratificacion, gratificacion, asigfamiliar, cargassimples, cargasinvalidas, cargasmaternales, cargasretroactivas, idasigfamiliar, movilizacion, colacion, pensionado, idafp, adicafp, tipoahorrovol, ahorrovol, instapv, nrocontratoapv, tipocotapv, cotapv, formapagoapv, depconvapv, idisapre, valorpactado, fecinicvacaciones, saldoinicvacaciones, saldoinicvacprog, active, anticipo_permanente, anticipo, fecrealcontrato, diasvactomados')
+		$personal_data = $this->db->select('p.id_personal, p.id_empresa, p.rut, p.dv, p.nombre, p.apaterno, p.amaterno, p.fecnacimiento, p.sexo, p.idecivil, p.nacionalidad, p.direccion, p.idregion, p.idcomuna, p.fono, p.email, p.fecingreso, p.idcargo, p.tipocontrato, p.parttime, p.segcesantia, p.fecafc, p.diastrabajo, p.horasdiarias, p.horassemanales, p.sueldobase, p.tipogratificacion, p.gratificacion, p.asigfamiliar, p.cargassimples, p.cargasinvalidas, p.cargasmaternales, p.cargasretroactivas, p.idasigfamiliar, p.movilizacion, p.colacion, p.pensionado, p.idafp, p.adicafp, p.tipoahorrovol, p.ahorrovol, p.instapv, p.nrocontratoapv, p.tipocotapv, p.cotapv, p.formapagoapv, p.depconvapv, p.idisapre, p.valorpactado, p.fecinicvacaciones, p.saldoinicvacaciones, p.saldoinicvacprog, p.active, p.anticipo_permanente, p.anticipo, p.fecrealcontrato, p.diasvactomados, c.nombre as nombrecomuna, convert(varchar,p.fecnacimiento,103) as fecnacimiento_format, ca.nombre as nombrecargo, convert(varchar,p.fecingreso,103) as fecingreso_format ')
 						  ->from('rem_personal p')
+						  ->join('rem_comuna c','p.idcomuna = c.idcomuna','left')
+						  ->join('rem_cargos ca','p.idcargo = ca.id_cargos','left')
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
 						  ->order_by('p.active','desc')
 		                  ->order_by('p.nombre');
@@ -1287,16 +1289,82 @@ public function get_bonos($idtrabajador = null){
 		return $query->result();
 	}
 
-	public function get_contratos($idcontrato = null){
+	public function get_tipos_documentos($idtipodocto = null){
 
-		$contratos_data = $this->db->select('id_tipo_doc_colaborador, tipo')	
-						  ->from('rem_tipo_doc_colaborador')
+		$documentos_data = $this->db->select('id_tipo_documento, tipo')	
+						  ->from('rem_tipo_documentos')
 		                  ->order_by('tipo');
-		$contratos_data = is_null($idcontrato ) ? $contratos_data : $contratos_data->where('id_tipo_doc_colaborador',$ididioma);  		                  
+		$documentos_data = is_null($idtipodocto ) ? $documentos_data : $documentos_data->where('id_tipo_documento',$idtipodocto);  		                  
 		$query = $this->db->get();
 		return $query->result();
 	}
 
+
+
+	public function get_formatos_documentos($iddocto = null){
+
+		$documentos_data = $this->db->select('f.id_formato, f.nombre, f.id_tipo_documento, f.txt_documento, t.tipo')	
+						  ->from('rem_formato_documentos f')
+						  ->join('rem_tipo_documentos t','f.id_tipo_documento = t.id_tipo_documento')
+						  ->where('f.id_empresa',$this->session->userdata('empresaid'))
+		                  ->order_by('f.nombre')
+		                  ->order_by('t.tipo');
+		$documentos_data = is_null($iddocto ) ? $documentos_data : $documentos_data->where('id_formato',$iddocto);  		                  
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+
+	public function get_documentos_colaborador($idtrabajador = null,$iddocto = null){
+
+		$documentos_data = $this->db->select('d.id_documento, d.id_personal, d.id_formato, d.pdf_content, f.nombre as documento, t.tipo, CONVERT(varchar, d.created_at, 103) as fecha_creacion')	
+						  ->from('rem_documentos_colaborador d')
+						  ->join('rem_formato_documentos f','d.id_formato = f.id_formato')
+						  ->join('rem_tipo_documentos t','f.id_tipo_documento = t.id_tipo_documento')
+						  ->where('f.id_empresa',$this->session->userdata('empresaid'))
+						  ->where('d.activo',1)
+						  ->order_by('d.created_at','desc')
+		                  ->order_by('f.nombre')
+		                  ->order_by('t.tipo');
+		$documentos_data = is_null($idtrabajador ) ? $documentos_data : $documentos_data->where('d.id_personal',$idtrabajador);  	
+		$documentos_data = is_null($iddocto ) ? $documentos_data : $documentos_data->where('d.id_documento',$iddocto);  		                  
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+
+    public function save_documentos($datos_documento)
+    {
+
+
+        $this->db->trans_start();
+
+        if ($datos_documento['iddocumento'] == 0) {
+
+            $array_datos = array(
+                'id_empresa' => $this->session->userdata('empresaid'),
+                'nombre' => $datos_documento['nombre_documento'],
+                'id_tipo_documento' => $datos_documento['tipo_documento'],
+                'txt_documento' => $datos_documento['txt_formato']
+            );
+
+            $this->db->insert('rem_formato_documentos', $array_datos);
+        } else {
+
+            $array_datos = array(
+                'nombre' => $datos_documento['nombre_documento'],
+                'id_tipo_documento' => $datos_documento['tipo_documento'],
+                'txt_documento' => $datos_documento['txt_formato']
+            );
+
+            $this->db->where('id_formato', $datos_documento['iddocumento']);
+            $this->db->where('id_empresa', $this->session->userdata('empresaid'));
+            $this->db->update('rem_formato_documentos', $array_datos);
+        }
+
+        $this->db->trans_complete();
+        return 1;
+    }
 
 
 	public function get_idiomas($ididioma = null){

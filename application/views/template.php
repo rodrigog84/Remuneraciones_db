@@ -81,6 +81,26 @@
     <?php } ?>
 
 
+    <?php if (isset($wysihtml5)) { ?>
+        <!--link href="<?php echo base_url(); ?>plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+        <script src="<?php echo base_url(); ?>plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script-->
+        <!--script src="//cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script-->
+        <script src="https://cdn.ckeditor.com/4.10.1/standard-all/ckeditor.js"></script>
+        <!--script type="text/javascript" src="<?php echo base_url(); ?>plugins/tiny_mce/jquery.tinymce.js"></script-->
+    <?php } ?>
+
+
+    <?php if (isset($ckeditor)) { ?>
+        <!--link href="<?php echo base_url(); ?>plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+        
+        <!--script src="//cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script-->
+        <link href="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.css" rel="stylesheet" type="text/css" />
+        <script src="<?php echo base_url(); ?>assets/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
+
+        <!--script type="text/javascript" src="<?php echo base_url(); ?>plugins/tiny_mce/jquery.tinymce.js"></script-->
+    <?php } ?>
+
+
     <?php if (isset($wizard_validation)) { ?>
         <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
         <link href="<?php echo base_url(); ?>assets/plugins/bootstrap-wizard/css/bwizard.min.css" rel="stylesheet" />
