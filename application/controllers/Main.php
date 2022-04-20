@@ -223,9 +223,13 @@ class Main extends CI_Controller
                     $contador_cc[$centro_costo[$i]->id_centro_costo] = 0;
                 }
 
-                for ($i = 0; $i < $num_colaboradores; $i++) {
-                    
-                    $contador_cc[$colaboradores[$i]->idcentrocosto] += 1;
+                if($num_centro_costo > 0){
+                    for ($i = 0; $i < $num_colaboradores; $i++) {
+                        
+                        $contador_cc[$colaboradores[$i]->idcentrocosto] += 1;
+                    }
+
+
                 }
                 
 
@@ -237,15 +241,21 @@ class Main extends CI_Controller
 
                 $contadores = array();
                 $contadores[0] = 0;
+
+
                 for ($i = 0; $i < $cant_afp; $i++) {
 
 
                     $contadores[$afp[$i]->id_afp] = 0;
                 }
 
+                $idx_idafp = 0;
                 for ($i = 0; $i < $num_colaboradores; $i++) {
-                    $contadores[$colaboradores[$i]->idafp] += 1;
+
+                    $idx_idafp = is_null($colaboradores[$i]->idafp) ? 0 : $colaboradores[$i]->idafp;
+                    $contadores[$idx_idafp] += 1;
                 }
+
 
                 for ($i = 0; $i < $cant_afp; $i++) {
                     $arreglo_afp[$i] = array('name' => $afp[$i]->nombre, 'y' =>  $contadores[$afp[$i]->id_afp], 'drilldown' => $afp[$i]->nombre);

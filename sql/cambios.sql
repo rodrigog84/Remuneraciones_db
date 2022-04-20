@@ -950,3 +950,30 @@ values (
 )
 
 insert into rem_role (appid,levelid) values (7118,2)
+
+
+
+
+		insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/editar_trabajador'
+,null
+,4
+,0
+,0
+,1
+,null
+)
+
+insert into rem_role (appid,levelid) values (7119,2)
