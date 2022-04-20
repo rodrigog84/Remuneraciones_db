@@ -1920,7 +1920,7 @@ public function datos_personal_lic($idpersonal=null){
 public function mod_trabajador($rut = null,$idtrabajador = null)
 	{
 
-		//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
 
 			/***** CARGA DE DATOS PARA FORMULARIO ***/
@@ -2077,11 +2077,18 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$this->load->view($template,$vars);	
 			//json_encode($datos_personal);
 
-		/*//}else{
-			$vars['content_view'] = 'forbidden';
-			$this->load->view('template',$vars);
+		}else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
 
-		//}*/
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+		}
 
 	}
 
@@ -2096,9 +2103,14 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$parttime = $this->input->post('parttime');
 
 			$this->load->model('admin');
-			$parametros_generales = $this->admin->get_parametros_generales(); 
+			//$parametros_generales = $this->admin->get_parametros_generales();
+      $parametros_generales = $this->admin->get_indicadores_by_day(date('Y-m-d'),'Sueldo Minimo');
+      $parametros = $parametros_generales[0];
 
-			$valor_hora = $parametros_generales->sueldominimo/45;
+
+      
+
+			$valor_hora = $parametros->valor/45;
 			$sueldominimo_proporcional = (int)($valor_hora*$horassemanales);
       $data = array();
 			if($parttime == 'on'){
@@ -2325,7 +2337,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 	}
 
 public function editar_trabajador(){
-		//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 			//echo "<pre>";
 			//print_r($this->input->post(NULL,true));  EXIT;
 			$idtrabajador = $this->input->post("idtrabajador");
@@ -2608,7 +2620,7 @@ public function editar_trabajador(){
 								'direccion' => $direccion,
 								'email' => $email,
 								'tiporenta' => $tiporenta,
-								'idcargo' => $idcargo,
+								'idcargo' => $idcargo == '' ? 0 : $idcargo,
 								'idestudio' => $idestudio,
 								'titulo' => $titulo,
 								'ididioma' => $ididioma,
@@ -2738,11 +2750,17 @@ public function editar_trabajador(){
 
 
 
-	/*	}else{
-			$vars['content_view'] = 'forbidden';
-			$this->load->view('template',$vars);
+		}else{
+    $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
 
-		}		*/
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+		}		
 
 
 	}	
@@ -3028,7 +3046,7 @@ public function editar_trabajador(){
 								'direccion' => $direccion,
 								'email' => $email,
 								'tiporenta' => $tiporenta,
-								'idcargo' => $idcargo,
+                'idcargo' => $idcargo == '' ? 0 : $idcargo,
 								'idestudio' => $idestudio,
 								'titulo' => $titulo,
 								'ididioma' => $ididioma,
@@ -3159,8 +3177,15 @@ public function editar_trabajador(){
 
 
 		}else{
-			$vars['content_view'] = 'forbidden';
-			$this->load->view('template',$vars);
+    $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
 
 		}		
 

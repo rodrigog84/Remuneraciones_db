@@ -922,3 +922,31 @@ where		appid in (
 						where		funcion = 'rrhh/cartas' 
 						and			visible = 1
 						)
+
+
+
+
+/*******************************************************************************/
+	insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/mod_trabajador'
+,null
+,4
+,0
+,0
+,1
+,null
+)
+
+insert into rem_role (appid,levelid) values (7118,2)

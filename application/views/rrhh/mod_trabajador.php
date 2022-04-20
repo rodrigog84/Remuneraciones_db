@@ -1547,6 +1547,7 @@ $(document).ready(function(){
 		    		dataType: "json",
 		    		async: false,
 		    		success: function(datos_personal2){
+
 		      			$.each(datos_personal2,function(nombre) {
 		      			$("#nombre").val(this.nombre);
 		      			$("#rut").val(this.rut);
@@ -1802,7 +1803,12 @@ $(document).ready(function(){
 
 
         				$("#numero_fun").val(this.fun);
-        				$("#rutfp").val(this.rut_pago);
+        				if(this.rut_pago == '-' || this.rut_pago == '0-' || this.rut_pago == '0- '){
+        					$("#rutfp").val('');
+        				}else{
+        					$("#rutfp").val(this.rut_pago);	
+        				}
+
         				$("#nombrefp").val(this.nombre_pago);
         				$("#emailfp").val(this.email_pago);
         				$("#diastrabajo").val(this.diastrabajo);
@@ -2153,9 +2159,11 @@ FormValidation.Validator.validateRut = {
           var rut = $field.val();
           var cleanRut = replaceAll(rut,".","");
           var cleanRut = replaceAll(cleanRut,"-","");
-          if(VerificaRut(cleanRut)){
-              return true;
 
+          if(cleanRut == ''){
+          	  return true;
+          }else if(VerificaRut(cleanRut)){
+              return true;
           }else{
               return {
                   valid : false
@@ -2382,23 +2390,23 @@ $(document).ready(function() {
                 }
             },            
 
-            cargo: {
+            /*cargo: {
                 row: '.form-group',
                 validators: {
                     notEmpty: {
                         message: 'Cargo es requerido'
                     }
                 }
-            }, 
+            },*/ 
 
-            centro_costo: {
+          /*  centro_costo: {
                 row: '.form-group',
                 validators: {
                     notEmpty: {
                         message: 'Centro de Costo es requerido'
                     }
                 }
-            },
+            },*/
             // FIN VALIDACIONES PRIMERA PESTAÑA
 
 
@@ -2588,17 +2596,17 @@ $(document).ready(function() {
 
 			   
             // FIN VALIDACIONES SEGUNDA PESTAÑA
-            afp: {
+           /* afp: {
                 row: '.form-group',
                 validators: {
                     notEmpty: {
                         message: 'Afp es requerida'
                     }
                 }
-            },   
+            }, */  
 
 
-            datepicker5: {
+           /* datepicker5: {
                 row: '.form-group',
                 validators: {
                     date: {
@@ -2609,7 +2617,7 @@ $(document).ready(function() {
                         message: 'Fecha de Ingreso AFP es requerido'
                     }                    
                 }
-            },      
+            },      */
 
 
             datepicker6: {
@@ -2625,14 +2633,14 @@ $(document).ready(function() {
                 }
             },
 
-            isapre: {
+            /*isapre: {
                 row: '.form-group',
                 validators: {
                     notEmpty: {
                         message: 'Isapre es requerida'
                     }
                 }
-            },  
+            },  */
 
 
             monto_pactado: {
