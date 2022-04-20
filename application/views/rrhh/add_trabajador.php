@@ -55,7 +55,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="numficha">Número de Ficha</label>  
-								                                 <input type="text" name="numficha" id="numficha" class="form-control" id="" placeholder="Número de Ficha" >
+								                                 <input type="text" name="numficha" id="numficha" class="form-control" id="" placeholder="Número de Ficha" value="1" >
 								                            </div>
 								                          </div>
 
@@ -194,7 +194,7 @@
 								                              <label for="rut">Tipo de Renta</label>
 								                             	<select name="tiporenta" id="tiporenta" class="form-control">
 																	<option value="">Seleccione Tipo Renta</option>
-																	<option value="Mensual">Mensual</option>
+																	<option value="Mensual" selected>Mensual</option>
 																	<option value="Diaria">Diaria</option>
 																	<option value="Semanal">Semanal</option>
 																</select>
@@ -449,7 +449,7 @@
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
 						                              <label for="horasdiarias">Horas Diarias</label>
-						                              <input type="text" class="form-control" name="horasdiarias" id="horasdiarias" placeholder="Ingrese Horas Diarias" value="<?php echo $datos_form['horasdiarias']; ?>" >                            
+						                              <input type="text" class="form-control" name="horasdiarias" id="horasdiarias" placeholder="Ingrese Horas Diarias" value="8" >                            
 						                            </div> 
 						                          </div>
 
@@ -457,7 +457,7 @@
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
 						                              <label for="horassemanales">Horas Semanales</label>
-						                              <input type="text" class="form-control" name="horassemanales" id="horassemanales" placeholder="Ingrese Horas Semanales" value="<?php echo $datos_form['horassemanales']; ?>" >   
+						                              <input type="text" class="form-control" name="horassemanales" id="horassemanales" placeholder="Ingrese Horas Semanales" value="45" >   
 						                            </div> 
 						                          </div>
 
@@ -495,7 +495,7 @@
 														 <div class='col-md-6'>
 						                            <div class="form-group">
 						                                <label for="movilizacion">Valor Movilizaci&oacute;n</label>   
-						                                <input type="text" class="form-control miles" name="movilizacion" id="movilizacion" placeholder="Ingrese Valor Movilizaci&oacute;n" value="<?php echo $datos_form['movilizacion']; ?>" >                            
+						                                <input type="text" class="form-control miles" name="movilizacion" id="movilizacion" placeholder="Ingrese Valor Movilizaci&oacute;n" value="0" >                            
 						                            </div> 
 						                          </div>
 
@@ -503,7 +503,7 @@
 														<div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="colacion">Valor Colaci&oacute;n</label>   
-								                                <input type="text" class="form-control miles" name="colacion" id="colacion" placeholder="Ingrese Valor Colaci&oacute;n" value="<?php echo $datos_form['colacion']; ?>" >                            
+								                                <input type="text" class="form-control miles" name="colacion" id="colacion" placeholder="Ingrese Valor Colaci&oacute;n" value="0" >                            
 								                            </div> 
 								                         </div>
 
@@ -570,7 +570,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div> 
-								                                 <input placeholder="Fecha Ingreso" class="form-control mask_date" id="datepicker2" name="datepicker2" type="text" value=""  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+								                                 <input placeholder="Fecha Ingreso" class="form-control mask_date" id="datepicker2" name="datepicker2" type="text" value="<?php echo date('d/m/Y');?>"  data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
 								                                 </div>
 								                            </div>
 								                          </div>
@@ -618,7 +618,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-								                             	<input placeholder="Fecha Inicio Vacaciones" class="form-control mask_date" id="fecha_inicio_vacaciones" name="fecha_inicio_vacaciones"   size="30" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+								                             	<input placeholder="Fecha Inicio Vacaciones" class="form-control mask_date" id="fecha_inicio_vacaciones" name="fecha_inicio_vacaciones"   size="30" type="text" value="<?php echo date('d/m/Y');?>" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
 								                             	</div>
 								                            </div>
 								                          </div>
@@ -819,7 +819,7 @@
 								                                <div class="input-group-addon">
 								                                  <span class="glyphicon glyphicon-calendar"></span>
 								                                </div>
-																<input placeholder="Fecha Real" class="form-control mask_date" id="fecha_real" name="fecha_real" type="text" value="" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+																<input placeholder="Fecha Real" class="form-control mask_date" id="fecha_real" name="fecha_real" type="text" value="<?php echo date('d/m/Y');?>" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
 																</div>
 
 								                            </div>
@@ -945,7 +945,7 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Monto Pactado Plan Isapre (UF)</label>
-																<input type="text" name="monto_pactado"  class="form-control miles_decimales_isapre" id="monto_pactado" placeholder="">
+																<input type="text" name="monto_pactado"  class="form-control miles_decimales_isapre" id="monto_pactado" placeholder="" disabled>
 								                            </div>
 								                          </div>
 								                          <div class='col-md-6'>
@@ -1045,7 +1045,7 @@
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Nro. Cargas Simples</label>
-																<input type="number" name="asig_individual" class="form-control cargas_familiares" id="asig_individual" placeholder="">
+																<input type="number" name="asig_individual" class="form-control cargas_familiares" id="asig_individual" placeholder="" value="0">
 								                            </div>
 								                          </div>										                         
 
@@ -1056,13 +1056,13 @@
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Nro. Cargas Inv&aacute;lidas</label>
-																<input type="number" name="asig_por_invalidez" class="form-control" id="asig_por_invalidez" placeholder="">
+																<input type="number" name="asig_por_invalidez" class="form-control" id="asig_por_invalidez" placeholder="" value="0">
 								                            </div>
 								                          </div>							                        	
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Nro. Cargas Maternales</label>
-																<input type="number" name="asig_maternal" class="form-control cargas_familiares" id="asig_maternal" placeholder="">
+																<input type="number" name="asig_maternal" class="form-control cargas_familiares" id="asig_maternal" placeholder="" value="0">
 								                            </div>
 								                          </div>								                          
 
