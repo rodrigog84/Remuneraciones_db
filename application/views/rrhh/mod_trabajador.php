@@ -1216,7 +1216,7 @@
 								                                <input type="hidden" id="id_tipo_cuenta_bancaria">
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+								                          <!--div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Plantilla Banco</label>
 																	<select name="plantilla_banco" id="plantilla_banco" class="form-control">
@@ -1229,17 +1229,17 @@
 								                                </select>
 
 																</div>
-								                          </div>
-
-							                        </div>
-
-							                        <div class='row'>
+								                          </div-->
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Número de Cuenta</label>
 																<input type="text" name="cta_bancaria" class="form-control" id="cta_bancaria" placeholder="Nº Cuenta Bancaria">
 								                            </div>
 								                          </div>
+							                        </div>
+
+							                        <div class='row'>
+
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Rut</label>
@@ -1247,16 +1247,16 @@
 
 																</div>
 								                          </div>
-
-							                        </div>
-													
-													<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Nombres</label>
 																<input type="text" name="nombrefp" class="form-control" id="nombrefp" placeholder="Nombres" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 								                            </div>
 								                          </div>
+							                        </div>
+													
+													<div class='row'>
+
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Email</label>
@@ -1713,11 +1713,11 @@ $(document).ready(function(){
         					$("#banco").val(this.idbanco);	
         				}
 
-        				if(this.id_plantilla_banco == 0){
+        				/*if(this.id_plantilla_banco == 0){
         					$("#plantilla_banco").val('');
         				}else{
         					$("#plantilla_banco").val(this.id_plantilla_banco);	
-        				}
+        				}*/
 
         				if(this.id_tipo_cuenta_bancaria == 0){
         					$("#tipo_cuenta_bancaria").val('');

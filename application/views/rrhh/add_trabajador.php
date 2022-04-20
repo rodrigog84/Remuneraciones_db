@@ -1191,7 +1191,7 @@
 								                                </select>
 								                            </div>
 								                          </div>
-								                          <div class='col-md-6'>
+								                          <!--div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Plantilla Banco</label>
 																	<select name="plantilla_banco" id="plantilla_banco" class="form-control">
@@ -1204,32 +1204,32 @@
 								                                </select>
 
 																</div>
-								                          </div>
-
-							                        </div>
-							                        <div class='row'>
+								                          </div-->
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Número de Cuenta</label>
 																<input type="text" name="cta_bancaria" class="form-control" id="cta_bancaria" placeholder="Nº Cuenta Bancaria">
 								                            </div>
 								                          </div>
+							                        </div>
+							                        <div class='row'>
+
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Rut</label>
 																<input type="text" name="rutfp" class="form-control" id="rutfp" placeholder="98123456-7" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 								                            </div>
 								                          </div>
-
-							                        </div>
-													
-													<div class='row'>
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Nombres</label>
 																<input type="text" name="nombrefp" class="form-control" id="nombrefp" placeholder="Nombres" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
 								                            </div>
 								                          </div>
+							                        </div>
+													
+													<div class='row'>
+
 								                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Email</label>
