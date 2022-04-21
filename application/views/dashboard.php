@@ -121,6 +121,44 @@
             </div>
         </div>
         <!-- END Tabla Asignacion Familiar -->
+
+        <!-- BEGIN Tabla Asignacion Familiar -->
+        <div class="panel panel-inverse" data-sortable-id="index-1">
+            <div class="panel-heading">
+                <h4 class="panel-title">Tabla Impuesto &Uacute;nico</h4>
+            </div>
+            <div class="panel-body">
+                <div class="tables">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Desde (UTM)</th>
+                                <th>Hasta (UTM)</th>
+                                <th>Factor</th>
+                                <th>Rebajas (UTM)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 1; ?>
+                            
+                                <?php foreach ($tabla_impuesto as $impuesto) { ?>
+                                <tr>
+                                    <td><?php echo $i; ?></td>
+                                    <td class="form-group"><?php echo number_format($impuesto->desde, 2, ".", "."); ?></td>
+                                    <td class="form-group"><?php if ($impuesto->hasta != 999999999) { ?><?php echo number_format($impuesto->hasta, 2, ".", "."); ?><?php } else { ?>Y m&aacute;s<?php } ?></td>
+                                    <td class="form-group"><?php echo number_format($impuesto->factor, 3, ".", "."); ?></td>
+                                    <td class="form-group"><?php echo number_format($impuesto->rebaja, 2, ".", "."); ?></td>
+                                    
+                                </tr>
+                                <?php $i++; ?>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- END Tabla Asignacion Familiar -->
     </div>
     <!-- END Col -->
 

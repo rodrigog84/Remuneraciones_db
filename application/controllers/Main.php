@@ -218,6 +218,8 @@ class Main extends CI_Controller
 
 
                 $tabla_asig_familiar = $this->admin->get_tabla_asig_familiar();
+                $tabla_impuesto = $this->admin->get_tabla_impuesto(); 
+
                 //$tabla_impuesto = $this->admin->get_tabla_impuesto();
                 $contador_cc[0] = 0;
                 for ($i = 0; $i < $num_centro_costo; $i++) {
@@ -340,6 +342,7 @@ class Main extends CI_Controller
                 $vars['arreglo_cc'] = $arreglo_cc;
                 $vars['meses_x_montopago'] = $meses_x_montopago;
                 $vars['tabla_asig_familiar'] = $tabla_asig_familiar;
+                $vars['tabla_impuesto'] = $tabla_impuesto;
                 $vars['fechoy_format'] = $fechoy_format;
                 //$vars['tabla_impuesto'] = $tabla_impuesto;
             } else {
