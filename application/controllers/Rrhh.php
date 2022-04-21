@@ -1377,7 +1377,7 @@ public function submit_salud(){
                                   }
 
 
-                                    if($fila > 1){
+                                    if($fila > 1 && $cant_errores_estructura == 0){
 
                                         $array_datos = array(
                                                             "Rut"                     => $datos[0],
