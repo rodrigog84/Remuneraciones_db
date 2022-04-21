@@ -47,6 +47,7 @@
                             												<th>Hist&oacute;rico Sueldos</th>
                             												<th>Licencias</th>
                             												<th>Vacaciones</th>
+                            												<th>Documentos</th>
 																			<th>Opciones</th>
 
 																		</tr> 
@@ -75,6 +76,10 @@
 	                              										 <td><small>
 											                              	<center>
 											                              		<a href="<?php echo base_url(); ?>auxiliares/cartola_vacaciones/<?php echo $trabajador->id_personal;?>"><span class="fa fa-calendar"></span>
+											                             </center></small></td>
+											                             <td><small>
+											                              	<center>
+											                              		<a href="<?php echo base_url(); ?>rrhh/crear_documentos_colaborador/<?php echo $trabajador->id_personal;?>"><span class="fa fa-file-pdf-o"></span>
 											                             </center></small></td>
 	                              										   
 	                              										  
