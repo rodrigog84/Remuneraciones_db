@@ -154,8 +154,10 @@ class Main extends CI_Controller
             } else if (count($empresas_asignadas) == 1) {
                 //var_dump_new($empresas_asignadas);
                 $empresas_asignadas = $empresas_asignadas[0];
+
                 $this->session->set_userdata('empresaid', $empresas_asignadas->id_empresa);
                 $this->session->set_userdata('empresanombre', $empresas_asignadas->nombre);
+                $unidad_id = $empresas_asignadas->id_empresa;
             } else {
                 redirect('auth/logout');
             }
@@ -163,6 +165,7 @@ class Main extends CI_Controller
 
         if ($this->session->userdata('level') == 2) {
 
+            //var_dump_new($unidad_id); exit;
             if ($unidad_id != null) {
 
                 $unidad_id = $unidad_id == '' && $this->session->userdata('empresaid') ? $this->session->userdata('empresaid') : $unidad_id;
@@ -355,7 +358,7 @@ class Main extends CI_Controller
                 $vars['meses_x_montopago'] = $meses_x_montopago;
                 $vars['fechoy_format'] = $fechoy_format;
             }
-        } else {
+        } else { // otro perfil
             //$num_colaboradores = count($this->rrhh_model->get_personal_datos('null'));
             $periodo_actual = "";
 
