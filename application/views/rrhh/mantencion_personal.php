@@ -213,7 +213,8 @@
 									                              <td><small><?php echo $i ;?></small></td>
 									                              <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
 									                              <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
-									                              <td class="form-group">
+									                              <td>
+									                              		<div class="form-group">
 									                                <?php $exregimen_afp = ""; ?>
 									                                <?php $porc_afp = 0; ?>
 
@@ -245,13 +246,15 @@
 									                                          }
 									                                          ?>                                
 									                                </select>
+									                                </div> 
 									                              </td>
 									                              <td class="text-right" ><b><span id="cotobligatoria_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo $porc_afp;?>&nbsp;%</span></b></td>
 									                              <td>
 									                              	<div class="form-group">
-									                                	<input type="text" name="cotadic_<?php echo $trabajador->id_personal;?>" id="cotadic_<?php echo $trabajador->id_personal;?>" class="form-control input-sm cot_adic" value="<?php echo $trabajador->adicafp; ?>"  size="3" />   
-									                            	  </td>
-									                          		</div>
+									                                	<input type="text" name="cotadic_<?php echo $trabajador->id_personal;?>" id="cotadic_<?php echo $trabajador->id_personal;?>" class="form-control input-sm cot_adic" value="<?php echo $trabajador->adicafp; ?>"  size="3" />  
+									                                </div> 
+									                           	  </td>
+									                          		
 									                              <td>
 									                              	<div class="form-group">
 									                                <select name="tipcotvol_<?php echo $trabajador->id_personal;?>" id="tipcotvol_<?php echo $trabajador->id_personal;?>" class="form-control  input-sm tipcotvol_list"  >

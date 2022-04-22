@@ -1961,7 +1961,6 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$tipo_cuenta_banco = $this->Mantenedores_model->get_tipo_cuenta_banco(null);
 			//var_dump($motivo_egreso); exit;
 
-			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 
 			/**** CARGA DE DATOS TRABAJADOR ****/
 			$trabajador = is_null($idtrabajador) ?  array() : $this->admin->get_personal_total($idtrabajador); 
@@ -2182,7 +2181,6 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$clases= $this->admin->get_clases();
 			$cod_ine= $this->admin->get_ine();
 			$zonas_brechas= $this->admin->get_zona_brecha();
-			$tramos_asig_familiar = $this->admin->get_tabla_asig_familiar();
 			$plantillas_bancos = $this->configuracion->get_plantilla_banco();
 			$tipo_cuenta_banco = $this->Mantenedores_model->get_tipo_cuenta_banco(null);
 

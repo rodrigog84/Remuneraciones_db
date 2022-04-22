@@ -487,6 +487,20 @@ public function add_apv($array_datos){
 
 
 
+	public function get_tabla_asig_familiar_periodo($periodo,$tramo = null){
+
+		$tramo_data = $this->db->select('id, tramo, desde, hasta, monto')
+						  ->from('rem_tabla_asig_familiar_periodo')
+						  ->where('periodo',$periodo)
+		                  ->order_by('desde','asc');
+		$tramo_data = is_null($tramo) ? $tramo_data : $tramo_data->where('tramo',$tramo);  		                  
+		$query = $this->db->get();
+		return $query->result();
+		//return $query->result();
+	}		
+
+
+
 	public function edit_tabla_asig_familiar($array_asig_familiar){
 
 		foreach ($array_asig_familiar as $key => $asig_familiar) {

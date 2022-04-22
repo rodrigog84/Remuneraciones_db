@@ -70,9 +70,10 @@ public function get_colaborador_sin_afp(){
 		$this->db->select('id_personal, rut')
 						  ->from('rem_personal')
 						  ->where('id_empresa', $this->session->userdata('empresaid'))
-						  ->where('idafp = 0 or idafp is null')
+						  ->where('(idafp = 0 or idafp is null)')
 		                  ->order_by('nombre','asc');
 		 $query = $this->db->get();
+		// echo $this->db->last_query(); exit;
 		 return $query->result();
 
 	}
@@ -82,7 +83,7 @@ public function get_colaborador_sin_isapre(){
 		$this->db->select('id_personal, rut')
 						  ->from('rem_personal')
 						  ->where('id_empresa', $this->session->userdata('empresaid'))
-						  ->where('idisapre = 0 or idisapre is null')
+						  ->where('(idisapre = 0 or idisapre is null)')
 		                  ->order_by('nombre','asc');
 		 $query = $this->db->get();
 		 return $query->result();
@@ -1507,11 +1508,11 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	public function get_periodos($empresaid,$idperiodo = null,$idcentrocosto = null){
 		$sql_centro_costo = is_null($idcentrocosto) ? '' : "and pe.idcentrocosto = " . $idcentrocosto;
 
-		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, pr.anticipo, max(pr.cierre) as cierre, pr.aprueba, (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' ' . $sql_centro_costo .' and r.active = 1) as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' ' . $sql_centro_costo .' and r.active = 1) as sueldoimponible ', false)
+		$periodo_data = $this->db->select('p.id_periodo, p.periodo, p.mes, p.anno, pr.anticipo, max(pr.cierre) as cierre, pr.aprueba, (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' ' . $sql_centro_costo .' and r.active = 1) as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' ' . $sql_centro_costo .' and r.active = 1) as sueldoimponible ', false)
 						  ->from('rem_periodo as p')
 						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
 		                  ->where('pr.id_empresa', $empresaid)
-		                  ->group_by('p.id_periodo, p.mes, p.anno, pr.anticipo, pr.aprueba, p.updated_at')
+		                  ->group_by('p.id_periodo, p.periodo, p.mes, p.anno, pr.anticipo, pr.aprueba, p.updated_at')
 		                  ->order_by('p.updated_at desc');
 		$comunidades_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.id_periodo',$idperiodo);
 		$comunidades_data = is_null($idcentrocosto) ? $periodo_data : $periodo_data->where('pr.id_centro_costo',$idcentrocosto);
@@ -1734,6 +1735,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$array_descuentos = array();
 		$array_prestamos = array();
 		$dia_mes =  $periodo->mes == 2 ? 28 : 30;
+		$perint = $periodo->periodo;
+
+
 		$suma_aporte_patronal = 0;
 		$suma_asig_familiar = 0;
 		$suma_ips = 0;
@@ -1871,9 +1875,19 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
             }
 
 
-			if(!is_null($trabajador->idasigfamiliar)){ //BUSCA MONTO DE ASIGNACION FAMILIAR EN BASE A TRAMO SELECCIONADO
+			if(!is_null($trabajador->idasigfamiliar) && $trabajador->idasigfamiliar != 0){ //BUSCA MONTO DE ASIGNACION FAMILIAR EN BASE A TRAMO SELECCIONADO
+
+
+
+
 				$tramo_asig_familiar = $this->admin->get_tabla_asig_familiar($trabajador->idasigfamiliar);
-				$asig_familiar += $tramo_asig_familiar->monto*$num_cargas;
+				$letra_tramo_asig_familiar = $tramo_asig_familiar->tramo;
+
+
+				$array_asig_familiar_periodo = $this->admin->get_tabla_asig_familiar_periodo($perint,$letra_tramo_asig_familiar);
+
+				$asig_familiar_periodo = $array_asig_familiar_periodo[0];
+				$asig_familiar += $asig_familiar_periodo->monto*$num_cargas;
 
 				$dias_calculo_asig = $datos_remuneracion->diastrabajo + $dias_licencia;
 

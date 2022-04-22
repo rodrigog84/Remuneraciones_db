@@ -100,6 +100,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
+                                <th>Tramo</th>
                                 <th>Desde ($)</th>
                                 <th>Hasta ($)</th>
                                 <th>Monto Asignación Familiar ($)</th>
@@ -109,6 +110,7 @@
                             <?php $i = 1; ?>
                             <?php foreach ($tabla_asig_familiar as $asig_familiar) { ?> <tr>
                                     <td><?php echo $i; ?></td>
+                                    <td class="form-group"><?php echo $asig_familiar->tramo; ?></td>
                                     <td class="form-group"><?php echo number_format($asig_familiar->desde, 0, ".", "."); ?></td>
                                     <td class="form-group"><?php if ($asig_familiar->hasta != 999999999) { ?><?php echo number_format($asig_familiar->hasta, 0, ".", "."); ?><?php } else { ?>Y m&aacute;s<?php } ?></td>
                                     <td class="form-group"><?php echo number_format($asig_familiar->monto, 0, ".", "."); ?></td>

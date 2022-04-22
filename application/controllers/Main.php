@@ -192,6 +192,8 @@ class Main extends CI_Controller
                 //$num_colaboradores = count($this->rrhh_model->get_personal_datos('null'));
                 $fechoy = date('Ymd');
                 $fechoy_format = date('d/m/Y');
+                $perhoy = date('Ym');
+
                 //$fechoy = '20220501';
                 $parametros = array();
                 $parametros['uf'] = $this->admin->get_indicadores_by_day($fechoy,'UF');
@@ -217,7 +219,11 @@ class Main extends CI_Controller
                 $parametros_generales['tasasis'] = count($parametros['tasasis']) == 0 ? 'Sin Dato' : number_format($parametros['tasasis'][0]->valor, 2, ',', '.');
 
 
-                $tabla_asig_familiar = $this->admin->get_tabla_asig_familiar();
+                //$tabla_asig_familiar = $this->admin->get_tabla_asig_familiar();
+
+                $tabla_asig_familiar = $this->admin->get_tabla_asig_familiar_periodo($perhoy);
+
+                //var_dump_new($tabla_asig_familiar); exit;
                 $tabla_impuesto = $this->admin->get_tabla_impuesto(); 
 
                 //$tabla_impuesto = $this->admin->get_tabla_impuesto();
