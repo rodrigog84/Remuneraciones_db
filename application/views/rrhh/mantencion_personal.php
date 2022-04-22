@@ -249,7 +249,7 @@
 									                              <td class="text-right" ><b><span id="cotobligatoria_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo $porc_afp;?>&nbsp;%</span></b></td>
 									                              <td>
 									                              	<div class="form-group">
-									                                	<input type="text" name="cotadic_<?php echo $trabajador->id_personal;?>" id="cotadic_<?php echo $trabajador->id_personal;?>" class="form-control input-sm cot_adic" value="<?php echo $trabajador->adicafp; ?>"  />   
+									                                	<input type="text" name="cotadic_<?php echo $trabajador->id_personal;?>" id="cotadic_<?php echo $trabajador->id_personal;?>" class="form-control input-sm cot_adic" value="<?php echo $trabajador->adicafp; ?>"  size="3" />   
 									                            	  </td>
 									                          		</div>
 									                              <td>
@@ -272,7 +272,7 @@
 									                                        $class1 = "";
 									                                        $class2 = "cot_vol";
 									                                        } ?>
-									                                <input type="text" name="cotvol_<?php echo $trabajador->id_personal;?>" id="cotvol_<?php echo $trabajador->id_personal;?>" class="form-control <?php echo $class1." ".$class2; ?> input-sm numeros" value="<?php echo $ahorrovol; ?>"  />   
+									                                <input type="text" name="cotvol_<?php echo $trabajador->id_personal;?>" id="cotvol_<?php echo $trabajador->id_personal;?>" class="form-control <?php echo $class1." ".$class2; ?> input-sm numeros" value="<?php echo $ahorrovol; ?>"  size="6" />   
 									                            </div>
 									                              </td>
 									                            </tr>
@@ -334,7 +334,7 @@
 								                              </td>  
 								                              <td>
 								                              	<div class="form-group ">
-								                                		<input type="text" name="nrocontratoapv_<?php echo $trabajador->id_personal;?>" id="nrocontratoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros nrocontratoapv" width="15px" value="<?php echo $trabajador->nrocontratoapv; ?>"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> />   
+								                                		<input type="text" name="nrocontratoapv_<?php echo $trabajador->id_personal;?>" id="nrocontratoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros nrocontratoapv" width="15px" value="<?php echo $trabajador->nrocontratoapv; ?>"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> size="3"/>   
 								                              	</div>
 								                              </td>
 
@@ -362,7 +362,7 @@
 								                                        $class1 = "";
 								                                        $class2 = "";                                        
 								                                        } ?>                              
-								                                <input type="text" name="apv_<?php echo $trabajador->id_personal;?>" id="apv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros cot_apv <?php echo $class1." ".$class2; ?>" value="<?php echo $cotapv; ?>" <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0  ? 'disabled' : ''; ?> />   
+								                                <input type="text" name="apv_<?php echo $trabajador->id_personal;?>" id="apv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros cot_apv <?php echo $class1." ".$class2; ?>" value="<?php echo $cotapv; ?>" <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0  ? 'disabled' : ''; ?> size="6" />   
 								                              </div>
 								                              </td>  
 								                              <td>
@@ -376,7 +376,7 @@
 								                              <td>
 								                              	<div class="form-group">
 								                              <?php $depconvapv = is_null($trabajador->depconvapv) ? 0 : number_format($trabajador->depconvapv,0,".","."); ?>
-								                                <input type="text" name="depconvapv_<?php echo $trabajador->id_personal;?>" id="depconvapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm miles depconvapv" value="<?php echo $depconvapv; ?>" <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0  ? 'disabled' : ''; ?> />   
+								                                <input type="text" name="depconvapv_<?php echo $trabajador->id_personal;?>" id="depconvapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm miles depconvapv" value="<?php echo $depconvapv; ?>" <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0  ? 'disabled' : ''; ?> size="6" />   
 								                              </div>
 								                              </td>                                                      
 								                            </tr>
@@ -436,7 +436,7 @@
 								                              <td>$&nbsp;<?php echo number_format($trabajador->sueldobase,0,".",".");?></td>
 								                              <td>$&nbsp;<?php echo number_format((int)$trabajador->sueldobase*0.07,0,".",".");?></td>
 								                              <td class="form-group">
-								                              	<input type="text" name="pactado_<?php echo $trabajador->id_personal;?>" id="pactado_<?php echo $trabajador->id_personal;?>" class="form-control valor_pactado miles_decimales_isapre" value="<?php echo !is_null($trabajador->valorpactado) && $trabajador->valorpactado != 0 ? number_format($trabajador->valorpactado,4,",","") : ""; ?>" <?php echo is_null($trabajador->idisapre) || $trabajador->idisapre == 1 || $trabajador->idisapre == 0 ? "disabled" : ""; ?> />
+								                              	<input type="text" name="pactado_<?php echo $trabajador->id_personal;?>" id="pactado_<?php echo $trabajador->id_personal;?>" class="form-control valor_pactado miles_decimales_isapre" value="<?php echo !is_null($trabajador->valorpactado) && $trabajador->valorpactado != 0 ? number_format($trabajador->valorpactado,4,",","") : ""; ?>" <?php echo is_null($trabajador->idisapre) || $trabajador->idisapre == 1 || $trabajador->idisapre == 0 ? "disabled" : ""; ?>  size="6" />
 								                              </td>
 								                              <!--td><b><span id="valorplan_<?php echo $trabajador->id;?>"  class="text-right input-sm" >$&nbsp;0</span></b></td>
 								                              <td><b><span id="montodescuento_<?php echo $trabajador->id;?>"  class="text-right input-sm" >$&nbsp;0</span></b></td-->
