@@ -1198,7 +1198,7 @@ public function get_cargos($idcargo = null){
 public function get_bonos($idtrabajador = null){
 
 		//$bonos_data = $this->db->select('id, idpersonal, descripcion, monto, date_format(fecha,"%d/%m/%Y") as fecha, proporcional, imponible, fijo')
-			$bonos_data = $this->db->select('id_bono, idpersonal, descripcion, monto, fecha')	
+			$bonos_data = $this->db->select('id, idpersonal, descripcion, monto, idperiodo')	
 						  ->from('rem_bonos_personal b')
 						  ->where('b.idpersonal',$idtrabajador)
 						  ->where('b.valido',1)

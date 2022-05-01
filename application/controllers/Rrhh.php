@@ -646,6 +646,26 @@ public function submit_salud(){
         $vars['apv'] = '';    
         $vars['salud'] = '';
         $vars['otros'] = '';             
+      }elseif($resultid == 17){
+        $vars['message'] = "Error al editar colaborador. Debe seleccionar colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+        $vars['mantencion_personal'] = 'active';  
+        $vars['ccostocargo'] = '';        
+        $vars['leyes_sociales'] = '';   
+        $vars['apv'] = '';    
+        $vars['salud'] = '';
+        $vars['otros'] = '';              
+      }elseif($resultid == 18){
+        $vars['message'] = "Error al editar colaborador. Colaborador no existe";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+        $vars['mantencion_personal'] = 'active';  
+        $vars['ccostocargo'] = '';        
+        $vars['leyes_sociales'] = '';   
+        $vars['apv'] = '';    
+        $vars['salud'] = '';
+        $vars['otros'] = '';              
       }
 
 			$this->load->model('admin');
@@ -1917,10 +1937,26 @@ public function datos_personal_lic($idpersonal=null){
 }
 
 
-public function mod_trabajador($rut = null,$idtrabajador = null)
+//public function mod_trabajador($rut = null,$idtrabajador = null)
+public function mod_trabajador($idtrabajador = null)
 	{
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+           
+      if(is_null($idtrabajador)){
+            $this->session->set_flashdata('personal_result', 17);
+            redirect('rrhh/mantencion_personal');        
+      }
+
+      $trabajador = $this->admin->get_personal_total($idtrabajador); 
+
+      if(is_null($trabajador)){
+            $this->session->set_flashdata('personal_result', 18);
+            redirect('rrhh/mantencion_personal');        
+      }
+
+
 
 
 			/***** CARGA DE DATOS PARA FORMULARIO ***/
@@ -1940,7 +1976,7 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$centros_costo = $this->admin->get_centro_costo();
 			$afps = $this->admin->get_afp();
 			$isapres = $this->admin->get_isapre();
-			$datos_personal = $this->rrhh_model->get_personal_datos($rut);
+			$datos_personal = $this->rrhh_model->get_personal_datos(null,$idtrabajador);
 			$pantalon = $this->admin->get_vestuario_pantalon();			
 			$polera = $this->admin->get_vestuario_polera();
 			$apv = $this->admin->get_apv();
@@ -1963,10 +1999,6 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 
 
 			/**** CARGA DE DATOS TRABAJADOR ****/
-			$trabajador = is_null($idtrabajador) ?  array() : $this->admin->get_personal_total($idtrabajador); 
-			if(!is_null($idtrabajador) && count($trabajador) == 0){ // si estoy editando, pero ingreso un trabajador que no está, vuelvo al principio
-				redirect('rrhh/mantencion_personal');	
-			}
 			$bonos = is_null($idtrabajador) ?  array() : $this->admin->get_bonos($idtrabajador); 
 			//$parametros = $this->remuneracion->get_parametros_generales();
 
@@ -1981,8 +2013,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
      // print_r($trabajador); exit;
 
 			$datos_form = array(
-								'idtrabajador' =>  is_null($idtrabajador) ? 0 : $trabajador->id,	
-	       						'rut' => is_null($idtrabajador) ? "" : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv,
+								'idtrabajador' =>  is_null($idtrabajador) ? 0 : $trabajador->id_personal,	
+	       					'rut' => is_null($idtrabajador) ? "" : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv,
 								'nombre' => is_null($idtrabajador) ? "" : $trabajador->nombre,
 								'apaterno' => is_null($idtrabajador) ? "" : $trabajador->apaterno,
 								'amaterno' => is_null($idtrabajador) ? "" : $trabajador->amaterno,
@@ -2070,8 +2102,8 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 			$vars['mask'] = true;
 			$vars['inputmask'] = true;
 			$vars['maleta'] = true;
-			$vars['idrut'] = $rut;
-
+			$vars['idrut'] = $trabajador->rut;
+      $vars['idtrabajador'] = $idtrabajador;
 			$template = "template";
 			$this->load->view($template,$vars);	
 			//json_encode($datos_personal);
@@ -2337,10 +2369,12 @@ public function mod_trabajador($rut = null,$idtrabajador = null)
 public function editar_trabajador(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 			//echo "<pre>";
-			//print_r($this->input->post(NULL,true));  EXIT;
+			//print_r($this->input->post(NULL,true)); // EXIT;
 			$idtrabajador = $this->input->post("idtrabajador");
        		$rut = str_replace(".","",$this->input->post("rut"));
 			$arrayRut = explode("-",$rut);
+     // var_dump_new($arrayRut); exit;
+
 			$numficha = $this->input->post('numficha');
 			$nombre = $this->input->post('nombre');
 			$apaterno = $this->input->post('apaterno');
@@ -2604,8 +2638,8 @@ public function editar_trabajador(){
 
 			$array_datos = array(
 								'id_empresa' => $this->session->userdata('empresaid'),
-	       						'rut' => $idtrabajador == 0 ? $arrayRut[0] : "",
-	       						'dv' => $idtrabajador == 0 ? $arrayRut[1] : "",
+	       						'rut' => $arrayRut[0],
+	       						'dv' => $arrayRut[1],
 	       						'numficha' => $numficha,
 								'nombre' => $nombre,
 								'apaterno' => $apaterno,

@@ -1466,7 +1466,7 @@
 										<a href="<?php echo base_url();?>rrhh/mantencion_personal" class="btn btn-success">Volver</a>	
 									</div>
 								</div>
-							
+							<input type='hidden' id='idtrabajador' name='idtrabajador' value='<?php echo $idtrabajador;?>'>
 							</form>
 
 

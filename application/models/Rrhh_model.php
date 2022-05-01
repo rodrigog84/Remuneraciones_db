@@ -323,16 +323,36 @@ public function edit_personal($array_datos,$idtrabajador){
 
 		$this->db->select('p.id_personal, p.active')
 						  ->from('rem_personal as p')
-		                  ->where('p.rut', $array_datos['rut'])
+		                  ->where('p.id_personal', $idtrabajador)
 		                  ->where('p.id_empresa', $this->session->userdata('empresaid'));		
 		$query = $this->db->get();
 		$datos = $query->row();
+
+
 		if($query->num_rows() == 1){ // nuevo trabajador no existe
-				$this->db->where('rut', $array_datos['rut']);
-				$this->db->where('id_empresa', $this->session->userdata('empresaid'));
-				$this->db->update('rem_personal',$array_datos); 
-				$this->db->trans_complete();
-				return 1;
+
+
+				$this->db->select('p.id_personal, p.active')
+						  ->from('rem_personal as p')
+						  ->where('p.rut', $array_datos['rut'])
+		                  ->where('p.id_personal != ' . $idtrabajador)
+		                  ->where('p.id_empresa', $this->session->userdata('empresaid'));		
+				$query = $this->db->get();
+				$datos = $query->row();
+				if($query->num_rows() > 0){
+					return -1;
+
+				}else{
+					$this->db->where('id_personal', $idtrabajador);
+					$this->db->where('id_empresa', $this->session->userdata('empresaid'));
+					$this->db->update('rem_personal',$array_datos); 
+					$this->db->trans_complete();
+					return 1;
+
+				}
+
+
+
 			}
 
 }
@@ -1109,7 +1129,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		return 1;
 	}
 
-	public function get_personal_datos($rut = null){
+	public function get_personal_datos($rut = null,$idtrabajador = null){
 
 
 		$array_campos = array(
@@ -1236,6 +1256,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 						 // ->where_in('idcentrocosto',$centro_costo)
 		                  ->order_by('p.nombre');
 		$personal_data = is_null($rut) ? $personal_data : $personal_data->where('p.rut',$rut);
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);
 		//$personal_data = !$centro_costo  ? $personal_data : $personal_data->where_in('idcentrocosto',$centro_costo);
 
 		$query = $this->db->get();
