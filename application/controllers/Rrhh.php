@@ -1112,6 +1112,7 @@ public function submit_salud(){
                           $array_valores_tramos_asigfamiliar = array('A','B','C','D');
 
 
+                          $array_rut_ingresados = array();
 
 
 
@@ -1363,6 +1364,21 @@ public function submit_salud(){
 
                                       }
 
+                                      if(($c+1) == 1 && in_array($datos[$c],$array_rut_ingresados)){
+
+
+                                                $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Rut duplicado";
+                                                $cant_errores_contenido++;
+
+
+                                            
+                                      }else{
+                                            array_push($array_rut_ingresados,$datos[$c]); 
+                                      }
+
 
 
                                     } // if($fila > 1){
@@ -1383,9 +1399,11 @@ public function submit_salud(){
 
 
                                      // echo $datos[$c] . "<br />\n";
+
                                   }
 
 
+                                  
 
                                   // validar cantidad de columnas
                                   if ($numero != $columnas_requeridas){
@@ -1398,6 +1416,8 @@ public function submit_salud(){
 
 
                                     if($fila > 1 && $cant_errores_estructura == 0){
+
+
 
                                         $array_datos = array(
                                                             "Rut"                     => $datos[0],
@@ -1464,6 +1484,7 @@ public function submit_salud(){
 
       }
 
+     
       $vars['errores_estructura'] = $array_errores_estructura;
       $vars['errores_contenido'] = $array_errores_contenido;
       $vars['lista_personal_sin_confirmar'] = $lista_personal_sin_confirmar;
