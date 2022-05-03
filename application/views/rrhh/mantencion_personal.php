@@ -735,7 +735,7 @@ $('.isapre_list').change(function(){
 $(document).ready(function(){
  $('.miles_decimales').mask('#.##0,00', {reverse: true});        
 
- $('.miles_decimales_isapre').mask('#.####0,0000', {reverse: true});       
+ //$('.miles_decimales_isapre').mask('#.####0,0000', {reverse: true});       
 
 });
 
@@ -998,7 +998,11 @@ $(document).ready(function() {
                   validators: {
                       notEmpty: {
                           message: 'Valor Pactado Cotizaci&oacute;n de Salud es requerida'
-                      }
+                      },
+	                    regexp: {
+	                            regexp: /^[0-9]+([,][0-9]+)?$/,
+	                            message: 'Debe ingresar un valor decimal'
+	                    }
                   }
                 }
                 
