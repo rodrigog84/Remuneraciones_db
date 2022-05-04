@@ -5142,9 +5142,15 @@ public function liquidacion_colaborador($idremuneracion = null)
 		
 		//OPCIONES:  ES NUEVO, YA SE CREO, YA ESTÁ CERRADO
     if($estado_periodo == 1){
+      if($tipo_status == 'calculo'){
         $array_result['label_style'] = 'label-danger';
         $array_result['label_text'] = 'No existen centros de costo creados';
-        $array_result['status'] = 'nuevo';    
+        $array_result['status'] = 'nuevo';
+      }else{
+        $array_result['label_style'] = 'label-success';
+        $array_result['label_text'] = 'Datos ingresados (puede editar informaci&oacute;n)';
+        $array_result['status'] = 'ingresado';    
+      }           
     }else if($estado_periodo == 3){ // NO EXISTE, ES NUEVO
 
         $array_result['label_style'] = 'label-danger';
