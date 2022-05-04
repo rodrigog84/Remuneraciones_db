@@ -2163,7 +2163,7 @@ public function mod_trabajador($idtrabajador = null)
       
 
 			$valor_hora = $parametros->valor/45;
-			$sueldominimo_proporcional = (int)($valor_hora*$horassemanales);
+			$sueldominimo_proporcional = (int)($valor_hora*str_replace(",",".",$horassemanales));
       $data = array();
 			if($parttime == 'on'){
 				$data['result'] = "ok";
@@ -5354,22 +5354,24 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 			$array_elem = $this->input->post(NULL,true);
 			$array_trabajadores = array();
+
+    //  var_dump_new($array_elem); exit;
 			foreach($array_elem as $elem => $value_elem){
 				$arr_el = explode("_",$elem);
 				if($arr_el[0] == 'horas50'){
-					$array_trabajadores[$arr_el[1]]['horas50'] = $value_elem;
+					$array_trabajadores[$arr_el[1]]['horas50'] = str_replace(",",".",$value_elem);
 				}
 
 				if($arr_el[0] == 'monto50'){
-					$array_trabajadores[$arr_el[1]]['monto50'] = $value_elem;
+					$array_trabajadores[$arr_el[1]]['monto50'] = str_replace($value_elem,".","");
 				}
 
 				if($arr_el[0] == 'horas100'){
-					$array_trabajadores[$arr_el[1]]['horas100'] = $value_elem;
+					$array_trabajadores[$arr_el[1]]['horas100'] = str_replace(",",".",$value_elem);
 				}
 
 				if($arr_el[0] == 'monto100'){
-					$array_trabajadores[$arr_el[1]]['monto100'] = $value_elem;
+					$array_trabajadores[$arr_el[1]]['monto100'] = str_replace($value_elem,".","");
 				}				
 			}
 

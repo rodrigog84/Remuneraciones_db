@@ -1855,14 +1855,15 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 			//$valor_hora = $trabajador->parttime == 1 ? ((($trabajador->sueldobase + $trabajador->bonos_fijos)/$trabajador->diastrabajo)/$trabajador->horasdiarias) : ((($trabajador->sueldobase + $trabajador->bonos_fijos)/30)*7)/45;
-			$valor_hora = $trabajador->parttime == 1 ? ((($trabajador->sueldobase)/$trabajador->diastrabajo)/$trabajador->horasdiarias) : ((($trabajador->sueldobase)/30)*7)/45;
+			$valor_hora = $trabajador->parttime == 1 ? ((($trabajador->sueldobase)/$trabajador->diastrabajo)/$trabajador->horasdiarias) : ((($trabajador->sueldobase)/30)*7)/$trabajador->horassemanales;
 			$valor_hora = round($valor_hora,0);
 			//calculo total haberes
 			$valor_hora50 =  round($valor_hora*1.5,0);
 			$valor_hora100 = round($valor_hora*2,0);
-			$monto_horas50 = $datos_remuneracion->horasextras50*$valor_hora50;
-			$monto_horas100 = $datos_remuneracion->horasextras100*$valor_hora100;
 
+
+			$monto_horas50 = round($datos_remuneracion->horasextras50*$valor_hora50,0);
+			$monto_horas100 = round($datos_remuneracion->horasextras100*$valor_hora100,0);
 
 
 

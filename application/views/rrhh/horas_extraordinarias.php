@@ -88,11 +88,13 @@
 																	</thead> 
 											                          <tbody>
 											                           <?php if(count($personal) > 0 ){ ?>
+											                           		<?php// var_dump_new($personal); exit; ?>
+
 											                              <?php $i = 1; ?>
 											                              <?php $total_horas_50 = 0; ?>
 											                              <?php $total_horas_100 = 0; ?>
 											                              <?php foreach ($personal as $trabajador) { ?>
-											                              <?php $valorhora = $trabajador->parttime == 1 ? round((($trabajador->sueldobase)/$trabajador->diastrabajo)/$trabajador->horasdiarias,0) : round(((($trabajador->sueldobase)/30)*7)/45,0); ?>
+											                              <?php $valorhora = $trabajador->parttime == 1 ? round((($trabajador->sueldobase)/$trabajador->diastrabajo)/$trabajador->horasdiarias,0) : round(((($trabajador->sueldobase)/30)*7)/$trabajador->horassemanales,0); ?>
 
 											                              <?php $valorhora50 = round($valorhora*1.5,0); ?>
 											                              <?php $valorhora100 = round($valorhora*2,0); ?>
@@ -112,7 +114,7 @@
 											                                  <input type="hidden" name="montoactual50_<?php echo $trabajador->id_personal;?>" id="montoactual50_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $valorhora50; ?>"  />
 											                                </td>                                
 											                                <td class="form-group">
-											                                    <input type="text" name="horas50_<?php echo $trabajador->id_personal;?>" id="horas50_<?php echo $trabajador->id_personal;?>" class="horas50 horas miles_decimales numeros input-sm" value="<?php echo isset($datos_remuneracion['horasextras50'][$trabajador->id_personal]) ? $datos_remuneracion['horasextras50'][$trabajador->id_personal] : 0; ?>"  />   
+											                                    <input type="text" name="horas50_<?php echo $trabajador->id_personal;?>" id="horas50_<?php echo $trabajador->id_personal;?>" class="horas50 horas miles_decimales numeros input-sm" value="<?php echo isset($datos_remuneracion['horasextras50'][$trabajador->id_personal]) ? str_replace(".",",",$datos_remuneracion['horasextras50'][$trabajador->id_personal]) : 0; ?>"  />   
 											                                </td>
 											                                <td class="form-group">
 											                                  <input type="hidden" name="monto50_<?php echo $trabajador->id_personal;?>" class="monto50" id="monto50_<?php echo $trabajador->id_personal;?>" value="<?php echo isset($datos_remuneracion['horasextras50'][$trabajador->id_personal]) ? $datos_remuneracion['horasextras50'][$trabajador->id_personal]*$valorhora50 : 0; ?>"  />   
@@ -123,7 +125,7 @@
 											                                  <input type="hidden" name="montoactual100_<?php echo $trabajador->id_personal;?>" id="montoactual100_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $valorhora100; ?>"  />
 											                                </td>                                                                
 											                                <td class="form-group">
-											                                    <input type="text" name="horas100_<?php echo $trabajador->id_personal;?>" id="horas100_<?php echo $trabajador->id_personal;?>" class="horas100 horas miles_decimales numeros input-sm" value="<?php echo isset($datos_remuneracion['horasextras100'][$trabajador->id_personal]) ? $datos_remuneracion['horasextras100'][$trabajador->id_personal] : 0; ?>"  />   
+											                                    <input type="text" name="horas100_<?php echo $trabajador->id_personal;?>" id="horas100_<?php echo $trabajador->id_personal;?>" class="horas100 horas miles_decimales numeros input-sm" value="<?php echo isset($datos_remuneracion['horasextras100'][$trabajador->id_personal]) ? str_replace(".",",",$datos_remuneracion['horasextras100'][$trabajador->id_personal]) : 0; ?>"  />   
 											                                </td>
 											                                <td class="form-group">
 											                                  <input type="hidden" name="monto100_<?php echo $trabajador->id_personal;?>" class="monto100" id="monto100_<?php echo $trabajador->id_personal;?>" value="<?php echo isset($datos_remuneracion['horasextras100'][$trabajador->id_personal]) ? $datos_remuneracion['horasextras100'][$trabajador->id_personal]*$valorhora100 : 0; ?>"  />   
@@ -232,6 +234,8 @@ $('.periodo').change(function(){
                               $('#spanvalorhora100_'+idtrabajador).html(number_format(valorhora100,0,'.','.'));
                               $('#valorhora100_'+idtrabajador).val(valorhora100);
 
+                              horasextras50 = replaceAll(horasextras50,'.',',')
+                              horasextras100 = replaceAll(horasextras100,'.',',')
                               $('#horas50_'+idtrabajador).val(horasextras50);
                               $('#monto50_'+idtrabajador).val(montohorasextras50);
                               $('#spanmonto50_'+idtrabajador).html(number_format(montohorasextras50,0,'.','.'));
@@ -307,6 +311,9 @@ $(document).ready(function() {
                               $('#spanvalorhora100_'+idtrabajador).html(number_format(valorhora100,0,'.','.'));
                               $('#valorhora100_'+idtrabajador).val(valorhora100);
 
+                              horasextras50 = replaceAll(horasextras50,'.',',')
+                              horasextras100 = replaceAll(horasextras100,'.',',')
+
                               $('#horas50_'+idtrabajador).val(horasextras50);
                               $('#monto50_'+idtrabajador).val(montohorasextras50);
                               $('#spanmonto50_'+idtrabajador).html(number_format(montohorasextras50,0,'.','.'));
@@ -348,7 +355,7 @@ $(document).ready(function() {
                         message: 'Informaci&oacute;n de Horas Extraordinarias es requerida'
                     },
                     numeric: {
-                        separator: '.',
+                        separator: ',',
                         message: 'Horas extraordinarias s&oacute;lo puede contener n&uacute;meros'
                     }                 
                 },
@@ -379,18 +386,23 @@ $(document).ready(function() {
 });
 
 
+  function replaceAll( text, busca, reemplaza ){
+  while (text.toString().indexOf(busca) != -1)
+      text = text.toString().replace(busca,reemplaza);
+  return text;
+}
 
 $(".horas50").on('input',function(event){
     var id_text =  $(this).attr('id');
     var array_field = id_text.split("_");
     idtrabajador = array_field[1];
-    var horas50 = $('#horas50_'+idtrabajador).val() == '' ? 0 : parseFloat($('#horas50_'+idtrabajador).val());
+    var horas50 = $('#horas50_'+idtrabajador).val() == '' ? 0 : $('#horas50_'+idtrabajador).val();
     var m_hora50 = Math.round(parseFloat($('#valorhora_'+idtrabajador).val())*1.5,0);
 
-    var valor50 = horas50*m_hora50;
+    var valor50 = parseFloat(replaceAll(horas50,',','.'))*m_hora50;
 
     $('#spanmonto50_'+idtrabajador).html(number_format(valor50,0,'.','.')); 
-    $('#monto50_'+idtrabajador).val(number_format(valor50,0,'','')); 
+    $('#monto50_'+idtrabajador).val(number_format(valor50,0,'.','.')); 
 
 
     // SUMA DE HORAS 50
@@ -410,11 +422,11 @@ $(".horas100").on('input',function(event){
     var id_text =  $(this).attr('id');
     var array_field = id_text.split("_");
     idtrabajador = array_field[1];
-    var horas100 = $('#horas100_'+idtrabajador).val() == '' ? 0 : parseFloat($('#horas100_'+idtrabajador).val());
+    var horas100 = $('#horas100_'+idtrabajador).val() == '' ? 0 : $('#horas100_'+idtrabajador).val();
     var m_hora100 = Math.round(parseFloat($('#valorhora_'+idtrabajador).val())*2,0);
-    var valor100 = horas100*m_hora100;
+    var valor100 = parseFloat(replaceAll(horas100,',','.'))*m_hora100;
     $('#spanmonto100_'+idtrabajador).html(number_format(valor100,0,'.','.')); 
-    $('#monto100_'+idtrabajador).val(number_format(valor100,0,'','')); 
+    $('#monto100_'+idtrabajador).val(number_format(valor100,0,'.','.')); 
 
     // SUMA DE HORAS 100
     var total_horas_100 = 0;
@@ -430,13 +442,13 @@ $(".horas100").on('input',function(event){
 
 
 
-$(document).ready(function(){
+/*$(document).ready(function(){
  $('.miles_decimales').mask('#.##0,00', {reverse: true})        
 
-});
+});*/
 
   $('.numeros').keypress(function(event){
-    if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
+    if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 44){
       event.preventDefault();
     } 
   })   
