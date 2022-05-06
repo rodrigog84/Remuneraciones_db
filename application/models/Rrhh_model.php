@@ -1792,12 +1792,39 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$datos_hd = $this->get_haberes_descuentos($trabajador->id_personal,null,'HABER');	
 
 
+
+            $movimientos = $this->get_lista_movimientos($trabajador->id_personal, null, $idperiodo, 3);
+
+            $dias_licencia = 0;
+            foreach ($movimientos as $movimiento) {
+                
+                $dias = dias_transcurridos($movimiento->fecmovimiento,$movimiento->fechastamovimiento) + 1; // se agrega uno porque se considera el día inicial
+                $dias_licencia += $dias;
+            }
+
+
+
+
 			$diastrabajo = $trabajador->parttime == 1 ? $trabajador->diastrabajo : 30;
-			$sueldo_base_mes = round(($trabajador->sueldobase/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
+
+			 
 
 
-			$movilizacion_mes = round(($trabajador->movilizacion/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
-			$colacion_mes = round(($trabajador->colacion/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
+			$dias_trabajados =  $datos_remuneracion->diastrabajo > ($diastrabajo - $dias_licencia) ?  ($diastrabajo - $dias_licencia) : $datos_remuneracion->diastrabajo;
+
+
+			$sueldo_base_mes = round(($trabajador->sueldobase/$diastrabajo)*$dias_trabajados,0);
+
+			/*if($trabajador->id_personal == 10211){
+				var_dump_new($dias_trabajados);
+				var_dump_new($dias_licencia);
+				var_dump_new($sueldo_base_mes);
+				var_dump_new($trabajador);
+				var_dump_new($datos_remuneracion); exit;
+			}*/
+
+			$movilizacion_mes = round(($trabajador->movilizacion/$diastrabajo)*$dias_trabajados,0);
+			$colacion_mes = round(($trabajador->colacion/$diastrabajo)*$dias_trabajados,0);
 
 			$bonos_no_imponibles_tributables = 0;
 			$haberes_semana_corrida = 0;
@@ -1814,7 +1841,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				//NO PUEDE SER FIJO Y PROPORCIONAL????
 				if($tiene_bono){
 
-					$valor_bono = $bono->proporcional == 1 ? round(($bono->monto/$diastrabajo)*$datos_remuneracion->diastrabajo,0) : $bono->monto;
+					$valor_bono = $bono->proporcional == 1 ? round(($bono->monto/$diastrabajo)*$dias_trabajados,0) : $bono->monto;
 
 					if($bono->imponible == 1){
 						$bonos_imponibles += $valor_bono;
@@ -1887,15 +1914,6 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 
-            $movimientos = $this->get_lista_movimientos($trabajador->id_personal, null, $idperiodo, 3);
-
-            $dias_licencia = 0;
-            foreach ($movimientos as $movimiento) {
-                
-                $dias = dias_transcurridos($movimiento->fecmovimiento,$movimiento->fechastamovimiento) + 1; // se agrega uno porque se considera el día inicial
-                $dias_licencia += $dias;
-            }
-
 
 			if(!is_null($trabajador->idasigfamiliar) && $trabajador->idasigfamiliar != 0){ //BUSCA MONTO DE ASIGNACION FAMILIAR EN BASE A TRAMO SELECCIONADO
 
@@ -1911,7 +1929,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				$asig_familiar_periodo = $array_asig_familiar_periodo[0];
 				$asig_familiar += $asig_familiar_periodo->monto*$num_cargas;
 
-				$dias_calculo_asig = $datos_remuneracion->diastrabajo + $dias_licencia;
+				$dias_calculo_asig = $dias_trabajados + $dias_licencia;
 
 				//https://www.dt.gob.cl/portal/1628/w3-article-95276.html
 				if($dias_calculo_asig < 25){
@@ -2016,7 +2034,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				$adic_salud = 0;					
 			}else{
 				//$dif_isapre = round($trabajador->valorpactado*$parametros->uf,0) - $cot_salud_oblig;
-				$dif_isapre = $datos_remuneracion->diastrabajo > 0 ? (round($trabajador->valorpactado * $parametros['uf'], 0) - $cot_salud_oblig) : 0;
+				$dif_isapre = $dias_trabajados > 0 ? (round($trabajador->valorpactado * $parametros['uf'], 0) - $cot_salud_oblig) : 0;
 				//echo $trabajador->valorpactado; exit;
 				$adic_isapre = $dif_isapre > 0 ? $dif_isapre : 0;
 
@@ -2075,9 +2093,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				$rebaja = $rango->rebaja*$parametros['utm'];
 
 
-				$rango_desde = round(($desde/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
-				$rango_hasta = round(($hasta/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
-				$rango_rebaja = round(($rebaja/$diastrabajo)*$datos_remuneracion->diastrabajo,0);
+				$rango_desde = round(($desde/$diastrabajo)*$dias_trabajados,0);
+				$rango_hasta = round(($hasta/$diastrabajo)*$dias_trabajados,0);
+				$rango_rebaja = round(($rebaja/$diastrabajo)*$dias_trabajados,0);
 				//if($base_tributaria >= $rango->desde && $base_tributaria <= $rango->hasta){
 				if($base_tributaria >= $rango_desde && $base_tributaria <= $rango_hasta){
 					
@@ -2144,7 +2162,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			if($trabajador->pensionado == 1){
 				$seginvalidez = 0;
 			}else{
-				if($datos_remuneracion->diastrabajo < 30){
+				if($dias_trabajados < 30){
 
 					$sueldo_calculo_sis = $sueldo_base_mes + $aguinaldo_bruto + $bonos_imponibles + $monto_semana_corrida   + $monto_horas50 + $monto_horas100;
 				}else{
@@ -2184,8 +2202,8 @@ limit 1		*/
 			}	
 			//echo $aportesegcesantia; exit;
 
-			if($tiene_licencia && $datos_remuneracion->diastrabajo < 30){ // SI TIENE LICENCIA SE DEBE SUMAR AL SEGURO LOS DÍAS NO TRABAJADOS POR EL PROPORCIONAL 
-				$imponibles_no_trabajo = round((($trabajador->sueldobase + $aguinaldo_bruto + $bonos_imponibles + $gratificacion)/$diastrabajo)*($diastrabajo-$datos_remuneracion->diastrabajo),0);
+			if($tiene_licencia && $dias_trabajados < 30){ // SI TIENE LICENCIA SE DEBE SUMAR AL SEGURO LOS DÍAS NO TRABAJADOS POR EL PROPORCIONAL 
+				$imponibles_no_trabajo = round((($trabajador->sueldobase + $aguinaldo_bruto + $bonos_imponibles + $gratificacion)/$diastrabajo)*($diastrabajo-$dias_trabajados),0);
 				if($trabajador->segcesantia == 1){
 					if($trabajador->annos_afc <= 11){
 						
@@ -2210,6 +2228,7 @@ limit 1		*/
 			$data_remuneracion = array(
 					'ufperiodo' => $parametros['uf'],
 					'sueldobase' => $sueldo_base_mes,
+					'diastrabajo' => $dias_trabajados,
 					'valorhora' => $valor_hora,
 					'montodescuento' => $descuentos,
 					'tipogratificacion' => $trabajador->tipogratificacion,
