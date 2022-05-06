@@ -171,15 +171,12 @@ $('.periodo').change(function(){
                             var id_text = $(this).attr('id');
                             var array_field = id_text.split("_");
                             idtrabajador = array_field[1];  
-                            console.log(idtrabajador);
+                           // console.log(idtrabajador);
                              $.ajax({url: "<?php echo base_url();?>rrhh/get_datos_licencia/"+$('#mes').val()+"/"+$('#anno').val()+"/"+idtrabajador,
 						        type: 'GET',
 						        async: false,
 						        success : function(data) {
-	                         		console.log(idtrabajador + ' - ' + data);
 	                             	var_json_lic = $.parseJSON(data);
-	                             	console.log(var_json_lic);
-	                             	console.log($('#diaslicencia_'+idtrabajador).html());
 	                             	$('#diaslicencia_'+idtrabajador).html(var_json_lic['dias_licencia']);
 						        }});
                         }
@@ -198,7 +195,16 @@ $('.periodo').change(function(){
                             var array_field = id_text.split("_");
                             idtrabajador = array_field[1];  
 
-                            var diastrabajo =  typeof(var_json["diastrabajo_"+idtrabajador]) != 'undefined' && var_json["diastrabajo_"+idtrabajador] != null ? var_json["diastrabajo_"+idtrabajador] : parseInt($('#diasatrabajar_'+idtrabajador).html()) - parseInt($('#diaslicencia_'+idtrabajador).html());
+                            diastrabajo = 0;
+                           	max_dias_trabajo = parseInt($('#diasatrabajar_'+idtrabajador).html()) - parseInt($('#diaslicencia_'+idtrabajador).html());
+                           	if(typeof(var_json["diastrabajo_"+idtrabajador]) != 'undefined' && var_json["diastrabajo_"+idtrabajador] != null){
+                           		diastrabajo = var_json["diastrabajo_"+idtrabajador] > max_dias_trabajo ? max_dias_trabajo : var_json["diastrabajo_"+idtrabajador];
+                           	}else{
+                           		diastrabajo = max_dias_trabajo;
+                           	}
+                            /*var diastrabajo =  typeof(var_json["diastrabajo_"+idtrabajador]) != 'undefined' && var_json["diastrabajo_"+idtrabajador] != null ? var_json["diastrabajo_"+idtrabajador] : parseInt($('#diasatrabajar_'+idtrabajador).html()) - parseInt($('#diaslicencia_'+idtrabajador).html());*/
+
+                            //console.log(idtrabajador+' '+parseInt($('#diasatrabajar_'+idtrabajador).html())+' '+parseInt($('#diaslicencia_'+idtrabajador).html())+' '+diastrabajo)
                             $(this).val(diastrabajo);
                         }
                         
