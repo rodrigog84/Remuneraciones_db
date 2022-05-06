@@ -1548,11 +1548,11 @@ public function confirma_carga_personal()
 
                 if($colaborador['Tramoasigfamiliar'] == 'A'){
                   $idasigfamiliar = 1;
-                }else if ($colaborador['EstadoCivil'] == 'B'){
+                }else if ($colaborador['Tramoasigfamiliar'] == 'B'){
                     $idasigfamiliar = 2;
-                }else if ($colaborador['EstadoCivil'] == 'C'){
+                }else if ($colaborador['Tramoasigfamiliar'] == 'C'){
                     $idasigfamiliar = 3;
-                }else if ($colaborador['EstadoCivil'] == 'D'){
+                }else if ($colaborador['Tramoasigfamiliar'] == 'D'){
                     $idasigfamiliar = 4;
                 }else{
                     $idasigfamiliar = 0;
