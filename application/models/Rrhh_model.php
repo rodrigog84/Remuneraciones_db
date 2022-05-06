@@ -3952,14 +3952,21 @@ public function generar_contenido_comprobante($datos_remuneracion){
 						<td class="tdClass" ><b><i>Nro. d&iacute;as trabajados:</i></b></td>
 						<td class="tdClass" >' . $datos_remuneracion->diastrabajo . '</td>
 						<td class="tdClass" ><b><i>Horas Extras 50%:</i></b></td>
-						<td class="tdClass" >' . round($datos_remuneracion->horasextras50,1) . ' </td>						
+						<td class="tdClass" >' . round($datos_remuneracion->horasextras50,1) . ' </td>					
 						</tr>
 						<tr>
 						<td class="tdClass" ><b><i>Horas Descuento:</i></b></td>
 						<td class="tdClass" >' . $datos_remuneracion->horasdescuento . ' </td>						
 						<td class="tdClass" ><b><i>Horas Extras 100%:</i></b></td>
-						<td class="tdClass" >' . round($datos_remuneracion->horasextras100,1) . ' </td>						
+						<td class="tdClass" >' . round($datos_remuneracion->horasextras100,1) . ' </td>												
 						</tr>
+						<tr>
+						<td class="tdClass" ><b><i>Num. Cargas Familiares:</i></b></td>
+						<td class="tdClass" >' . round($datos_remuneracion->cargassimples+$datos_remuneracion->cargasmaternales,1) . ' </td>									
+						<td class="tdClass" ><b>&nbsp;</b></td>
+						<td class="tdClass" >&nbsp;</td>								
+						</tr>
+
 						</tbody>
 						</table>
 						</div>
