@@ -181,6 +181,7 @@
 																			<th>Per&iacute;odo</th> 
 																			<th>Estado</th>
 																			<th>Centros de Costo Calculados</th> 
+																			<th>Libro Remuneraciones</th>
 																			<!--th>Acci&oacute;n</th--> 
 																			<th>Ver Detalle Remuneraciones</th> 
 																			<th>Validar</th> 
@@ -200,6 +201,11 @@
                         													<?php if($periodo->estado == 'Falta Informaci&oacute;n'){ ?><i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="<?php echo $mensaje_html[$periodo->id];?>" title="Datos Pendientes:"></i><?php } ?>
                         													</td>
                         													<td><center><?php echo $periodo->ccostocalculados."/".$periodo->ccostoexistentes;?></center></td>
+                        													<td>
+												                              <center>
+												                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo;?>" ><span class="glyphicon glyphicon-book"></span></a>  
+												                              </center>
+												                             </td>
 																			<!--td>
 																					<?php if($periodo->estado == 'Informaci&oacute;n Completa' && is_null($periodo->cierre)){ ?>
 																					<a href="<?php echo base_url(); ?>rrhh/submit_calculo_remuneraciones/<?php echo $periodo->id; ?>" data-toggle="tooltip" title="Calculo Remuneraciones" class="btn btn-block btn-xs btn-primary">Calcular</a>

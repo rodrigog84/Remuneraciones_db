@@ -4653,9 +4653,9 @@ public function add_movimiento_personal_licencia($array_datos){
 			$this->db->insert('rem_lista_movimiento_personal',$array_movimiento);
 
 			//echo $this->db->last_query()."----";
-			echo $this->db->last_query()." --- ";
+			//echo $this->db->last_query()." --- ";
 
-			echo $this->db->insert_id()." ---  ";
+			//echo $this->db->insert_id()." ---  ";
 
 			//$this->db->trans_complete();
 			return 1;

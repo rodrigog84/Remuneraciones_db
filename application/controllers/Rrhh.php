@@ -4123,10 +4123,14 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 			set_time_limit(0);
 
 			$periodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+
+      //var_dump_new($periodo); exit;
 			if(is_null($periodo->cierre)){
 				redirect('main/dashboard/');
 			}else{
 				$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,true,$idcentrocosto);
+
+
 				if(count($remuneraciones) == 0){ // SI NO ENCUENTRO NINGUNA REMUNERACION (QUIERE DECIR QUE NO EXISTIAN TRABAJADORES EN ESE PERIODO)
 					redirect('main/dashboard/');
 				}else{
@@ -4884,7 +4888,7 @@ public function liquidacion_colaborador($idremuneracion = null)
 
       }
       
-     // var_dump($licencias); exit;
+      //var_dump_new($licencias); exit;
      // exit;
 
 			$array_remuneracion_trabajador = array();
