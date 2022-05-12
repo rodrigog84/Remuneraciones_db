@@ -81,6 +81,9 @@
 																			<th>A&ntilde;o</th> 
 													                        <th>N&uacute;mero Colaboradores</th>
 													                        <th>Remuneraci&oacute;n Total (L&iacute;quido)</th>
+													                        <th>Previred</th>
+													                        <th>Libro Remuneraciones</th>
+													                        <th>Liquidaciones</th>
 													                        <th>Detalle Remuneraciones</th>
 													                        <th>Estado</th>
 																		</tr> 
@@ -106,6 +109,24 @@
 											                            <td><?php echo date2string($periodo->mes,$periodo->anno) == 'Saldo Inicial' ? 'Inicial' : $periodo->anno;?></td>
 											                            <td><?php echo number_format($periodo->numtrabajadores,0,".",".");?></td>
 											                            <td>$&nbsp;<?php echo number_format($periodo->sueldoliquido,0,".",".");?></td>
+											                            	<td>
+											                              <center>
+											                              	<?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0){ ?>
+											                              <a href="<?php echo base_url(); ?>rrhh/previred/<?php echo $periodo->id_periodo;?>/<?php echo $idcentrocosto;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
+											                              <?php } ?>
+											                              </center>
+											                              </td>
+											                              <td>
+											                              <center>
+											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0){ ?>
+											                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo."/".$idcentrocosto;?>" ><span class="glyphicon glyphicon-book"></span></a>  
+											                              <?php } ?>
+											                              </center>
+											                              </td>
+											                              <td>
+											                              	<center>
+											                              		<a href="<?php echo base_url(); ?>rrhh/liquidaciones/<?php echo $periodo->id_periodo."/".$idcentrocosto; ?>" target="_blank"><span class="glyphicon glyphicon-paperclip"></span>
+											                              		</center></td>
 											                              <td>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre) && $periodo->numtrabajadores > 0){ ?>

@@ -3917,7 +3917,7 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
         $vars['classmessage'] = 'danger';
         $vars['icon'] = 'fa-ban';   
       }else if($resultid == 2){
-        $vars['message'] = "Error al imprimir liquidaciones.  Per&iacute;odo no se encuentra aprobado";
+        $vars['message'] = "Error al imprimir liquidaciones.  Per&iacute;odo no se encuentra cerrado";
         $vars['classmessage'] = 'danger';
         $vars['icon'] = 'fa-ban';   
       }else if($resultid == 3){
@@ -3989,8 +3989,8 @@ public function get_datos_licencia($mes,$anno,$idtrabajador){
 
       //no es necesario validar centro de costo.  Si no viene, se imprime todo
       $periodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'), $idperiodo,$idcentrocosto);
-
-      if(is_null($periodo->aprueba)){
+     // var_dump_new($periodo); exit;
+      if(is_null($periodo->cierre)){
         $this->session->set_flashdata('detalle_total_result',2);
         redirect('rrhh/detalle_total/'); 
       }

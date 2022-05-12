@@ -113,7 +113,7 @@
 											                              </td-->
 											                              <td><small>
 											                              <center>
-											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0 && is_null($idcentrocosto)){ ?>
+											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0 ){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/previred/<?php echo $periodo->id_periodo;?>/<?php echo $idcentrocosto;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
 											                              <?php }else{ ?>
 											                              		-
@@ -131,8 +131,8 @@
 											                              </td>
 											                              <td><small>
 											                              <center>
-											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0 && is_null($idcentrocosto)){ ?>
-											                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo;?>" ><span class="glyphicon glyphicon-book"></span></a>  
+											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0){ ?>
+											                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo."/".$idcentrocosto;?>" ><span class="glyphicon glyphicon-book"></span></a>  
 											                              <?php }else{ ?>
 											                              		-
 											                              <?php } ?>

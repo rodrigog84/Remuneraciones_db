@@ -177,14 +177,16 @@
 																<table class="table"> 
 																	<thead> 
 																		<tr>
-																			<th>#</th>
-																			<th>Per&iacute;odo</th> 
-																			<th>Estado</th>
-																			<th>Centros de Costo Calculados</th> 
-																			<th>Libro Remuneraciones</th>
+																			<th><small>#</small></th>
+																			<th><small>Per&iacute;odo</small></th> 
+																			<!--th><small>Estado</small></th-->
+																			<th><small>Centros de Costo Calculados</small></th> 
+																			<th><small>Previred</small></th>
+																			<th><small>Libro Remuneraciones</small></th>
+																			<th><small>Liquidaciones</small></th>
 																			<!--th>Acci&oacute;n</th--> 
-																			<th>Ver Detalle Remuneraciones</th> 
-																			<th>Validar</th> 
+																			<th><small>Ver Detalle Remuneraciones</small></th> 
+																			<th><small>Validar</small></th> 
 																			
 
 																		</tr> 
@@ -195,17 +197,26 @@
                       													<?php foreach($periodos_remuneracion as $periodo){ ?>
                       																												
 																		<tr class="active" id="variable">
-																			<td><?php echo $i;?></td>
-																			<td><?php echo date2string($periodo->mes,$periodo->anno); ?></td> 
-																			 <td><span class="<?php echo $periodo->estado == 'Informaci&oacute;n Completa' ? 'text-green' : 'text-red';?>" /><?php echo $periodo->estado; ?></span>&nbsp;&nbsp;
+																			<td><small><?php echo $i;?></small></td>
+																			<td><small><?php echo date2string($periodo->mes,$periodo->anno); ?></small></td> 
+																			 <!--td><span class="<?php echo $periodo->estado == 'Informaci&oacute;n Completa' ? 'text-green' : 'text-red';?>" /><?php echo $periodo->estado; ?></span>&nbsp;&nbsp;
                         													<?php if($periodo->estado == 'Falta Informaci&oacute;n'){ ?><i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="<?php echo $mensaje_html[$periodo->id];?>" title="Datos Pendientes:"></i><?php } ?>
-                        													</td>
-                        													<td><center><?php echo $periodo->ccostocalculados."/".$periodo->ccostoexistentes;?></center></td>
-                        													<td>
+                        													</small></td-->
+                        													<td><small><center><?php echo $periodo->ccostocalculados."/".$periodo->ccostoexistentes;?></center></small></td>
+												                              <td><small>
+												                              <center>
+												                              <a href="<?php echo base_url(); ?>rrhh/previred/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
+												                              </center>
+												                              </small></td>                        													
+                        													<td><small>
 												                              <center>
 												                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo;?>" ><span class="glyphicon glyphicon-book"></span></a>  
 												                              </center>
-												                             </td>
+												                             </small></td>
+												                            <td><small>
+											                              	<center>
+											                              		<a href="<?php echo base_url(); ?>rrhh/liquidaciones/<?php echo $periodo->id_periodo; ?>" target="_blank"><span class="glyphicon glyphicon-paperclip"></span>
+											                              		</center></small></td>
 																			<!--td>
 																					<?php if($periodo->estado == 'Informaci&oacute;n Completa' && is_null($periodo->cierre)){ ?>
 																					<a href="<?php echo base_url(); ?>rrhh/submit_calculo_remuneraciones/<?php echo $periodo->id; ?>" data-toggle="tooltip" title="Calculo Remuneraciones" class="btn btn-block btn-xs btn-primary">Calcular</a>
@@ -214,14 +225,14 @@
                          															<?php } ?>
 																			</td-->
 																			
-																			<td>
+																			<td><small>
 																				<?php if($periodo->estado == 'Informaci&oacute;n Completa' ){ ?>
                              														<center><a href="<?php echo base_url(); ?>rrhh/detalle/<?php echo $periodo->id_periodo; ?>" data-toggle="tooltip" title="Ver Per&iacute;odo"><span class="glyphicon glyphicon-search"></span></a></center>
                         														<?php }else{  ?>
                            															&nbsp;
                         														<?php } ?>
-																			</td> 
-																			<td>
+																			</small></td> 
+																			<td><small>
 																				<?php if($periodo->estado == 'Informaci&oacute;n Completa'){ ?>
                             															<!--<a href="#" data-href="<?php echo base_url(); ?>rrhh/aprueba_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="modal" data-target="#confirm-publish" title="Aprobar" class="btn btn-xs btn-success"><span class="fa fa-check"></span></a>-->
 
@@ -235,7 +246,7 @@
                             															&nbsp;
                           														<?php } ?>																				
 
-																			</td> 
+																			</small></td> 
 																		</tr> 
 																			<?php 
 																				$i++;
