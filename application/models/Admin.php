@@ -626,6 +626,7 @@ public function add_apv($array_datos){
 						  ->join('rem_usuario_empresa as uc','c.id_empresa = uc.id_empresa')
 		                  ->where('uc.idusuario', $userid)
 		                  ->where('c.active = 1')
+		                  ->where("c.fecvencimiento >= '" . date("Ymd") . "'")
 		                  ->order_by('c.nombre asc');
 		$empresa_data = is_null($empresaid) ? $empresa_data : $empresa_data->where('c.id_empresa',$empresaid);  				                 
 		$query = $this->db->get();
