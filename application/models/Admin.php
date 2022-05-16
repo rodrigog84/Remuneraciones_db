@@ -711,8 +711,9 @@ public function add_apv($array_datos){
 
 			$query = $this->db->get();
 			$usuario = $query->row();
+		//	var_dump($usuario); exit;
 
-			return count($usuario) > 0 ? $usuario : false;
+			return is_null($usuario) ? false : $usuario;
 
 	}
 
@@ -1459,6 +1460,117 @@ public function get_bonos($idtrabajador = null){
 
 	}	
 
+ public function mail_creacion_usuario($userid, $password)
+    {
+
+
+        $this->load->library('email');
+
+
+        $datos_usuario = $this->get_users($userid);
+
+        if (isset($datos_usuario->nombre) && isset($datos_usuario->email)) {
+            $messageBody = 'Estimado(a)';
+            $messageBody .= ' ' . $datos_usuario->nombre . ":<br>";
+            $messageBody .= "<br>Hemos creado un usuario para que ud. pueda acceder a nuestra plataforma para administrar correctamente el proceso de remuneraciones de su empresa<br>";
+            $messageBody .= "<br>Para ingresar, debe dirigirse a:<br>";
+            $messageBody .= "http://rem.arnou.cl<br><br>";
+            $messageBody .= "y allí colocar sus datos:<br><br>";
+            $messageBody .= "Nombre de usuario: " . $datos_usuario->email . "<br>Contraseña: " . $password . "<br><br>";
+            $messageBody .= "Asegúrese de guardar estos datos, y por su seguridad modificar su clave lo antes posible.<br><br>";
+            $messageBody .= "Esto último lo puede realizar a través de la opción \"Cambio de Password\", ingresando su clave actual y posteriormente la nueva que ud. desee.<br><br>";
+            $messageBody .= "Saludos cordiales,<br>Equipo Arnou.";
+
+
+            $this->envia_mail('robot@arnou.cl', $datos_usuario->email, 'Creación de Usuario Arnou-Remuneraciones', $messageBody, 'html');
+        }
+
+    }
+
+
+    public function ruta_turbosmtp()
+    {
+        $base_path = __DIR__;
+        $base_path = str_replace("\\", "/", $base_path);
+        $path = $base_path . "/../libraries/TurboApiClient.php";
+        return $path;
+    }
+
+
+
+public function envia_mail($from, $toList, $subject, $content, $type, $alias = "Arnou")
+    {
+        if (ENVIO_MAIL) {
+            include_once $this->ruta_turbosmtp();
+            //$toList = array('rodrigog.84@gmail.com');
+            if (is_array($toList)) {
+                //array_push($toList,'rodrigog.84@gmail.com');
+                $toList = array_unique($toList);
+                foreach ($toList as $destiny) {
+
+                    $email = new Email();
+                    $email->setFrom($alias . " <" . $from . ">");
+                    $email->setToList($destiny);
+                    //$email->setCcList("dd@domain.com,ee@domain.com");
+                    //$email->setBccList("ffi@domain.com,rr@domain.com");
+                    $email->setSubject($subject);
+                    //$email->setContent("content");
+
+                    if ($type == 'html') {
+                        $email->setHtmlContent($content);
+                    } else {
+                        $email->setContent($content);
+                    }
+
+                    $email->addCustomHeader('X-FirstHeader', "value");
+                    $email->addCustomHeader('X-SecondHeader', "value");
+                    $email->addCustomHeader('X-Header-da-rimuovere', 'value');
+                    $email->removeCustomHeader('X-Header-da-rimuovere');
+
+                    $turboApiClient = new TurboApiClient(TURBOSMTP_USER, TURBOSMTP_PASS);
+                    //var_dump($turboApiClient);
+                    // $response = $turboApiClient->sendEmail($email);
+                    //var_dump($response);
+                    try {
+                        $response = $turboApiClient->sendEmail($email);
+                    } catch (Exception $e) {
+                        echo "";
+                    }
+                }
+            } else {
+
+
+                $email = new Email();
+                $email->setFrom("Arnou <" . $from . ">");
+                $email->setToList($toList);
+                //$email->setCcList("dd@domain.com,ee@domain.com");
+                //$email->setBccList("ffi@domain.com,rr@domain.com");
+                $email->setSubject($subject);
+                //$email->setContent("content");
+
+                if ($type == 'html') {
+                    $email->setHtmlContent($content);
+                } else {
+                    $email->setContent($content);
+                }
+
+                $email->addCustomHeader('X-FirstHeader', "value");
+                $email->addCustomHeader('X-SecondHeader', "value");
+                $email->addCustomHeader('X-Header-da-rimuovere', 'value');
+                $email->removeCustomHeader('X-Header-da-rimuovere');
+
+                $turboApiClient = new TurboApiClient(TURBOSMTP_USER, TURBOSMTP_PASS);
+                //var_dump($turboApiClient);
+                $response = $turboApiClient->sendEmail($email);
+                //var_dump($response);
+                try {
+                    $response = $turboApiClient->sendEmail($email);
+                } catch (Exception $e) {
+                    echo "";
+                }
+            }
+        }
+    }
 
 
 

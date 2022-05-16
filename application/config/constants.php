@@ -39,6 +39,10 @@ define('SALT',  '#*1nf0-*%');
 define('PATH_APP',  'http://localhost/Ferrital_web/core/application/');
 define('NOMBRE_EMPRESA',		'CAVAL');
 
+define('PERIODOS_GRATIS',		2);
+define('TURBOSMTP_USER',		'rodrigo.gonzalez@arnou.cl');
+define('TURBOSMTP_PASS',		'P6nLKAvx');
+define('ENVIO_MAIL',		TRUE);
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

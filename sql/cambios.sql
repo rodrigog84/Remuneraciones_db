@@ -977,3 +977,10 @@ values (
 )
 
 insert into rem_role (appid,levelid) values (7119,2)
+
+
+/**********************************************************/
+
+alter table rem_empresa add fecvencimiento date
+alter table rem_empresa alter column fecvencimiento date
+alter table rem_users add inicpass varchar(250)

@@ -488,6 +488,8 @@ class Mantenedores_model extends CI_Model
             'fono' => $datos['fono'],
             'idregion' => $datos['idregion'],
             'idcomuna' => $datos['idcomuna'],
+            'fecinicio' => $datos['fecinicio'],
+            'fecvencimiento' => $datos['fecvencimiento'],
             'active' => 1
             //'iduser' => $this->session->userdata('user_id'),
         );
@@ -495,7 +497,8 @@ class Mantenedores_model extends CI_Model
         //var_dump_new($array_datos); exit;
 
         if ($idempresa === '0') {
-            $result = $this->db->insert('rem_empresa', $array_datos);
+            $this->db->insert('rem_empresa', $array_datos);
+            $result = $this->db->insert_id();
         } else {
             $array_datos['updated_at'] = date('Ymd H:i:s');
 

@@ -297,32 +297,6 @@
     <script>
         $(document).ready(function() {
             App.init();
-
-
-            <?php if (isset($sidebar_minified)) { // achicar menu lateral
-            ?>
-                var sidebarClass = 'page-sidebar-minified';
-                var targetContainer = '#page-container';
-                $('#sidebar [data-scrollbar="true"]').css('margin-top', '0');
-                $('#sidebar [data-scrollbar="true"]').removeAttr('data-init');
-                $('#sidebar [data-scrollbar=true]').stop();
-                $(targetContainer).addClass(sidebarClass);
-
-                if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                    if ($(targetContainer).hasClass('page-sidebar-fixed')) {
-                        $('#sidebar [data-scrollbar="true"]').slimScroll({
-                            destroy: true
-                        });
-                        $('#sidebar [data-scrollbar="true"]').removeAttr('style');
-                    }
-                    $('#sidebar [data-scrollbar=true]').trigger('mouseover');
-                } else {
-                    $('#sidebar [data-scrollbar="true"]').css('margin-top', '0');
-                    $('#sidebar [data-scrollbar="true"]').css('overflow', 'visible');
-                }
-                $(window).trigger('resize');
-            <?php } ?>
-
             //FormMultipleUpload.init();
             //FormWizardValidation.init();
         });
@@ -330,7 +304,7 @@
 
 </head>
 
-<body class="boxed-layout">
+<body class="pace-top bg-white">
     <?php //debug($this->session->userdata('menu_list'));exit;
     ?>
     <!-- begin #page-loader -->
@@ -351,70 +325,45 @@
                             <span class="hidden-xs"></span>
                         </a>
                     </li>
-                    <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
                 </ul>
 
-                <!-- end mobile sidebar expand / collapse button -->
-
-
-
-                <!-- begin header navigation right -->
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <form class="navbar-form full-width">
-
-
-
-                            <p class="text-info"><em><b><?php echo $this->session->userdata('empresanombre'); ?></em></b></p>
-                        </form>
-                    </li>
-                    <li class="dropdown navbar-user">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="<?php echo base_url(); ?>assets/img/user-13.jpg" alt="" />
-                            <span class="hidden-xs"><?php echo $this->session->userdata('name'); ?></span> <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu animated fadeInLeft">
-                            <li class="arrow"></li>
-                            <!--li><a href="javascript:;">Editar Perfil</a></li-->
-                            <li><a href="<?= base_url(); ?>admins/cambio_clave"><i class="fa fa-key fa-rotate-90"></i>&nbsp;&nbsp;Cambio de Password</a></li>
-                            <li><a href="<?php echo base_url(); ?>archivos/manualusuario.pdf" target="_blank"><i class="fa fa-wrench"></i>&nbsp;&nbsp;Ayuda</a></li>
-                            <li class="divider"></li>
-                            <li><a href="<?php echo base_url(); ?>auth/logout">Salir</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <!-- end header navigation right -->
             </div>
             <!-- end container-fluid -->
         </div>
+
+
+        <!-- begin register -->
+        <div class="register register-with-news-feed">
+            <!-- begin news-feed -->
+            <div class="news-feed">
+                <div class="news-image">
+                    <img src="<?php echo base_url() . 'assets/img/login-bg/bg-8.jpg'; ?>" alt="" />
+                </div>
+                <div class="news-caption">
+                    <h4 class="caption-title"><i class="fa fa-edit text-success"></i> Sistema de Remuneraciones Arnou</h4>
+                    <p>
+                        Registra tu empresa y podr&aacute;s utilizar de manera gratuita el software de Remuneraciones durante los pr&oacute;ximos 2 meses.
+                    </p>
+                </div>
+            </div>
+            <!-- end news-feed -->
+            <!-- begin right-content -->
+            <div class="right-content">
+                <?php $this->load->view($content_view); ?>
+                <!-- end register-content -->
+            </div>
+            <!-- end right-content -->
+        </div>
+        <!-- end register -->
+
+
         <!-- end #header -->
 
         <!-- end #sidebar -->
 
         <!-- begin #content -->
-        <div id="content" class="content">
-            <!-- begin breadcrumb -->
-            <ol class="breadcrumb pull-right">
-                <li><a href="j<?php echo base_url(); ?>main/dashboard">Inicio</a></li>
-                <li class="active"><?php echo $content_menu['menu']; ?></li>
-            </ol>
-            <!-- end breadcrumb -->
-            <!-- begin page-header -->
-            <h1 class="page-header"><?php echo $content_menu['title']; ?>&nbsp;<small><?php echo $content_menu['subtitle']; ?></small></h1>
-            <?php $this->load->view($content_view); ?>
-        </div>
         <!-- end #content -->
 
-        <!-- begin #footer -->
-        <?php if (!isset($footer)) { ?>
-            <div id="footer" class="footer">
-                &copy; 2022 Arnou - Todos los derechos reservados
-            </div>
-        <?php } ?>
 
 
         <!-- begin scroll to top btn -->
