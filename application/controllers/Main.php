@@ -79,6 +79,7 @@ class Main extends CI_Controller
         $vars['content_view'] = 'dashboard';
 
         $template = "template";
+         $this->session->set_userdata('diasvencsuscripcion', 0);
 
         if ($this->session->userdata('level') == 2) {
             // SI YA SELECCIONO EMPRESA, NO ES NECESARIO ELEGIR NUEVAMENTE
@@ -155,8 +156,10 @@ class Main extends CI_Controller
                 //var_dump_new($empresas_asignadas);
                 $empresas_asignadas = $empresas_asignadas[0];
 
+
                 $this->session->set_userdata('empresaid', $empresas_asignadas->id_empresa);
                 $this->session->set_userdata('empresanombre', $empresas_asignadas->nombre);
+                $this->session->set_userdata('diasvencsuscripcion', $empresas_asignadas->vencsuscripcion);
                 $unidad_id = $empresas_asignadas->id_empresa;
             } else {
                 redirect('auth/logout');

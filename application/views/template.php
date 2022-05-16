@@ -447,10 +447,12 @@
 
                     <li>
 
+                         <?php $fin_suscripcion = $this->session->userdata('level') == 2 ? "&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Quedan " . $this->session->userdata('diasvencsuscripcion') . " d&iacute;as de Suscripci&oacute;n" : ""; ?>
+
                         <form class="navbar-form full-width">
 
 
-                            <p class="text-info"><em><b><?php echo $this->session->userdata('empresanombre'); ?></em></b></p>
+                            <p class="text-info"><em><b><?php echo $this->session->userdata('empresanombre') . $fin_suscripcion ; ?></em></b></p>
                         </form>
                     </li>
                     <li class="dropdown navbar-user">
