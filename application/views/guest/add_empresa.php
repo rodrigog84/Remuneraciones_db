@@ -89,6 +89,7 @@
                             </div>                   
                         <div class="register-buttons">
                             <button type="submit" class="btn btn-primary btn-block btn-lg">Registrate</button>
+                            <input type='hidden' name='codvendedor' id='codvendedor' value="<?php echo $codvendedor;?>">
                         </div>
                         <div class="m-t-20 m-b-40 p-b-40">
                             Ya eres miembro? Click <a href="<?php echo base_url(); ?>">aqu&iacute;</a> para Ingresar.

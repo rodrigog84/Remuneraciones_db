@@ -13,7 +13,7 @@ class Guest extends CI_Controller {
    }
 
 
-	public function add_empresa($idcomunidad = 0)
+	public function add_empresa($codvendedor = 0)
 	{
 
 			$resultid = $this->session->flashdata('empresas_result');
@@ -43,6 +43,7 @@ class Guest extends CI_Controller {
 			
 			$vars['content_menu'] = $content;				
 			$vars['regiones'] = $regiones;
+			$vars['codvendedor'] = $codvendedor;
 			$vars['content_view'] = 'guest/add_empresa';
 			$vars['titulo'] = "Registrate como empresa y prueba nuestro servicio por 2 meses";
 			$vars['formValidation'] = true;
@@ -64,6 +65,8 @@ class Guest extends CI_Controller {
 
 
 			//$nuevo_proveedor = $this->input->post('proveedor');
+
+			$codvendedor = $this->input->post('codvendedor');
 			$nombreempresa = $this->input->post('nombreempresa');
 
        		$rutempresa = str_replace(".","",$this->input->post("rutempresa"));
@@ -98,6 +101,7 @@ class Guest extends CI_Controller {
             		'idregion' => $idregion,
             		'fecinicio' => $fecinicio,
             		'fecvencimiento' => $fecvencimiento,
+            		'codvendedor' => $codvendedor
         			);
 
 			if (!$existe) {
@@ -111,7 +115,7 @@ class Guest extends CI_Controller {
         	} else {
         		// si ya existe empresa, volver
   					$this->session->set_flashdata('empresas_result', 1);
-  					redirect("guest/add_empresa", 'refresh');
+  					redirect("guest/add_empresa/".$codvendedor, 'refresh');
         	}
 
    
@@ -151,7 +155,7 @@ class Guest extends CI_Controller {
 					$this->admin->mail_creacion_usuario($userid,$password);		
 
 					$this->session->set_flashdata('empresas_result', 2);
-  					redirect("guest/add_empresa", 'refresh');
+  					redirect("guest/add_empresa/".$codvendedor, 'refresh');
 
 		
 			}else{// si ya existe se asocia
@@ -176,7 +180,7 @@ class Guest extends CI_Controller {
 					$this->admin->mail_creacion_usuario($existe_mail->id,$password);	
 					$this->ion_auth->asocia_empresa($existe_mail->id,$array_empresas,false);	
 					$this->session->set_flashdata('empresas_result', 2);
-  					redirect("guest/add_empresa", 'refresh');
+  					redirect("guest/add_empresa/".$codvendedor, 'refresh');
 
 
 				}else{
@@ -185,7 +189,7 @@ class Guest extends CI_Controller {
 
 					$this->ion_auth->asocia_empresa($existe_mail->id,$array_empresas,false);
 					$this->session->set_flashdata('empresas_result', 3);
-  					redirect("guest/add_empresa", 'refresh');
+  					redirect("guest/add_empresa/".$codvendedor, 'refresh');
 					//we should display a confirmation page here instead of the 
 
 				}

@@ -1,0 +1,19 @@
+USE [remuneraciones]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_BASE_OFERTA_CASTIGO]    Script Date: 14-03-2022 13:21:53 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_CREA_CODIGO_VENDEDOR] (@idvendedor INT) AS
+BEGIN
+
+UPDATE  v
+set		CODIGO = UPPER(LEFT(NOMBRE,1)) +	
+				REVERSE(LEFT(CAST(RUT AS VARCHAR),4)) +
+				UPPER(RIGHT(NOMBRE,1)) +
+				REVERSE(RIGHT(CAST(RUT AS VARCHAR),4))
+FROM	rem_vendedor_sistema v
+WHERE	id = @idvendedor
+
+END 

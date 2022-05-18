@@ -490,6 +490,7 @@ class Mantenedores_model extends CI_Model
             'idcomuna' => $datos['idcomuna'],
             'fecinicio' => $datos['fecinicio'],
             'fecvencimiento' => $datos['fecvencimiento'],
+            'codvendedor' => $datos['codvendedor'],
             'active' => 1
             //'iduser' => $this->session->userdata('user_id'),
         );
