@@ -989,3 +989,13 @@ alter table rem_users add inicpass varchar(250)
 /***********************************************************/
 
 alter table rem_empresa add codvendedor varchar(15)
+
+
+create table rem_vendedor_sistema (
+id int identity,
+rut int,
+dv char(1),
+nombre varchar(250),
+codigo varchar(10),
+created_at datetime default getdate()
+)
