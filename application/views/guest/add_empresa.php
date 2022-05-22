@@ -1,105 +1,154 @@
-                <!-- begin register-header -->
-                <h4 class="register-header">
-                    Registra tu Empresa Aqu&iacute;
-                    <!--small>Create your Color Admin Account. It’s free and always will be.</small-->
-                </h4>
-                <!-- end register-header -->
-                <!-- begin register-content -->
-                <div class="register-content">
-                    <form  id="basicBootstrapForm" action="<?php echo base_url();?>guest/submit_empresa" method="POST" class="margin-bottom-0">
-                        <div class='row'>
-                                  <div class='col-md-12'>
-                                    <div class="form-group">
-                                      <label for="rut">Nombre Empresa</label>
-                                       <input type="text" class="form-control" name="nombreempresa" id="nombreempresa" placeholder="Ingrese Nombre Empresa" />
-                                    </div>
-                                  </div>
-                            </div>  
+              <?php $muestra_formulario = true;
+                    if(!isset($classmessage)){
+                      $muestra_formulario = true;
+                    }else if(isset($classmessage) && $classmessage == 'success'){
+                      $muestra_formulario = false;
+                    }else{
+                      $muestra_formulario = true;
+                    } ?>
 
 
-                        <div class='row'>
-                                  <div class='col-md-6'>
-                                    <div class="form-group">
-                                      <label for="rut">Rut</label>
-                                       <input type="text" class="form-control" name="rutempresa" id="rutempresa" placeholder="Ingrese Rut Empresa" />
-                                    </div>
-                                  </div>
-                                  <div class='col-md-6'>
-                                    <div class="form-group">
-                                        <label for="region">Fono</label>  
-                                         <input type="text" name="fono" id="fono" class="form-control" id="" placeholder="Ingrese Fono Empresa" >
-                                    </div>
-                                  </div>
 
-                            </div>     
-                            <div class='row'>
-                                  <div class='col-md-6'>
-                                    <div class="form-group">
-                                        <label for="region">Regi&oacute;n</label>  
-                                        <select name="region" id="region" class="form-control">
-                                            <option value="">Seleccione Regi&oacute;n</option>
-                                            <?php foreach ($regiones as $region) { ?>
-                                              <?php $regionselected = $region->id_region == $datos_form['idregion'] ? "selected" : ""; ?>
-                                              <option value="<?php echo $region->id_region;?>" <?php echo $regionselected;?> ><?php echo $region->nombre;?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                  </div>
-                                  <div class='col-md-6'>
-                                    <div class="form-group">
-                                        <label for="region">Comuna</label>  
-                                         <select name="comuna" id="comuna"  class="form-control">
-                                          <option value="">Seleccione Comuna</option>
-                                        </select>
-                                        <input type="hidden" id="idcomuna"  >
-                                    </div>
-                                  </div>
+                <?php if(!$muestra_formulario){ ?>
 
-                            </div> 
-                             <div class='row'>
-                                  <div class='col-md-12'>
-                                    <div class="form-group">
-                                      <label for="rut">Direcci&oacute;n Empresa</label>
-                                       <input type="text" name="direccion" id="direccion" class="form-control" placeholder="Ingrese Nombre Empresa" />
-                                    </div>
-                                  </div>
-                            </div> 
-                            <div class='row'>
-                                  <div class='col-md-6'>
-                                    <div class="form-group">
-                                        <label for="region">Nombre Usuario Sistema</label>  
-                                         <input type="text" name="nombreusuario" id="nombreusuario" class="form-control" id="" placeholder="Ingrese Nombre Usuario" >
-                                    </div>
-                                  </div>
-                                  <div class='col-md-6'>
-                                    <div class="form-group">
-                                        <label for="region">Apellido Usuario Sistema</label>  
-                                         <input type="text" name="apellidousuario" id="apellidousuario" class="form-control" id="" placeholder="Ingrese Apellido Usuario" >
-                                    </div>
-                                  </div>
 
-                            </div>  
-                            <div class='row'>
-                                  <div class='col-md-12'>
-                                    <div class="form-group">
-                                        <label for="region">Email</label>  
-                                         <input type="text" name="email" id="email" class="form-control" id="" placeholder="Ingrese Email" >
-                                    </div>
-                                  </div>
-                            </div>                   
-                        <div class="register-buttons">
-                            <button type="submit" class="btn btn-primary btn-block btn-lg">Registrate</button>
-                            <input type='hidden' name='codvendedor' id='codvendedor' value="<?php echo $codvendedor;?>">
+                        <div class="register-content">
+                            <form  id="basicBootstrapForm" action="<?php echo base_url();?>guest/submit_empresa" method="POST" class="margin-bottom-0">
+
+                                <div class="register-buttons">
+                                    <a href="http://www.arnou.cl" class='btn btn-primary btn-block btn-lg'>Volver a Arnou.cl</a>
+                                    
+                                </div>
+                                <hr />
+                                <p class="text-center text-inverse">
+                                    &copy; 2022 Arnou - Todos los derechos reservados
+                                </p>
+                            </form>
                         </div>
-                        <div class="m-t-20 m-b-40 p-b-40">
-                            Ya eres miembro? Click <a href="<?php echo base_url(); ?>">aqu&iacute;</a> para Ingresar.
+                        
+
+
+
+
+                <?php }else{  ?>
+
+
+         <!-- begin register-header -->
+                        <h4 class="register-header">
+                            Registra tu Empresa Aqu&iacute;
+                            <!--small>Create your Color Admin Account. It’s free and always will be.</small-->
+                        </h4>
+                        <!-- end register-header -->
+                        <!-- begin register-content -->
+                        <div class="register-content">
+                            <form  id="basicBootstrapForm" action="<?php echo base_url();?>guest/submit_empresa" method="POST" class="margin-bottom-0">
+
+                                <div class='row'>
+                                          <div class='col-md-12'>
+                                            <div class="form-group">
+                                              <label for="rut">Nombre Empresa</label>
+                                               <input type="text" class="form-control" name="nombreempresa" id="nombreempresa" placeholder="Ingrese Nombre Empresa" />
+                                            </div>
+                                          </div>
+                                    </div>  
+
+
+                                <div class='row'>
+                                          <div class='col-md-6'>
+                                            <div class="form-group">
+                                              <label for="rut">Rut</label>
+                                               <input type="text" class="form-control" name="rutempresa" id="rutempresa" placeholder="Ingrese Rut Empresa" />
+                                            </div>
+                                          </div>
+                                          <div class='col-md-6'>
+                                            <div class="form-group">
+                                                <label for="region">Fono</label>  
+                                                 <input type="text" name="fono" id="fono" class="form-control" id="" placeholder="Ingrese Fono Empresa" >
+                                            </div>
+                                          </div>
+
+                                    </div>     
+                                    <div class='row'>
+                                          <div class='col-md-6'>
+                                            <div class="form-group">
+                                                <label for="region">Regi&oacute;n</label>  
+                                                <select name="region" id="region" class="form-control">
+                                                    <option value="">Seleccione Regi&oacute;n</option>
+                                                    <?php foreach ($regiones as $region) { ?>
+                                                      <?php $regionselected = $region->id_region == $datos_form['idregion'] ? "selected" : ""; ?>
+                                                      <option value="<?php echo $region->id_region;?>" <?php echo $regionselected;?> ><?php echo $region->nombre;?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                          </div>
+                                          <div class='col-md-6'>
+                                            <div class="form-group">
+                                                <label for="region">Comuna</label>  
+                                                 <select name="comuna" id="comuna"  class="form-control">
+                                                  <option value="">Seleccione Comuna</option>
+                                                </select>
+                                                <input type="hidden" id="idcomuna"  >
+                                            </div>
+                                          </div>
+
+                                    </div> 
+                                     <div class='row'>
+                                          <div class='col-md-12'>
+                                            <div class="form-group">
+                                              <label for="rut">Direcci&oacute;n Empresa</label>
+                                               <input type="text" name="direccion" id="direccion" class="form-control" placeholder="Ingrese Nombre Empresa" />
+                                            </div>
+                                          </div>
+                                    </div> 
+                                    <div class='row'>
+                                          <div class='col-md-6'>
+                                            <div class="form-group">
+                                                <label for="region">Nombre Usuario Sistema</label>  
+                                                 <input type="text" name="nombreusuario" id="nombreusuario" class="form-control" id="" placeholder="Ingrese Nombre Usuario" >
+                                            </div>
+                                          </div>
+                                          <div class='col-md-6'>
+                                            <div class="form-group">
+                                                <label for="region">Apellido Usuario Sistema</label>  
+                                                 <input type="text" name="apellidousuario" id="apellidousuario" class="form-control" id="" placeholder="Ingrese Apellido Usuario" >
+                                            </div>
+                                          </div>
+
+                                    </div>  
+                                    <div class='row'>
+                                          <div class='col-md-12'>
+                                            <div class="form-group">
+                                                <label for="region">Email</label>  
+                                                 <input type="text" name="email" id="email" class="form-control" id="" placeholder="Ingrese Email" >
+                                            </div>
+                                          </div>
+                                    </div>                   
+                                <div class="register-buttons">
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg">Registrate</button>
+                                    <input type='hidden' name='codvendedor' id='codvendedor' value="<?php echo $codvendedor;?>">
+                                </div>
+                                <div class="m-t-20 m-b-40 p-b-40">
+                                    Ya eres miembro? Click <a href="<?php echo base_url(); ?>">aqu&iacute;</a> para Ingresar.
+                                </div>
+                                <hr />
+                                <p class="text-center text-inverse">
+                                    &copy; 2022 Arnou - Todos los derechos reservados
+                                </p>
+                            </form>
                         </div>
-                        <hr />
-                        <p class="text-center text-inverse">
-                            &copy; 2022 Arnou - Todos los derechos reservados
-                        </p>
-                    </form>
-                </div>
+
+
+                <?php } ?>
+
+
+
+               
+
+
+
+
+
+
 
 
 
