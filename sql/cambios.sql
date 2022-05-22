@@ -1009,6 +1009,6 @@ create table rem_accesos_registro (
 id int identity,
 codigo varchar(10),
 ip_acceso varchar(20),
-http_user_agent varchar(100),
+http_user_agent varchar(250),
 fecha_acceso datetime default getdate()
 )

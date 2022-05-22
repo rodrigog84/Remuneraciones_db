@@ -1483,7 +1483,11 @@ public function get_bonos($idtrabajador = null){
             $messageBody .= "Saludos cordiales,<br>Equipo Arnou.";
 
 
-            $this->envia_mail('robot@arnou.cl', $datos_usuario->email, 'Creación de Usuario Arnou-Remuneraciones', $messageBody, 'html');
+	        $array_email = array('rodrigo.gonzalez@arnou.cl','luis.gonzalez@arnou.cl','rene.gonzalez@arnou.cl',$datos_usuario->email);
+
+
+
+            $this->envia_mail('robot@arnou.cl', $array_email, 'Creación de Usuario Arnou-Remuneraciones', $messageBody, 'html');
         }
 
     }
