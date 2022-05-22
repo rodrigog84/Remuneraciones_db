@@ -1574,6 +1574,18 @@ public function envia_mail($from, $toList, $subject, $content, $type, $alias = "
     }
 
 
+    public function log_registro_acceso($codvendedor){
+
+    	$data = array(
+    					'codigo' => $codvendedor,
+    					'ip_acceso' => $_SERVER['REMOTE_ADDR'],
+    					'http_user_agent' => $_SERVER['HTTP_USER_AGENT']
+    				);
+
+    	$this->db->insert('rem_accesos_registro',$data);
+
+    }
+
 
 }
 

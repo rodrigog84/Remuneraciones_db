@@ -999,3 +999,16 @@ nombre varchar(250),
 codigo varchar(10),
 created_at datetime default getdate()
 )
+
+
+
+/********************************************************************************/
+
+
+create table rem_accesos_registro (
+id int identity,
+codigo varchar(10),
+ip_acceso varchar(20),
+http_user_agent varchar(100),
+fecha_acceso datetime default getdate()
+)

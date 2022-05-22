@@ -15,7 +15,6 @@ class Guest extends CI_Controller {
 
 	public function add_empresa($codvendedor = 0)
 	{
-
 			$resultid = $this->session->flashdata('empresas_result');
 			if($resultid == 1){
 				$vars['message'] = "No fue posible Registrar Empresa.  Empresa ya existe";
@@ -35,6 +34,8 @@ class Guest extends CI_Controller {
 
 			$this->load->model('admin');
 			$regiones = $this->admin->get_regiones();
+
+			$this->admin->log_registro_acceso($codvendedor);
 
 			$content = array(
 						'menu' => 'Administraci&oacute;n',
