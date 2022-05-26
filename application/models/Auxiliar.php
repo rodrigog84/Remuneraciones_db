@@ -512,7 +512,7 @@ public function solicita_vacaciones($array_datos){
 
 		$this->db->trans_start();
 
-		$date_fin_reposo = sumar_dias($array_datos['fec_inicio_reposo'],$array_datos['numero_dias']);
+		$date_fin_reposo = sumar_dias($array_datos['fec_inicio_reposo'],($array_datos['numero_dias']-1));
 		$fecfinreposo = substr($date_fin_reposo,6,4)."-".substr($date_fin_reposo,3,2)."-".substr($date_fin_reposo,0,2);
 		$fecinireposo = substr($array_datos['fec_inicio_reposo'],0,4)."-".substr($array_datos['fec_inicio_reposo'],4,2)."-".substr($array_datos['fec_inicio_reposo'],6,2);
 		//var_dump_new($array_datos); exit;
@@ -614,7 +614,7 @@ public function solicita_vacaciones($array_datos){
 
 
 
-		$date_fin_reposo = sumar_dias($array_datos['fec_inicio_reposo'],$array_datos['numero_dias']);
+		$date_fin_reposo = sumar_dias($array_datos['fec_inicio_reposo'],($array_datos['numero_dias']-1));
 		$fecfinreposo = substr($date_fin_reposo,6,4)."-".substr($date_fin_reposo,3,2)."-".substr($date_fin_reposo,0,2);
 		$fecinireposo = substr($array_datos['fec_inicio_reposo'],0,4)."-".substr($array_datos['fec_inicio_reposo'],4,2)."-".substr($array_datos['fec_inicio_reposo'],6,2);
 		//var_dump_new($array_datos); exit;		
