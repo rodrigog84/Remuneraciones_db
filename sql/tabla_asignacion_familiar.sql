@@ -146,3 +146,44 @@ insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto, periodo
 insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto, periodo) values ('B', 366988, 536023, 8815, 202206)
 insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto, periodo) values ('C', 536024, 836014, 2786, 202206)
 insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto, periodo) values ('D', 836015, 999999999, 0, 202206)
+
+
+
+update		p
+set			hasta = 398443
+			,monto = 15597
+--select		*
+from		rem_tabla_asig_familiar_periodo p
+where		tramo = 'A'
+and			periodo in (202205,202206)
+
+
+
+update		p
+set			desde = 398444
+			,hasta = 581968
+			,monto = 9571
+--select		*
+from		rem_tabla_asig_familiar_periodo p
+where		tramo = 'B'
+and			periodo in (202205,202206)
+
+
+update		p
+set			desde = 581969
+			,hasta = 907672
+			,monto = 3025
+--select		*
+from		rem_tabla_asig_familiar_periodo p
+where		tramo = 'C'
+and			periodo in (202205,202206)
+
+
+update		p
+set			desde = 907673
+			,hasta = 999999999
+			,monto = 0
+--select		*
+from		rem_tabla_asig_familiar_periodo p
+where		tramo = 'D'
+and			periodo in (202205,202206)
