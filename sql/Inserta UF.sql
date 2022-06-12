@@ -531,6 +531,38 @@ insert into rem_parametros (nombre, valor, fecha) values ('UF',	32767.60	,'20220
 insert into rem_parametros (nombre, valor, fecha) values ('UF',	32782.29	,'20220607');
 insert into rem_parametros (nombre, valor, fecha) values ('UF',	32797.00	,'20220608');
 insert into rem_parametros (nombre, valor, fecha) values ('UF',	32811.71	,'20220609');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32824.76,	,'20220610');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32837.81	,'20220611');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32850.87	,'20220612');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32863.94	,'20220613');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32877.01	,'20220614');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32890.08	,'20220615');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32903.16	,'20220616');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32916.25	,'20220617');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32929.34	,'20220618');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32942.44	,'20220619');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32955.54	,'20220620');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32968.64	,'20220621');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32981.75	,'20220622');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	32994.87	,'20220623');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33007.99	,'20220624');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33021.12	,'20220625');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33034.25	,'20220626');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33047.39	,'20220627');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33060.53	,'20220628');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33073.68	,'20220629');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33086.83	,'20220630');
+
+
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33099.99	,'20220701');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33113.16	,'20220702');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33126.33	,'20220703');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33139.50	,'20220704');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33152.68	,'20220705');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33165.86	,'20220706');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33179.05	,'20220707');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33192.25	,'20220708');
+insert into rem_parametros (nombre, valor, fecha) values ('UF',	33205.45	,'20220709');
 
 
 
