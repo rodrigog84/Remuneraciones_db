@@ -203,3 +203,146 @@ select		'Tope Imponible IPS' as nombre
 			,fecha
 from		rem_calendario
 where		FECHA BETWEEN '20210101' AND '20220430'
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFP' as nombre
+			,81.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202206
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible IPS' as nombre
+			,60 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202206
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFC' as nombre
+			,122.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202206
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tasa SIS' as nombre
+			,1.86 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202206
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Sueldo Minimo' as nombre
+			,350000 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202206
+
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFC' as nombre
+			,122.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202207
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tasa SIS' as nombre
+			,1.86 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202207
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible IPS' as nombre
+			,60 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202207
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Sueldo Minimo' as nombre
+			,380000 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202207
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFP' as nombre
+			,81.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202207
