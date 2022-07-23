@@ -1090,7 +1090,10 @@ public function submit_salud(){
 
                           $array_datos_requeridos = array(1,2,3,4,5,6,7,8,9,10,11,12,15,16,17,18,19,20,21,23,24,25,26,27,28,29,30,31,32,34,35);
                           // campo 33, sólo si 30 es mayor a cero
-                          $array_numericos = array(1,9,11,12,17,18,24,25,26,27,29,30,31,32,34,35);
+                          $array_numericos = array(1,9,11,12,17,18,24,27,29,30,31,32,34,35);
+
+
+                          $array_decimal = array(25,26);
 
                           $array_fechas = array(6,15,16); 
                           // campo 22, sólo si 21 es 1
@@ -1216,6 +1219,17 @@ public function submit_salud(){
                                               $cant_errores_contenido++;
 
                                       }   
+
+
+                                      if(in_array($c+1,$array_decimal) && !ctype_digit(str_replace(".","",str_replace(",","", $datos[$c])) )){
+
+                                              $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                              $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor debe ser decimal ";
+                                              $cant_errores_contenido++;
+
+                                      }                                        
 
                                       // valores si o no
                                       if(in_array($c+1,$array_sn) && !in_array($datos[$c],array('S','N'))){
@@ -1429,7 +1443,7 @@ public function submit_salud(){
                                                             "Sexo"                    => $datos[6],
                                                             "EstadoCivil"             => $datos[7],
                                                             "Nacionalidad"            => $datos[8],
-                                                            "Direccion"               => $datos[9],
+                                                            "Direccion"               => utf8_encode($datos[9]),
                                                             "Region"                  => $datos[10],
                                                             "Comuna"                  => $datos[11],
                                                             "Fono"                    => $datos[12],
@@ -1444,8 +1458,8 @@ public function submit_salud(){
                                                             "FecAfc"                  => $datos[21],
                                                             "Pensionado"              => $datos[22],
                                                             "Diastrabajo"             => $datos[23],
-                                                            "Horasdiarias"            => $datos[24],
-                                                            "Horassemanales"          => $datos[25],
+                                                            "Horasdiarias"            => str_replace(",",".",$datos[24]),
+                                                            "Horassemanales"          => str_replace(",",".",$datos[25]),
                                                             "Sueldobase"              => $datos[26],
                                                             "Tipogratificacion"       => $datos[27],
                                                             "Montogratificacion"      => $datos[28],
@@ -1564,16 +1578,16 @@ public function confirma_carga_personal()
                 'rut' => $colaborador['Rut'],
                 'dv' => $colaborador['Dv'],
                 'numficha' => 1,
-                'nombre' => $colaborador['Nombres'],
-                'apaterno' => $colaborador['Apellidop'],
-                'amaterno' => $colaborador['Apellidom'],
+                'nombre' => utf8_encode($colaborador['Nombres']),
+                'apaterno' => utf8_encode($colaborador['Apellidop']),
+                'amaterno' => utf8_encode($colaborador['Apellidom']),
                 'fecnacimiento' => $array_fec_nacimiento[2].$array_fec_nacimiento[1].$array_fec_nacimiento[0],
                 'idnacionalidad' => $colaborador['Nacionalidad'],
                 'nacionalidad' => $colaborador['Nacionalidad'] == 46 ? 'C' : 'E', //ELIMINAR DESPUES
                 'idecivil' =>$estadoCivil, //Cambiar $colaborador['EstadoCivil'],
                 'sexo' => $colaborador['Sexo'],
-                'direccion' => $colaborador['Direccion'],
-                'email' => $colaborador['Email'],
+                'direccion' => utf8_encode($colaborador['Direccion']),
+                'email' => utf8_encode($colaborador['Email']),
                 'tiporenta' => 'Mensual',
                 'idcargo' => 0,
                 'idestudio' => 0,
