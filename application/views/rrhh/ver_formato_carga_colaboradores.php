@@ -280,20 +280,20 @@
                       <td>Horasdiarias</td>
                       <td><span class="label label-info">Obligatorio</span></td>
                       <td>Horas de trabajo diarias</td>
-                      <td>Num&eacute;rico</td>
-                      <td>2</td>
+                      <td>Decimal</td>
+                      <td>3</td>
                       <td>&nbsp;</td>
-                      <td>&nbsp;</td>
+                      <td>8  -  4,5</td>
                     </tr>
                     <tr>
                       <td>26</td>
                       <td>Horassemanales</td>
                       <td><span class="label label-info">Obligatorio</span></td>
                       <td>Horas de Trabajo a la semana</td>
-                      <td>Num&eacute;rico</td>
-                      <td>2</td>
+                      <td>Decimal</td>
+                      <td>3</td>
                       <td>&nbsp;</td>
-                      <td>&nbsp;</td>
+                      <td>45  -  22,5</td>
                     </tr>
                     <tr>
                       <td>27</td>
