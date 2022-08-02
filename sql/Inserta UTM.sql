@@ -254,3 +254,17 @@ select		'UTM' as nombre
 			,fecha
 from		rem_calendario
 where		periodo = 202207
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'UTM' as nombre
+			,58772 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202208

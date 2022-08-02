@@ -193,3 +193,9 @@ insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto,periodo)
 select	tramo, desde, hasta, monto, 202207 as periodo
 from		rem_tabla_asig_familiar_periodo
 where		periodo = 202206
+
+
+insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto,periodo)
+select	tramo, desde, hasta, monto, 202208 as periodo
+from		rem_tabla_asig_familiar_periodo
+where		periodo = 202207
