@@ -423,3 +423,100 @@ select		'Tope Imponible AFP' as nombre
 			,fecha
 from		rem_calendario
 where		periodo = 202208
+
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tasa SIS' as nombre
+			,1.84 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202209
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tasa SIS' as nombre
+			,1.84 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202210
+
+
+
+
+update	p
+set			p.valor = 400000
+--select	*
+from	rem_parametros p
+inner join rem_calendario c on p.fecha = c.FECHA
+where	c.PERIODO = 202208
+and		p.nombre = 'Sueldo Minimo'
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Sueldo Minimo' as nombre
+			,400000 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202209
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Sueldo Minimo' as nombre
+			,400000 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202210
+
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFC' as nombre
+			,122.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202209
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFC' as nombre
+			,122.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202210
