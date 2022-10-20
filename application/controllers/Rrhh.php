@@ -4406,7 +4406,7 @@ public function previred($idperiodo = null,$idcentrocosto = null)
         redirect('main/dashboard/');
       }
 
-			$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,null,$idcentrocosto);
+			$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,true,$idcentrocosto);
       //var_dump_new($remuneraciones); exit;
 			$datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
 			//$centros_costo = $this->rrhh_model->get_centro_costo();
