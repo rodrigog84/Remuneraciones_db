@@ -1505,7 +1505,7 @@ public function get_bonos($idtrabajador = null){
 
 
 
- public function envia_mail_sb($from, $toList, $subject, $content, $type, $alias = "Arnou")
+ public function envia_mail_sb($from, $toList, $subject, $content, $type, $alias = "Arnou", $attachments = null)
     {
 
 
@@ -1531,6 +1531,21 @@ public function get_bonos($idtrabajador = null){
 						     'to' => [['email' => $destiny]],
 						     'htmlContent' => $content
 						]);                    	
+
+                    	$array_attachments = array();
+				        if(!is_null($attachments)){
+				        	foreach ($attachments as $attachment) {
+				        		$array_archivo = explode('/',$attachment);
+				        		$array_fila = array('content' => chunk_split(base64_encode(file_get_contents($attachment))),'name' => $array_archivo[count($array_archivo)-1]);
+				        		array_push($array_attachments,$array_fila);
+				        	}
+				        		
+				        }     
+
+				        if(count($array_attachments) > 0){
+				        	$sendSmtpEmail['attachment'] = $array_attachments;	
+				        }
+                        
 
 
 						try {
@@ -1559,6 +1574,24 @@ public function get_bonos($idtrabajador = null){
                              'to' => [['email' => $toList]],
                              'htmlContent' => $content
                         ]);
+
+
+						$array_attachments = array();
+				        if(!is_null($attachments)){
+				        	foreach ($attachments as $attachment) {
+				        		$array_archivo = explode('/',$attachment);
+				        		$array_fila = array('content' => chunk_split(base64_encode(file_get_contents($attachment))),'name' => $array_archivo[count($array_archivo)-1]);
+				        		array_push($array_attachments,$array_fila);
+				        	}
+				        		
+				        }     
+
+				        if(count($array_attachments) > 0){
+				        	$sendSmtpEmail['attachment'] = $array_attachments;	
+				        }
+                        
+                        
+
 
                    	try {
 						    $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
