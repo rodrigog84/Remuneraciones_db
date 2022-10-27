@@ -42,6 +42,7 @@ define('NOMBRE_EMPRESA',		'CAVAL');
 define('PERIODOS_GRATIS',		2);
 define('TURBOSMTP_USER',		'rodrigo.gonzalez@arnou.cl');
 define('TURBOSMTP_PASS',		'P6nLKAvx');
+define('API_KEY_MAIL',		'f5776220de8b10e443dd3b62655db60ef33ac16bfd79b0b25aa3a2a9d469716a-OAP4s3I0KraSbwp2');
 define('ENVIO_MAIL',		TRUE);
 
 /* End of file constants.php */

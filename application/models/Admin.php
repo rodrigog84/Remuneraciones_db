@@ -1484,10 +1484,11 @@ public function get_bonos($idtrabajador = null){
 
 
 	        $array_email = array('rodrigo.gonzalez@arnou.cl','luis.gonzalez@arnou.cl','rene.gonzalez@arnou.cl',$datos_usuario->email);
+            //$array_email = array('rodrigog.84@gmail.com');
 
 
-
-            $this->envia_mail('robot@arnou.cl', $array_email, 'Creación de Usuario Arnou-Remuneraciones', $messageBody, 'html');
+            //$this->envia_mail('robot@arnou.cl', $array_email, 'Creación de Usuario Arnou-Remuneraciones', $messageBody, 'html');
+            $this->envia_mail_sb('robot@arnou.cl', $array_email, 'Creación de Usuario Arnou-Remuneraciones', $messageBody, 'html');
         }
 
     }
@@ -1500,6 +1501,90 @@ public function get_bonos($idtrabajador = null){
         $path = $base_path . "/../libraries/TurboApiClient.php";
         return $path;
     }
+
+
+
+
+ public function envia_mail_sb($from, $toList, $subject, $content, $type, $alias = "Arnou")
+    {
+
+
+        if (ENVIO_MAIL) {
+
+                // Configure API key authorization: api-key
+                $credentials = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'xkeysib-'.API_KEY_MAIL);
+
+                $apiInstance = new SendinBlue\Client\Api\TransactionalEmailsApi(new GuzzleHttp\Client(),$credentials);
+
+
+
+                if (is_array($toList)) {
+
+                    $toList = array_unique($toList);
+                    foreach ($toList as $destiny) {
+
+
+						  $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail([
+						     'subject' => $subject,
+						     'sender' => ['name' => $alias, 'email' => $from],
+						     'replyTo' => ['name' => $alias, 'email' => $from],
+						     'to' => [['email' => $destiny]],
+						     'htmlContent' => $content
+						]);                    	
+
+
+						try {
+						    $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
+
+                            $data_envio = array(
+                                'email' => $destiny,
+                                'messageid' => $result['messageId'],
+                                'idempresa' => $this->session->userdata('empresaid')
+                            );
+
+						    $this->db->insert('rem_log_envio_mail',$data_envio);
+
+
+						} catch (Exception $e) {
+						    echo $e->getMessage(),PHP_EOL;
+						}
+
+                    }
+                } else {
+
+                        $sendSmtpEmail = new SendinBlue\Client\Model\SendSmtpEmail([
+                             'subject' => $subject,
+                             'sender' => ['name' => $alias, 'email' => $from],
+                             'replyTo' => ['name' => $alias, 'email' => $from],
+                             'to' => [['email' => $toList]],
+                             'htmlContent' => $content
+                        ]);
+
+                   	try {
+						    $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
+
+                            $data_envio = array(
+                                'email' => $destiny,
+                                'messageid' => $result['messageId'],
+                                'idempresa' => $this->session->userdata('empresaid')
+                            );
+
+                            $this->db->insert('rem_log_envio_mail', $data_envio);
+
+						} catch (Exception $e) {
+						    echo $e->getMessage(),PHP_EOL;
+						}
+
+
+                }
+
+
+
+        }
+
+
+    }
+
 
 
 

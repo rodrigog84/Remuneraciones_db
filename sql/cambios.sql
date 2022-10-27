@@ -1012,3 +1012,15 @@ ip_acceso varchar(20),
 http_user_agent varchar(250),
 fecha_acceso datetime default getdate()
 )
+
+
+/********************************************************************************/
+
+
+create table rem_log_envio_mail (
+id int identity,
+email varchar(100),
+messageid varchar(100),
+idempresa int,
+created_at datetime default getdate()
+)
