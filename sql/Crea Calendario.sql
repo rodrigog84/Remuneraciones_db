@@ -4,7 +4,7 @@
 --CAMPOS:	FECHA, AÑO, MES, DIA, NOMBRE_DIA, NUM_DIA_SEMANA, SEMANA, 
 --			TRIMESTRE, TIPO_DIA, DIA_TOTAL_MES, NOMBRE_MES, PERIODO, DIAS_FALTANTES--
 -------------------------------------------------------------------------------------
-
+/*
 --CREACIÓN DE TABLA--
 CREATE TABLE rem_calendario	(
 							FECHA					DATE			--FECHA DEL DÍA
@@ -29,7 +29,7 @@ CREATE TABLE rem_calendario	(
 ------************------
 
 CREATE UNIQUE CLUSTERED INDEX IDX_CALENDARIO_FECHA ON rem_calendario (FECHA)
-
+*/
 
 -------------------------------------------------------------------
 --PROCEDIMIENTO PARA LLENAR EL CALENDARIO CON LOS DATOS PRIMARIOS--
@@ -50,8 +50,8 @@ DECLARE
 BEGIN
 	
 	--VARIABLES QUE DEBO LLENAR ANTES DE EJECUTAR--
-	SET @V_FECHA_INI	=	'20200101'	--DÍA INICIAL A INSERTAR
-	SET @V_FECHA_FIN	=	'20221231' --DÍA FINAL A INSERTAR
+	SET @V_FECHA_INI	=	'20230101'	--DÍA INICIAL A INSERTAR
+	SET @V_FECHA_FIN	=	'20231231' --DÍA FINAL A INSERTAR
 	SET	@V_FECHA_INI_FIJO = @V_FECHA_INI
 	--SET @V_DIAS_TOT		= (SELECT  DATEDIFF(DAY,@V_FECHA_INI,@V_FECHA_FIN))	--CUENTA LOS DÍAS TOTALES A INSERTAR
 	--SET	@V_DIA_SEM		= 1	--COLOCAR EL NÚMERO DE DÍA DE LA SEMANA DEL DÍA INICIAL A INSERTAR
@@ -158,6 +158,32 @@ END
 --FERIADOS--
 ------------
 
+
+--2023--
+UPDATE 	rem_calendario
+SET 	TIPO_DIA = 'F'
+WHERE 	FECHA in	(
+					 '20230101'
+					,'20230102'
+					,'20230407'
+					,'20230408'
+					,'20230501'
+					,'20230521'
+					,'20230621'
+					,'20230626'
+					,'20230716'
+					,'20230815'
+					,'20230918'
+					,'20230919'
+					,'20231009'
+					,'20231027'
+					,'20231101'
+					,'20231208'
+					,'20231225'
+	--				,'31
+					)
+
+/*
 --2022--
 UPDATE 	rem_calendario
 SET 	TIPO_DIA = 'F'
@@ -229,7 +255,7 @@ WHERE 	FECHA in	(
 					,'20201225'
 	--				,'31/12/2020'	--FERIADO BANCARIO
 					)
-
+*/
 
 --FIN LLENADO DE FERIADOS--
 ------************------					

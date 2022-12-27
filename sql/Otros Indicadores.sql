@@ -520,3 +520,175 @@ select		'Tope Imponible AFC' as nombre
 			,fecha
 from		rem_calendario
 where		periodo = 202210
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Sueldo Minimo' as nombre
+			,400000 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202211
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFP' as nombre
+			,81.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202211
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible IPS' as nombre
+			,60 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202211
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFC' as nombre
+			,122.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202211
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tasa SIS' as nombre
+			,1.54 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202210
+
+
+
+update p
+set		valor = 1.54
+--select	*
+from	rem_parametros p
+where	nombre = 'Tasa SIS'
+and		fecha >= '20221001'
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tasa SIS' as nombre
+			,1.54 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202211
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Sueldo Minimo' as nombre
+			,400000 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202212
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFP' as nombre
+			,81.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202212
+
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible IPS' as nombre
+			,60 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202212
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFC' as nombre
+			,122.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202212
+
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tasa SIS' as nombre
+			,1.54 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202212
+
