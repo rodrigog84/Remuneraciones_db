@@ -114,7 +114,7 @@
 											                                    <b><span id="diaslicencia_<?php echo $trabajador->id_personal;?>"  class="diaslicencia text-right" ><?php echo $licencias[$trabajador->id_personal];?></span></b>   
 											                                </td>
 											                                <td class="form-group">
-											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo" value="<?php echo isset($datos_remuneracion[$trabajador->id_personal]) ? $datos_remuneracion[$trabajador->id_personal] : $trabajador->diastrabajo - $licencias[$trabajador->id_personal]; ?>"  />   
+											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo numeros" value="<?php echo isset($datos_remuneracion[$trabajador->id_personal]) ? $datos_remuneracion[$trabajador->id_personal] : $trabajador->diastrabajo - $licencias[$trabajador->id_personal]; ?>"  />   
 											                                </td>
 											                              </tr>
 											                              <?php $i++;?>
@@ -251,8 +251,8 @@ $(document).ready(function() {
                     notEmpty: {
                         message: 'Informaci&oacute;n de Asistencia es requerida'
                     },
-                    integer: {
-                        separator: '.',
+                    numeric: {
+                        separator: ',',
                         message: 'Asistencia s&oacute;lo puede contener n&uacute;meros'
                     },
                     callback: {
@@ -301,5 +301,12 @@ $(document).ready(function() {
     .formValidation('revalidateField', 'anno');
 
 });
+
+
+  $('.numeros').keypress(function(event){
+    if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 44){
+      event.preventDefault();
+    } 
+  })   
 
 </script>

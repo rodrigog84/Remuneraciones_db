@@ -5341,7 +5341,7 @@ public function liquidacion_colaborador($idremuneracion = null)
 			foreach($array_elem as $elem => $value_elem){
 				$arr_el = explode("_",$elem);
 				if($arr_el[0] == 'diastrabajo'){
-					$array_trabajadores[$arr_el[1]] = $value_elem;
+					$array_trabajadores[$arr_el[1]] =  str_replace(",",".",$value_elem);
 				}
 			}
 
