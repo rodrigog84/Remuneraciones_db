@@ -114,7 +114,7 @@
 											                                    <b><span id="diaslicencia_<?php echo $trabajador->id_personal;?>"  class="diaslicencia text-right" ><?php echo $licencias[$trabajador->id_personal];?></span></b>   
 											                                </td>
 											                                <td class="form-group">
-											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo numeros" value="<?php echo isset($datos_remuneracion[$trabajador->id_personal]) ? $datos_remuneracion[$trabajador->id_personal] : $trabajador->diastrabajo - $licencias[$trabajador->id_personal]; ?>"  />   
+											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo numeros" value="<?php echo isset($datos_remuneracion[$trabajador->id_personal]) ? str_replace(".",",",$datos_remuneracion[$trabajador->id_personal]) : str_replace(".",",",$trabajador->diastrabajo - $licencias[$trabajador->id_personal]); ?>"  />   
 											                                </td>
 											                              </tr>
 											                              <?php $i++;?>
