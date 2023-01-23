@@ -249,7 +249,7 @@ public function libro($datos_remuneracion){
             	$sheet->setCellValue("F".$i,$remuneracion->sueldobase);
             	$sheet->getStyle('F'.$i)->getNumberFormat()->setFormatCode('#,##0');
             	$sheet->setCellValue("G".$i,$remuneracion->diastrabajo);
-            	$sheet->getStyle('G'.$i)->getNumberFormat()->setFormatCode('#,##0');
+            	//$sheet->getStyle('G'.$i)->getNumberFormat()->setFormatCode('#,##0');
             	$sheet->setCellValue("H".$i,$remuneracion->gratificacion);
             	$sheet->getStyle('H'.$i)->getNumberFormat()->setFormatCode('#,##0');
             	$sheet->setCellValue("I".$i,$remuneracion->movilizacion);

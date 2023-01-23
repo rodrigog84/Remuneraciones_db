@@ -146,6 +146,14 @@
 
 <script>
 
+
+  function replaceAll( text, busca, reemplaza ){
+  while (text.toString().indexOf(busca) != -1)
+      text = text.toString().replace(busca,reemplaza);
+  return text;
+}
+
+
 $('.periodo').change(function(){
     $('#basicBootstrapForm').formValidation('revalidateField', 'anno');
       var cerrado = false;
@@ -205,7 +213,7 @@ $('.periodo').change(function(){
                             /*var diastrabajo =  typeof(var_json["diastrabajo_"+idtrabajador]) != 'undefined' && var_json["diastrabajo_"+idtrabajador] != null ? var_json["diastrabajo_"+idtrabajador] : parseInt($('#diasatrabajar_'+idtrabajador).html()) - parseInt($('#diaslicencia_'+idtrabajador).html());*/
 
                             //console.log(idtrabajador+' '+parseInt($('#diasatrabajar_'+idtrabajador).html())+' '+parseInt($('#diaslicencia_'+idtrabajador).html())+' '+diastrabajo)
-                            $(this).val(diastrabajo);
+                            $(this).val(replaceAll(diastrabajo,'.',','));
                         }
                         
                     );                    
