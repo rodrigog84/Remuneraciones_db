@@ -1,3 +1,6 @@
+               <form id="basicBootstrapForm" action="<?php echo base_url();?>configuraciones/submit_haber_descuento" method="post">
+
+
                   <div class="panel panel-inverse">                       
                       <div class="panel-heading">
                             <h4 class="panel-title">Creaci&oacute;n Haberes y Descuentos Variables</h4>
@@ -11,8 +14,7 @@
 
 													
 														  <div class="graph">
-														  <form id="basicBootstrapForm" action="<?php echo base_url();?>configuraciones/submit_haber_descuento" method="post">
-
+														  
 															<div class="tables">
 																<table class="table"> 
 																	<thead> 
@@ -42,7 +44,7 @@
 																			</td>
 
 																			<td class="form-group">
-																				<input type="text" name="codigo" id="codigo" class="form-control codigo" id="codigo" placeholder="Código" value="<?php echo isset($haberes_descuentos->codigo) ? $haberes_descuentos->codigo : '';?>">
+																				<input type="text" name="codigo" id="codigo" maxlength="20" class="form-control codigo" id="codigo" placeholder="Código" value="<?php echo isset($haberes_descuentos->codigo) ? $haberes_descuentos->codigo : '';?>">
 																			</td>
 
 																			<td class="form-group">
@@ -310,14 +312,14 @@
 																
 															</div>
 
-														</form>
+													
 															
 													</div>
 											</div>
 											</div>
 											</div>
 											 <div class="panel-footer">
-<a href="<?php echo base_url(); ?>configuraciones/hab_descto" class = "btn btn-primary" >Volver</a>
+																<a href="<?php echo base_url(); ?>configuraciones/hab_descto" class = "btn btn-primary" >Volver</a>
 																<button type = "submit" class = "btn btn-info" id="comando">Guardar
 																</button>
 																<input type="hidden" name="idhab" value="<?php echo isset($haberes_descuentos->id) ? $haberes_descuentos->id: 0 ;?>">
@@ -325,6 +327,8 @@
 											  </div> 
 
 											</div>
+
+											</form>
 
 
 <script>
