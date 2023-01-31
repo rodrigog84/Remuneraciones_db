@@ -1811,18 +1811,20 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 			$dias_trabajados =  $datos_remuneracion->diastrabajo > ($diastrabajo - $dias_licencia) ?  ($diastrabajo - $dias_licencia) : $datos_remuneracion->diastrabajo;
-
+			$dias_trabajados = $dias_trabajados < 0 ? 0 : $dias_trabajados;
 
 			$sueldo_base_mes = round(($trabajador->sueldobase/$diastrabajo)*$dias_trabajados,0);
 
-			/*if($trabajador->id_personal == 10211){
+		/*	if($trabajador->id_personal == 10190){
+				var_dump_new($datos_remuneracion->diastrabajo);
+				var_dump_new($diastrabajo);
 				var_dump_new($dias_trabajados);
 				var_dump_new($dias_licencia);
 				var_dump_new($sueldo_base_mes);
 				var_dump_new($trabajador);
 				var_dump_new($datos_remuneracion); exit;
-			}*/
-
+			}
+			*/
 			$movilizacion_mes = round(($trabajador->movilizacion/$diastrabajo)*$dias_trabajados,0);
 			$colacion_mes = round(($trabajador->colacion/$diastrabajo)*$dias_trabajados,0);
 
@@ -3932,6 +3934,10 @@ public function generar_contenido_comprobante($datos_remuneracion){
 
 
 			$monto_prevision = $datos_remuneracion->idisapre == 1 ? ' 7% ' : $datos_remuneracion->valorpactado . ' UF ';
+
+			$titulo_fecha_contrato = $this->session->userdata('empresaid') == 140 ? '&nbsp;' : 'Fecha Contrato:';
+			$dato_fecha_contrato = $this->session->userdata('empresaid') == 140 ? '&nbsp;' : $datos_remuneracion->fecingreso;
+			
 			$html .= '
 						<p><h4 class="header4">Liquidaci&oacute;n de Remuneraciones ' . date2string($datos_remuneracion->mes,$datos_remuneracion->anno) . '<!--br><br><img src="img/logo4_1_80p_color.png" width="100px"--></h4></p>
 						<hr>
@@ -3947,8 +3953,8 @@ public function generar_contenido_comprobante($datos_remuneracion){
 						<tr>
 						<td class="tdClass" ><b><i>Nombre:</i></b></td>
 						<td class="tdClass" >' . $datos_remuneracion->nombre. ' ' . $datos_remuneracion->apaterno . ' ' . $datos_remuneracion->amaterno . '</td>
-						<td class="tdClass" ><b><i>Fecha Contrato:</i></b></td>
-						<td class="tdClass" >' . $datos_remuneracion->fecingreso . '</td>						
+						<td class="tdClass" ><b><i>' . $titulo_fecha_contrato . '</i></b></td>
+						<td class="tdClass" >' . $dato_fecha_contrato . '</td>						
 						</tr>
 						<tr>
 						<td class="tdClass" ><b><i>Rut:</i></b></td>
