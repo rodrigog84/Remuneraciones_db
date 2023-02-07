@@ -1632,7 +1632,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	}	
 
 
-	public function get_haberes_descuentos($idtrabajador,$imponible = null,$tipo = null){
+	public function get_haberes_descuentos($idtrabajador,$imponible = null,$tipo = null,$idperiodo = null){
 
 			if(!is_null($imponible)){
 					$campo_imponible = $imponible == true ? 1 : 0;	
@@ -1655,7 +1655,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 			$haberes_data = is_null($imponible) ? $haberes_data : $haberes_data->where('h.imponible',$campo_imponible);  	
 			$haberes_data = is_null($tipo) ? $haberes_data : $haberes_data->where('h.tipo',$tipo);  	
-
+			$haberes_data = is_null($idperiodo) ? $haberes_data : $haberes_data->where('d.idperiodo',$idperiodo);  
 			$query = $this->db->get();
 			//echo $this->db->last_query(); exit;
 			return $query->result();		
@@ -1789,7 +1789,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$bonos_no_imponibles = 0;
 
 			//OBTIENE LOS HABERES DEL TRABAJADOR
-			$datos_hd = $this->get_haberes_descuentos($trabajador->id_personal,null,'HABER');	
+			$datos_hd = $this->get_haberes_descuentos($trabajador->id_personal,null,'HABER',$idperiodo);	
 
 
 
@@ -2110,7 +2110,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 			//exit;
 
-			$datos_d = $this->get_haberes_descuentos($trabajador->id_personal,null,'DESCUENTO');			
+			$datos_d = $this->get_haberes_descuentos($trabajador->id_personal,null,'DESCUENTO',$idperiodo);			
 
 
 			//$datos_descuentos = $this->get_descuento($idperiodo,'D',$trabajador->id);
@@ -4032,7 +4032,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 
 						//$datos_bonos_imponibles = $this->get_bonos_by_remuneracion($datos_remuneracion->id,true);
 
-						$datos_hd = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,true,'HABER');
+						$datos_hd = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,true,'HABER',$datos_remuneracion->id_periodo);
 
 						foreach ($datos_hd as $bono_imponible) {
 
@@ -4135,7 +4135,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 						//$datos_bonos_no_imponibles = $this->get_bonos_by_remuneracion($datos_remuneracion->id,false);
 
 
-						$datos_hd = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,false,'HABER');
+						$datos_hd = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,false,'HABER',$datos_remuneracion->id_periodo);
 
 						foreach ($datos_hd as $bono_no_imponible) {
 
@@ -4316,7 +4316,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 						//$datos_descuentos = $this->get_descuento($datos_remuneracion->idperiodo,'D',$datos_remuneracion->idtrabajador);
 
 
-						$datos_d = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,null,'DESCUENTO');
+						$datos_d = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,null,'DESCUENTO',$datos_remuneracion->id_periodo);
 
 						foreach ($datos_d as $info_descuento) {
 
