@@ -174,7 +174,28 @@ $('.periodo').change(function(){
       }
 
 
-       $(".diaslicencia").each(
+
+      $.ajax({url: "<?php echo base_url();?>rrhh/get_datos_licencia/"+$('#mes').val()+"/"+$('#anno').val(),
+		        type: 'GET',
+		        async: false,
+		        success : function(data) {
+		        	
+		        	var_json_lic = $.parseJSON(data);
+                 	console.log(var_json_lic.dias_licencia)
+                 	var dias_licencia = var_json_lic.dias_licencia;
+
+                 	$.each(dias_licencia,function(index,value){
+
+                                          //console.log(index)
+                                          //console.log(value)
+                                          $('#diaslicencia_'+index).html(value)
+
+                                      });
+                 	/*var_json_lic = $.parseJSON(data);
+                 	$('#diaslicencia_'+idtrabajador).html(var_json_lic['dias_licencia']);*/
+		        }});
+
+     /*  $(".diaslicencia").each(
                         function(index,value){
                             var id_text = $(this).attr('id');
                             var array_field = id_text.split("_");
@@ -191,7 +212,7 @@ $('.periodo').change(function(){
                         
                     );
 
-
+		*/
 
       $.get("<?php echo base_url();?>rrhh/get_datos_remuneracion/"+$('#mes').val()+"/"+$('#anno').val(),function(data){
                // Limpiamos el select
