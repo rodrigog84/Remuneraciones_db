@@ -72,6 +72,88 @@
 
 									            </div>
 
+
+
+								            <div class="row">
+
+								                <div class="col-md-12">
+
+								                	<div class="panel panel-inverse">                       
+						                                <div class="panel-heading">
+						                                      <h4 class="panel-title">B&uacute;squeda Trabajador</h4>
+						                                  </div>
+
+
+						                                  	<div class="panel-body" >
+											  					<div class='row'>
+
+											                            <div class="col-md-5">
+											                                        <div class="form-group">
+											                                              <label for="password">Selecci&oacute;n Trabajador</label>    
+											                                               <!--select name="productodetalle" id="productodetalle" class="form-control" >
+											                                                <option value="">Seleccione Hora Bloque</option>
+											                                                </select-->
+											                                                <input type="text" name="trabajador" id="trabajador" class="form-control editables" onClick='this.select()'  placeholder="Ingrese Trabajador" />
+											                                                <!--small class="help-block" id="mje_cliente" style="color:red">&nbsp;</small-->
+											                                                <input type="hidden" name="idtrabajador" id="idtrabajador" class="form-control"  />
+											                                        </div> 
+
+											                                 
+											                              </div> 
+
+											                               <div class="col-md-2">
+											                                          <div class="form-group">
+											                                               <label for="minutos">D&iacute;as a Trabajar</label>
+																							<input type="text" name="general_diasatrabajar" id="general_diasatrabajar" class="form-control"  readonly="readonly" value="0" />
+											                                          </div> 
+
+											                                                
+											                                </div>
+
+												                               <div class="col-md-2">
+											                                          <div class="form-group">
+											                                               <label for="minutos">Licencias</label>
+																							<input type="text" name="general_diaslicencia" id="general_diaslicencia" class="form-control" onClick='this.select()'   value="0" readonly />
+											                                          </div> 
+
+											                                                
+											                                </div>
+										                              
+
+
+
+											                            <div class="col-md-2">
+											                                        <div class="form-group">
+											                                              <label for="password">D&iacute;as Trabajados</label>    
+											                                               <!--select name="productodetalle" id="productodetalle" class="form-control" >
+											                                                <option value="">Seleccione Hora Bloque</option>
+											                                                </select-->
+											                                                <input type="text" name="general_diastrabajo" id="general_diastrabajo" class="form-control editables" onClick='this.select()'  placeholder="Ingrese D&iacute;as Trabajo" />
+											                                        </div> 
+											                                 
+											                              </div>              
+											                              <div class="col-md-1">
+											                                          <div class="form-group">
+											                                               <label for="minutos">&nbsp;</label>
+											                                                <br>
+											                                                <button type="button" id='add_info_trabajador' class="btn btn-info align-self-end" title="Agregar"><i class="fa fa-plus fa-lg" aria-hidden="true"  role="button"></i></button>
+											                                                <input type="hidden" class="form-control " id="idlineadetalle" name="idlineadetalle" value='0'>
+											                                          </div> 
+
+											                                                
+											                                </div>
+
+											                    </div>
+											                </div>
+
+											             </div>
+											         </div>
+
+											     </div>
+
+
+
+
 									            <div class="row">
 
 									                <div class="col-md-12">
@@ -114,7 +196,7 @@
 											                                    <b><span id="diaslicencia_<?php echo $trabajador->id_personal;?>"  class="diaslicencia text-right" ><?php echo $licencias[$trabajador->id_personal];?></span></b>   
 											                                </td>
 											                                <td class="form-group">
-											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo numeros" value="<?php echo isset($datos_remuneracion[$trabajador->id_personal]) ? str_replace(".",",",$datos_remuneracion[$trabajador->id_personal]) : str_replace(".",",",$trabajador->diastrabajo - $licencias[$trabajador->id_personal]); ?>"  />   
+											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo numeros editables" value="<?php echo isset($datos_remuneracion[$trabajador->id_personal]) ? str_replace(".",",",$datos_remuneracion[$trabajador->id_personal]) : str_replace(".",",",$trabajador->diastrabajo - $licencias[$trabajador->id_personal]); ?>"  />   
 											                                </td>
 											                              </tr>
 											                              <?php $i++;?>
@@ -147,6 +229,82 @@
 <script>
 
 
+$('#add_info_trabajador').on('click',function(){
+
+	add_info_trabajador();
+
+})
+
+function add_info_trabajador(){
+
+	var idtrabajador = $('#idtrabajador').val();
+	var dias_trabajo = $('#general_diastrabajo').val();
+	$('#diastrabajo_'+idtrabajador).val(dias_trabajo);
+
+
+	$('#trabajador').val('')
+	$('#general_diastrabajo').val('');
+	$('#general_diasatrabajar').val(0);
+	$('#general_diaslicencia').val(0);
+	$('#idtrabajador').val(0)
+
+
+
+	console.log('agrega');
+}
+
+
+$('#trabajador').keypress(function(event){
+  var keycode = (event.keyCode ? event.keyCode : event.which);
+
+  if(keycode == '13'){
+    event.preventDefault();
+    $('#general_diastrabajo').focus();
+  }
+});
+
+$('#general_diastrabajo').keypress(function(event){
+  var keycode = (event.keyCode ? event.keyCode : event.which);
+
+  if(keycode == '13'){
+    event.preventDefault();
+
+    add_info_trabajador()
+    $('#trabajador').focus();
+  }
+});
+
+
+
+
+var availableTagsTrabajadores = [
+<?php foreach ($personal as $trabajador) { ?>
+    {"label":"<?php echo $trabajador->rut.'-'.$trabajador->dv. ' | ' . trim(addslashes($trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno));?>","value":"<?php echo  $trabajador->rut.'-'.$trabajador->dv. ' | ' . trim(addslashes($trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno)); ?>", "id":<?php echo $trabajador->id_personal;?>},
+<?php } ?>
+];
+$('#trabajador').autocomplete({
+    source: availableTagsTrabajadores,
+    select: function (event, ui) {  selecciona_trabajador(ui.item.id,ui.item.value); }
+}); 
+
+
+	function selecciona_trabajador(item_sel,item_value){
+
+		console.log(item_sel)
+		console.log(item_value)
+
+		$('#general_diastrabajo').focus();
+		$('#general_diastrabajo').val($('#diastrabajo_'+item_sel).val())
+		$('#general_diasatrabajar').val($('#diasatrabajar_'+item_sel).html())
+		$('#general_diaslicencia').val($('#diaslicencia_'+item_sel).html())
+
+
+		$('#idtrabajador').val(item_sel);
+
+		//console.log('aaaa')
+	}
+
+
   function replaceAll( text, busca, reemplaza ){
   while (text.toString().indexOf(busca) != -1)
       text = text.toString().replace(busca,reemplaza);
@@ -168,9 +326,9 @@ $('.periodo').change(function(){
         }});
 
       if(cerrado){
-        $('input').attr('readonly',true);
+        $('.editables').attr('readonly',true);
       }else{
-        $('input').attr('readonly',false);
+        $('.editables').attr('readonly',false);
       }
 
 
@@ -257,9 +415,9 @@ $(document).ready(function() {
         }});
 
       if(cerrado){
-        $('input').attr('readonly',true);
+        $('.editables').attr('readonly',true);
       }else{
-        $('input').attr('readonly',false);
+        $('.editables').attr('readonly',false);
       }      
 
     $('#basicBootstrapForm').formValidation({
@@ -324,7 +482,47 @@ $(document).ready(function() {
                     }
                 },
 
+            },
+
+            general_diastrabajo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Informaci&oacute;n de Asistencia es requerida'
+                    },
+                    numeric: {
+                        separator: ',',
+                        message: 'Asistencia s&oacute;lo puede contener n&uacute;meros'
+                    },
+                    callback: {
+                        message: 'Asistencia debe ser menor o igual a d&iacute;as a trabajar',
+                        callback: function (value, validator, $field) {
+                            var id_text = $field.attr('id');
+                            var array_field = id_text.split("_");
+                            idtrabajador = array_field[1];
+                            var asistencia_trabajador = $('#general_diasatrabajar').val() == '' ? 0 : parseInt($('#general_diasatrabajar').val());
+                            var licencias_trabajador = $('#general_diaslicencia').val() == '' ? 0 : parseInt($('#general_diaslicencia').val());
+                            var asistencia_actual = $('#general_diastrabajo').val() == '' ? 0 : parseInt($('#general_diastrabajo').val());  
+
+                            console.log(asistencia_trabajador)
+                            console.log(licencias_trabajador)    
+                            console.log(asistencia_actual)                           
+                            if(asistencia_actual <= (asistencia_trabajador - licencias_trabajador)){
+                              return true;
+                            }else{
+                              return  {
+                                    valid: false,
+                                    message: 'Asistencia debe ser menor o igual a d&iacute;as a trabajar'
+                                }
+                            }
+                        }
+                    }                   
+
+                },
+
             }
+
+
         }
     })
     .formValidation('revalidateField', 'anno');
