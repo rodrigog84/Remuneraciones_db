@@ -4031,7 +4031,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 						}						
 
 
-						$datos_hd = $this->get_bonos_by_remuneracion($datos_remuneracion->id,true,'HABER');
+						$datos_hd = $this->get_bonos_by_remuneracion($datos_remuneracion->id_remuneracion,true,'HABER');
 
 						//$datos_hd = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,true,'HABER',$datos_remuneracion->id_periodo);
 
@@ -4136,7 +4136,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 						//$datos_bonos_no_imponibles = $this->get_bonos_by_remuneracion($datos_remuneracion->id,false);
 
 
-						$datos_hd = $this->get_bonos_by_remuneracion($datos_remuneracion->id,false,'HABER');
+						$datos_hd = $this->get_bonos_by_remuneracion($datos_remuneracion->id_remuneracion,false,'HABER');
 
 						//$datos_hd = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,false,'HABER',$datos_remuneracion->id_periodo);
 
@@ -4318,7 +4318,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 
 						//$datos_descuentos = $this->get_descuento($datos_remuneracion->idperiodo,'D',$datos_remuneracion->idtrabajador);
 
-						$datos_d = $this->get_bonos_by_remuneracion($datos_remuneracion->id,null,'DESCUENTO');
+						$datos_d = $this->get_bonos_by_remuneracion($datos_remuneracion->id_remuneracion,null,'DESCUENTO');
 
 						//$datos_d = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,null,'DESCUENTO',$datos_remuneracion->id_periodo);
 
