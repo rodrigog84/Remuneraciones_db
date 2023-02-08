@@ -3634,16 +3634,39 @@ public function editar_trabajador(){
 	}
 
 
-public function get_datos_licencia($mes,$anno,$idtrabajador){
+public function get_datos_licencia($mes,$anno,$idtrabajador = null){
 
-      $datos_licencia = $this->rrhh_model->get_licencia_medica($idtrabajador); 
-      $dias_licencia = 0;
-      foreach ($datos_licencia as $licencia) {
-         $dias_licencia = $dias_licencia + dias_mes_rango(substr($licencia->fec_inicio_reposo,0,10),substr($licencia->fin_reposo,0,10),$anno.str_pad($mes,2,"0",STR_PAD_LEFT));
+      $array_licencia = array();
+      if($idtrabajador){
+          $datos_licencia = $this->rrhh_model->get_licencia_medica($idtrabajador); 
+          $dias_licencia = 0;
+          foreach ($datos_licencia as $licencia) {
+             $dias_licencia = $dias_licencia + dias_mes_rango(substr($licencia->fec_inicio_reposo,0,10),substr($licencia->fin_reposo,0,10),$anno.str_pad($mes,2,"0",STR_PAD_LEFT));
 
+          }
+          $array_licencia['dias_licencia'][$idtrabajador] = $dias_licencia;
+
+      }else{
+
+          $dias_licencia = array();
+          $datos_licencia = $this->rrhh_model->get_licencia_medica();
+           foreach ($datos_licencia as $licencia) {
+             if(!isset($dias_licencia[$licencia->id_personal])){
+                $dias_licencia[$licencia->id_personal] = 0;
+             }
+
+             $dias_licencia[$licencia->id_personal] = $dias_licencia[$licencia->id_personal] + dias_mes_rango(substr($licencia->fec_inicio_reposo,0,10),substr($licencia->fin_reposo,0,10),$anno.str_pad($mes,2,"0",STR_PAD_LEFT));
+
+                $array_licencia['dias_licencia'][$licencia->id_personal] = $dias_licencia[$licencia->id_personal];
+
+          }
+
+          //$array_licencia[$idtrabajador]['dias_licencia'] = $dias_licencia;
+
+          //var_dump_new($array_licencia);
       }
-    $array_licencia['dias_licencia'] = $dias_licencia;
-    echo json_encode($array_licencia);
+
+      echo json_encode($array_licencia);
   } 
 
 
@@ -6044,6 +6067,9 @@ public function del_documento_colaborador($idtrabajador = null,$iddocumento = nu
 	public function get_colaboradores($centrocosto){
 
 			$personal = $this->rrhh_model->get_personal(null,$centrocosto);
+
+
+      
 			echo json_encode($personal);
 
 
