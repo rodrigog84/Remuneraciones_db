@@ -53,6 +53,75 @@
 
 									            </div>
 
+
+								            <div class="row">
+
+								                <div class="col-md-12">
+
+								                	<div class="panel panel-inverse">                       
+						                                <div class="panel-heading">
+						                                      <h4 class="panel-title">B&uacute;squeda Trabajador</h4>
+						                                  </div>
+
+
+						                                  	<div class="panel-body" >
+											  					<div class='row'>
+
+											                            <div class="col-md-7">
+											                                        <div class="form-group">
+											                                              <label for="password">Selecci&oacute;n Trabajador</label>    
+											                                               <!--select name="productodetalle" id="productodetalle" class="form-control" >
+											                                                <option value="">Seleccione Hora Bloque</option>
+											                                                </select-->
+											                                                <input type="text" name="trabajador" id="trabajador" class="form-control editables" onClick='this.select()'  placeholder="Ingrese Trabajador" />
+											                                                <!--small class="help-block" id="mje_cliente" style="color:red">&nbsp;</small-->
+											                                                <input type="hidden" name="idtrabajador" id="idtrabajador" class="form-control"  />
+											                                        </div> 
+
+											                                 
+											                              </div> 										                              
+
+
+											                            <div class="col-md-2">
+											                                        <div class="form-group">
+											                                              <label for="password">Horas 50%</label>    
+											                                               <!--select name="productodetalle" id="productodetalle" class="form-control" >
+											                                                <option value="">Seleccione Hora Bloque</option>
+											                                                </select-->
+											                                                <input type="text" name="general_horas50" id="general_horas50" class="form-control editables horas" onClick='this.select()'  placeholder="Ingrese Num Horas" />
+											                                        </div> 
+											                                 
+											                              </div>          
+
+											                            <div class="col-md-2">
+											                                        <div class="form-group">
+											                                              <label for="password">Horas 100%</label>    
+											                                               <!--select name="productodetalle" id="productodetalle" class="form-control" >
+											                                                <option value="">Seleccione Hora Bloque</option>
+											                                                </select-->
+											                                                <input type="text" name="general_horas100" id="general_horas100" class="form-control editables horas" onClick='this.select()'  placeholder="Ingrese Num Horas" />
+											                                        </div> 
+											                                 
+											                              </div>    											                                  
+											                              <div class="col-md-1">
+											                                          <div class="form-group">
+											                                               <label for="minutos">&nbsp;</label>
+											                                                <br>
+											                                                <button type="button" id='add_info_trabajador' class="btn btn-info align-self-end" title="Agregar"><i class="fa fa-plus fa-lg" aria-hidden="true"  role="button"></i></button>
+											                                                <input type="hidden" class="form-control " id="idlineadetalle" name="idlineadetalle" value='0'>
+											                                          </div> 
+
+											                                                
+											                                </div>
+
+											                    </div>
+											                </div>
+
+											             </div>
+											         </div>
+
+											     </div>
+
 									            <div class="row">
 
 									                <div class="col-md-12">
@@ -114,7 +183,7 @@
 											                                  <input type="hidden" name="montoactual50_<?php echo $trabajador->id_personal;?>" id="montoactual50_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $valorhora50; ?>"  />
 											                                </td>                                
 											                                <td class="form-group">
-											                                    <input type="text" name="horas50_<?php echo $trabajador->id_personal;?>" id="horas50_<?php echo $trabajador->id_personal;?>" class="horas50 horas miles_decimales numeros input-sm" value="<?php echo isset($datos_remuneracion['horasextras50'][$trabajador->id_personal]) ? str_replace(".",",",$datos_remuneracion['horasextras50'][$trabajador->id_personal]) : 0; ?>"  />   
+											                                    <input type="text" name="horas50_<?php echo $trabajador->id_personal;?>" id="horas50_<?php echo $trabajador->id_personal;?>" class="horas50 horas miles_decimales numeros input-sm editables" value="<?php echo isset($datos_remuneracion['horasextras50'][$trabajador->id_personal]) ? str_replace(".",",",$datos_remuneracion['horasextras50'][$trabajador->id_personal]) : 0; ?>"  />   
 											                                </td>
 											                                <td class="form-group">
 											                                  <input type="hidden" name="monto50_<?php echo $trabajador->id_personal;?>" class="monto50" id="monto50_<?php echo $trabajador->id_personal;?>" value="<?php echo isset($datos_remuneracion['horasextras50'][$trabajador->id_personal]) ? $datos_remuneracion['horasextras50'][$trabajador->id_personal]*$valorhora50 : 0; ?>"  />   
@@ -125,7 +194,7 @@
 											                                  <input type="hidden" name="montoactual100_<?php echo $trabajador->id_personal;?>" id="montoactual100_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $valorhora100; ?>"  />
 											                                </td>                                                                
 											                                <td class="form-group">
-											                                    <input type="text" name="horas100_<?php echo $trabajador->id_personal;?>" id="horas100_<?php echo $trabajador->id_personal;?>" class="horas100 horas miles_decimales numeros input-sm" value="<?php echo isset($datos_remuneracion['horasextras100'][$trabajador->id_personal]) ? str_replace(".",",",$datos_remuneracion['horasextras100'][$trabajador->id_personal]) : 0; ?>"  />   
+											                                    <input type="text" name="horas100_<?php echo $trabajador->id_personal;?>" id="horas100_<?php echo $trabajador->id_personal;?>" class="horas100 horas miles_decimales numeros input-sm editables" value="<?php echo isset($datos_remuneracion['horasextras100'][$trabajador->id_personal]) ? str_replace(".",",",$datos_remuneracion['horasextras100'][$trabajador->id_personal]) : 0; ?>"  />   
 											                                </td>
 											                                <td class="form-group">
 											                                  <input type="hidden" name="monto100_<?php echo $trabajador->id_personal;?>" class="monto100" id="monto100_<?php echo $trabajador->id_personal;?>" value="<?php echo isset($datos_remuneracion['horasextras100'][$trabajador->id_personal]) ? $datos_remuneracion['horasextras100'][$trabajador->id_personal]*$valorhora100 : 0; ?>"  />   
@@ -192,9 +261,9 @@ $('.periodo').change(function(){
         }});
 
       if(cerrado){
-        $('input').attr('readonly',true);
+        $('.editables').attr('readonly',true);
       }else{
-        $('input').attr('readonly',false);
+        $('.editables').attr('readonly',false);
       }
 
 
@@ -272,7 +341,7 @@ $(document).ready(function() {
         }});
 
       if(cerrado){
-        $('input').attr('readonly',true);
+        $('.editables').attr('readonly',true);
 
  		$.get("<?php echo base_url();?>rrhh/get_datos_remuneracion/"+$('#mes').val()+"/"+$('#anno').val(),function(data){
                  // Limpiamos el select
@@ -333,7 +402,7 @@ $(document).ready(function() {
                       $('#total_horas_100').html(number_format(total_horas_100,0,'.','.'));                   
         });        
       }else{
-        $('input').attr('readonly',false);
+        $('.editables').attr('readonly',false);
       }      
 
     $('#basicBootstrapForm').formValidation({
@@ -386,6 +455,91 @@ $(document).ready(function() {
 });
 
 
+
+$('#add_info_trabajador').on('click',function(){
+
+	add_info_trabajador();
+
+})
+
+function add_info_trabajador(){
+
+	var idtrabajador = $('#idtrabajador').val();
+	var horas50 = $('#general_horas50').val();
+	var horas100 = $('#general_horas100').val();
+	$('#horas50_'+idtrabajador).val(horas50);
+	$('#horas100_'+idtrabajador).val(horas100);
+
+	$('#horas50_' + idtrabajador).trigger('input');
+	$('#horas100_' + idtrabajador).trigger('input');
+
+	$('#trabajador').val('')
+	$('#general_horas50').val('');
+	$('#general_horas100').val(0);
+	$('#idtrabajador').val(0)
+
+}
+
+
+$('#trabajador').keypress(function(event){
+  var keycode = (event.keyCode ? event.keyCode : event.which);
+
+  if(keycode == '13'){
+    event.preventDefault();
+    $('#general_horas50').focus();
+  }
+});
+
+$('#general_horas50').keypress(function(event){
+  var keycode = (event.keyCode ? event.keyCode : event.which);
+
+  if(keycode == '13'){
+    event.preventDefault();
+    $('#general_horas100').focus();
+  }
+});
+
+
+$('#general_horas100').keypress(function(event){
+  var keycode = (event.keyCode ? event.keyCode : event.which);
+
+  if(keycode == '13'){
+    event.preventDefault();
+
+    add_info_trabajador()
+    $('#trabajador').focus();
+  }
+});
+
+
+
+var availableTagsTrabajadores = [
+<?php foreach ($personal as $trabajador) { ?>
+    {"label":"<?php echo $trabajador->rut.'-'.$trabajador->dv. ' | ' . trim(addslashes($trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno));?>","value":"<?php echo  $trabajador->rut.'-'.$trabajador->dv. ' | ' . trim(addslashes($trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno)); ?>", "id":<?php echo $trabajador->id_personal;?>},
+<?php } ?>
+];
+$('#trabajador').autocomplete({
+    source: availableTagsTrabajadores,
+    select: function (event, ui) {  selecciona_trabajador(ui.item.id,ui.item.value); }
+}); 
+
+
+	function selecciona_trabajador(item_sel,item_value){
+
+
+		$('#general_horas50').focus();
+		$('#general_horas50').val($('#horas50_'+item_sel).val())
+		$('#general_horas100').val($('#horas100_'+item_sel).val())
+
+
+		$('#idtrabajador').val(item_sel);
+
+		//console.log('aaaa')
+	}
+
+
+
+
   function replaceAll( text, busca, reemplaza ){
   while (text.toString().indexOf(busca) != -1)
       text = text.toString().replace(busca,reemplaza);
@@ -409,7 +563,7 @@ $(".horas50").on('input',function(event){
     var total_horas_50 = 0;
     $(".monto50").each(
         function(index,value){
-          total_horas_50 += parseFloat($(this).val());
+          total_horas_50 += parseFloat(replaceAll($(this).val(),'.',''));
         }
         
     );   
@@ -432,7 +586,7 @@ $(".horas100").on('input',function(event){
     var total_horas_100 = 0;
     $(".monto100").each(
         function(index,value){
-          total_horas_100 += parseFloat($(this).val());
+          total_horas_100 += parseFloat(replaceAll($(this).val(),'.',''));
         }
         
     );  
