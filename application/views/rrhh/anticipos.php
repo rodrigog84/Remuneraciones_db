@@ -50,6 +50,82 @@
                               </div>   
 
 
+                            <div class="row">
+
+                                <div class="col-md-12">
+
+                                  <div class="panel panel-inverse">                       
+                                            <div class="panel-heading">
+                                                  <h4 class="panel-title">B&uacute;squeda Trabajador</h4>
+                                              </div>
+
+
+                                                <div class="panel-body" >
+                                  <div class='row'>
+
+                                                  <div class="col-md-5">
+                                                              <div class="form-group">
+                                                                    <label for="password">Selecci&oacute;n Trabajador</label>    
+                                                                     <!--select name="productodetalle" id="productodetalle" class="form-control" >
+                                                                      <option value="">Seleccione Hora Bloque</option>
+                                                                      </select-->
+                                                                      <input type="text" name="trabajador" id="trabajador" class="form-control editables" onClick='this.select()'  placeholder="Ingrese Trabajador" />
+                                                                      <!--small class="help-block" id="mje_cliente" style="color:red">&nbsp;</small-->
+                                                                      <input type="hidden" name="idtrabajador" id="idtrabajador" class="form-control"  />
+                                                              </div> 
+
+                                                       
+                                                    </div>                                                  
+
+                                                  <div class="col-md-2">
+                                                              <div class="form-group">
+                                                                    <label for="password">Sueldo Base</label>    
+                                                                     <!--select name="productodetalle" id="productodetalle" class="form-control" >
+                                                                      <option value="">Seleccione Hora Bloque</option>
+                                                                      </select-->
+                                                                      <input type="text" name="general_sueldobase" id="general_sueldobase" class="form-control " onClick='this.select()'  placeholder="Ingrese Anticipo" readonly />
+                                                              </div> 
+                                                       
+                                                    </div> 
+                                                  <div class="col-md-2">
+                                                              <div class="form-group">
+                                                                    <label for="password">Anticipo</label>    
+                                                                     <!--select name="productodetalle" id="productodetalle" class="form-control" >
+                                                                      <option value="">Seleccione Hora Bloque</option>
+                                                                      </select-->
+                                                                      <input type="text" name="general_anticipo" id="general_anticipo" class="form-control editables miles" onClick='this.select()'  placeholder="Ingrese Anticipo" />
+                                                              </div> 
+                                                       
+                                                    </div>          
+
+                                                  <div class="col-md-2">
+                                                              <div class="form-group">
+                                                                    <label for="password">Aguinaldo</label>    
+                                                                     <!--select name="productodetalle" id="productodetalle" class="form-control" >
+                                                                      <option value="">Seleccione Hora Bloque</option>
+                                                                      </select-->
+                                                                      <input type="text" name="general_aguinaldo" id="general_aguinaldo" class="form-control editables miles aguinaldo" onClick='this.select()'  placeholder="Ingrese Aguinaldo" />
+                                                              </div> 
+                                                       
+                                                    </div>                                                            
+                                                    <div class="col-md-1">
+                                                                <div class="form-group">
+                                                                     <label for="minutos">&nbsp;</label>
+                                                                      <br>
+                                                                      <button type="button" id='add_info_trabajador' class="btn btn-info align-self-end" title="Agregar"><i class="fa fa-plus fa-lg" aria-hidden="true"  role="button"></i></button>
+                                                                      <input type="hidden" class="form-control " id="idlineadetalle" name="idlineadetalle" value='0'>
+                                                                </div> 
+
+                                                                      
+                                                      </div>
+
+                                          </div>
+                                      </div>
+
+                                   </div>
+                               </div>
+
+                           </div>
             <div class="row">
 
                 <div class="col-md-12">
@@ -87,10 +163,10 @@
                                   <input type="hidden" name="sueldobase_<?php echo $trabajador->id_personal;?>" id="sueldobase_<?php echo $trabajador->id_personal;?>"  value="<?php echo $trabajador->sueldobase; ?>"  />
                                 </td>
                                 <td class="form-group">
-                                    <input type="text" name="anticipo_<?php echo $trabajador->id_personal;?>" id="anticipo_<?php echo $trabajador->id_personal;?>" class="anticipo miles" value="<?php echo isset($datos_remuneracion['anticipo'][$trabajador->id_personal]) ? $datos_remuneracion['anticipo'][$trabajador->id_personal] : 0; ?>"  />   
+                                    <input type="text" name="anticipo_<?php echo $trabajador->id_personal;?>" id="anticipo_<?php echo $trabajador->id_personal;?>" class="anticipo miles editables" value="<?php echo isset($datos_remuneracion['anticipo'][$trabajador->id_personal]) ? $datos_remuneracion['anticipo'][$trabajador->id_personal] : 0; ?>"  />   
                                 </td>
                                 <td class="form-group">
-                                    <input type="text" name="aguinaldo_<?php echo $trabajador->id_personal;?>" id="aguinaldo_<?php echo $trabajador->id_personal;?>" class="aguinaldo miles" value="<?php echo isset($datos_remuneracion['aguinaldo'][$trabajador->id_personal]) ? $datos_remuneracion['aguinaldo'][$trabajador->id_personal] : 0; ?>"  />   
+                                    <input type="text" name="aguinaldo_<?php echo $trabajador->id_personal;?>" id="aguinaldo_<?php echo $trabajador->id_personal;?>" class="aguinaldo miles editables" value="<?php echo isset($datos_remuneracion['aguinaldo'][$trabajador->id_personal]) ? $datos_remuneracion['aguinaldo'][$trabajador->id_personal] : 0; ?>"  />   
                                 </td>                                
                               </tr>
                               <?php $i++;?>
@@ -129,6 +205,97 @@
 
 <script>
 
+
+
+
+$('#add_info_trabajador').on('click',function(){
+
+  add_info_trabajador();
+
+})
+
+function add_info_trabajador(){
+
+  var idtrabajador = $('#idtrabajador').val();
+  var anticipo = $('#general_anticipo').val();
+  var aguinaldo = $('#general_aguinaldo').val();
+  $('#anticipo_'+idtrabajador).val(anticipo);
+  $('#aguinaldo_'+idtrabajador).val(aguinaldo);
+
+  $('#anticipo_' + idtrabajador).trigger('input');
+  $('#aguinaldo_' + idtrabajador).trigger('input');
+
+  $('#trabajador').val('')
+  $('#general_anticipo').val('');
+  $('#general_aguinaldo').val('');
+  $('#idtrabajador').val(0)
+
+}
+
+
+$('#trabajador').keypress(function(event){
+  var keycode = (event.keyCode ? event.keyCode : event.which);
+
+  if(keycode == '13'){
+    event.preventDefault();
+    $('#general_anticipo').focus();
+  }
+});
+
+$('#general_anticipo').keypress(function(event){
+  var keycode = (event.keyCode ? event.keyCode : event.which);
+
+  if(keycode == '13'){
+    event.preventDefault();
+    $('#general_aguinaldo').focus();
+  }
+});
+
+
+$('#general_aguinaldo').keypress(function(event){
+  var keycode = (event.keyCode ? event.keyCode : event.which);
+
+  if(keycode == '13'){
+    event.preventDefault();
+
+    add_info_trabajador()
+    $('#trabajador').focus();
+  }
+});
+
+
+
+var availableTagsTrabajadores = [
+<?php foreach ($personal as $trabajador) { ?>
+    {"label":"<?php echo $trabajador->rut.'-'.$trabajador->dv. ' | ' . trim(addslashes($trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno));?>","value":"<?php echo  $trabajador->rut.'-'.$trabajador->dv. ' | ' . trim(addslashes($trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno)); ?>", "id":<?php echo $trabajador->id_personal;?>},
+<?php } ?>
+];
+$('#trabajador').autocomplete({
+    source: availableTagsTrabajadores,
+    select: function (event, ui) {  selecciona_trabajador(ui.item.id,ui.item.value); }
+}); 
+
+
+  function selecciona_trabajador(item_sel,item_value){
+
+
+    $('#general_anticipo').focus();
+    $('#general_sueldobase').val(number_format($('#sueldobase_'+item_sel).val(),0,'.','.'))
+    $('#general_anticipo').val($('#anticipo_'+item_sel).val())
+    $('#general_aguinaldo').val($('#aguinaldo_'+item_sel).val())
+
+
+    $('#idtrabajador').val(item_sel);
+
+    //console.log('aaaa')
+  }
+
+
+
+
+
+
+
 $('.periodo').change(function(){
     $('#basicBootstrapForm').formValidation('revalidateField', 'anno');
       var cerrado = false;
@@ -145,9 +312,9 @@ $('.periodo').change(function(){
 
 
         if(cerrado){
-          $('input').attr('readonly',true);
+          $('.editables').attr('readonly',true);
         }else{
-          $('input').attr('readonly',false);
+          $('.editables').attr('readonly',false);
         }
  
 
@@ -178,6 +345,12 @@ $('.periodo').change(function(){
       
 });
 
+  function replaceAll( text, busca, reemplaza ){
+  while (text.toString().indexOf(busca) != -1)
+      text = text.toString().replace(busca,reemplaza);
+  return text;
+}
+
 
 $(document).ready(function() {
 
@@ -194,9 +367,9 @@ $(document).ready(function() {
         }});
 
         if(cerrado){
-          $('input').attr('readonly',true);
+          $('.editables').attr('readonly',true);
         }else{
-          $('input').attr('readonly',false);
+          $('.editables').attr('readonly',false);
         }
 
     $('#basicBootstrapForm').formValidation({
@@ -255,6 +428,35 @@ $(document).ready(function() {
                 },
 
             },
+            general_anticipo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Informaci&oacute;n de Anticipo es requerida'
+                    },
+                    callback: {
+                        message: 'Anticipo debe ser menor a sueldo base',
+                        callback: function (value, validator, $field) {
+                            var id_text = $field.attr('id');
+                            var array_field = id_text.split("_");
+                            idtrabajador = array_field[1];
+                            var sueldobase = $('#general_sueldobase').val() == '' ? 0 : parseInt(parseInt(replaceAll($('#general_sueldobase').val(),".","")));
+                            var anticipo = $('#general_anticipo').val() == '' ? 0 : parseInt(replaceAll($('#general_anticipo').val(),".",""));
+
+                            if(anticipo < sueldobase){
+                              return true;
+                            }else{
+                              return  {
+                                    valid: false,
+                                    message: 'Anticipo debe ser menor a sueldo base'
+                                }
+                            }
+                        }
+                    }                   
+
+                },
+
+            },            
             anno: {
                 row: '.form-group',
                 validators: {

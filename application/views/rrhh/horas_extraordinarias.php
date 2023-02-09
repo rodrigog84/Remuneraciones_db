@@ -88,7 +88,7 @@
 											                                               <!--select name="productodetalle" id="productodetalle" class="form-control" >
 											                                                <option value="">Seleccione Hora Bloque</option>
 											                                                </select-->
-											                                                <input type="text" name="general_horas50" id="general_horas50" class="form-control editables horas" onClick='this.select()'  placeholder="Ingrese Num Horas" />
+											                                                <input type="text" name="general_horas50" id="general_horas50" class="form-control editables horas miles_decimales numeros " onClick='this.select()'  placeholder="Ingrese Num Horas" />
 											                                        </div> 
 											                                 
 											                              </div>          
@@ -99,7 +99,7 @@
 											                                               <!--select name="productodetalle" id="productodetalle" class="form-control" >
 											                                                <option value="">Seleccione Hora Bloque</option>
 											                                                </select-->
-											                                                <input type="text" name="general_horas100" id="general_horas100" class="form-control editables horas" onClick='this.select()'  placeholder="Ingrese Num Horas" />
+											                                                <input type="text" name="general_horas100" id="general_horas100" class="form-control editables horas miles_decimales numeros " onClick='this.select()'  placeholder="Ingrese Num Horas" />
 											                                        </div> 
 											                                 
 											                              </div>    											                                  
@@ -475,7 +475,7 @@ function add_info_trabajador(){
 
 	$('#trabajador').val('')
 	$('#general_horas50').val('');
-	$('#general_horas100').val(0);
+	$('#general_horas100').val('');
 	$('#idtrabajador').val(0)
 
 }
