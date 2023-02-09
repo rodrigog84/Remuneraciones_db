@@ -45,5 +45,12 @@ define('TURBOSMTP_PASS',		'P6nLKAvx');
 define('API_KEY_MAIL',		'f5776220de8b10e443dd3b62655db60ef33ac16bfd79b0b25aa3a2a9d469716a-OAP4s3I0KraSbwp2');
 define('ENVIO_MAIL',		TRUE);
 
+
+
+define('PORCT_FONASA',		0.039); //3.9%
+define('PORCT_INP',		0.031); //3.1%
+
+
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
