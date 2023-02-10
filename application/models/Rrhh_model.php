@@ -1252,7 +1252,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$personal_data = $this->db->select($array_campos)
 						  ->from('rem_personal p')
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
-						  ->where('p.active is not null')
+						  //->where('p.active is not null')
+						  ->where('p.active',1)
 						 // ->where_in('idcentrocosto',$centro_costo)
 		                  ->order_by('p.nombre');
 		$personal_data = is_null($rut) ? $personal_data : $personal_data->where('p.rut',$rut);

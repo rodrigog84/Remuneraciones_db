@@ -59,7 +59,7 @@
 																		<tr class="active" id="variable">
 											                              <td><small><?php echo $i ;?></small></td>
 	                              										  <td><small><?php echo $trabajador->apaterno." ".$trabajador->amaterno." ".$trabajador->nombre;?></small></td>
-	                                									  <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
+	                                									  <td><small><?php echo $trabajador->rut == '' ? '' : $trabajador->rut."-".$trabajador->dv;?></small></td>
 	                                									  <td><small><?php echo $trabajador->active == 1 ? "Activo" : "Inactivo";?></small></td>
 																		<td><small>
 											                              	<center>
@@ -131,7 +131,7 @@
 																		<tr class="active" id="variable">
 											                              <td><small><?php echo $i ;?></small></td>
 	                              										  <td><small><?php echo $trabajador->apaterno." ".$trabajador->amaterno." ".$trabajador->nombre;?></small></td>
-	                                									  <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
+	                                									  <td><small><?php echo $trabajador->rut == '' ? '' : $trabajador->rut."-".$trabajador->dv;?></small></td>
 	                              										  <!--td><small><?php echo $trabajador->nombre_cargo;?></small></td-->
 	                              										   <!--td><small><?php echo $trabajador->centro_costo;?></small></td-->
 	                              										   <td><small>
@@ -211,7 +211,7 @@
 
 									                             <tr>
 									                              <td><small><?php echo $i ;?></small></td>
-									                              <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
+									                              <td><small><?php echo $trabajador->rut == '' ? '' : $trabajador->rut."-".$trabajador->dv;?></small></td>
 									                              <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
 									                              <td>
 									                              		<div class="form-group">
@@ -321,7 +321,7 @@
 
 								                             <tr>
 								                              <td><small><?php echo $i ;?></small></td>
-								                              <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
+								                              <td><small><?php echo $trabajador->rut == '' ? '' : $trabajador->rut."-".$trabajador->dv;?></small></td>
 								                              <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
 								                              <td>
 								                              	<div class="form-group">
@@ -425,7 +425,7 @@
 
 								                             <tr >
 								                              <td><?php echo $i ;?></td>
-								                              <td><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></td>
+								                              <td><?php echo $trabajador->rut == '' ? '' : $trabajador->rut."-".$trabajador->dv;?></td>
 								                              <td><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></td>
 								                              <td class="form-group">
 								                                <select name="isapre_<?php echo $trabajador->id_personal;?>" id="isapre_<?php echo $trabajador->id_personal;?>"  class="form-control isapre_list"  >

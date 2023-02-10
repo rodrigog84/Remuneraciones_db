@@ -410,7 +410,7 @@
     <!-- end #page-loader -->
 
     <!-- begin #page-container -->
-    <div id="page-container" class="page-container fade page-sidebar-fixed page-header-fixed">
+    <div id="page-container" class="page-container fade page-sidebar-fixed in page-sidebar-minified">
         <!-- begin #header -->
         <div id="header" class="header navbar navbar-default navbar-fixed-top navbar-inverse" style="height: 50px;">
             <!-- begin container-fluid -->

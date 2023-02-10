@@ -334,3 +334,32 @@ select		'UTM' as nombre
 			,fecha
 from		rem_calendario
 where		periodo = 202301
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'UTM' as nombre
+			,61954 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202302
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'UTM' as nombre
+			,62450 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202303
