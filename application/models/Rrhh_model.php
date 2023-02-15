@@ -289,6 +289,22 @@ public function desactivar_personal($rut){
 
 }
 
+
+
+public function actualiza_datos_colaborador($idpersonal,$valor,$parametro){
+
+		$this->db->trans_start();
+			
+		$this->db->where('id_personal', $idpersonal);
+		$this->db->where('id_empresa', $this->session->userdata('empresaid'));
+		$this->db->update('rem_personal',array($parametro => $valor)); 
+		
+		$this->db->trans_complete();
+
+		return 1;
+}
+
+
 public function activar_personal($rut){
 
 		$this->db->trans_start();

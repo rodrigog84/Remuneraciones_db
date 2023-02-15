@@ -112,7 +112,7 @@
 
 														  	
 															<div class="tables">
-																<table id="listado" class="table"> 
+																<table id="listado_cargos" class="table"> 
 																	<thead> 
 																		<tr>
 																			<th>#</th>
@@ -135,7 +135,7 @@
 	                              										  <!--td><small><?php echo $trabajador->nombre_cargo;?></small></td-->
 	                              										   <!--td><small><?php echo $trabajador->centro_costo;?></small></td-->
 	                              										   <td><small>
-																			<select name="cargo_<?php echo $trabajador->id_personal;?>" id="cargo_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm"  >
+																			<select name="cargo_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>"  data-tipodato="idcargo" id="cargo_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm dato_actualiza_select"  >
 											                                  <option value="">Seleccione un Cargo</option>
 											                                  <?php foreach ($cargos as $cargo) { ?>
 											                                      <?php if($cargo->idpadre != $label_cargo){
@@ -157,7 +157,7 @@
 											                              </select>
 	                              										   </small></td>
 	                              										   <td><small>
-																				<select name="centrocosto_<?php echo $trabajador->id_personal;?>" id="centrocosto_<?php echo $trabajador->id_personal;?>" class="form-control input-sm">
+																				<select name="centrocosto_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>" data-tipodato="idcentrocosto" id="centrocosto_<?php echo $trabajador->id_personal;?>" class="form-control input-sm dato_actualiza_select">
 																					<option value="">Seleccione Centro Costo</option>
 										                                    		<?php foreach ($centros_costo as $centro_costo) { ?>
 												                                      <?php $centrocostoselected = $centro_costo->id_centro_costo == $trabajador->idcentrocosto ? "selected" : ""; ?>
@@ -174,7 +174,7 @@
 																		
 																	</tbody> 
 																</table> 
-																 <button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>" >Guardar</button>&nbsp;&nbsp
+																 <!--button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>" >Guardar</button-->&nbsp;&nbsp
 															</div>
 
 															</section>
@@ -218,7 +218,7 @@
 									                                <?php $exregimen_afp = ""; ?>
 									                                <?php $porc_afp = 0; ?>
 
-									                                <select name="afp_<?php echo $trabajador->id_personal;?>" id="afp_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm afp_list"  >
+									                                <select name="afp_<?php echo $trabajador->id_personal;?>"  data-idpersonal="<?php echo $trabajador->id_personal;?>" id="afp_<?php echo $trabajador->id_personal;?>" data-tipodato="idafp" class="form-control input-sm afp_list dato_actualiza_select"  >
 									                                    <option value="">Seleccione AFP</option>
 									                                    <?php foreach ($afps as $afp) { ?>
 									                                        <?php if($afp->exregimen != $exregimen_afp){
@@ -251,13 +251,13 @@
 									                              <td class="text-right" ><b><span id="cotobligatoria_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo $porc_afp;?>&nbsp;%</span></b></td>
 									                              <td>
 									                              	<div class="form-group">
-									                                	<input type="text" name="cotadic_<?php echo $trabajador->id_personal;?>" id="cotadic_<?php echo $trabajador->id_personal;?>" class="form-control input-sm cot_adic" value="<?php echo $trabajador->adicafp; ?>"  size="3" />  
+									                                	<input type="text" name="cotadic_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>" data-tipodato="adicafp"  id="cotadic_<?php echo $trabajador->id_personal;?>" class="form-control input-sm cot_adic dato_actualiza_input numeros" value="<?php echo $trabajador->adicafp; ?>"  size="3" />  
 									                                </div> 
 									                           	  </td>
 									                          		
 									                              <td>
 									                              	<div class="form-group">
-									                                <select name="tipcotvol_<?php echo $trabajador->id_personal;?>" id="tipcotvol_<?php echo $trabajador->id_personal;?>" class="form-control  input-sm tipcotvol_list"  >
+									                                <select name="tipcotvol_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>" data-tipodato="tipoahorrovol"  id="tipcotvol_<?php echo $trabajador->id_personal;?>" class="form-control  input-sm tipcotvol_list dato_actualiza_select"  >
 									                                <option value="pesos" <?php echo $trabajador->tipoahorrovol == 'pesos' ? 'selected' : ''; ?> >($) Pesos</option>
 									                                <option value="porcentaje" <?php echo $trabajador->tipoahorrovol == 'porcentaje' ? 'selected' : ''; ?>>(%) Porcentaje</option>
 									                                </select>
@@ -275,7 +275,7 @@
 									                                        $class1 = "";
 									                                        $class2 = "cot_vol";
 									                                        } ?>
-									                                <input type="text" name="cotvol_<?php echo $trabajador->id_personal;?>" id="cotvol_<?php echo $trabajador->id_personal;?>" class="form-control <?php echo $class1." ".$class2; ?> input-sm numeros" value="<?php echo $ahorrovol; ?>"  size="6" />   
+									                                <input type="text" name="cotvol_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>"  data-tipodato="ahorrovol" id="cotvol_<?php echo $trabajador->id_personal;?>" class="form-control <?php echo $class1." ".$class2; ?> input-sm numeros ahorro_vol dato_actualiza_input" value="<?php echo $ahorrovol; ?>"  size="6" />   
 									                            </div>
 									                              </td>
 									                            </tr>
@@ -289,7 +289,7 @@
 									                        </tbody>
 									                        </table>
 
-									                        <button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>" >Guardar</button>&nbsp;&nbsp;
+									                        <!--button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>" >Guardar</button-->&nbsp;&nbsp;
 									                    </section>    
 									                    </form>                  
 									                  </div> 		
@@ -325,7 +325,7 @@
 								                              <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
 								                              <td>
 								                              	<div class="form-group">
-								                                	<select style="width: 100%;" name="instapv_<?php echo $trabajador->id_personal;?>" id="instapv_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm dapv_list"  >
+								                                	<select style="width: 100%;" name="instapv_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>" data-tipodato="instapv" id="instapv_<?php echo $trabajador->id_personal;?>"  class="form-control input-sm dapv_list dato_actualiza_select"  >
 								                                    <option value="">Seleccione Instituci&oacute;n</option>
 								                                    <?php foreach ($apvs as $dapv) { ?>
 								                                          <?php $apvselected = $dapv->id_apv == $trabajador->instapv ? "selected" : ""; ?>
@@ -337,13 +337,13 @@
 								                              </td>  
 								                              <td>
 								                              	<div class="form-group ">
-								                                		<input type="text" name="nrocontratoapv_<?php echo $trabajador->id_personal;?>" id="nrocontratoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros nrocontratoapv" width="15px" value="<?php echo $trabajador->nrocontratoapv; ?>"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> size="3"/>   
+								                                		<input type="text" name="nrocontratoapv_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>" data-tipodato="nrocontratoapv" id="nrocontratoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros nrocontratoapv dato_actualiza_input" width="15px" value="<?php echo $trabajador->nrocontratoapv; ?>"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> size="3"/>   
 								                              	</div>
 								                              </td>
 
 								                              <td>
 								                              	<div class="form-group">
-								                                	<select name="tipoapv_<?php echo $trabajador->id_personal;?>" id="tipoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm apv_list"  <?php echo is_null($trabajador->instapv)|| $trabajador->instapv == 0  ? 'disabled' : ''; ?> >
+								                                	<select name="tipoapv_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>" id="tipoapv_<?php echo $trabajador->id_personal;?>" data-tipodato="tipocotapv"   class="form-control input-sm apv_list dato_actualiza_select"  <?php echo is_null($trabajador->instapv)|| $trabajador->instapv == 0  ? 'disabled' : ''; ?> >
 								                                	<option value="pesos" <?php echo $trabajador->tipocotapv == 'pesos' ? 'selected' : ''; ?>>($) Pesos</option>
 								                                	<option value="uf" <?php echo $trabajador->tipocotapv == 'uf' ? 'selected' : ''; ?> >U.F.</option>
 								                                	<option value="porcentaje" <?php echo $trabajador->tipocotapv == 'porcentaje' ? 'selected' : ''; ?>>(%) Porc.</option>
@@ -365,12 +365,12 @@
 								                                        $class1 = "";
 								                                        $class2 = "";                                        
 								                                        } ?>                              
-								                                <input type="text" name="apv_<?php echo $trabajador->id_personal;?>" id="apv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm numeros cot_apv <?php echo $class1." ".$class2; ?>" value="<?php echo $cotapv; ?>" <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0  ? 'disabled' : ''; ?> size="6" />   
+								                                <input type="text" name="apv_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>" id="apv_<?php echo $trabajador->id_personal;?>" data-tipodato="cotapv" class="form-control input-sm cot_apv <?php echo $class1." ".$class2; ?> dato_actualiza_input" value="<?php echo $cotapv; ?>" <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0  ? 'disabled' : ''; ?> size="6" />   
 								                              </div>
 								                              </td>  
 								                              <td>
 								                              	<div class="form-group">
-								                                <select name="formapagoapv_<?php echo $trabajador->id_personal;?>" id="formapagoapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> >
+								                                <select name="formapagoapv_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>" id="formapagoapv_<?php echo $trabajador->id_personal;?>" data-tipodato="formapagoapv"   class="form-control input-sm dato_actualiza_select"  <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0 ? 'disabled' : ''; ?> >
 								                                <option value="1" <?php echo is_null($trabajador->formapagoapv) || $trabajador->formapagoapv == 1 ? 'selected' : ''; ?> >Directa</option>
 								                                <option value="2" <?php echo $trabajador->formapagoapv == 2 ? 'selected' : ''; ?> >Indirecta</option>
 								                                </select>                              
@@ -379,7 +379,7 @@
 								                              <td>
 								                              	<div class="form-group">
 								                              <?php $depconvapv = is_null($trabajador->depconvapv) ? 0 : number_format($trabajador->depconvapv,0,".","."); ?>
-								                                <input type="text" name="depconvapv_<?php echo $trabajador->id_personal;?>" id="depconvapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm miles depconvapv" value="<?php echo $depconvapv; ?>" <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0  ? 'disabled' : ''; ?> size="6" />   
+								                                <input type="text" name="depconvapv_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>" data-tipodato="depconvapv"  id="depconvapv_<?php echo $trabajador->id_personal;?>" class="form-control input-sm miles depconvapv dato_actualiza_input" value="<?php echo $depconvapv; ?>" <?php echo is_null($trabajador->instapv) || $trabajador->instapv == 0  ? 'disabled' : ''; ?> size="6" />   
 								                              </div>
 								                              </td>                                                      
 								                            </tr>
@@ -393,7 +393,7 @@
 								                        </tbody>
 								                        </table>
 
-								                        <button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>" >Guardar</button>&nbsp;&nbsp;
+								                        <!--button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>" >Guardar</button-->&nbsp;&nbsp;
 								                    </section>    
 								                    </form>                  
 								                  </div>									                  												
@@ -428,7 +428,7 @@
 								                              <td><?php echo $trabajador->rut == '' ? '' : $trabajador->rut."-".$trabajador->dv;?></td>
 								                              <td><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></td>
 								                              <td class="form-group">
-								                                <select name="isapre_<?php echo $trabajador->id_personal;?>" id="isapre_<?php echo $trabajador->id_personal;?>"  class="form-control isapre_list"  >
+								                                <select name="isapre_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>"  id="isapre_<?php echo $trabajador->id_personal;?>" data-tipodato="idisapre"  class="form-control isapre_list dato_actualiza_select"  >
 								                                    <option value="">Seleccione Instituci&oacute;n</option>
 								                                    <?php foreach ($isapres as $isapre) { ?>
 								                                      <?php $isapreselected = $isapre->id_isapre == $trabajador->idisapre ? "selected" : ""; ?>
@@ -439,7 +439,7 @@
 								                              <td>$&nbsp;<?php echo number_format($trabajador->sueldobase,0,".",".");?></td>
 								                              <td>$&nbsp;<?php echo number_format((int)$trabajador->sueldobase*0.07,0,".",".");?></td>
 								                              <td class="form-group">
-								                              	<input type="text" name="pactado_<?php echo $trabajador->id_personal;?>" id="pactado_<?php echo $trabajador->id_personal;?>" class="form-control valor_pactado miles_decimales_isapre" value="<?php echo !is_null($trabajador->valorpactado) && $trabajador->valorpactado != 0 ? number_format($trabajador->valorpactado,4,",","") : ""; ?>" <?php echo is_null($trabajador->idisapre) || $trabajador->idisapre == 1 || $trabajador->idisapre == 0 ? "disabled" : ""; ?>  size="6" />
+								                              	<input type="text" name="pactado_<?php echo $trabajador->id_personal;?>"  data-idpersonal="<?php echo $trabajador->id_personal;?>" data-tipodato="valorpactado"  id="pactado_<?php echo $trabajador->id_personal;?>" class="form-control valor_pactado miles_decimales_isapre dato_actualiza_input" value="<?php echo !is_null($trabajador->valorpactado) && $trabajador->valorpactado != 0 ? number_format($trabajador->valorpactado,4,",","") : ""; ?>" <?php echo is_null($trabajador->idisapre) || $trabajador->idisapre == 1 || $trabajador->idisapre == 0 ? "disabled" : ""; ?>  size="6" />
 								                              </td>
 								                              <!--td><b><span id="valorplan_<?php echo $trabajador->id;?>"  class="text-right input-sm" >$&nbsp;0</span></b></td>
 								                              <td><b><span id="montodescuento_<?php echo $trabajador->id;?>"  class="text-right input-sm" >$&nbsp;0</span></b></td-->
@@ -454,7 +454,7 @@
 								                        </tbody>
 								                        </table>
 
-								                        <button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>">Guardar</button>&nbsp;&nbsp;
+								                        <!--button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>">Guardar</button-->&nbsp;&nbsp;
 								                    </section>    
 								                    </form>  
 								                  </div>   
@@ -474,8 +474,236 @@
 <script>
 
 
+$('.dato_actualiza_select').on('change',function(){
+
+	var idpersonal = $(this).data('idpersonal');
+	var tipodato = $(this).data('tipodato');
+	var valor = $(this).val()
+
+
+          $.ajax({
+              type: "POST",
+              url: '<?php echo base_url();?>rrhh/actualiza_datos_colaborador/',
+              dataType: 'json',
+              data : {
+                      "idpersonal": idpersonal,
+                      "valor": valor,
+                      "parametro" : tipodato
+                    },
+              async: false,
+          }).success(function(data) {
+
+            
+            console.log(data);
+
+          }); 
+
+})
+
+
+$('.ahorro_vol').on('input',function(){
+
+	idpersonal = $(this).data('idpersonal');
+
+
+	if($('#tipcotvol_'+idpersonal).val() == 'porcentaje' && parseFloat($(this).val()) > 100){
+
+		$(this).val(100);
+	}
+
+	if($('#tipcotvol_'+idpersonal).val() == 'porcentaje'){
+
+
+			var str = $(this).val();
+			var ch = '.';
+			 
+			var count = str.split(ch).length - 1;
+			if(count > 1){
+				$(this).val(0)
+			}
+
+	}
+
+})
+
+
+$('.cot_apv').on('input',function(){
+
+	idpersonal = $(this).data('idpersonal');
+
+
+	if($('#tipoapv_'+idpersonal).val() == 'porcentaje' && parseFloat($(this).val()) > 100){
+
+		$(this).val(100);
+	}
+
+	if($('#tipoapv_'+idpersonal).val() == 'porcentaje'){
+
+
+			var str = $(this).val();
+			var ch = '.';
+			 
+			var count = str.split(ch).length - 1;
+			if(count > 1){
+				$(this).val(0)
+			}
+
+	}
+
+	if($('#tipoapv_'+idpersonal).val() == 'porcentaje'){
+
+
+			var str = $(this).val();
+			var ch = ',';
+			 
+			var count = str.split(ch).length - 1;
+			if(count >= 1){
+				$(this).val(0)
+			}
+
+	}
+
+	if($('#tipoapv_'+idpersonal).val() == 'uf'){
+
+
+			var str = $(this).val();
+			var ch = ',';
+			 
+			var count = str.split(ch).length - 1;
+			if(count > 1){
+				$(this).val(0)
+			}
+
+	}
+
+
+	if($('#tipoapv_'+idpersonal).val() == 'uf'){
+
+
+			var str = $(this).val();
+			var ch = '.';
+			 
+			var count = str.split(ch).length - 1;
+			if(count >= 1){
+				$(this).val(0)
+			}
+
+	}	
+
+
+})
+
+
+
+
+
+
+$('.valor_pactado').on('input',function(){
+
+	var str = $(this).val();
+	var ch = ',';
+	 
+	var count = str.split(ch).length - 1;
+	if(count > 1){
+		$(this).val(0)
+	}
+
+
+})
+
+
+
+
+$('.cot_adic').on('input',function(){
+
+	if(parseFloat($(this).val()) > 100){
+
+		$(this).val(100);
+	}
+
+	var str = $(this).val();
+	var ch = '.';
+	 
+	var count = str.split(ch).length - 1;
+	if(count > 1){
+		$(this).val(0)
+	}
+
+
+})
+
+  function replaceAll( text, busca, reemplaza ){
+    
+    while (text.toString().indexOf(busca) != -1)
+        text = text.toString().replace(busca,reemplaza);
+    return text;
+  }
+
+
+
+
+$('.dato_actualiza_input').on('input',function(){
+
+	var idpersonal = $(this).data('idpersonal');
+	var tipodato = $(this).data('tipodato');
+	var valor = $(this).val()
+
+
+	if(tipodato == 'ahorrovol' && $('#tipcotvol_'+idpersonal).val() == 'pesos'){
+
+		valor = replaceAll(valor,".","");
+	}
+
+
+
+	if(tipodato == 'valorpactado'){
+
+		valor = replaceAll(valor,",",".");
+	}
+
+
+	if(tipodato == 'depconvapv'){
+
+		valor = replaceAll(valor,".","");
+	}	
+
+
+	if(tipodato == 'cotapv' && $('#tipoapv_'+idpersonal).val() == 'pesos'){
+
+		valor = replaceAll(valor,".","");
+	}
+
+	console.log(tipodato)
+	console.log(valor)
+
+	if(tipodato == 'cotapv' && $('#tipoapv_'+idpersonal).val() == 'uf'){
+
+		valor = replaceAll(valor,",",".");
+	}
+
+
+          $.ajax({
+              type: "POST",
+              url: '<?php echo base_url();?>rrhh/actualiza_datos_colaborador/',
+              dataType: 'json',
+              data : {
+                      "idpersonal": idpersonal,
+                      "valor": valor,
+                      "parametro" : tipodato
+                    },
+              async: false,
+          }).success(function(data) {
+
+            
+            console.log(data);
+
+          }); 
+
+})
+
+
 $(function () {
-        $('#listado_prevision_afp,#cotizacion_de_salud,#listado_apv_colaborador').dataTable({
+        $('#listado_prevision_afp,#cotizacion_de_salud,#listado_apv_colaborador,#listado_cargos').dataTable({
           "bLengthChange": true,
           "bFilter": true,
           "bInfo": true,
@@ -632,9 +860,7 @@ $('.dapv_list').change(function(){
     $('#apv_'+idtrabajador).attr('disabled',false);
     $('#formapagoapv_'+idtrabajador).attr('disabled',false);
     $('#depconvapv_'+idtrabajador).attr('disabled',false);
-    
-    
-
+  	  
   }else{
     $('#nrocontratoapv_'+idtrabajador).val(0);
     $('#tipoapv_'+idtrabajador).val('pesos');
@@ -652,6 +878,13 @@ $('.dapv_list').change(function(){
     $('#depconvapv_'+idtrabajador).attr('disabled',true);
   }
 
+
+    
+    $('#nrocontratoapv_'+idtrabajador).trigger('input');
+    $('#tipoapv_'+idtrabajador).trigger('change');
+    $('#apv_'+idtrabajador).trigger('input');
+    $('#formapagoapv_'+idtrabajador).trigger('change');
+    $('#depconvapv_'+idtrabajador).trigger('input');
 
 });
 
@@ -712,7 +945,7 @@ $('.tipcotvol_list').change(function(){
 
     //$('#formprevafp').formValidation('updateStatus', 'cotvol', 'NOT_VALIDATED').formValidation('revalidateField', 'cotvol')
     //formValidation('revalidateField', 'cotvol');
-    
+    $('#cotvol_'+idtrabajador).trigger('input');
 });  
 
 
@@ -728,22 +961,42 @@ $('.isapre_list').change(function(){
     }else{
       $('#pactado_'+idtrabajador).attr('disabled',false);
     }
+
+
+    $('#pactado_'+idtrabajador).trigger('input');
     
 });    
 
 
 $(document).ready(function(){
- $('.miles_decimales').mask('#.##0,00', {reverse: true});        
+// $('.miles_decimales').mask('#.##0,00', {reverse: true});        
 
- //$('.miles_decimales_isapre').mask('#.####0,0000', {reverse: true});       
-
+ //$('.miles_decimales_isapre').mask('#.####0,0000', {reverse: true}); 
+ 	$('.miles_decimales').keypress(function(event){      
+	    if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 44){
+	      event.preventDefault();
+	    }
+	});
 });
+
+
+
+  $('.miles_decimales_isapre').keypress(function(event){
+    if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 44){
+      event.preventDefault();
+    } 
+  })  
+
+
 
   $('.numeros').keypress(function(event){
     if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46){
       event.preventDefault();
     } 
   })  
+
+
+
 
 
 

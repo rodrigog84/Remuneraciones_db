@@ -6779,4 +6779,40 @@ public function genera_finiquito($idpersonal){
 
 	}
 
+
+  public function actualiza_datos_colaborador(){
+    
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){  
+
+      var_dump($_POST);
+      $idpersonal = $this->input->post('idpersonal');
+      $valor = $this->input->post('valor');
+      $parametro = $this->input->post('parametro');
+
+      $data_produccion = $this->rrhh_model->actualiza_datos_colaborador($idpersonal,$valor,$parametro);
+
+
+      $data['result'] = 1;
+
+      echo json_encode($data);
+
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+
+    }
+
+
+  } 
+
+
 }
