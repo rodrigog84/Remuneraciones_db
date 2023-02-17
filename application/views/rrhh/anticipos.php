@@ -93,7 +93,7 @@
                                                                      <!--select name="productodetalle" id="productodetalle" class="form-control" >
                                                                       <option value="">Seleccione Hora Bloque</option>
                                                                       </select-->
-                                                                      <input type="text" name="general_anticipo" id="general_anticipo" class="form-control editables miles" onClick='this.select()'  placeholder="Ingrese Anticipo" />
+                                                                      <input type="text" name="general_anticipo" id="general_anticipo" class="form-control editables miles datos_ingreso" onClick='this.select()'  placeholder="Ingrese Anticipo" disabled />
                                                               </div> 
                                                        
                                                     </div>          
@@ -104,7 +104,7 @@
                                                                      <!--select name="productodetalle" id="productodetalle" class="form-control" >
                                                                       <option value="">Seleccione Hora Bloque</option>
                                                                       </select-->
-                                                                      <input type="text" name="general_aguinaldo" id="general_aguinaldo" class="form-control editables miles aguinaldo" onClick='this.select()'  placeholder="Ingrese Aguinaldo" />
+                                                                      <input type="text" name="general_aguinaldo" id="general_aguinaldo" class="form-control editables miles aguinaldo datos_ingreso" onClick='this.select()'  placeholder="Ingrese Aguinaldo"  disabled />
                                                               </div> 
                                                        
                                                     </div>                                                            
@@ -228,7 +228,8 @@ function add_info_trabajador(){
   $('#trabajador').val('')
   $('#general_anticipo').val('');
   $('#general_aguinaldo').val('');
-  $('#idtrabajador').val(0)
+  $('#idtrabajador').val(0);
+  $('.datos_ingreso').attr('disabled',true);
 
 }
 
@@ -286,7 +287,7 @@ $('#trabajador').autocomplete({
 
 
     $('#idtrabajador').val(item_sel);
-
+    $('.datos_ingreso').attr('disabled',false);
     //console.log('aaaa')
   }
 

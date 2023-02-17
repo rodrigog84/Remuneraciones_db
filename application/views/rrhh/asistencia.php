@@ -128,7 +128,7 @@
 											                                               <!--select name="productodetalle" id="productodetalle" class="form-control" >
 											                                                <option value="">Seleccione Hora Bloque</option>
 											                                                </select-->
-											                                                <input type="text" name="general_diastrabajo" id="general_diastrabajo" class="form-control editables" onClick='this.select()'  placeholder="Ingrese D&iacute;as Trabajo" />
+											                                                <input type="text" name="general_diastrabajo" id="general_diastrabajo" class="form-control editables asistencia_ingreso" onClick='this.select()'  placeholder="Ingrese D&iacute;as Trabajo" disabled />
 											                                        </div> 
 											                                 
 											                              </div>              
@@ -250,7 +250,7 @@ function add_info_trabajador(){
 
 
 
-	console.log('agrega');
+	$('.asistencia_ingreso').attr('disabled',true);
 }
 
 
@@ -300,6 +300,8 @@ $('#trabajador').autocomplete({
 
 
 		$('#idtrabajador').val(item_sel);
+		$('.asistencia_ingreso').attr('disabled',false);
+
 
 		//console.log('aaaa')
 	}

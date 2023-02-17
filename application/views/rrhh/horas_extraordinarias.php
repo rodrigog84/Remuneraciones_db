@@ -88,7 +88,7 @@
 											                                               <!--select name="productodetalle" id="productodetalle" class="form-control" >
 											                                                <option value="">Seleccione Hora Bloque</option>
 											                                                </select-->
-											                                                <input type="text" name="general_horas50" id="general_horas50" class="form-control editables horas miles_decimales numeros " onClick='this.select()'  placeholder="Ingrese Num Horas" />
+											                                                <input type="text" name="general_horas50" id="general_horas50" class="form-control editables horas miles_decimales numeros horas_ingreso " onClick='this.select()'  placeholder="Ingrese Num Horas" disabled />
 											                                        </div> 
 											                                 
 											                              </div>          
@@ -99,7 +99,7 @@
 											                                               <!--select name="productodetalle" id="productodetalle" class="form-control" >
 											                                                <option value="">Seleccione Hora Bloque</option>
 											                                                </select-->
-											                                                <input type="text" name="general_horas100" id="general_horas100" class="form-control editables horas miles_decimales numeros " onClick='this.select()'  placeholder="Ingrese Num Horas" />
+											                                                <input type="text" name="general_horas100" id="general_horas100" class="form-control editables horas miles_decimales numeros horas_ingreso" onClick='this.select()'  placeholder="Ingrese Num Horas" disabled />
 											                                        </div> 
 											                                 
 											                              </div>    											                                  
@@ -477,6 +477,7 @@ function add_info_trabajador(){
 	$('#general_horas50').val('');
 	$('#general_horas100').val('');
 	$('#idtrabajador').val(0)
+	$('.horas_ingreso').attr('disabled',true);
 
 }
 
@@ -533,7 +534,7 @@ $('#trabajador').autocomplete({
 
 
 		$('#idtrabajador').val(item_sel);
-
+		$('.horas_ingreso').attr('disabled',false);
 		//console.log('aaaa')
 	}
 
