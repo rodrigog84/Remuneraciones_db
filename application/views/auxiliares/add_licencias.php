@@ -459,7 +459,7 @@
         format: "dd/mm/yyyy",
         autoclose: true,
         todayBtn: true,
-        pickerPosition: "bottom-left",
+        pickerPosition: "bottom-right",
         weekStart: true,
         startView: 2,
         minView: 2,
