@@ -88,7 +88,11 @@
 																				<a href="<?php echo base_url();?>rrhh/mod_trabajador/<?php echo $trabajador->id_personal ?>" class="opciones" id="opciones" title="Editar"><i class="fa fa-pencil-square-o" aria-hidden="true" role="button"></i></a>&nbsp;&nbsp;
         																		<!--<a href="#" class="btn btn-info" role="button">Link Button</a>-->
         																		<a href="<?php echo base_url();?>rrhh/exporta_colaborador/<?php echo $trabajador->rut ?>" class="" id="Exportar_excel" title="Exportar a Excel"><i class="fa fa-file-excel-o" aria-hidden="true" type="button"></i></a>&nbsp;&nbsp;
+        																	<?php if($trabajador->active == 1){ ?>
         																		<a href="#" onclick="desactivar_colaborador(<?php echo $trabajador->rut;?>)" class="" id="Desactivar" title="Activar/Desactivar" data-toggle="modal" data-target="#myModalElim"><i class="glyphicon glyphicon-trash" aria-hidden="true" type="button"></i></a>
+        																	<?php }else{ ?>
+        																		<a href="#" onclick="desactivar_colaborador(<?php echo $trabajador->rut;?>)" class="" id="Desactivar" title="Activar/Desactivar" data-toggle="modal" data-target="#myModalElim"><i class="fa fa-check" aria-hidden="true" type="button"></i></a>
+        																	<?php } ?>		
 
 																			</td>
 																		</tr> 
@@ -127,7 +131,8 @@
 																	<tbody> 
 	                          										<?php if(count($personal) > 0 ){ ?>
 	                            										<?php $i = 1; ?>
-	                            										<?php foreach ($personal as $trabajador) { ?>				
+	                            										<?php foreach ($personal as $trabajador) { ?>	
+	                            										 <?php if ($trabajador->active == 1) { ?>			
 																		<tr class="active" id="variable">
 											                              <td><small><?php echo $i ;?></small></td>
 	                              										  <td><small><?php echo $trabajador->apaterno." ".$trabajador->amaterno." ".$trabajador->nombre;?></small></td>
@@ -169,6 +174,7 @@
 																		</tr> 
 
 											                            <?php $i++;?>
+											                            <?php } ?>
 												                       <?php } ?>
                           												<?php } ?>		
 																		
@@ -208,7 +214,7 @@
 									                          <?php if(count($personal) > 0 ){ ?>
 									                            <?php $i = 1; ?>
 									                            <?php foreach ($personal as $trabajador) { ?>
-
+									                            	<?php if ($trabajador->active == 1) { ?>			
 									                             <tr>
 									                              <td><small><?php echo $i ;?></small></td>
 									                              <td><small><?php echo $trabajador->rut == '' ? '' : $trabajador->rut."-".$trabajador->dv;?></small></td>
@@ -281,6 +287,7 @@
 									                            </tr>
 									                            <?php $i++;?>
 									                            <?php } ?>
+									                            <?php } ?>
 									                          <?php }else{ ?>
 									                            <tr>
 									                              <td colspan="10">No existen Colaboradores en la empresa</td>
@@ -318,7 +325,7 @@
 								                          <?php if(count($personal) > 0 ){ ?>
 								                            <?php $i = 1; ?>
 								                            <?php foreach ($personal as $trabajador) { ?>
-
+								                            	<?php if ($trabajador->active == 1) { ?>			
 								                             <tr>
 								                              <td><small><?php echo $i ;?></small></td>
 								                              <td><small><?php echo $trabajador->rut == '' ? '' : $trabajador->rut."-".$trabajador->dv;?></small></td>
@@ -384,6 +391,7 @@
 								                              </td>                                                      
 								                            </tr>
 								                            <?php $i++;?>
+								                            	<?php } ?>
 								                            <?php } ?>
 								                          <?php }else{ ?>
 								                            <tr>
@@ -422,7 +430,7 @@
 								                          <?php if(count($personal) > 0 ){ ?>
 								                            <?php $i = 1; ?>
 								                            <?php foreach ($personal as $trabajador) { ?>
-
+								                            	<?php if ($trabajador->active == 1) { ?>			
 								                             <tr >
 								                              <td><?php echo $i ;?></td>
 								                              <td><?php echo $trabajador->rut == '' ? '' : $trabajador->rut."-".$trabajador->dv;?></td>
@@ -445,6 +453,7 @@
 								                              <td><b><span id="montodescuento_<?php echo $trabajador->id;?>"  class="text-right input-sm" >$&nbsp;0</span></b></td-->
 								                            </tr>
 								                            <?php $i++;?>
+								                            	<?php } ?>
 								                            <?php } ?>
 								                          <?php }else{ ?>
 								                            <tr>

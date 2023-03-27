@@ -915,7 +915,7 @@ public function get_cargo_colaborador($idtrabajador = null,$actives = null){
 						  ->join('rem_centro_costo cc','p.idcentrocosto = cc.id_centro_costo','LEFT')
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
 						  //->where('c.id_cargos = p.idcargo')
-						  ->where('p.active',1)
+						  //->where('p.active',1)
 						  ->order_by('p.active','desc')
 		                  ->order_by('p.apaterno');
 		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);  	
