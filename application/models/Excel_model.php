@@ -405,20 +405,20 @@ public function libro($datos_remuneracion){
 
 		/***************************** Color montos ********************************************************/
 
-						$sheet->getStyle("Q".$filaInicio.":Q".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-						$sheet->getStyle("Q".$filaInicio.":Q".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
+						$sheet->getStyle("R".$filaInicio.":R".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("R".$filaInicio.":R".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
 	
-						$sheet->getStyle("AC".$filaInicio.":AC".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-						$sheet->getStyle("AC".$filaInicio.":AC".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
+						$sheet->getStyle("AD".$filaInicio.":AD".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("AD".$filaInicio.":AD".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
 
-						$sheet->getStyle("AI".$filaInicio.":AI".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-						$sheet->getStyle("AI".$filaInicio.":AI".$i)->getFill()->getStartColor()->setRGB('E8EDFF');									
+						$sheet->getStyle("AK".$filaInicio.":AK".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("AK".$filaInicio.":AK".$i)->getFill()->getStartColor()->setRGB('E8EDFF');									
 						$sheet->getStyle("AJ".$filaInicio.":AJ".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
 						$sheet->getStyle("AJ".$filaInicio.":AJ".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
 
 
-						$sheet->getStyle("AN".$filaInicio.":AN".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-						$sheet->getStyle("AN".$filaInicio.":AN".$i)->getFill()->getStartColor()->setRGB('E8EDFF');											
+						$sheet->getStyle("AO".$filaInicio.":AO".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("AO".$filaInicio.":AO".$i)->getFill()->getStartColor()->setRGB('E8EDFF');											
 			/******************************************************************************************************/
 
 
