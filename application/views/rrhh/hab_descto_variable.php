@@ -154,6 +154,17 @@
       }      
 
 
+
+  function replaceAll( text, busca, reemplaza ){
+    
+    while (text.toString().indexOf(busca) != -1)
+        text = text.toString().replace(busca,reemplaza);
+    return text;
+  }
+
+
+
+
   $('#basicBootstrapForm').formValidation({
         framework: 'bootstrap',
         excluded: ':disabled',
@@ -258,7 +269,7 @@
                                        <td><small><input type="checkbox" id="sel_col-' + value.id_personal + '" name="sel_col-' + value.id_personal + '" class="sel_col" ' + checked + '></small></td>\
                                        <td><small>' + value.rut + '-' + value.dv + '</small></td>\
                                        <td><small>' + value.nombre + ' ' + value.apaterno + ' ' + value.amaterno + '</small></td>\
-                                       <td><small><input type="text" class="miles" name="monto_col-' + value.id_personal + '" id="monto_col-' + value.id_personal + '" value="' + value.hab_descto_monto + '"></small></td>\
+                                       <td><small><input type="text" class="miles monto_habdescto" data-idpersonal="' + value.id_personal + '" name="monto_col-' + value.id_personal + '" id="monto_col-' + value.id_personal + '" value="' + value.hab_descto_monto + '"></small></td>\
                                       </tr>';
                                       fila++;
 
@@ -310,6 +321,23 @@
                                       $('.sel_col').attr('checked',false);
                                   }
                           })
+
+
+                          $('.monto_habdescto').on('input',function(){
+
+                            var idpersonal = $(this).data('idpersonal');
+                            var valor = $(this).val();
+                            valor = replaceAll(valor,'.','')
+                            
+                            if(valor > 0){
+                                $('#sel_col-'+idpersonal).attr('checked','checked')
+
+                            }else{
+                                $('#sel_col-'+idpersonal).attr('checked',false)
+
+                            }
+
+                          })                          
                        // Limpiamos el select
                         /*$('#hab_descto option').remove();
                         
@@ -331,6 +359,9 @@
 
 
         })
+
+
+
 
         $('#tipo').on('change',function(){
 
