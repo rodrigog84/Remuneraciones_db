@@ -221,9 +221,12 @@ public function libro($datos_remuneracion){
 
 
             	$datos_bonos_no_imponibles = $this->rrhh_model->get_bonos_by_remuneracion($remuneracion->id_remuneracion,false);
-            	$datos_bonos_no_imponibles = array();
+
+            	//$datos_bonos_no_imponibles = array();
             	$bonos_no_imponibles = 0;
-            	foreach ($datos_bonos_no_imponibles as $bono_no_imponible) {
+            	foreach ($datos_bonos_no_imponibles as $bono_no_imponible) {     	
+
+            		
             		$bonos_no_imponibles += $bono_no_imponible->monto;
             	}
 
