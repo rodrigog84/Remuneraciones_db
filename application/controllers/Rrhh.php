@@ -6075,6 +6075,52 @@ public function del_documento_colaborador($idtrabajador = null,$iddocumento = nu
 
 	}
 
+
+
+
+  public function get_colaboradores_hab_descto(){
+
+    //var_dump_new($_POST); exit;
+
+      $centrocosto = $this->input->post("centro_costo");
+      $hab_descto = $this->input->post("hab_descto"); 
+      $mes = $this->input->post("mes"); 
+      $anno = $this->input->post("anno");    
+
+      $personal = $this->rrhh_model->get_personal(null,$centrocosto);
+
+      $this->load->model('admin');
+      $periodo = $this->admin->get_periodo_by_mes($mes,$anno);
+      $idperiodo = isset($periodo->id_periodo) ? $periodo->id_periodo : 0;
+
+      $array_hab_descto = $this->rrhh_model->get_haberes_descuentos_totales_validos($hab_descto,$idperiodo);
+      //var_dump_new($personal);
+      //var_dump_new($array_hab_descto); exit;
+
+
+      foreach ($personal as $persona) {
+        $persona->hab_descto_check = 0;
+        $persona->hab_descto_monto = 0;
+
+        foreach ($array_hab_descto as $haber_descuento) {
+            if($persona->id_personal == $haber_descuento->idpersonal){
+                $persona->hab_descto_check = 1;
+                $persona->hab_descto_monto = $haber_descuento->monto;                
+
+            }
+
+        }
+        
+      }
+
+      //var_dump_new($personal);
+      
+      echo json_encode($personal);
+
+
+  }
+
+
 	public function ver_movimiento_personal($idpersonal = null)
 	{
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){

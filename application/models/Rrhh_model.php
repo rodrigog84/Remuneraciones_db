@@ -1679,7 +1679,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	}
 
 
-	public function get_haberes_descuentos_totales_validos($idhaber = null){
+	public function get_haberes_descuentos_totales_validos($idhaber = null,$idperiodo = null){
 
 			$haberes_desctos_data = $this->db->select('bp.id, hd.codigo, hd.tipo, bp.idpersonal, p.rut, p.dv, p.nombre as nombre_colaborador, p.apaterno, p.amaterno,  hd.nombre , bp.monto')
 							  ->from('rem_bonos_personal bp')
@@ -1690,6 +1690,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			                  ->where('(pr.aprueba is null or hd.fijo = 1)')
 			                  ->where('bp.valido',1);
 
+			$haberes_data = is_null($idhaber) ? $haberes_desctos_data : $haberes_desctos_data->where('bp.idconf',$idhaber);
+			$haberes_data = is_null($idperiodo) ? $haberes_desctos_data : $haberes_desctos_data->where('bp.idperiodo',$idperiodo);
 			$query = $this->db->get();
 
 			

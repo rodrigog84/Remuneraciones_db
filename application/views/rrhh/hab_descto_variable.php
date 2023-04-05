@@ -213,16 +213,28 @@
         $('.busca_col').on('change',function(){
           var hab_descto = $('#hab_descto').val();
           var centro_costo = $('#centro_costo').val();
+          var mes = $('#mes').val();
+          var anno = $('#anno').val();
+
 
           if(hab_descto != '' && centro_costo != ''){
 
                 var table = "";
                 var fila = 1;
                 $.ajax({
-                    type: "GET",
-                    url: '<?php echo base_url();?>rrhh/get_colaboradores/' + centro_costo,
+                    type: "POST",
+                    url: '<?php echo base_url();?>rrhh/get_colaboradores_hab_descto/',
+                    dataType: 'json',
+                    data : {
+                            "centro_costo": centro_costo,
+                            "hab_descto": hab_descto,
+                            "mes": mes,
+                            "anno": anno,
+                          },                    
                 }).success(function(response) {
                     
+
+                      console.log(response)
                      table += '<table  class="table table-bordered table-striped dt-responsive">\
                           <thead>\
                             <tr>\
@@ -235,8 +247,33 @@
                           </thead>\
                           <tbody>';
 
-                        var_json = $.parseJSON(response);
+                          //fila = 1;
+                          $.each(response,function(index,value){
+                              
+                                    var checked = value.hab_descto_check == 1 ? 'checked' : '';
 
+
+                                    table += '<tr>\
+                                       <td><small>' + fila + '</small></td>\
+                                       <td><small><input type="checkbox" id="sel_col-' + value.id_personal + '" name="sel_col-' + value.id_personal + '" class="sel_col" ' + checked + '></small></td>\
+                                       <td><small>' + value.rut + '-' + value.dv + '</small></td>\
+                                       <td><small>' + value.nombre + ' ' + value.apaterno + ' ' + value.amaterno + '</small></td>\
+                                       <td><small><input type="text" class="miles" name="monto_col-' + value.id_personal + '" id="monto_col-' + value.id_personal + '" value="' + value.hab_descto_monto + '"></small></td>\
+                                      </tr>';
+                                      fila++;
+
+
+                          });
+
+                          if(fila == 1){
+
+                               table += '<tr ><td colspan="4">No existen colaboradores en el centro de costo seleccionado</td></tr>';
+
+
+                          }
+                       /* var fila = 1;
+                        var_json = $.parseJSON(response);
+                        console.log(var_json)
                         if(var_json.length > 0){
                               for(i=0;i<var_json.length;i++){
                                     table += '<tr>\
@@ -253,7 +290,7 @@
                         }else{
                             table += '<tr ><td colspan="4">No existen colaboradores en el centro de costo seleccionado</td></tr>';
 
-                        }
+                        }*/
 
 
 
