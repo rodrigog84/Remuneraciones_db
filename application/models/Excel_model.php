@@ -294,7 +294,7 @@ public function libro($datos_remuneracion){
             	$sheet->getStyle('AB'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
             	$sheet->setCellValue("AC".$i,$remuneracion->impuesto);
             	$sheet->getStyle('AC'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AD".$i,$remuneracion->totalleyessociales);
+            	$sheet->setCellValue("AD".$i,$remuneracion->totaldescuentoslegales);
             	$sheet->getStyle('AD'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
             	$sheet->setCellValue("AE".$i,$remuneracion->anticipo);
             	$sheet->getStyle('AE'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
@@ -306,7 +306,7 @@ public function libro($datos_remuneracion){
             	$sheet->getStyle('AH'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
             	$sheet->setCellValue("AI".$i,$monto_prestamo);
             	$sheet->getStyle('AI'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AJ".$i,$remuneracion->otrosdescuentos);
+            	$sheet->setCellValue("AJ".$i,$remuneracion->descuentosnolegales);
             	$sheet->getStyle('AJ'.$i)->getNumberFormat()->setFormatCode('#,##0');             	            	            	
             	$sheet->setCellValue("AK".$i,$remuneracion->sueldoliquido);
             	$sheet->getStyle('AK'.$i)->getNumberFormat()->setFormatCode('#,##0');              	

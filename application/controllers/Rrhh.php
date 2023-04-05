@@ -4595,8 +4595,8 @@ public function ver_remuneraciones_colaborador($idperiodo = '',$idcentrocosto = 
       set_time_limit(0);
 			$remuneracion = $this->rrhh_model->get_remuneraciones_by_id($idremuneracion);
 			//echo "<pre>";
-     // print_r($remuneracion);
-			//print_r(count(get_object_vars($remuneracion))); exit;
+     // var_dump($remuneracion);
+ 			//print_r(count(get_object_vars($remuneracion))); exit;
 			if(!isset($remuneracion)){ // SI NO ENCUENTRO NINGUNA REMUNERACION (CORRESPONDE A OTRA EMPRESA POR EJEMPLO)
 				redirect('main/dashboard/');
 			}else if(is_null($remuneracion->cierre)){
