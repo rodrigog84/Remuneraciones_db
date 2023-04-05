@@ -174,7 +174,7 @@ public function libro($datos_remuneracion){
 			 $sheet->getColumnDimension('AC')->setWidth(15);			
 			 $sheet->setCellValue('AC'.$i, 'Impuesto');	
 			 $sheet->getColumnDimension('AD')->setWidth(15);			
-			 $sheet->setCellValue('AD'.$i, 'Total Leyes Sociales');	
+			 $sheet->setCellValue('AD'.$i, 'Total Descuentos Legales');	
 			 $sheet->getColumnDimension('AE')->setWidth(15);			
 			 $sheet->setCellValue('AE'.$i, 'Anticipo');	
 			 $sheet->getColumnDimension('AF')->setWidth(15);			
