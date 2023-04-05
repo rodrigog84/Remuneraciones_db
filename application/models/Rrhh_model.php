@@ -490,6 +490,8 @@ public function add_personal($array_datos,$idtrabajador){
 
 		$this->db->trans_start();
 
+		//var_dump_new($array_datos_hab_descto); //exit;
+
 		$lista_montos = $array_datos_hab_descto['lista_montos'];
 		$mes = $array_datos_hab_descto['mes'];
 		$anno = $array_datos_hab_descto['anno'];
@@ -506,7 +508,7 @@ public function add_personal($array_datos,$idtrabajador){
 			      	'mes' => $mes,
 			      	'anno' =>  $anno
 				);
-				$this->db->insert('rem_periodo', $data);
+				$this->db->insert('rem_periodo', $data);	
 				$idperiodo = $this->db->insert_id();
 		}else{
 				$idperiodo = $datos_periodo->id_periodo;
@@ -516,18 +518,49 @@ public function add_personal($array_datos,$idtrabajador){
 		$this->load->model('configuracion');
 		$datos_hab_descto = $this->configuracion->get_haberes_descuentos($array_datos_hab_descto['id_hab_descto']);
 
+		$array_hab_descto = $this->get_haberes_descuentos_totales_validos($array_datos_hab_descto['id_hab_descto'],$idperiodo);
+		//var_dump_new($datos_hab_descto);
+		//var_dump_new($array_hab_descto); 
+		//exit;
 		$listado_col = $array_datos_hab_descto['listado_col'];
 		foreach ($listado_col as $idpersonal) {
-			$array_datos = array(
-								'idconf' => $array_datos_hab_descto['id_hab_descto'],
-								'idpersonal' => $idpersonal,
-								'descripcion' => $datos_hab_descto->nombre,
-								'monto' => str_replace(".","",$lista_montos[$idpersonal]),
-								'idperiodo' => $idperiodo,
-								'created_at' => date('Ymd H:i:s'),
-								'updated_at' => date('Ymd H:i:s')
-							);
-			$this->db->insert('rem_bonos_personal',$array_datos);
+
+			$ingresa = true;
+
+			foreach ($array_hab_descto as $haber_descuento) { //verifica si el bono ya existe o no
+				if($haber_descuento->idpersonal == $idpersonal){
+					$ingresa = false;
+				}
+
+			}
+
+
+			if($ingresa){
+
+				$array_datos = array(
+									'idconf' => $array_datos_hab_descto['id_hab_descto'],
+									'idpersonal' => $idpersonal,
+									'descripcion' => $datos_hab_descto->nombre,
+									'monto' => str_replace(".","",$lista_montos[$idpersonal]),
+									'idperiodo' => $idperiodo,
+									'created_at' => date('Ymd H:i:s'),
+									'updated_at' => date('Ymd H:i:s')
+								);
+				$this->db->insert('rem_bonos_personal',$array_datos);
+
+			}else{
+
+
+
+				$this->db->where('idconf', $array_datos_hab_descto['id_hab_descto']);
+	            $this->db->where('idpersonal', $idpersonal);
+	            $this->db->where('idperiodo', $idperiodo);
+	            $this->db->update('rem_bonos_personal', array('monto' => str_replace(".","",$lista_montos[$idpersonal])));
+
+
+			}
+
+
 		}
 
 
