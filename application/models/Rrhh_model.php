@@ -5333,13 +5333,15 @@ public function previred($datos_remuneracion){
 				$sueldoimponible_fonasa = ($remuneracion->fonasa+$remuneracion->inp) > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				$sueldoimponible_isapre = $remuneracion->cotizacionsalud > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				//$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
-				$sueldoimponible_mutual = is_null($remuneracion->idmutual) ? 0 : $remuneracion->sueldoimponible;
+				$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponible : 0;
 
 				$sueldoimponible_ccaf = $codprev_ccaf != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				$sueldoimponible_segcesantia = $remuneracion->afilsegcesantia == 1 ? $remuneracion->sueldoimponibleafc : 0;
 				$cotccaffon = $codprev_ccaf == 0 ? 0 : $remuneracion->inp;
-				//$aportepatronal = $codprev_mutual == 0 ? 0 : $remuneracion->aportepatronal;
-				$aportepatronal = is_null($remuneracion->idmutual) ? 0 : $remuneracion->aportepatronal;
+				$aportepatronal = $codprev_mutual == 0 ? 0 : $remuneracion->aportepatronal;
+				$cotizacionisl = $codprev_mutual == 0 ? $remuneracion->aportepatronal : 0;
+
+
 				$asigfamiliar_ccaf = $codprev_ccaf != 0 ? $asigfamiliar : 0;
 				$asigfamiliar_mes = $codprev_ccaf != 0 ? $remuneracion->asigfamiliar : 0;
 
@@ -5488,7 +5490,7 @@ public function previred($datos_remuneracion){
 					$linea .= "00000000"; //Cotización Desahucio 
 					$linea .= str_pad($cotizacion_fonasa,8,"0",STR_PAD_LEFT); //Cotización Fonasa 
 					//$linea .= str_pad($remuneracion->fonasa,8,"0",STR_PAD_LEFT); //Cotización Fonasa 
-					$linea .= "00000000"; //Cotización Acc. Trabajo (ISL) *****************
+					$linea .= str_pad($cotizacionisl,8,"0",STR_PAD_LEFT);; //Cotización Acc. Trabajo (ISL) *****************
 					$linea .= "00000000"; //Bonificación Ley 15.386 
 					$linea .= "00000000"; //Descuento por cargas familiares de ISL 
 					$linea .= "00000000"; //Bonos Gobierno 
