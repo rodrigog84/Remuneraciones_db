@@ -34,7 +34,7 @@
                           <div class='col-md-6'>
                             <div class="form-group">
                                   <label for="porcmutual">Porcentaje</label>    
-                                  <input type="text" class="form-control" name="porcmutual" id="porcmutual" placeholder="Ingrese Porcentaje" value="<?php echo is_null($empresa->idmutual) || $empresa->idmutual == 1 ? '' : $empresa->porcmutual; ?>"  <?php echo is_null($empresa->idmutual) || $empresa->idmutual == 1 ? 'disabled' : ''; ?> >
+                                  <input type="text" class="form-control" name="porcmutual" id="porcmutual" placeholder="Ingrese Porcentaje" value="<?php echo is_null($empresa->idmutual)  ? '' : $empresa->porcmutual; ?>"  <?php echo is_null($empresa->idmutual)  ? 'disabled' : ''; ?> >
                             </div>   
                           </div>
 
@@ -72,9 +72,12 @@
 
 
 $('#mutual').change(function(){
-  if($(this).val() == '' || $(this).val() == 1){ // sin selección o marcó sin mutual
+  if($(this).val() == ''){ // sin selección o marcó sin mutual
     $('#porcmutual').val('');
     $('#porcmutual').attr('disabled',true);
+  }else if($(this).val() == 1){
+     $('#porcmutual').attr('disabled',false);
+    $('#porcmutual').val(<?php echo PORCT_ISL;?>);
   }else{
     $('#porcmutual').attr('disabled',false);
     $('#porcmutual').val(0);

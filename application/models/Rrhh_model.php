@@ -2278,7 +2278,8 @@ limit 1		*/
 
 							
 
-			$aportepatronal = is_null($empresa->idmutual) ? 0 : round($sueldo_imponible_afp*($empresa->porcmutual/100),0);
+			//$aportepatronal = is_null($empresa->idmutual) ? 0 : round($sueldo_imponible_afp*($empresa->porcmutual/100),0);
+			$aportepatronal = round($sueldo_imponible_afp*($empresa->porcmutual/100),0);
 			$suma_aporte_patronal += $aportepatronal;
 			$suma_impuesto += $impuesto;
 
