@@ -2221,7 +2221,10 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			}else{
 				if($dias_trabajados < 30){
 
-					$sueldo_calculo_sis = $sueldo_base_mes + $aguinaldo_bruto + $bonos_imponibles + $monto_semana_corrida   + $monto_horas50 + $monto_horas100;
+					//$sueldo_calculo_sis = $sueldo_base_mes +  $aguinaldo_bruto + $bonos_imponibles + $monto_semana_corrida   + $monto_horas50 + $monto_horas100;
+					$sueldo_calculo_sis = $sueldo_base_mes +  $gratificacion + $aguinaldo_bruto + $bonos_imponibles + $monto_semana_corrida   + $monto_horas50 + $monto_horas100;
+
+					
 				}else{
 					$sueldo_calculo_sis = $sueldo_imponible_imposiciones;
 				}
