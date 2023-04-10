@@ -5330,7 +5330,7 @@ public function previred($datos_remuneracion){
 					$sueldoimponible_afp = ($remuneracion->cotizacionobligatoria+$remuneracion->comisionafp+$remuneracion->seginvalidez) > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				}
 
-				$sueldoimponible_fonasa = ($remuneracion->fonasa+$remuneracion->inp) > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
+				
 				$sueldoimponible_isapre = $remuneracion->cotizacionsalud > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				//$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponible : 0;
@@ -5341,6 +5341,7 @@ public function previred($datos_remuneracion){
 				$aportepatronal = $codprev_mutual == 0 ? 0 : $remuneracion->aportepatronal;
 				$cotizacionisl = $codprev_mutual == 0 ? $remuneracion->aportepatronal : 0;
 
+				$sueldoimponible_fonasa = ( (($remuneracion->fonasa+$remuneracion->inp) > 0) || $cotizacionisl > 0)  ? $remuneracion->sueldoimponibleimposiciones : 0;
 
 				$asigfamiliar_ccaf = $codprev_ccaf != 0 ? $asigfamiliar : 0;
 				$asigfamiliar_mes = $codprev_ccaf != 0 ? $remuneracion->asigfamiliar : 0;
