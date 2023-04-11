@@ -42,6 +42,9 @@ class Main extends CI_Controller
         $this->load->model('admin');
         $this->load->model('rrhh_model');
         $this->load->model('auxiliar');
+        $this->load->model('proceso');
+
+        $this->proceso->actualizar_indicadores(); //actualiza indicadores hasta el dia actual
 
 
         $meses_x_montopago = array();
