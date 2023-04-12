@@ -33,6 +33,46 @@ class Proceso extends CI_Model
         }
     }
 
+    public function replica_indicador_mes_anterior_a_actual($indicador){
+
+
+            $periodo = date('Ym');
+            // SUELDO MINIMO
+            $query= $this->db->query("INSERT INTO rem_parametros (
+                                                    nombre
+                                                    ,valor
+                                                    ,fecha
+                                                    )
+
+                                        select   '" . $indicador. "' as nombre,
+                                                
+                                                (select     valor
+                                                from        rem_parametros
+                                                where       nombre = '" . $indicador. "'
+                                                and         fecha = (
+                                                                    select  max(fecha)
+                                                                    from    rem_calendario
+                                                                    where   periodo = (
+                                                                                        select max(periodo) as periodo
+                                                                                        from    rem_calendario c
+                                                                                        where   periodo < " . $periodo . "
+                                                                                )
+                                                                    )
+                                                ) as valor,
+                                                c.fecha
+                                        from    rem_calendario c
+                                        left join (
+                                                    select      *
+                                                    from        rem_parametros
+                                                    where       nombre = '" . $indicador. "'
+                                                    ) p on c.fecha = p.fecha
+                                        where   c.periodo = " . $periodo . "
+                                        and     p.fecha is null");
+
+
+
+    }
+
 
     public function actualizar_indicadores()
     {
@@ -185,6 +225,47 @@ class Proceso extends CI_Model
 
              
             }
+
+
+            /**************************  ACTUALIZACION OTROS PARAMETROS *************************/
+
+
+
+            $this->replica_indicador_mes_anterior_a_actual('Sueldo Minimo');
+            $this->replica_indicador_mes_anterior_a_actual('Tope Imponible AFP');
+            $this->replica_indicador_mes_anterior_a_actual('Tope Imponible IPS');
+            $this->replica_indicador_mes_anterior_a_actual('Tope Imponible AFC');
+            $this->replica_indicador_mes_anterior_a_actual('Tasa SIS');
+
+            // Tabla asignacion familiar
+
+            $periodo = date('Ym');
+
+            $this->db->select('count(*) as cantidad')
+                     ->from('rem_tabla_asig_familiar_periodo')
+                     ->where('periodo',$periodo);
+
+            $query = $this->db->get();    
+            $result_asig = $query->row();
+            $cantidad_asig = isset($result_asig->cantidad) ? $result_asig->cantidad : 0;
+
+            if($cantidad_asig == 0){
+
+                $query= $this->db->query("insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto,periodo)
+                                            select      tramo
+                                                        ,desde
+                                                        ,hasta
+                                                        ,monto
+                                                        ," . $periodo . " as periodo
+                                            from        rem_tabla_asig_familiar_periodo t
+                                            where       periodo = (
+                                                                    select max(periodo) as periodo
+                                                                    from    rem_calendario c
+                                                                    where   periodo < " . $periodo . "
+                                                                  )");
+
+            }                    
+
 
 
     }    
