@@ -4080,7 +4080,14 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
 				$vars['icon'] = 'fa-check';		
 			}
 
+      $this->load->model('proceso');
+      $this->proceso->haberes_descuentos_periodo_nuevo();
+
+
 			$haberes_descuentos = $this->rrhh_model->get_haberes_descuentos_totales_validos(); 
+
+
+
 
 			$content = array(
 						'menu' => 'Configuraciones',
@@ -5303,6 +5310,9 @@ public function liquidacion_colaborador($idremuneracion = null)
 		//$valid = $this->admin->get_permite_periodo($this->input->post('mes'),$this->input->post('anno'));
 		$valid = true;
    // var_dump_new ($_POST); exit;
+    $this->load->model('proceso');
+    $this->proceso->genera_haberes_descuentos_fijos($this->input->post('mes'),$this->input->post('anno'));
+
 		if($valid){
 
 			if($tipo_status == 'calculo'){

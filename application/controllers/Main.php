@@ -45,6 +45,8 @@ class Main extends CI_Controller
         $this->load->model('proceso');
 
         $this->proceso->actualizar_indicadores(); //actualiza indicadores hasta el dia actual
+        $this->proceso->creacion_periodos_faltantes(); //crea periodos que existan en calendario pero no esten en tabla periodos
+
 
 
         $meses_x_montopago = array();

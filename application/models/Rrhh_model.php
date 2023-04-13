@@ -1714,14 +1714,21 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 	public function get_haberes_descuentos_totales_validos($idhaber = null,$idperiodo = null){
 
-			$haberes_desctos_data = $this->db->select('bp.id, hd.codigo, hd.tipo, bp.idpersonal, p.rut, p.dv, p.nombre as nombre_colaborador, p.apaterno, p.amaterno,  hd.nombre , bp.monto')
+			$haberes_desctos_data = $this->db->select('bp.id, hd.codigo, hd.tipo, bp.idpersonal, p.rut, p.dv, p.nombre as nombre_colaborador, p.apaterno, p.amaterno,  hd.nombre , bp.monto, pe.periodo')
 							  ->from('rem_bonos_personal bp')
 							  ->join('rem_personal as p','bp.idpersonal = p.id_personal')
+							  ->join('rem_periodo as pe','bp.idperiodo = pe.id_periodo')
 							  ->join('rem_conf_haber_descuento as hd','bp.idconf = hd.id')
-							  ->join('rem_periodo_remuneracion as pr','bp.idperiodo = pr.id_periodo and p.idcentrocosto = pr.id_centro_costo')
+							  ->join('rem_periodo_remuneracion as pr','bp.idperiodo = pr.id_periodo and p.idcentrocosto = pr.id_centro_costo','LEFT')
 			                  ->where('p.id_empresa',$this->session->userdata('empresaid'))
-			                  ->where('(pr.aprueba is null or hd.fijo = 1)')
-			                  ->where('bp.valido',1);
+			                  //->where('(pr.aprueba is null or hd.fijo = 1)')
+			                  ->where('pr.aprueba is null')
+			                  //->where('pr.id_periodo is not null')
+			                  ->where('bp.valido',1)
+			                  ->order_by('pe.periodo','desc')
+			                  ->order_by('p.apaterno','asc')
+			                  ->order_by('p.amaterno','asc')
+			                  ->order_by('p.nombre','asc');
 
 			$haberes_data = is_null($idhaber) ? $haberes_desctos_data : $haberes_desctos_data->where('bp.idconf',$idhaber);
 			$haberes_data = is_null($idperiodo) ? $haberes_desctos_data : $haberes_desctos_data->where('bp.idperiodo',$idperiodo);

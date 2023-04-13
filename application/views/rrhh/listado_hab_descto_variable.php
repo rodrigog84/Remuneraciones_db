@@ -34,6 +34,7 @@
                             												<th>Cod. Haber/Descuento</th>
                             												<th>Nombre Haber/Descuento</th>
                                                     <th>Monto</th>
+                                                    <th>Periodo</th>
                                                     <th>&nbsp;</th>
 																		</tr> 
 																	</thead> 
@@ -48,6 +49,7 @@
 	                              										  <td><small><?php echo $haber_descuento->codigo;?></small></td>
                                                       <td><small><?php echo $haber_descuento->nombre;?></small></td>
                                                       <td><small><?php echo number_format($haber_descuento->monto,0,".",".");?></small></td>
+                                                      <td><small><?php echo $haber_descuento->periodo;?></small></td>
 	                              										  <td><small><a href="<?php echo base_url(); ?>rrhh/delete_haber_descto/<?php echo $haber_descuento->id;?>" data-toggle="tooltip" title="Eliminar Haber/Descuento Variable"><i class="fa fa-lg fa-trash"></i></a></small></td>
 																		</tr> 
 
