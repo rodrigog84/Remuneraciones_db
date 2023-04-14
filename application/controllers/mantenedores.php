@@ -1727,15 +1727,20 @@ public function submit_empresas(){
 
         	$existe = $this->Mantenedores_model->valida_existe_empresa($rut);
 
+        	$fecvencimiento = date('Ymd', strtotime('+' . PERIODOS_GRATIS . ' month', strtotime(date("Y-m-d"))));
+        	$fecinicio = date("Ymd");
 
        		$datos = array(
-            		'nombre' => strtolower($nombre),
+            		'nombre' => $nombre,
             		'rut' => $rut,
             		'dv' => $dv,
             		'direccion' => strtolower($direccion),
             		'fono' => $fono,
             		'idcomuna' => $idcomuna,
             		'idregion' => $idregion,
+            		'fecinicio' => $fecinicio,
+            		'fecvencimiento' => $fecvencimiento
+
         			);
 
 			if (!$existe) {
