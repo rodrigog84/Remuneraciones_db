@@ -835,3 +835,167 @@ select		'Tasa SIS' as nombre
 from		rem_calendario
 where		periodo = 202302
 
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Sueldo Minimo' as nombre
+			,410000 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202303
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Sueldo Minimo' as nombre
+			,410000 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202304
+
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFP' as nombre
+			,81.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202303
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFP' as nombre
+			,81.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202304
+
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible IPS' as nombre
+			,60 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202303
+
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible IPS' as nombre
+			,60 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202304
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFC' as nombre
+			,122.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202303
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tope Imponible AFC' as nombre
+			,122.6 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202304
+
+
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tasa SIS' as nombre
+			,1.55 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202303
+
+
+
+INSERT INTO rem_parametros (
+			nombre
+			,valor
+			,fecha
+			)
+
+select		'Tasa SIS' as nombre
+			,1.55 as valor
+			,fecha
+from		rem_calendario
+where		periodo = 202304
+
+
+
+#Para Cotizaciones a Pagar en Abril 2023 (Remuneraciones Marzo 2023).
+#Donde dice "Remuneraciones Marzo 2023", se debe considerar ese periodo
+# es decir que para pagar en abril se tomaran los indicadores de marzo
+
+
+update		r
+set			valor = 1.61
+--select		*
+from		rem_parametros r
+where		nombre = 'Tasa SIS'
+and			fecha >= '20230401'

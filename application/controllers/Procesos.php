@@ -58,4 +58,27 @@ class Procesos extends CI_Controller
     public function put_parametros()
     {
     }
+
+
+
+    public function envia_mail(){
+
+        $this->load->model('admin');
+        $array_email = array('rodrigog.84@gmail.com');
+         $this->admin->envia_mail_sb('robot@arnou.cl', $array_email, 'Creación de Usuario Arnou-Remuneraciones', 'hola', 'html');
+
+
+    }
+
+
+
+
+
+    public function actualiza_indicadores(){
+
+               $this->load->model('proceso');
+               $this->proceso->actualizar_indicadores();     
+
+
+    }    
 }
