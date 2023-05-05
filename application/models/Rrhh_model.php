@@ -2288,10 +2288,16 @@ limit 1		*/
 							$parametros_ant['uf'] = $this->admin->get_indicadores_by_periodo($idperiodo_ant,'UF');
 							$tope_imponible_afc_ant = (int)($parametros_ant['uf']*$parametros_ant['topeimponibleafc']);
 
-
+							#OBTENEMOS EL SUELDO IMPONIBLE DEL MES ANTERIOR
 							$sueldo_imponible_ant = $datos_remuneracion_ant->sueldoimponible;
+							#VALIDAMOS NO PASAR EL TOPE LEGAR
 							$sueldo_imponible_afc_ant = $sueldo_imponible_ant > $tope_imponible_afc_ant ? $tope_imponible_afc_ant : $sueldo_imponible_ant;
-							$aportesegcesantia = $trabajador->tipocontrato == 'F' ? round($sueldo_imponible_afc_ant*0.03,0) : round($sueldo_imponible_afc_ant*0.024,0);
+
+							#CALCULAMOS EL PROPORCIONAL
+							$sueldo_imponible_afc_ant = round(($sueldo_imponible_afc_ant/$diastrabajo)*($diastrabajo-$dias_trabajados),0);
+							
+							#SACAMOS EL SEGURO DE CESANTIA
+							$aportesegcesantia += $trabajador->tipocontrato == 'F' ? round($sueldo_imponible_afc_ant*0.03,0) : round($sueldo_imponible_afc_ant*0.024,0);
 						}else{
 
 							$aportesegcesantia += $trabajador->tipocontrato == 'F' ? round($imponibles_no_trabajo*0.03,0) : round($imponibles_no_trabajo*0.024,0);
