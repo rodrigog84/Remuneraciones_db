@@ -1250,7 +1250,7 @@ if (!function_exists('dias_mes_rango'))
     if($fecinicio_format == $mes_analisis && $fecfin_format != $mes_analisis){
 
 
-        $ult_dia_mes =  ultimo_dia_mes($mes_an,$anno_an); 
+        $ult_dia_mes =  ultimo_dia_mes($anno_an,$mes_an); 
         $fechainicial = new DateTime($fecinicio);
        // echo $fecinicio."  ".$anno_an."-".$mes_an."-".$ult_dia_mes; 
         $fechafinal = new DateTime($anno_an."-".$mes_an."-".$ult_dia_mes);

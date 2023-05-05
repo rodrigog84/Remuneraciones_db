@@ -617,6 +617,22 @@ public function add_apv($array_datos){
 
 	}	
 
+	public function get_periodo_anterior($idperiodo = null){
+
+
+	        $queryQuestion = $this->db->query('exec SP_GET_PERIODO_ANTERIOR ' . $idperiodo );
+	       	$data = $queryQuestion->result();
+
+			if(count($data) > 0){
+
+				$idperiodoant = $data[0]->id_periodo;
+			}else{
+				$idperiodoant = -1;
+			}
+
+	       	return $idperiodoant;
+
+	}
 
 
 	public function empresas_asignadas($userid,$levelid,$empresaid = null){

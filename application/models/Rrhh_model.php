@@ -471,7 +471,7 @@ public function add_personal($array_datos,$idtrabajador){
 
 	public function get_datos_remuneracion_by_periodo($idperiodo,$idtrabajador = null){
 
-		$personal_data = $this->db->select('r.id_remuneracion, r.idpersonal, r.id_periodo, r.diastrabajo, r.horasdescuento, r.montodescuento, r.horasextras50, r.montohorasextras50, r.horasextras100, r.montohorasextras100, r.anticipo, r.aguinaldo, r.sueldobase, r.gratificacion, r.movilizacion, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos')
+		$personal_data = $this->db->select('r.id_remuneracion, r.idpersonal, r.id_periodo, r.diastrabajo, r.horasdescuento, r.montodescuento, r.horasextras50, r.montohorasextras50, r.horasextras100, r.montohorasextras100, r.anticipo, r.aguinaldo, r.sueldobase, r.gratificacion, r.movilizacion, r.sueldonoimponible, r.sueldoimponible, r.totalleyessociales, r.otrosdescuentos')
 						  ->from('rem_remuneracion r')
 						  ->join('rem_personal pe','r.idpersonal = pe.id_personal')
 						  ->where('pe.id_empresa',$this->session->userdata('empresaid'))
@@ -1764,7 +1764,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 		$fec_ini = $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-01";
-		$fec_fin = $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".ultimo_dia_mes($periodo->mes,$periodo->anno);
+		$fec_fin = $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".ultimo_dia_mes($periodo->anno,$periodo->mes);
 		$dias_habiles = bussiness_days($fec_ini,$fec_fin,'habil','SUM'); 
 		$dias_inhabiles = bussiness_days($fec_ini,$fec_fin,'domingos','SUM');
 
@@ -1792,6 +1792,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 		$this->load->model('admin');
 		//$periodo = $this->admin->get_periodo_by_id($idperiodo);
+	
+		$idperiodo_ant = $this->admin->get_periodo_anterior($idperiodo);
 		$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
 
 		$tabla_impuesto = $this->admin->get_tabla_impuesto();
@@ -1842,7 +1844,10 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		foreach ($personal as $trabajador) { // calculo de sueldos por cada trabajador
 			//var_dump_new($trabajador); exit;
 			$datos_remuneracion = $this->get_datos_remuneracion_by_periodo($idperiodo,$trabajador->id_personal);
-			//print_r($datos_remuneracion); exit;
+
+
+			//var_dump_new($datos_remuneracion);// exit;
+
 			$datos_bonos = array();
 			//$datos_bonos = $this->get_bonos($trabajador->id); // se modifica esto porque aún no existen bonos
 			$bonos_imponibles = 0;
@@ -2273,8 +2278,29 @@ limit 1		*/
 				$imponibles_no_trabajo = round((($trabajador->sueldobase + $aguinaldo_bruto + $bonos_imponibles + $gratificacion)/$diastrabajo)*($diastrabajo-$dias_trabajados),0);
 				if($trabajador->segcesantia == 1){
 					if($trabajador->annos_afc <= 11){
+
+						// veo si tiene sueldo imponible del mes anterior
+						$datos_remuneracion_ant = $this->get_datos_remuneracion_by_periodo($idperiodo_ant,$trabajador->id_personal);
+
+						if(!is_null($datos_remuneracion_ant)){
+
+							$parametros_ant['topeimponibleafc'] = $this->admin->get_indicadores_by_periodo($idperiodo_ant,'Tope Imponible AFC');
+							$parametros_ant['uf'] = $this->admin->get_indicadores_by_periodo($idperiodo_ant,'UF');
+							$tope_imponible_afc_ant = (int)($parametros_ant['uf']*$parametros_ant['topeimponibleafc']);
+
+
+							$sueldo_imponible_ant = $datos_remuneracion_ant->sueldoimponible;
+							$sueldo_imponible_afc_ant = $sueldo_imponible_ant > $tope_imponible_afc_ant ? $tope_imponible_afc_ant : $sueldo_imponible_ant;
+							$aportesegcesantia = $trabajador->tipocontrato == 'F' ? round($sueldo_imponible_afc_ant*0.03,0) : round($sueldo_imponible_afc_ant*0.024,0);
+						}else{
+
+							$aportesegcesantia += $trabajador->tipocontrato == 'F' ? round($imponibles_no_trabajo*0.03,0) : round($imponibles_no_trabajo*0.024,0);
+						}
+
+						// si no tiene aplico lo de abajo
+
 						
-						$aportesegcesantia += $trabajador->tipocontrato == 'F' ? round($imponibles_no_trabajo*0.03,0) : round($imponibles_no_trabajo*0.024,0);
+						
 					}else{
 						$aportesegcesantia += $trabajador->tipocontrato == 'F' ? round($imponibles_no_trabajo*0.002,0) : round($imponibles_no_trabajo*0.008,0);
 					}
