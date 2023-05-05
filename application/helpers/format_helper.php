@@ -691,7 +691,7 @@ if (!function_exists('tipo_ingreso'))
 if (!function_exists('ultimo_dia_mes'))
 {
 
-  function ultimo_dia_mes($month,$year)
+  function ultimo_dia_mes($year,$month)
   {
     return date("d",(mktime(0,0,0,$month+1,1,$year)-1));;
   }
