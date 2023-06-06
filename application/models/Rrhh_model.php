@@ -2164,10 +2164,22 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				$rango_hasta = round(($hasta/$diastrabajo)*$dias_trabajados,0);
 				$rango_rebaja = round(($rebaja/$diastrabajo)*$dias_trabajados,0);
 				//if($base_tributaria >= $rango->desde && $base_tributaria <= $rango->hasta){
-				if($base_tributaria >= $rango_desde && $base_tributaria <= $rango_hasta){
+				//if($base_tributaria >= $rango_desde && $base_tributaria <= $rango_hasta){
+				if($base_tributaria >= $desde && $base_tributaria <= $hasta){
 					
+					/*
+			if($trabajador->id_personal == 20379){
+				var_dump_new($base_tributaria);
+				var_dump_new($rango->factor);
+				var_dump_new($rango_rebaja);
+				var_dump_new($parametros['utm']);
+				var_dump_new($rango_desde);
+				var_dump_new($rango_hasta);exit;
+			}*/
+
 					//$impuesto = round($base_tributaria*$rango->factor - $rango->rebaja,0);
-					$impuesto = round($base_tributaria*$rango->factor - $rango_rebaja,0);
+					//$impuesto = round($base_tributaria*$rango->factor - $rango_rebaja,0);
+					$impuesto = round($base_tributaria*$rango->factor - $rebaja,0);
 
 					break;
 				}
@@ -2275,46 +2287,50 @@ limit 1		*/
 			//echo $aportesegcesantia; exit;
 
 			if($tiene_licencia && $dias_trabajados < 30){ // SI TIENE LICENCIA SE DEBE SUMAR AL SEGURO LOS DÍAS NO TRABAJADOS POR EL PROPORCIONAL 
-				$imponibles_no_trabajo = round((($trabajador->sueldobase + $aguinaldo_bruto + $bonos_imponibles + $gratificacion)/$diastrabajo)*($diastrabajo-$dias_trabajados),0);
+
+				// veo si tiene sueldo imponible del mes anterior
+				$datos_remuneracion_ant = $this->get_datos_remuneracion_by_periodo($idperiodo_ant,$trabajador->id_personal);
+				if(!is_null($datos_remuneracion_ant)){
+
+					//$parametros_ant['topeimponibleafc'] = $this->admin->get_indicadores_by_periodo($idperiodo_ant,'Tope Imponible AFC');
+					//$parametros_ant['uf'] = $this->admin->get_indicadores_by_periodo($idperiodo_ant,'UF');
+					//$parametros_ant['topeimponible'] = $this->admin->get_indicadores_by_periodo($idperiodo_ant,'Tope Imponible AFP');
+					//$parametros_ant['tasasis'] = $this->admin->get_indicadores_by_periodo($idperiodo_ant,'Tasa SIS');
+
+					//$tope_imponible_afc_ant = (int)($parametros_ant['uf']*$parametros_ant['topeimponibleafc']);
+					//$tope_imponible_ant = (int)($parametros_ant['uf']*$parametros_ant['topeimponible']);
+
+					
+
+					#OBTENEMOS EL SUELDO IMPONIBLE DEL MES ANTERIOR
+					$sueldo_imponible_ant = $datos_remuneracion_ant->sueldoimponible;
+					
+					#CALCULAMOS EL PROPORCIONAL
+					$imponibles_no_trabajo = round(($sueldo_imponible_ant/$diastrabajo)*($diastrabajo-$dias_trabajados),0);	
+
+				}else{
+
+					$imponibles_no_trabajo = round((($trabajador->sueldobase + $aguinaldo_bruto + $bonos_imponibles + $gratificacion)/$diastrabajo)*($diastrabajo-$dias_trabajados),0);
+
+				}
+
+				$imponibles_no_trabajo_afc = $imponibles_no_trabajo > $tope_imponible_afc ? $tope_imponible_afc : $imponibles_no_trabajo;
+				$imponibles_no_trabajo_sis = $imponibles_no_trabajo > $tope_imponible ? $tope_imponible : $imponibles_no_trabajo;
+										
+
 				if($trabajador->segcesantia == 1){
 					if($trabajador->annos_afc <= 11){
 
-						// veo si tiene sueldo imponible del mes anterior
-						$datos_remuneracion_ant = $this->get_datos_remuneracion_by_periodo($idperiodo_ant,$trabajador->id_personal);
-
-						if(!is_null($datos_remuneracion_ant)){
-
-							$parametros_ant['topeimponibleafc'] = $this->admin->get_indicadores_by_periodo($idperiodo_ant,'Tope Imponible AFC');
-							$parametros_ant['uf'] = $this->admin->get_indicadores_by_periodo($idperiodo_ant,'UF');
-							$tope_imponible_afc_ant = (int)($parametros_ant['uf']*$parametros_ant['topeimponibleafc']);
-
-							#OBTENEMOS EL SUELDO IMPONIBLE DEL MES ANTERIOR
-							$sueldo_imponible_ant = $datos_remuneracion_ant->sueldoimponible;
-							#VALIDAMOS NO PASAR EL TOPE LEGAR
-							$sueldo_imponible_afc_ant = $sueldo_imponible_ant > $tope_imponible_afc_ant ? $tope_imponible_afc_ant : $sueldo_imponible_ant;
-
-							#CALCULAMOS EL PROPORCIONAL
-							$sueldo_imponible_afc_ant = round(($sueldo_imponible_afc_ant/$diastrabajo)*($diastrabajo-$dias_trabajados),0);
-							
-							#SACAMOS EL SEGURO DE CESANTIA
-							$aportesegcesantia += $trabajador->tipocontrato == 'F' ? round($sueldo_imponible_afc_ant*0.03,0) : round($sueldo_imponible_afc_ant*0.024,0);
-						}else{
-
-							$aportesegcesantia += $trabajador->tipocontrato == 'F' ? round($imponibles_no_trabajo*0.03,0) : round($imponibles_no_trabajo*0.024,0);
-						}
-
-						// si no tiene aplico lo de abajo
-
-						
+						$aportesegcesantia += $trabajador->tipocontrato == 'F' ? round($imponibles_no_trabajo_afc*0.03,0) : round($imponibles_no_trabajo_afc*0.024,0);
 						
 					}else{
-						$aportesegcesantia += $trabajador->tipocontrato == 'F' ? round($imponibles_no_trabajo*0.002,0) : round($imponibles_no_trabajo*0.008,0);
+						$aportesegcesantia += $trabajador->tipocontrato == 'F' ? round($imponibles_no_trabajo_afc*0.002,0) : round($imponibles_no_trabajo_afc*0.008,0);
 					}
 				}else{
 					$aportesegcesantia = 0;	
 				}	
 
-				$seginvalidez += round($imponibles_no_trabajo*($parametros['tasasis']/100),0);
+				$seginvalidez += round($imponibles_no_trabajo_sis*($parametros['tasasis']/100),0);
 
 			}
 
@@ -2567,10 +2583,11 @@ public function get_periodos_aprobados_detalle($empresaid,$idperiodo = null,$idc
 
 	public function get_remuneraciones_by_periodo($idperiodo,$sinsueldo = null,$idcentrocosto = null){
 		
-		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentosnolegales, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips, pe.direccion, com.nombre as comuna, pe.parttime, pe.idregion, pe.idcomuna, a.codlre, i.codlre as codlreisapre, ccaf.codlre as codlrecaja, m.codprevired as codlremutual, pr.cierre, pr.aprueba,  f.tramo as tramo_asig_familiar, f.tramo, r.totaldescuentoslegales')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentosnolegales, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips, pe.direccion, com.nombre as comuna, pe.parttime, pe.idregion, pe.idcomuna, a.codlre, i.codlre as codlreisapre, ccaf.codlre as codlrecaja, m.codprevired as codlremutual, pr.cierre, pr.aprueba,  f.tramo as tramo_asig_familiar, f.tramo, r.totaldescuentoslegales, cc.codigo as codcentrocosto')
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
+						  ->join('rem_centro_costo as cc','pe.idcentrocosto = cc.id_centro_costo','LEFT')
 						  ->join('rem_empresa as co','pe.id_empresa = co.id_empresa')
 						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and r.idcentrocosto = pr.id_centro_costo and pr.cierre is not null')
 						  ->join('rem_isapre as i','pe.idisapre = i.id_isapre')
@@ -5380,9 +5397,17 @@ public function previred($datos_remuneracion){
 				$sueldoimponible_ccaf = $codprev_ccaf != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
 				$sueldoimponible_segcesantia = $remuneracion->afilsegcesantia == 1 ? $remuneracion->sueldoimponibleafc : 0;
 				$cotccaffon = $codprev_ccaf == 0 ? 0 : $remuneracion->inp;
+
+				//var_dump_new($codprev_ccaf);
+				//var_dump_new($remuneracion->inp);
+				//var_dump_new($cotccaffon); exit;
+
 				$aportepatronal = $codprev_mutual == 0 ? 0 : $remuneracion->aportepatronal;
 				$cotizacionisl = $codprev_mutual == 0 ? $remuneracion->aportepatronal : 0;
 
+				//Si esta en fonasa y no tiene caja de compensacion, el monto se va al isl en vez de la ccaf
+				//$cotizacionisl_fonasa = ($codprev_ccaf == 0 && $remuneracion->inp > 0) ? $remuneracion->inp : 0;
+				$cotizacionisl_fonasa = 0;
 				$sueldoimponible_fonasa = ( (($remuneracion->fonasa+$remuneracion->inp) > 0) || $cotizacionisl > 0)  ? $remuneracion->sueldoimponibleimposiciones : 0;
 
 				$asigfamiliar_ccaf = $codprev_ccaf != 0 ? $asigfamiliar : 0;
@@ -5413,6 +5438,16 @@ public function previred($datos_remuneracion){
 
 					$sueldoimponible_afp  = $linea_trabajador['tipo_linea'] == "00" ? $sueldoimponible_afp : 0;
 					$cot_obligatoria_afp  = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cotizacionobligatoria+$remuneracion->comisionafp : 0;
+
+					$cot_obligatoria_ips = $dato_afp->exregimen == 1 ? $cot_obligatoria_afp : 0;
+					$cot_obligatoria_afp = $dato_afp->exregimen == 1 ? 0 : $cot_obligatoria_afp;
+					$tasa_ips = $dato_afp->exregimen == 1 ? $remuneracion->porc : 0;
+
+					$cot_obligatoria_afp  = $linea_trabajador['tipo_linea'] == "00" ? $cot_obligatoria_afp : 0;
+					$cot_obligatoria_ips  = $linea_trabajador['tipo_linea'] == "00" ? $cot_obligatoria_ips : 0;
+
+					$codcentrocosto = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->codcentrocosto : "";
+
 					$seginvalidez = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->seginvalidez : 0;
 					$montoahorrovol = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->montoahorrovol : 0;
 					$fecdesdeafp = $linea_trabajador['tipo_linea'] == "00" ? "00-00-0000" : "          ";
@@ -5524,9 +5559,10 @@ public function previred($datos_remuneracion){
 
 					//Datos IPS - ISL - FONASA  (FALTA ANALIZAR DE AQUI HACIA ABAJO)
 					$linea .= "0000"; // Código EX-Caja Régimen 
-					$linea .= "00,00"; //Tasa Cotización Ex-Caja Previsión  
+					//$linea .= "00,00"; //Tasa Cotización Ex-Caja Previsión  
+					$linea .= str_pad(str_replace(".",",",$tasa_ips),5,"0",STR_PAD_LEFT); //Tasa Cotización Ex-Caja Previsión  
 					$linea .= str_pad($sueldoimponible_fonasa,8,"0",STR_PAD_LEFT); //Renta Imponible IPS ******REVISAR, al parecer hay un tope
-					$linea .= "00000000"; //Cotización Obligatoria IPS 
+					$linea .= str_pad($cot_obligatoria_ips,8,"0",STR_PAD_LEFT); //Cot Obligatoria IPS (Cuando esta en INP se llena este dato)					
 					$linea .= "00000000"; //Renta Imponible Desahucio 
 					$linea .= "0000"; // Código Ex-Caja Régimen Desahucio 
 					$linea .= "00,00"; //Tasa Cotización Desahucio Ex-Cajas de Previsión 
@@ -5573,7 +5609,7 @@ public function previred($datos_remuneracion){
 					//Datos Mutualidad
 					$linea .= str_pad($codprev_mutual,2,"0",STR_PAD_LEFT);; // Código Mutualidad
 					$linea .= str_pad($sueldoimponible_mutual,8,"0",STR_PAD_LEFT); //Renta Imponible Mutual 
-					$linea .= str_pad($aportepatronal,8,"0",STR_PAD_LEFT);; //Cotización Accidente del Trabajo (MUTUAL) 
+					$linea .= str_pad($aportepatronal,8,"0",STR_PAD_LEFT); //Cotización Accidente del Trabajo (MUTUAL) 
 					$linea .= "000"; // Código Mutualidad (VER QUE PASA EN LINEAS ADICIONALES POR MOV PERSONAL) *****************
 
 					//Datos Administradora de Seguro de Cesantía
@@ -5588,7 +5624,8 @@ public function previred($datos_remuneracion){
 
 
 					//Otros Datos de la Empresa
-					$linea .= "                    "; //Centro de Costos, Sucursal, Agencia, Obra, Región 
+
+					$linea .= str_pad($codcentrocosto,20," ",STR_PAD_LEFT); //Centro de Costos, Sucursal, Agencia, Obra, Región 
 
 
 

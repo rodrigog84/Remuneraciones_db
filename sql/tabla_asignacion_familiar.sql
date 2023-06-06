@@ -233,3 +233,14 @@ insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto,periodo)
 select	tramo, desde, hasta, monto, 202304 as periodo
 from		rem_tabla_asig_familiar_periodo
 where		periodo = 202302
+
+
+insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto, periodo) values ('A', 1, 515879, 20328, 202305)
+insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto, periodo) values ('B', 515880, 753496, 12475, 202305)
+insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto, periodo) values ('C', 753497, 1175196, 3942, 202305)
+insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto, periodo) values ('D', 1175197, 999999999, 0, 202305)
+
+insert into rem_tabla_asig_familiar_periodo (tramo, desde, hasta, monto,periodo)
+select	tramo, desde, hasta, monto, 202306 as periodo
+from		rem_tabla_asig_familiar_periodo
+where		periodo = 202305

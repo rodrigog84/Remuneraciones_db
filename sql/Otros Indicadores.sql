@@ -999,3 +999,28 @@ set			valor = 1.61
 from		rem_parametros r
 where		nombre = 'Tasa SIS'
 and			fecha >= '20230401'
+
+
+
+update	r
+set		valor = 440000
+--select	*
+from	rem_parametros r
+where	nombre = 'Sueldo Minimo'
+AND		FECHA IN (
+select FECHA
+from rem_calendario
+where periodo = 202305
+)
+
+
+update	r
+set		valor = 440000
+--select	*
+from	rem_parametros r
+where	nombre = 'Sueldo Minimo'
+AND		FECHA IN (
+select FECHA
+from rem_calendario
+where periodo = 202306
+)
