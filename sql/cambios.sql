@@ -1068,3 +1068,22 @@ GO
 
 
 
+/************************************************************************************************/
+
+update	r
+SET		TIPO_DIA = 'F'
+--SELECT	*
+FROM	rem_calendario r
+WHERE	AÑO = 2023
+AND		FECHA = '20230507'
+
+
+
+INSERT INTO REM_FERIADO (FECHA, ACTIVE, CREATED_AT)
+
+SELECT	FECHA, 1 AS ACTIVE, GETDATE() AS CREATED_AT
+FROM	rem_calendario r
+WHERE	TIPO_DIA = 'F'
+AND		FECHA NOT IN (SELECT FECHA
+					  FROM	REM_FERIADO
+					  WHERE	ACTIVE = 1)

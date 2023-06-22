@@ -1761,16 +1761,34 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	public function dias_habiles($idperiodo){
 
 		$periodo =  $this->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+		//var_dump_new($periodo); exit;
+
+		$periodo_number = $periodo->periodo;
+		//var_dump_new($periodo_number); exit;
+
+		
+		$diashabiles_data = $this->db->select('COUNT(DISTINCT FECHA) AS cantidad',FALSE)
+						  ->from('rem_calendario')
+						  ->where('periodo',$periodo_number)
+						  ->where('tipo_dia','H');
+
+		$query_diashabiles = $this->db->get();
+		$result_diashabiles =  $query_diashabiles->row();
+
+		$dias_habiles = $result_diashabiles->cantidad; 
 
 
-		$fec_ini = $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-01";
-		$fec_fin = $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".ultimo_dia_mes($periodo->anno,$periodo->mes);
-		$dias_habiles = bussiness_days($fec_ini,$fec_fin,'habil','SUM'); 
-		$dias_inhabiles = bussiness_days($fec_ini,$fec_fin,'domingos','SUM');
 
-		$dias_feriados = $this->admin->get_cantidad_feriado($fec_ini,$fec_fin);
-		$dias_habiles = $dias_habiles[$periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)] - $dias_feriados->cantidad;
-		$dias_inhabiles = $dias_inhabiles[$periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)] + $dias_feriados->cantidad;
+		
+		$diasinhabiles_data = $this->db->select('COUNT(DISTINCT FECHA) AS cantidad',FALSE)
+						  ->from('rem_calendario')
+						  ->where('periodo',$periodo_number)
+						  ->where_in('tipo_dia',array('D','F'));
+
+		$query_diasinhabiles = $this->db->get();
+		$result_diasinhabiles =  $query_diasinhabiles->row();
+
+		$dias_inhabiles = $result_diasinhabiles->cantidad; 
 
 		$array_dias = array('dias_habiles' => $dias_habiles,
 					   'dias_inhabiles' => $dias_inhabiles);
@@ -1778,6 +1796,41 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		return $array_dias;
 
 	}
+
+
+
+/*	public function dias_habiles($idperiodo){
+
+		$periodo =  $this->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+
+
+		$fec_ini = $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-01";
+		$fec_fin = $periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)."-".ultimo_dia_mes($periodo->anno,$periodo->mes);
+		$dias_habiles = bussiness_days($fec_ini,$fec_fin,'habil','SUM');  //cantidad de dias habilles del mes
+		$dias_inhabiles = bussiness_days($fec_ini,$fec_fin,'domingos','SUM'); // cntidad de domingos del mes
+
+		$dias_feriados = $this->admin->get_cantidad_feriado($fec_ini,$fec_fin);
+
+		var_dump_new($dias_feriados);
+		var_dump_new($dias_habiles);
+		var_dump_new($dias_inhabiles);
+
+		// habiles, son los lunes a viernes menos feriados
+		$dias_habiles = $dias_habiles[$periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)] - $dias_feriados->cantidad;
+
+		var_dump_new($dias_habiles);
+
+		// inhabiles, son los domingos mas feriados
+		$dias_inhabiles = $dias_inhabiles[$periodo->anno."-".str_pad($periodo->mes,2,"0",STR_PAD_LEFT)] + $dias_feriados->cantidad;
+
+		var_dump_new($dias_inhabiles); exit;
+
+		$array_dias = array('dias_habiles' => $dias_habiles,
+					   'dias_inhabiles' => $dias_inhabiles);
+
+		return $array_dias;
+
+	}*/
 
 
 	public function calcular_remuneraciones($idperiodo,$centro_costo){
@@ -1789,7 +1842,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 		// CALCULAMOS DIAS HÁBILES E INHABILES DEL MES
 		$array_dias =  $this->dias_habiles($idperiodo);
-
+		//var_dump_new($array_dias); exit;
 		$this->load->model('admin');
 		//$periodo = $this->admin->get_periodo_by_id($idperiodo);
 	

@@ -63,6 +63,17 @@ BEGIN
 		SET @V_DIA = DATEPART(dW, @V_FECHA_INI)	
 
 		--VEO QUE TIPO DE DÍA ESTOY INSERTANDO--
+
+		-- QUITA UN DIA, PORQUE ESTÁ TIRANDO NUMEROS ADELANTADOS
+		IF @V_DIA = 1
+			BEGIN
+				SET @V_DIA = 7
+			END
+		ELSE
+			BEGIN
+				SET @V_DIA = @V_DIA - 1 
+			END
+
 		IF @V_DIA <= 5
 			SET @V_TIPO_DIA = 'H'
 		ELSE
@@ -125,7 +136,7 @@ BEGIN
 				,DATEPART(MM, @V_FECHA_INI)												--3
 				,DATEPART(DD, @V_FECHA_INI)												--4
 				,@V_NOMBRE_DIA															--5
-				,DATEPART(dW, @V_FECHA_INI)												--6
+				,@V_DIA																	--6
 				,DATEPART(WK, @V_FECHA_INI)												--7
 				,DATEPART(QQ, @V_FECHA_INI)												--8
 				,@V_TIPO_DIA															--9
@@ -154,12 +165,6 @@ END
 ------************------
 
 
-------------
---FERIADOS--
-------------
-
-
---2023--
 UPDATE 	rem_calendario
 SET 	TIPO_DIA = 'F'
 WHERE 	FECHA in	(
@@ -168,6 +173,7 @@ WHERE 	FECHA in	(
 					,'20230407'
 					,'20230408'
 					,'20230501'
+					,'20230507'
 					,'20230521'
 					,'20230621'
 					,'20230626'
@@ -179,6 +185,7 @@ WHERE 	FECHA in	(
 					,'20231027'
 					,'20231101'
 					,'20231208'
+					,'20231217'
 					,'20231225'
 	--				,'31
 					)
