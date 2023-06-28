@@ -1770,7 +1770,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$diashabiles_data = $this->db->select('COUNT(DISTINCT FECHA) AS cantidad',FALSE)
 						  ->from('rem_calendario')
 						  ->where('periodo',$periodo_number)
-						  ->where('tipo_dia','H');
+						  ->where_in('tipo_dia',array('H','S'));
 
 		$query_diashabiles = $this->db->get();
 		$result_diashabiles =  $query_diashabiles->row();
@@ -1789,6 +1789,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$result_diasinhabiles =  $query_diasinhabiles->row();
 
 		$dias_inhabiles = $result_diasinhabiles->cantidad; 
+
+
 
 		$array_dias = array('dias_habiles' => $dias_habiles,
 					   'dias_inhabiles' => $dias_inhabiles);
@@ -1847,6 +1849,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		//$periodo = $this->admin->get_periodo_by_id($idperiodo);
 	
 		$idperiodo_ant = $this->admin->get_periodo_anterior($idperiodo);
+		$dias_periodo = $this->admin->get_num_dias_periodo($idperiodo);
+		$dias_periodo = $dias_periodo < 30 ? 30 : $dias_periodo;
+		
 		$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
 
 		$tabla_impuesto = $this->admin->get_tabla_impuesto();
@@ -1928,21 +1933,23 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			 
 
 
-			$dias_trabajados =  $datos_remuneracion->diastrabajo > ($diastrabajo - $dias_licencia) ?  ($diastrabajo - $dias_licencia) : $datos_remuneracion->diastrabajo;
+			$dias_trabajados =  $datos_remuneracion->diastrabajo > ($dias_periodo - $dias_licencia) ?  ($dias_periodo - $dias_licencia) : $datos_remuneracion->diastrabajo;
 			$dias_trabajados = $dias_trabajados < 0 ? 0 : $dias_trabajados;
+
 
 			$sueldo_base_mes = round(($trabajador->sueldobase/$diastrabajo)*$dias_trabajados,0);
 
-		/*	if($trabajador->id_personal == 10190){
+			/*if($trabajador->id_personal == 20462){
 				var_dump_new($datos_remuneracion->diastrabajo);
+				var_dump_new($dias_periodo);
 				var_dump_new($diastrabajo);
 				var_dump_new($dias_trabajados);
 				var_dump_new($dias_licencia);
 				var_dump_new($sueldo_base_mes);
 				var_dump_new($trabajador);
 				var_dump_new($datos_remuneracion); exit;
-			}
-			*/
+			}*/
+			
 			$movilizacion_mes = round(($trabajador->movilizacion/$diastrabajo)*$dias_trabajados,0);
 			$colacion_mes = round(($trabajador->colacion/$diastrabajo)*$dias_trabajados,0);
 
@@ -2203,7 +2210,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 			
 			//MONTO SEMANA CORRIDA ESTÁ CONSIDERADO DENTRO DE SUELDO IMPONIBLE
-			$base_tributaria = $sueldo_imponible + $bonos_no_imponibles_tributables - $cot_obligatoria - $comision_afp - $adic_afp - $segcesantia - $cot_salud_oblig - $cot_adic_isapre - $cot_fonasa - $cot_inp;
+			$base_tributaria = $sueldo_imponible + $bonos_no_imponibles_tributables - $cot_obligatoria - $comision_afp - $adic_afp - $segcesantia - $cot_salud_oblig - $cot_adic_isapre - $adic_salud - $cot_fonasa - $cot_inp;
 
 			$impuesto = 0;
 			foreach ($tabla_impuesto as $rango) {

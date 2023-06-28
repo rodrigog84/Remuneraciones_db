@@ -1104,6 +1104,26 @@ public function get_max_indicadores_by_periodo($date,$indicador){
 
 	}
 
+
+public function get_num_dias_periodo($idperiodo){
+
+		$sql = "select		count(DISTINCT FECHA) as cantidad
+				from		rem_calendario
+				where		periodo = (select periodo from rem_periodo where id_periodo = '" . $idperiodo . "')";
+
+		//echo $sql.'<br>';
+		$dias_data = $this->db->query($sql);
+		$result = $dias_data->result();
+
+		if(count($result) == 0){
+			return -1;
+		}else{
+			$datos = $result[0];
+			return $datos->cantidad;
+		}
+	}	
+
+
 	public function edit_parametros_generales($parametros){
 
 
