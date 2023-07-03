@@ -281,6 +281,70 @@ class Proceso extends CI_Model
             }
 
 
+            /******* ACTUALIZAR UF FUTURA ******************/
+                 $anio = date('Y');
+                 $mes_usr = date('m');
+
+                  $contenido = file_get_contents("http://www.sii.cl/valores_y_fechas/uf/uf".$anio.".htm");
+                  $dom = new DOMDocument;
+                  $dom->loadHTML($contenido);
+                  $tables = $dom->getElementById('table_export');
+
+                  foreach($dom->getElementById('table_export')->getElementsByTagName("tr") as $meses => $tr){
+                    foreach($tr->getElementsByTagName('td') as $dias => $td){
+                      $valores_por_mes[$dias][$meses] = $td->nodeValue;
+                    }
+                  }
+
+                  $array_uf = array();
+                  foreach($valores_por_mes as $meses => $arreglo_dias){
+                    
+                    $mes = intval($meses+1);
+                    if(strlen($mes)==1){ 
+                      $mes = "0".$mes; 
+                    }else{ 
+                      $mes; 
+                    }   
+                    
+                    foreach($arreglo_dias as $dias => $valor){      
+                      if($mes == $mes_usr || $mes_usr == 13){     
+                        if (strpos($valor,'.') !== false) {         
+                          if(strlen($dias)==1){ $dias = "0".$dias; }else{ $dias; }
+                          $fecha = $dias."-".$mes."-".$anio;
+                          $array_uf[$fecha] = $valor;
+                        }       
+                      }
+                    }   
+                  } 
+
+                foreach ($array_uf as $key_uf => $datos_uf) {
+
+                    $array_key_uf = explode('-',$key_uf);
+
+
+                    $fecha_ind = $array_key_uf[2].$array_key_uf[1].$array_key_uf[0];
+                    $valor = $datos_uf;
+                    $valor = str_replace('.', '', $valor);
+                    $valor = str_replace(',', '.', $valor);
+                    $data_indicador = $this->admin->get_indicadores_by_day($fecha_ind,'UF');
+
+                    if(count($data_indicador) == 0){
+
+
+                        $data = array('nombre' => 'UF',
+                                    'valor' => $valor,
+                                    'fecha' => $fecha_ind);
+
+
+                        $this->db->insert('rem_parametros', $data);
+                    }
+
+                }
+
+
+
+
+
             /***** ACTUALIZA UTM *********************/
             $query= $this->db->query("select        count(distinct fecha) as cantidad
                             from        rem_parametros
