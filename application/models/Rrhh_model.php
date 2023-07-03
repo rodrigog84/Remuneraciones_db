@@ -3636,10 +3636,10 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 
 
-			//if($content->pdf_content == ''){ // EN CASO QUE POR ALGUN MOTIVO FALLARA LA EJECUCION INICIAL, SE CREA AHORA
+			if($content->pdf_content == ''){ // EN CASO QUE POR ALGUN MOTIVO FALLARA LA EJECUCION INICIAL, SE CREA AHORA
 				$this->generar_contenido_comprobante($datos_remuneracion);
 				$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
-			//}
+			}
 
 			//Variable para PDF 		
 
