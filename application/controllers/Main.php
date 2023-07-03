@@ -291,20 +291,20 @@ class Main extends CI_Controller
                     }
                 }
                 $datosperiodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'), null);
-
+              //  var_dump_new($datosperiodo); exit;
                 $meses_arreglo = array(
                     1 => 'Ene',
-                    'Feb',
-                    'Mar',
-                    'Abr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Ago',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dic'
+                    2 => 'Feb',
+                    3 => 'Mar',
+                    4 => 'Abr',
+                    5 => 'May',
+                    6 => 'Jun',
+                    7 => 'Jul',
+                    8 => 'Ago',
+                    9 => 'Sep',
+                    10 => 'Oct',
+                    11 => 'Nov',
+                    12 => 'Dic'
                 );
 
                 $meses = array();
@@ -312,22 +312,50 @@ class Main extends CI_Controller
                 $meses_x_montopago = array();
 
 
-                for ($i = 1; $i < 13; $i++) {
-                    $meses[$i] = array('mes' => number_format(date("m", mktime(0, 0, 0, date("m") - $i, date("d"), date("Y")))), 'anno' => date("Y", mktime(0, 0, 0, date("m") - $i, date("d"), date("Y"))));
-                    $meses_remunerados[$i] = 0;
+                for ($i = 13; $i >= 1; $i--) {
+                    array_push($meses,array('mes' => number_format(date("m", mktime(0, 0, 0, date("m") - $i, date("d"), date("Y")))), 'anno' => date("Y", mktime(0, 0, 0, date("m") - $i, date("d"), date("Y")))));
+                    //$meses_remunerados[$i] = 0;
+
                 }
-                for ($i = 1; $i < 13; $i++) {
+
+                foreach ($meses as $key => $mes) {
+                    $valor_mes = 0;
+                    foreach ($datosperiodo as $datoperiodo) {
+                        if( $datoperiodo->mes == $mes['mes'] && $datoperiodo->anno == $mes['anno'] && !is_null($datoperiodo->aprueba)){
+
+                            $valor_mes = $datoperiodo->sueldoliquido;
+                        }
+
+                    }
+
+                    $meses_remunerados[$key] = $valor_mes;
+                    $meses_x_montopago[$key] = $meses_arreglo[$mes['mes']] . ' ' . $mes['anno'];
+                }
+
+
+               // var_dump_new($meses); //exit;
+               // var_dump_new($meses_remunerados); 
+               // var_dump_new($meses_x_montopago);
+               // exit;
+                
+                /*for ($i = 13; $i >= 1; $i--) {
                     if (isset($datosperiodo[$i]->mes)) {
                         $meses_remunerados[$datosperiodo[$i]->mes] = isset($datosperiodo[$i]->sueldoimponible) ? $datosperiodo[$i]->sueldoimponible : 0;
                     }
-                }
+                }*/
+
+
                 for ($i = 1; $i < 13; $i++) {
-                    $meses_x_montopago[$i] = array('mes' => $meses_arreglo[$meses[$i]['mes']] . ' ' . $meses[$i]['anno']);
+                  //  $meses_x_montopago[$i] = array('mes' => $meses_arreglo[$meses[$i]['mes']] . ' ' . $meses[$i]['anno']);
                     $pago_remuneraciones[$i] =  array('pago' => $meses_remunerados[$meses[$i]['mes']]);
                 }
 
-                $pago_remuneraciones = array_column($pago_remuneraciones, 'pago');
-                $meses_x_montopago   = array_column($meses_x_montopago, 'mes');
+               // $pago_remuneraciones = array_column($pago_remuneraciones, 'pago');
+                 $pago_remuneraciones = $meses_remunerados;
+             //   var_dump_new($pago_remuneraciones); 
+             //   var_dump_new($meses_x_montopago);
+             //   exit;
+               // $meses_x_montopago   = array_column($meses_x_montopago, 'mes');
 
 
                 if ($periodos_remuneracion == null) {
@@ -432,15 +460,15 @@ class Main extends CI_Controller
 
         /*** SI YA SE HABIA SELECCIONADO UN MODULO, REDIRECCIONA ****/
         /*if(count($this->session->userdata('uri_array')) > 0){
-  			$uri_array = $this->session->userdata('uri_array');
-  			$url = $uri_array[1].'/'.$uri_array[2];
-  			for($i = 3;$i <= count($uri_array); $i++){
-  				$url .= "/".$uri_array[$i];
-  			}
-  			$this->session->unset_userdata('uri_array');
-  			redirect($url);
+            $uri_array = $this->session->userdata('uri_array');
+            $url = $uri_array[1].'/'.$uri_array[2];
+            for($i = 3;$i <= count($uri_array); $i++){
+                $url .= "/".$uri_array[$i];
+            }
+            $this->session->unset_userdata('uri_array');
+            redirect($url);
 
-  		}		*/
+        }       */
         $vars['highchartsGraph'] = true;
         $this->load->view($template, $vars);
     }
