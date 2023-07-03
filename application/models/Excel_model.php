@@ -218,7 +218,7 @@ public function libro($datos_remuneracion){
 			$linea = 1;
             foreach ($datos_remuneracion as $remuneracion) {
 
-            	$datos_bonos_imponibles = $this->rrhh_model->get_bonos_by_remuneracion($remuneracion->id_remuneracion,true);
+            	$datos_bonos_imponibles = $this->rrhh_model->get_bonos_by_remuneracion($remuneracion->id_remuneracion,true,'HABER');
             	//$datos_bonos_imponibles = array();
             	$bonos_imponibles = 0;
             	foreach ($datos_bonos_imponibles as $bono_imponible) {
@@ -226,7 +226,7 @@ public function libro($datos_remuneracion){
             	}
 
 
-            	$datos_bonos_no_imponibles = $this->rrhh_model->get_bonos_by_remuneracion($remuneracion->id_remuneracion,false);
+            	$datos_bonos_no_imponibles = $this->rrhh_model->get_bonos_by_remuneracion($remuneracion->id_remuneracion,false,'HABER');
 
             	//$datos_bonos_no_imponibles = array();
             	$bonos_no_imponibles = 0;
@@ -237,12 +237,23 @@ public function libro($datos_remuneracion){
             	}
 
 				//$datos_descuentos = $this->get_descuento($remuneracion->idperiodo,'D',$remuneracion->idtrabajador);
-				$datos_descuentos = $this->rrhh_model->get_haberes_descuentos($remuneracion->idtrabajador,null,'DESCUENTO');	
+				/*$datos_descuentos = $this->rrhh_model->get_haberes_descuentos($remuneracion->idtrabajador,null,'DESCUENTO');	
 				//$datos_descuentos = array();
 				$monto_descuento = 0;
             	foreach ($datos_descuentos as $dato_descuento) {
             		$monto_descuento += $dato_descuento->monto;
-            	}           	
+            	} */          	
+
+
+
+				$datos_descuentos = $this->rrhh_model->get_bonos_by_remuneracion($remuneracion->id_remuneracion,null,'DESCUENTO');
+
+				//$datos_d = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,null,'DESCUENTO',$datos_remuneracion->id_periodo);
+				$monto_descuento = 0;
+				foreach ($datos_descuentos as $dato_descuento) {
+					$monto_descuento += $dato_descuento->monto;
+				}
+
 
             	//$datos_prestamos = $this->get_descuento($remuneracion->idperiodo,'P',$remuneracion->idtrabajador);
             	$datos_prestamos = array();
