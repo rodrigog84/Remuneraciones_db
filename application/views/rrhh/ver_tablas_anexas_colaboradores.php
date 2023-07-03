@@ -32,7 +32,7 @@
                         <div class='row'    >
                           <div class='col-md-12'>
                                     <div class="table-responsive">
-                <table class="table">
+                <table class="table" id='tabla_paises'>
                   <thead>
                     <tr>
                       <th>C&oacute;digo Pa&iacute;s</th>
@@ -83,7 +83,7 @@
                         <div class='row'    >
                           <div class='col-md-12'>
                                     <div class="table-responsive">
-                <table class="table">
+                <table class="table"  id='tabla_regiones'>
                   <thead>
                     <tr>
                       <th>C&oacute;digo Regi&oacute;n</th>
@@ -135,7 +135,7 @@
                         <div class='row'    >
                           <div class='col-md-12'>
                                     <div class="table-responsive">
-                <table class="table">
+                <table class="table"  id='tabla_comunas'>
                   <thead>
                     <tr>
                       <th>C&oacute;digo Comuna</th>
@@ -184,3 +184,48 @@
         
           </div>
 
+<script>
+
+
+$(document).ready(function() {
+
+    var table = $('#tabla_paises,#tabla_regiones,#tabla_comunas').DataTable({
+      "bLengthChange": true,
+          "bFilter": true,
+          "bInfo": true,
+          "bSort": false,
+          "bAutoWidth": false,
+          "aLengthMenu" : [[5,15,30,50,100,-1],[5,15,30,50,100,'Todos']],
+          "iDisplayLength": 50,
+          "oLanguage": {
+              "sLengthMenu": "_MENU_ Registros por p&aacute;gina",
+              "sZeroRecords": "No se encontraron registros",
+              "sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+              "sInfoEmpty": "Mostrando 0 de 0 registros",
+              "sInfoFiltered": "(filtrado de _MAX_ registros totales)",
+              "sSearch":        "Buscar:",
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":    "Último",
+                "sNext":    "Siguiente",
+                "sPrevious": "Anterior"}            } ,
+            initComplete: function () {
+                  var div=$('#listado_wrapper');
+            /*div.find("#listado_filter").prepend("<label for='idEstado'>Estado:</label> <select id='idEstado' name='idEstado' class='form-control' required><option value='' selected='selected'>Todos</option><option value='Activo'>Activo</option><option value='Inactivo'>Inactivo</option></select>");
+                this.api().column(4).each(function () {
+                  var column = this;
+                  console.log(column.data());
+                  $('#idEstado').on('change',function(){
+                    var val=$(this).val();
+                    column.search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                });
+            });*/
+        }
+    });
+    });
+
+
+
+
+</script>

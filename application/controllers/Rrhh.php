@@ -1765,6 +1765,7 @@ public function ver_formato_carga_colaboradores()
       $vars['content_view'] = 'rrhh/ver_tablas_anexas_colaboradores';
       $vars['formValidation'] = true;
       $vars['dataTables'] = true;
+      $vars['datatable'] = true;
       $vars['nacionalidad'] = $nacionalidad;
       $vars['regiones'] = $regiones;
       $vars['comunas'] = $comunas;
