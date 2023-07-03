@@ -184,7 +184,24 @@
 											                            <?php if(count($personal) > 0 ){ ?>
 											                              <?php $i = 1; ?>
 											                              <?php foreach ($personal as $trabajador) { ?>
+											                               <?php
+											                               	 if(isset($datos_remuneracion[$trabajador->id_personal])){
 
+											                               	 	$dias_trabajo_mes = $datos_remuneracion[$trabajador->id_personal];
+											                               	 }else{
+
+											                               	 	if($trabajador->diastrabajo == 30 && $licencias[$trabajador->id_personal] > 0){
+											                               	 		$dias_trabajo_mes = $dias_periodo - $licencias[$trabajador->id_personal];
+
+											                               	 	}else{
+
+											                               	 		$dias_trabajo_mes = $trabajador->diastrabajo - $licencias[$trabajador->id_personal];
+											                               	 	}
+
+											                               	 }
+
+
+											                               ?>
 											                               <tr >
 											                                <td><?php echo $i ;?></td>
 											                                <td><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></td>
@@ -196,7 +213,7 @@
 											                                    <b><span id="diaslicencia_<?php echo $trabajador->id_personal;?>"  class="diaslicencia text-right" ><?php echo $licencias[$trabajador->id_personal];?></span></b>   
 											                                </td>
 											                                <td class="form-group">
-											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo numeros editables" value="<?php echo isset($datos_remuneracion[$trabajador->id_personal]) ? str_replace(".",",",$datos_remuneracion[$trabajador->id_personal]) : str_replace(".",",",$trabajador->diastrabajo - $licencias[$trabajador->id_personal]); ?>"  />   
+											                                  <input type="text" name="diastrabajo_<?php echo $trabajador->id_personal;?>" id="diastrabajo_<?php echo $trabajador->id_personal;?>" class="diastrabajo numeros editables" value="<?php echo str_replace(".",",",$dias_trabajo_mes); ?>"  />   
 											                                </td>
 											                              </tr>
 											                              <?php $i++;?>
@@ -208,7 +225,7 @@
 											                          <?php } ?>
 											                          </tbody>
 																</table> 
-																
+																<input type='text' name='dias_periodo' id='dias_periodo' value='<?php echo $dias_periodo;?>'>
 															</div>
 										                    <?php if(count($personal) > 0 ){ ?>
 										                    <div class="panel-footer">
@@ -374,8 +391,25 @@ $('.periodo').change(function(){
 
 		*/
 
+
+      var dias_periodo = 0
+      $.ajax({url: "<?php echo base_url();?>rrhh/get_dias_periodo/"+$('#mes').val()+"/"+$('#anno').val(),
+        type: 'GET',
+        async: false,
+        success : function(data) {
+
+        	dias_periodo = data;
+        	$('#dias_periodo').val(dias_periodo)
+
+        }});
+
+
+
       $.get("<?php echo base_url();?>rrhh/get_datos_remuneracion/"+$('#mes').val()+"/"+$('#anno').val(),function(data){
                // Limpiamos el select
+
+               		dias_periodo = parseInt(dias_periodo)
+               		//console.log(dias_periodo)
                     var_json = $.parseJSON(data);
                    // console.log(var_json);
                     $(".diastrabajo").each(
@@ -385,7 +419,15 @@ $('.periodo').change(function(){
                             idtrabajador = array_field[1];  
 
                             diastrabajo = 0;
-                           	max_dias_trabajo = parseInt($('#diasatrabajar_'+idtrabajador).html()) - parseInt($('#diaslicencia_'+idtrabajador).html());
+
+
+
+							if(parseInt($('#diasatrabajar_'+idtrabajador).html()) == 30 && parseInt($('#diaslicencia_'+idtrabajador).html()) > 0){
+								max_dias_trabajo = dias_periodo - parseInt($('#diaslicencia_'+idtrabajador).html())
+							}else{
+								max_dias_trabajo = parseInt($('#diasatrabajar_'+idtrabajador).html()) - parseInt($('#diaslicencia_'+idtrabajador).html());
+							}
+
                            	if(typeof(var_json["diastrabajo_"+idtrabajador]) != 'undefined' && var_json["diastrabajo_"+idtrabajador] != null){
                            		diastrabajo = var_json["diastrabajo_"+idtrabajador] > max_dias_trabajo ? max_dias_trabajo : var_json["diastrabajo_"+idtrabajador];
                            	}else{
@@ -450,10 +492,24 @@ $(document).ready(function() {
                             var id_text = $field.attr('id');
                             var array_field = id_text.split("_");
                             idtrabajador = array_field[1];
+
+
+                            var dias_periodo = parseInt($('#dias_periodo').val());
                             var asistencia_trabajador = $('#diasatrabajar_'+idtrabajador).html() == '' ? 0 : parseInt($('#diasatrabajar_'+idtrabajador).html());
                             var licencias_trabajador = $('#diaslicencia_'+idtrabajador).html() == '' ? 0 : parseInt($('#diaslicencia_'+idtrabajador).html());
-                            var asistencia_actual = $('#diastrabajo_'+idtrabajador).val() == '' ? 0 : parseInt($('#diastrabajo_'+idtrabajador).val());                            
-                            if(asistencia_actual <= (asistencia_trabajador - licencias_trabajador)){
+                            var asistencia_actual = $('#diastrabajo_'+idtrabajador).val() == '' ? 0 : parseInt($('#diastrabajo_'+idtrabajador).val());
+
+
+                            //si trabaja 30 dias, y tiene licencia, se considera el total de d[ias del mes
+   							if(parseInt($('#diasatrabajar_'+idtrabajador).html()) == 30 && licencias_trabajador > 0){
+								max_dias_trabajo = dias_periodo - licencias_trabajador;
+							}else{
+								max_dias_trabajo = asistencia_trabajador - licencias_trabajador;
+							}
+                         
+
+
+                            if(asistencia_actual <= max_dias_trabajo){
                               return true;
                             }else{
                               return  {
@@ -502,14 +558,21 @@ $(document).ready(function() {
                             var id_text = $field.attr('id');
                             var array_field = id_text.split("_");
                             idtrabajador = array_field[1];
+
+                            var dias_periodo = parseInt($('#dias_periodo').val());
                             var asistencia_trabajador = $('#general_diasatrabajar').val() == '' ? 0 : parseInt($('#general_diasatrabajar').val());
                             var licencias_trabajador = $('#general_diaslicencia').val() == '' ? 0 : parseInt($('#general_diaslicencia').val());
                             var asistencia_actual = $('#general_diastrabajo').val() == '' ? 0 : parseInt($('#general_diastrabajo').val());  
+                          
+                            //si trabaja 30 dias, y tiene licencia, se considera el total de d[ias del mes
+   							if(parseInt(asistencia_trabajador) == 30 && licencias_trabajador > 0){
+								max_dias_trabajo = dias_periodo - licencias_trabajador;
+							}else{
+								max_dias_trabajo = asistencia_trabajador - licencias_trabajador;
+							}
 
-                            console.log(asistencia_trabajador)
-                            console.log(licencias_trabajador)    
-                            console.log(asistencia_actual)                           
-                            if(asistencia_actual <= (asistencia_trabajador - licencias_trabajador)){
+
+                            if(asistencia_actual <= max_dias_trabajo){
                               return true;
                             }else{
                               return  {

@@ -148,62 +148,68 @@ public function libro($datos_remuneracion){
 			 $sheet->getColumnDimension('P')->setWidth(15);			
 			 $sheet->setCellValue('P'.$i, 'Aguinaldo');	
 			 $sheet->getColumnDimension('Q')->setWidth(15);			
-			 $sheet->setCellValue('Q'.$i, 'Asignación Familiar');		
+			 $sheet->setCellValue('Q'.$i, 'Asignación Familiar');
 			 $sheet->getColumnDimension('R')->setWidth(15);			
-			 $sheet->setCellValue('R'.$i, 'Total Haberes');				 			 
+			 $sheet->setCellValue('R'.$i, 'Total Imponible');	
 			 $sheet->getColumnDimension('S')->setWidth(15);			
-			 $sheet->setCellValue('S'.$i, 'Cotización Obligatoria');				 			 
+			 $sheet->setCellValue('S'.$i, 'Total No Imponible');		 			 			 		
 			 $sheet->getColumnDimension('T')->setWidth(15);			
-			 $sheet->setCellValue('T'.$i, 'Comisión AFP');				 			 
+			 $sheet->setCellValue('T'.$i, 'Total Haberes');				 			 
 			 $sheet->getColumnDimension('U')->setWidth(15);			
-			 $sheet->setCellValue('U'.$i, 'Adicional AFP');				 			 
+			 $sheet->setCellValue('U'.$i, 'Cotización Obligatoria');				 			 
 			 $sheet->getColumnDimension('V')->setWidth(15);			
-			 $sheet->setCellValue('V'.$i, 'Ahorro Voluntario');	
+			 $sheet->setCellValue('V'.$i, 'Comisión AFP');				 			 
 			 $sheet->getColumnDimension('W')->setWidth(15);			
-			 $sheet->setCellValue('W'.$i, 'APV');	
+			 $sheet->setCellValue('W'.$i, 'Adicional AFP');				 			 
 			 $sheet->getColumnDimension('X')->setWidth(15);			
-			 $sheet->setCellValue('X'.$i, 'Cotización Salud Obligatoria');	
+			 $sheet->setCellValue('X'.$i, 'Ahorro Voluntario');	
 			 $sheet->getColumnDimension('Y')->setWidth(15);			
-			 $sheet->setCellValue('Y'.$i, 'Cotización Adicional Isapre');	
+			 $sheet->setCellValue('Y'.$i, 'APV');	
 			 $sheet->getColumnDimension('Z')->setWidth(15);			
-			 $sheet->setCellValue('Z'.$i, 'Adicional Salud');	
+			 $sheet->setCellValue('Z'.$i, 'Cotización Salud Obligatoria');	
 			 $sheet->getColumnDimension('AA')->setWidth(15);			
-			 $sheet->setCellValue('AA'.$i, 'Fonasa');	
+			 $sheet->setCellValue('AA'.$i, 'Cotización Adicional Isapre');	
 			 $sheet->getColumnDimension('AB')->setWidth(15);			
-			 $sheet->setCellValue('AB'.$i, 'Seguro Cesantía');	
+			 $sheet->setCellValue('AB'.$i, 'Adicional Salud');	
 			 $sheet->getColumnDimension('AC')->setWidth(15);			
-			 $sheet->setCellValue('AC'.$i, 'Impuesto');	
+			 $sheet->setCellValue('AC'.$i, 'Fonasa');	
 			 $sheet->getColumnDimension('AD')->setWidth(15);			
-			 $sheet->setCellValue('AD'.$i, 'Total Descuentos Legales');	
+			 $sheet->setCellValue('AD'.$i, 'Seguro Cesantía');	
 			 $sheet->getColumnDimension('AE')->setWidth(15);			
-			 $sheet->setCellValue('AE'.$i, 'Anticipo');	
+			 $sheet->setCellValue('AE'.$i, 'Impuesto');	
 			 $sheet->getColumnDimension('AF')->setWidth(15);			
-			 $sheet->setCellValue('AF'.$i, 'Descuento por Aguinaldo');	
+			 $sheet->setCellValue('AF'.$i, 'Total Descuentos Legales');	
 			 $sheet->getColumnDimension('AG')->setWidth(15);			
-			 $sheet->setCellValue('AG'.$i, 'Horas Descuento');	
+			 $sheet->setCellValue('AG'.$i, 'Base Tributaria');				 
 			 $sheet->getColumnDimension('AH')->setWidth(15);			
-			 $sheet->setCellValue('AH'.$i, 'Otros Descuentos');	
+			 $sheet->setCellValue('AH'.$i, 'Anticipo');	
 			 $sheet->getColumnDimension('AI')->setWidth(15);			
-			 $sheet->setCellValue('AI'.$i, 'Préstamos');	
+			 $sheet->setCellValue('AI'.$i, 'Descuento por Aguinaldo');	
 			 $sheet->getColumnDimension('AJ')->setWidth(15);			
-			 $sheet->setCellValue('AJ'.$i, 'Total Otros Descuentos');				 			 			 			 		
+			 $sheet->setCellValue('AJ'.$i, 'Horas Descuento');	
 			 $sheet->getColumnDimension('AK')->setWidth(15);			
-			 $sheet->setCellValue('AK'.$i, 'Líquido a Pagar');				 			 			 			 		
-			 $sheet->getColumnDimension('AL')->setWidth(15);	
-			 $sheet->setCellValue('AL'.$i, 'Aporte Seguro Cesantía');	 
+			 $sheet->setCellValue('AK'.$i, 'Otros Descuentos');	
+			 $sheet->getColumnDimension('AL')->setWidth(15);			
+			 $sheet->setCellValue('AL'.$i, 'Préstamos');	
 			 $sheet->getColumnDimension('AM')->setWidth(15);			
-			 $sheet->setCellValue('AM'.$i, 'Aporte SIS');	 
+			 $sheet->setCellValue('AM'.$i, 'Total Otros Descuentos');				 			 			 			 		
 			 $sheet->getColumnDimension('AN')->setWidth(15);			
-			 $sheet->setCellValue('AN'.$i, 'Mutual de Seguridad');	 
-			 $sheet->getColumnDimension('AO')->setWidth(15);			
-			 $sheet->setCellValue('AO'.$i, 'Total Aportes Empresa');	 
+			 $sheet->setCellValue('AN'.$i, 'Líquido a Pagar');				 			 			 			 		
+			 $sheet->getColumnDimension('AO')->setWidth(15);	
+			 $sheet->setCellValue('AO'.$i, 'Aporte Seguro Cesantía');	 
+			 $sheet->getColumnDimension('AP')->setWidth(15);			
+			 $sheet->setCellValue('AP'.$i, 'Aporte SIS');	 
+			 $sheet->getColumnDimension('AQ')->setWidth(15);			
+			 $sheet->setCellValue('AQ'.$i, 'Mutual de Seguridad');	 
+			 $sheet->getColumnDimension('AR')->setWidth(15);			
+			 $sheet->setCellValue('AR'.$i, 'Total Aportes Empresa');	 
 
 
 
 
-			 $columnaFinal = 40;
-			 $mergeTotal = 41;
-			 $columnaTotales = 40;
+			 $columnaFinal = 43;
+			 $mergeTotal = 44;
+			 $columnaTotales = 43;
 			 $sheet->getStyle("B".$i.":".ordenLetrasExcel($columnaFinal).$i)->getFont()->setBold(true);
 			 $i++;
 			$filaInicio = $i-1; 
@@ -273,54 +279,67 @@ public function libro($datos_remuneracion){
             	$sheet->getStyle('P'.$i)->getNumberFormat()->setFormatCode('#,##0');
             	$sheet->setCellValue("Q".$i,$remuneracion->asigfamiliar);
             	$sheet->getStyle('Q'.$i)->getNumberFormat()->setFormatCode('#,##0');      
-            	$sheet->setCellValue("R".$i,$remuneracion->totalhaberes);
+
+            	$sheet->setCellValue("R".$i,$remuneracion->sueldoimponible);
             	$sheet->getStyle('R'.$i)->getNumberFormat()->setFormatCode('#,##0');
-            	$sheet->setCellValue("S".$i,$remuneracion->cotizacionobligatoria);
-            	$sheet->getStyle('S'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("T".$i,$remuneracion->comisionafp);
-            	$sheet->getStyle('T'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("U".$i,$remuneracion->adicafp);
+            	$sheet->setCellValue("S".$i,$remuneracion->sueldonoimponible);
+            	$sheet->getStyle('S'.$i)->getNumberFormat()->setFormatCode('#,##0');
+
+
+            	$sheet->setCellValue("T".$i,$remuneracion->totalhaberes);
+            	$sheet->getStyle('T'.$i)->getNumberFormat()->setFormatCode('#,##0');
+            	$sheet->setCellValue("U".$i,$remuneracion->cotizacionobligatoria);
             	$sheet->getStyle('U'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("V".$i,$remuneracion->montoahorrovol);
+            	$sheet->setCellValue("V".$i,$remuneracion->comisionafp);
             	$sheet->getStyle('V'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("W".$i,$remuneracion->montocotapv);
+            	$sheet->setCellValue("W".$i,$remuneracion->adicafp);
             	$sheet->getStyle('W'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("X".$i,$remuneracion->cotizacionsalud);
+            	$sheet->setCellValue("X".$i,$remuneracion->montoahorrovol);
             	$sheet->getStyle('X'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("Y".$i,$remuneracion->cotadicisapre);
+            	$sheet->setCellValue("Y".$i,$remuneracion->montocotapv);
             	$sheet->getStyle('Y'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("Z".$i,$remuneracion->adicsalud);
+            	$sheet->setCellValue("Z".$i,$remuneracion->cotizacionsalud);
             	$sheet->getStyle('Z'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AA".$i,$remuneracion->fonasa + $remuneracion->inp);
+            	$sheet->setCellValue("AA".$i,$remuneracion->cotadicisapre);
             	$sheet->getStyle('AA'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AB".$i,$remuneracion->segcesantia);
+            	$sheet->setCellValue("AB".$i,$remuneracion->adicsalud);
             	$sheet->getStyle('AB'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AC".$i,$remuneracion->impuesto);
+            	$sheet->setCellValue("AC".$i,$remuneracion->fonasa + $remuneracion->inp);
             	$sheet->getStyle('AC'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AD".$i,$remuneracion->totaldescuentoslegales);
+            	$sheet->setCellValue("AD".$i,$remuneracion->segcesantia);
             	$sheet->getStyle('AD'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AE".$i,$remuneracion->anticipo);
+            	$sheet->setCellValue("AE".$i,$remuneracion->impuesto);
             	$sheet->getStyle('AE'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AF".$i,$remuneracion->aguinaldo);
+            	$sheet->setCellValue("AF".$i,$remuneracion->totaldescuentoslegales);
             	$sheet->getStyle('AF'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AG".$i,$remuneracion->montodescuento);
+
+
+				$sheet->setCellValue("AG".$i,$remuneracion->basetributaria);
             	$sheet->getStyle('AG'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AH".$i,$monto_descuento);
+
+
+            	$sheet->setCellValue("AH".$i,$remuneracion->anticipo);
             	$sheet->getStyle('AH'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AI".$i,$monto_prestamo);
+            	$sheet->setCellValue("AI".$i,$remuneracion->aguinaldo);
             	$sheet->getStyle('AI'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AJ".$i,$remuneracion->descuentosnolegales);
-            	$sheet->getStyle('AJ'.$i)->getNumberFormat()->setFormatCode('#,##0');             	            	            	
-            	$sheet->setCellValue("AK".$i,$remuneracion->sueldoliquido);
-            	$sheet->getStyle('AK'.$i)->getNumberFormat()->setFormatCode('#,##0');              	
-            	$sheet->setCellValue("AL".$i,$remuneracion->aportesegcesantia);
-            	$sheet->getStyle('AL'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AM".$i,$remuneracion->seginvalidez);
-            	$sheet->getStyle('AM'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AN".$i,$remuneracion->aportepatronal);
-            	$sheet->getStyle('AN'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AO".$i,$remuneracion->aportesegcesantia + $remuneracion->seginvalidez + $remuneracion->aportepatronal);
-            	$sheet->getStyle('AO'.$i)->getNumberFormat()->setFormatCode('#,##0');              	            	            	
+            	$sheet->setCellValue("AJ".$i,$remuneracion->montodescuento);
+            	$sheet->getStyle('AJ'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
+            	$sheet->setCellValue("AK".$i,$monto_descuento);
+            	$sheet->getStyle('AK'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
+            	$sheet->setCellValue("AL".$i,$monto_prestamo);
+            	$sheet->getStyle('AL'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
+            	$sheet->setCellValue("AM".$i,$remuneracion->descuentosnolegales);
+            	$sheet->getStyle('AM'.$i)->getNumberFormat()->setFormatCode('#,##0');             	            	            	
+            	$sheet->setCellValue("AN".$i,$remuneracion->sueldoliquido);
+            	$sheet->getStyle('AN'.$i)->getNumberFormat()->setFormatCode('#,##0');              	
+            	$sheet->setCellValue("AO".$i,$remuneracion->aportesegcesantia);
+            	$sheet->getStyle('AO'.$i)->getNumberFormat()->setFormatCode('#,##0');  
+            	$sheet->setCellValue("AP".$i,$remuneracion->seginvalidez);
+            	$sheet->getStyle('AP'.$i)->getNumberFormat()->setFormatCode('#,##0');  
+            	$sheet->setCellValue("AQ".$i,$remuneracion->aportepatronal);
+            	$sheet->getStyle('AQ'.$i)->getNumberFormat()->setFormatCode('#,##0');  
+            	$sheet->setCellValue("AR".$i,$remuneracion->aportesegcesantia + $remuneracion->seginvalidez + $remuneracion->aportepatronal);
+            	$sheet->getStyle('AR'.$i)->getNumberFormat()->setFormatCode('#,##0');              	            	            	
 
 	 			if($i % 2 != 0){
 	 				//echo "consulta 4: -- i : ".$i. "  -- mod : ". ($i % 2)."<br>";
@@ -410,18 +429,29 @@ public function libro($datos_remuneracion){
 
 						$sheet->getStyle("R".$filaInicio.":R".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
 						$sheet->getStyle("R".$filaInicio.":R".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
+
+						$sheet->getStyle("S".$filaInicio.":S".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("S".$filaInicio.":S".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
+
+						$sheet->getStyle("T".$filaInicio.":T".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("T".$filaInicio.":T".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
+
 	
-						$sheet->getStyle("AD".$filaInicio.":AD".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-						$sheet->getStyle("AD".$filaInicio.":AD".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
-
-						$sheet->getStyle("AK".$filaInicio.":AK".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-						$sheet->getStyle("AK".$filaInicio.":AK".$i)->getFill()->getStartColor()->setRGB('E8EDFF');									
-						$sheet->getStyle("AJ".$filaInicio.":AJ".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-						$sheet->getStyle("AJ".$filaInicio.":AJ".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
+						$sheet->getStyle("AF".$filaInicio.":AF".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("AF".$filaInicio.":AF".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
 
 
-						$sheet->getStyle("AO".$filaInicio.":AO".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-						$sheet->getStyle("AO".$filaInicio.":AO".$i)->getFill()->getStartColor()->setRGB('E8EDFF');											
+						$sheet->getStyle("AG".$filaInicio.":AG".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("AG".$filaInicio.":AG".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
+
+						$sheet->getStyle("AM".$filaInicio.":AM".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("AM".$filaInicio.":AM".$i)->getFill()->getStartColor()->setRGB('E8EDFF');									
+						$sheet->getStyle("AN".$filaInicio.":AN".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("AN".$filaInicio.":AN".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
+
+
+						$sheet->getStyle("AR".$filaInicio.":AR".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("AR".$filaInicio.":AR".$i)->getFill()->getStartColor()->setRGB('E8EDFF');											
 			/******************************************************************************************************/
 
 

@@ -3670,6 +3670,9 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
   } 
 
 
+
+
+
 	public function get_datos_remuneracion($mes,$anno){
 		$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno);
 
@@ -3772,7 +3775,6 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
         $parametros['sueldominimo'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Sueldo Minimo');
         $parametros['utm'] = $this->admin->get_indicadores_by_periodo($idperiodo,'UTM');
         $parametros['tasasis'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tasa SIS');
-
 
         if($parametros['uf'] == -1 || $parametros['topeimponible'] == -1 ||  $parametros['topeimponibleips'] == -1 ||  $parametros['topeimponibleafc'] == -1 ||  $parametros['sueldominimo'] == -1 ||  $parametros['utm'] == -1){
               $this->session->set_flashdata('calculo_remuneraciones_result', 5);
@@ -4179,6 +4181,8 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
 					redirect('main/dashboard/');
 				}else{
           $this->load->model('excel_model');
+
+        //  var_dump_new($remuneraciones); exit;
 					$datosdetalle = $this->excel_model->libro($remuneraciones);
 				}
 
@@ -4880,6 +4884,19 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 
 
+  public function get_dias_periodo($mes,$anno){
+      $this->load->model('admin');
+      $idperiodo = $this->admin->get_periodo_by_mes($mes,$anno);
+
+      //var_dump_new($idperiodo->id_periodo); exit;
+      $dias_periodo = $this->admin->get_num_dias_periodo($idperiodo->id_periodo);
+
+
+    echo json_encode($dias_periodo);
+  } 
+
+
+
 	public function asistencia($resultid = '')
 	{
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
@@ -4909,7 +4926,15 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 
 			$personal = $this->rrhh_model->get_personal(); 
-			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno); 
+			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno);
+
+      $this->load->model('admin');
+      $idperiodo = $this->admin->get_periodo_by_mes($mes,$anno);
+
+      //var_dump_new($idperiodo->id_periodo); exit;
+      $dias_periodo = $this->admin->get_num_dias_periodo($idperiodo->id_periodo);
+
+      //var_dump_new($dias_periodo); exit; 
       //echo "<pre>";
       //var_dump($personal); exit;
       $licencias = array();
@@ -4952,6 +4977,7 @@ public function liquidacion_colaborador($idremuneracion = null)
 			$vars['personal'] = $personal;	
 			$vars['datos_remuneracion'] = $array_remuneracion_trabajador;	
       $vars['licencias'] = $licencias; 
+      $vars['dias_periodo'] = $dias_periodo; 
 			$vars['mes'] = $mes;	
 			$vars['anno'] = $anno;	
 			$vars['content_view'] = 'rrhh/asistencia';
