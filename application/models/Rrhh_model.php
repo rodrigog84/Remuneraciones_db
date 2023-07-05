@@ -2336,6 +2336,9 @@ order by p.anno desc, p.mes desc
 limit 1		*/	
 //echo $sueldo_imponible_afc." -- ". $trabajador->tipocontrato; exit;
 			$aportesegcesantia = 0;
+
+
+
 			if($trabajador->segcesantia == 1){
 				if($trabajador->annos_afc <= 11){
 					$aportesegcesantia = $trabajador->tipocontrato == 'F' ? round($sueldo_imponible_afc*0.03,0) : round($sueldo_imponible_afc*0.024,0);
@@ -2345,7 +2348,6 @@ limit 1		*/
 			}else{
 				$aportesegcesantia = 0;	
 			}	
-			//echo $aportesegcesantia; exit;
 
 			if($tiene_licencia && $dias_trabajados < 30){ // SI TIENE LICENCIA SE DEBE SUMAR AL SEGURO LOS DÍAS NO TRABAJADOS POR EL PROPORCIONAL 
 
@@ -2377,7 +2379,7 @@ limit 1		*/
 
 				$imponibles_no_trabajo_afc = $imponibles_no_trabajo > $tope_imponible_afc ? $tope_imponible_afc : $imponibles_no_trabajo;
 				$imponibles_no_trabajo_sis = $imponibles_no_trabajo > $tope_imponible ? $tope_imponible : $imponibles_no_trabajo;
-										
+				$imponibles_no_trabajo_imposiciones = $imponibles_no_trabajo > $tope_imponible ? $tope_imponible : $imponibles_no_trabajo;						
 
 				if($trabajador->segcesantia == 1){
 					if($trabajador->annos_afc <= 11){
@@ -2399,8 +2401,22 @@ limit 1		*/
 
 			//$aportepatronal = is_null($empresa->idmutual) ? 0 : round($sueldo_imponible_afp*($empresa->porcmutual/100),0);
 			$aportepatronal = round($sueldo_imponible_afp*($empresa->porcmutual/100),0);
+			$aportepatronal += round($imponibles_no_trabajo_imposiciones*($empresa->porcmutual/100),0);
 			$suma_aporte_patronal += $aportepatronal;
 			$suma_impuesto += $impuesto;
+
+
+			/*if($trabajador->id_personal == 20460){
+				var_dump_new($aportepatronal);
+				var_dump_new($aportesegcesantia);
+				var_dump_new($sueldo_imponible_afp);
+				var_dump_new($sueldo_imponible_afc);
+				var_dump_new($dias_licencia);
+				var_dump_new($sueldo_base_mes);
+				var_dump_new($trabajador);
+				var_dump_new($datos_remuneracion); exit;
+			}*/
+
 
 			$data_remuneracion = array(
 					'ufperiodo' => $parametros['uf'],
