@@ -225,7 +225,7 @@
 											                          <?php } ?>
 											                          </tbody>
 																</table> 
-																<input type='text' name='dias_periodo' id='dias_periodo' value='<?php echo $dias_periodo;?>'>
+																<input type='hidden' name='dias_periodo' id='dias_periodo' value='<?php echo $dias_periodo;?>'>
 															</div>
 										                    <?php if(count($personal) > 0 ){ ?>
 										                    <div class="panel-footer">
