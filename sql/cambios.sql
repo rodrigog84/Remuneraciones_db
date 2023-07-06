@@ -1087,3 +1087,11 @@ WHERE	TIPO_DIA = 'F'
 AND		FECHA NOT IN (SELECT FECHA
 					  FROM	REM_FERIADO
 					  WHERE	ACTIVE = 1)
+
+
+
+/*************************************************************************************/
+
+alter table rem_remuneracion add sueldoimponibleafcnotrabajo int default 0
+alter table rem_remuneracion add sueldoimponibleimposicionesnotrabajo int default 0
+

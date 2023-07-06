@@ -2336,8 +2336,8 @@ order by p.anno desc, p.mes desc
 limit 1		*/	
 //echo $sueldo_imponible_afc." -- ". $trabajador->tipocontrato; exit;
 			$aportesegcesantia = 0;
-
-
+			$imponibles_no_trabajo_imposiciones = 0;
+			$imponibles_no_trabajo_afc = 0;
 
 			if($trabajador->segcesantia == 1){
 				if($trabajador->annos_afc <= 11){
@@ -2445,6 +2445,8 @@ limit 1		*/
 					'sueldoimponibleimposiciones' => $sueldo_imponible_imposiciones,
 					'sueldoimponibleafc' => $sueldo_imponible_afc,
 					'sueldoimponibleips' => $sueldo_imponible_ips,
+					'sueldoimponibleimposicionesnotrabajo' => $imponibles_no_trabajo_imposiciones,
+					'sueldoimponibleafcnotrabajo' => $imponibles_no_trabajo_afc,
 					'cotizacionobligatoria' => $cot_obligatoria,
 					'comisionafp' => $comision_afp,
 					'porccomafp' => $porc_com_afp,
