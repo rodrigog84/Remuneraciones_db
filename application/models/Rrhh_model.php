@@ -5570,7 +5570,10 @@ public function previred($datos_remuneracion){
 					$segcesantia = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->segcesantia : 0;
 					$aportesegcesantia = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->aportesegcesantia : 0;
 
-					
+
+					if($aportesegcesantia > 0 && $sueldoimponible_segcesantia == 0){
+						$sueldoimponible_segcesantia = $remuneracion->sueldoimponibleafcnotrabajo; 
+					}					
 
 					
 
