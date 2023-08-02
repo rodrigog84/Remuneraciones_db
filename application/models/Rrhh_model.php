@@ -1849,6 +1849,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		//$periodo = $this->admin->get_periodo_by_id($idperiodo);
 	
 		$idperiodo_ant = $this->admin->get_periodo_anterior($idperiodo);
+		$idperiodo_ant2 = $this->admin->get_periodo_anterior($idperiodo_ant);
+		$idperiodo_ant3 = $this->admin->get_periodo_anterior($idperiodo_ant2);
 		$dias_periodo = $this->admin->get_num_dias_periodo($idperiodo);
 		$dias_periodo = $dias_periodo < 30 ? 30 : $dias_periodo;
 		
@@ -2353,7 +2355,57 @@ limit 1		*/
 
 				// veo si tiene sueldo imponible del mes anterior
 				$datos_remuneracion_ant = $this->get_datos_remuneracion_by_periodo($idperiodo_ant,$trabajador->id_personal);
+				$sueldo_mes_anterior = false;
+				$id_periodo_evaluado = 0;
 				if(!is_null($datos_remuneracion_ant)){
+					if($datos_remuneracion_ant->sueldoimponible > 0){
+						$sueldo_mes_anterior = true;
+						$id_periodo_evaluado = $idperiodo_ant;
+					}else{
+						// BUSCAR SEGUNDO MES HACIA ATRAS
+						$datos_remuneracion_ant = $this->get_datos_remuneracion_by_periodo($idperiodo_ant2,$trabajador->id_personal);
+						//echo '<pre>';
+						//var_dump($idperiodo_ant2);
+						//var_dump($datos_remuneracion_ant); exit;
+						if(!is_null($datos_remuneracion_ant)){
+							if($datos_remuneracion_ant->sueldoimponible > 0){
+								$sueldo_mes_anterior = true;
+								$id_periodo_evaluado = $idperiodo_ant2;
+							}else{
+								// BUSCAR TERCER HACIA ATRAS
+								$datos_remuneracion_ant = $this->get_datos_remuneracion_by_periodo($idperiodo_ant3,$trabajador->id_personal);
+								if(!is_null($datos_remuneracion_ant)){
+									if($datos_remuneracion_ant->sueldoimponible > 0){
+										$sueldo_mes_anterior = true;
+										$id_periodo_evaluado = $idperiodo_ant3;
+									}
+
+
+								}
+
+							}
+
+
+
+						}
+
+					}
+
+				}
+				
+				//echo '<pre>';
+				//var_dump($id_periodo_evaluado);
+				//var_dump($idperiodo);
+				//var_dump($idperiodo_ant);
+				//var_dump($idperiodo_ant2);
+				//var_dump($idperiodo_ant3);
+				//var_dump($trabajador->id_personal);
+				//var_dump($datos_remuneracion_ant); exit;
+
+				
+				//if(!is_null($datos_remuneracion_ant)){
+				if($sueldo_mes_anterior){
+
 
 					//$parametros_ant['topeimponibleafc'] = $this->admin->get_indicadores_by_periodo($idperiodo_ant,'Tope Imponible AFC');
 					//$parametros_ant['uf'] = $this->admin->get_indicadores_by_periodo($idperiodo_ant,'UF');
@@ -3646,6 +3698,9 @@ public function get_remuneraciones_by_id($idremuneracion){
 			//var_dump_new($datos_remuneracion); exit;
 			$this->load->model('admin');
 			$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
+
+
+
 			$content = $this->get_pdf_content($datos_remuneracion->id_remuneracion);
 			
 			$datos_periodo = $this->admin->get_periodo_by_id($datos_remuneracion->id_periodo);
