@@ -59,6 +59,7 @@ public function get_colaborador_sin_centro_costo(){
 						  ->from('rem_personal')
 						  ->where('id_empresa', $this->session->userdata('empresaid'))
 						  ->where('idcentrocosto', 0)
+						  ->where('active', 1)
 		                  ->order_by('nombre','asc');
 		 $query = $this->db->get();
 		 return $query->result();
@@ -71,6 +72,7 @@ public function get_colaborador_sin_afp(){
 						  ->from('rem_personal')
 						  ->where('id_empresa', $this->session->userdata('empresaid'))
 						  ->where('(idafp = 0 or idafp is null)')
+						  ->where('active', 1)
 		                  ->order_by('nombre','asc');
 		 $query = $this->db->get();
 		// echo $this->db->last_query(); exit;
@@ -84,6 +86,7 @@ public function get_colaborador_sin_isapre(){
 						  ->from('rem_personal')
 						  ->where('id_empresa', $this->session->userdata('empresaid'))
 						  ->where('(idisapre = 0 or idisapre is null)')
+						  ->where('active', 1)
 		                  ->order_by('nombre','asc');
 		 $query = $this->db->get();
 		 return $query->result();
