@@ -2358,7 +2358,7 @@ limit 1		*/
 				$sueldo_mes_anterior = false;
 				$id_periodo_evaluado = 0;
 				if(!is_null($datos_remuneracion_ant)){
-					if($datos_remuneracion_ant->sueldoimponible > 0){
+					if($datos_remuneracion_ant->sueldoimponible > 0 && $datos_remuneracion_ant->diastrabajo == 30){
 						$sueldo_mes_anterior = true;
 						$id_periodo_evaluado = $idperiodo_ant;
 					}else{
@@ -2368,14 +2368,14 @@ limit 1		*/
 						//var_dump($idperiodo_ant2);
 						//var_dump($datos_remuneracion_ant); exit;
 						if(!is_null($datos_remuneracion_ant)){
-							if($datos_remuneracion_ant->sueldoimponible > 0){
+							if($datos_remuneracion_ant->sueldoimponible > 0  && $datos_remuneracion_ant->diastrabajo == 30){
 								$sueldo_mes_anterior = true;
 								$id_periodo_evaluado = $idperiodo_ant2;
 							}else{
 								// BUSCAR TERCER HACIA ATRAS
 								$datos_remuneracion_ant = $this->get_datos_remuneracion_by_periodo($idperiodo_ant3,$trabajador->id_personal);
 								if(!is_null($datos_remuneracion_ant)){
-									if($datos_remuneracion_ant->sueldoimponible > 0){
+									if($datos_remuneracion_ant->sueldoimponible > 0  && $datos_remuneracion_ant->diastrabajo == 30){
 										$sueldo_mes_anterior = true;
 										$id_periodo_evaluado = $idperiodo_ant3;
 									}
