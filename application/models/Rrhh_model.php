@@ -2456,7 +2456,10 @@ limit 1		*/
 
 			//$aportepatronal = is_null($empresa->idmutual) ? 0 : round($sueldo_imponible_afp*($empresa->porcmutual/100),0);
 			$aportepatronal = round($sueldo_imponible_afp*($empresa->porcmutual/100),0);
-			$aportepatronal += round($imponibles_no_trabajo_imposiciones*($empresa->porcmutual/100),0);
+
+			//ley sanna
+			//https://ayuda.comunidadfeliz.com/ley-sanna-como-se-calcula-la-mutual-en-caso-de-licencias-m%C3%A9dicas
+			$aportepatronal += round($imponibles_no_trabajo_imposiciones*(0.03/100),0);
 			$suma_aporte_patronal += $aportepatronal;
 			$suma_impuesto += $impuesto;
 
