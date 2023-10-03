@@ -183,6 +183,7 @@
 																			<th><small>Centros de Costo Calculados</small></th> 
 																			<th><small>Previred</small></th>
 																			<th><small>Libro Remuneraciones</small></th>
+																			<th><small>Resumen</small></th>
 																			<th><small>Liquidaciones</small></th>
 																			<!--th>Acci&oacute;n</th--> 
 																			<th><small>Ver Detalle Remuneraciones</small></th> 
@@ -211,6 +212,11 @@
                         													<td><small>
 												                              <center>
 												                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo;?>" ><span class="glyphicon glyphicon-book"></span></a>  
+												                              </center>
+												                             </small></td>
+																			 <td><small>
+												                              <center>
+												                              <a href="<?php echo base_url(); ?>rrhh/resumen_rem/<?php echo $periodo->id_periodo;?>" ><span class="glyphicon glyphicon-book"></span></a>  
 												                              </center>
 												                             </small></td>
 												                            <td><small>

@@ -4209,6 +4209,52 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
 	}	
 
 
+	public function resumen_rem($idperiodo = null,$idcentrocosto = null)
+	{
+
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			set_time_limit(0);
+
+			$periodo = $this->rrhh_model->get_periodos($this->session->userdata('empresaid'),$idperiodo);
+
+      //var_dump_new($periodo); exit;
+			if(is_null($periodo->cierre)){
+				redirect('main/dashboard/');
+			}else{
+				$remuneraciones = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,true,$idcentrocosto);
+
+
+				if(count($remuneraciones) == 0){ // SI NO ENCUENTRO NINGUNA REMUNERACION (QUIERE DECIR QUE NO EXISTIAN TRABAJADORES EN ESE PERIODO)
+					redirect('main/dashboard/');
+				}else{
+          $this->load->model('excel_model');
+
+        //  var_dump_new($remuneraciones); exit;
+					$datosdetalle = $this->excel_model->resumen_rem($remuneraciones);
+				}
+
+			}
+
+
+			exit;
+
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}
+
+	}	
+
 public function exporta_colaborador($idpersonal = null)
 	{
 		

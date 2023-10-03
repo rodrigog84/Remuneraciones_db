@@ -44,6 +44,730 @@ class Excel_model extends CI_Model
 	}
 
 
+	
+
+public function resumen_rem($datos_remuneracion){
+
+	$spreadsheet = new Spreadsheet();
+	$sheet = $spreadsheet->getActiveSheet();
+
+	  //$this->phpexcel->setActiveSheetIndex(0);
+	//$sheet = $this->phpexcel->getActiveSheet();
+	$sheet->setTitle("resumen_remuneraciones");
+
+	//echo '<pre>';
+	//var_dump($datos_remuneracion); exit;
+
+
+
+	$this->load->model('admin');
+	$this->load->model('rrhh_model');
+	$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
+
+	/********* COMIENZA A CREAR EXCEL *******/
+	// DATOS INICIALES
+	$sheet->getColumnDimension('A')->setWidth(5);
+
+
+	$sheet->mergeCells('B2:D2');
+	$sheet->setCellValue('B2', 'Resumen Remuneraciones');
+	$sheet->getColumnDimension('B')->setWidth(20);
+	$sheet->setCellValue('B3', 'Nombre Empresa');
+	$sheet->setCellValue('C3',html_entity_decode($this->session->userdata('empresanombre')));
+	$sheet->mergeCells('C3:D3');
+	$sheet->setCellValue('B4', 'Rut Empresa');
+	$sheet->setCellValue('C4',number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);	        
+	$sheet->mergeCells('C4:D4');
+	$sheet->setCellValue('B5', 'Direccion Empresa');
+	$sheet->setCellValue('C5',$datos_empresa->direccion.", ".$datos_empresa->comuna);	        	        
+	$sheet->mergeCells('C5:D5');
+	$sheet->setCellValue('B6', 'Fecha emision Reporte');
+	$sheet->setCellValue('C6',date('d/m/Y') );
+	$sheet->mergeCells('C6:D6');
+	
+
+	$sheet->getStyle("B2:B6")->getFont()->setBold(true);
+	$sheet->getStyle("B2:D6")->getFont()->setSize(10);    	
+
+	//D7E4BC
+
+
+	/****************** TABLA INICIAL ****************/
+
+	/*************************todos los bordes internos *************************************/
+	$sheet->getStyle("B2:D6")->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+
+	/*************************bordes cuadro principal (externo) *************************************/
+	$sheet->getStyle("B2:D2")->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B2:D2")->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B6:D6")->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B2:B6")->getBorders()->getLeft()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B2:B6")->getBorders()->getRight()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("D2:D6")->getBorders()->getRight()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+
+	/**********************************************************************************************************/			        
+	/***** COLOR TABLA ****************/
+	$sheet->getStyle("B2:D2")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+	$sheet->getStyle("B2:D2")->getFill()->getStartColor()->setRGB('FA8D72');
+
+	$sheet->getStyle("B2:B6")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+	$sheet->getStyle("B2:B6")->getFill()->getStartColor()->setRGB('FA8D72');			
+
+
+	$i = 8;		
+	$filaInicio = $i; 
+	$sueldobase = 0;
+	$gratificacion = 0;
+	$movilizacion = 0;
+	$colacion = 0;
+	$bonosimponibles = 0;
+	$bonosnoimponibles = 0;
+	$horasextras50 = 0;
+	$numhorasextras50 = 0;
+	$horasextras100 = 0;
+	$numhorasextras100 = 0;
+	$semanacorrida = 0;
+	$aguinaldo = 0;
+	$asigfamiliar = 0;
+	$segcesantia = 0;
+	$impuesto = 0;
+	$anticipo = 0;
+	$descuentoaguinaldo = 0;
+	$horasdescuentos = 0;
+	$descuentosvariables = 0;
+	$total_afp = 0;
+	$total_salud = 0;
+	$total_apv = 0;
+	$liquido_pago = 0;
+	$aportesegcesantia = 0;
+	$aportesis = 0;
+	$mutualseguridad = 0;
+
+	$baseimponible = 0;
+	$basetributaria = 0;
+	//$prestamos = 0;
+	$array_salud = array();
+	$array_afp = array();
+	$array_apv = array();
+	
+	$num_trabajadores = 0;
+	foreach($datos_remuneracion as $remuneracion){
+
+		$datos_descuentos = $this->rrhh_model->get_bonos_by_remuneracion($remuneracion->id_remuneracion,null,'DESCUENTO');
+
+		//$datos_d = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,null,'DESCUENTO',$datos_remuneracion->id_periodo);
+		$monto_descuento = 0;
+		foreach ($datos_descuentos as $dato_descuento) {
+			$monto_descuento += $dato_descuento->monto;
+		}
+		
+		
+		$sueldobase += $remuneracion->sueldobase;
+		$gratificacion += $remuneracion->gratificacion;
+		$movilizacion += $remuneracion->movilizacion;
+		$colacion += $remuneracion->colacion;
+		$bonosimponibles += $remuneracion->bonosimponibles;
+		$bonosnoimponibles += $remuneracion->bonosnoimponibles;
+	
+		$horasextras50 += $remuneracion->montohorasextras50;
+		$horasextras100 += $remuneracion->montohorasextras100;
+
+		$numhorasextras50 += $remuneracion->horasextras50;
+		$numhorasextras100 += $remuneracion->horasextras100;
+		$semanacorrida += $remuneracion->semana_corrida;
+		$aguinaldo += $remuneracion->aguinaldobruto;
+		$asigfamiliar += $remuneracion->asigfamiliar;
+		$segcesantia += $remuneracion->segcesantia;
+		$impuesto += $remuneracion->impuesto;
+		$anticipo += $remuneracion->anticipo;
+		$descuentoaguinaldo += $remuneracion->aguinaldo;
+		$horasdescuentos += $remuneracion->montodescuento;
+		$descuentosvariables += $monto_descuento;
+		$liquido_pago += $remuneracion->sueldoliquido;
+
+		$aportesegcesantia += $remuneracion->aportesegcesantia;
+		$aportesis += $remuneracion->seginvalidez;
+		$mutualseguridad += $remuneracion->aportepatronal;
+
+		$baseimponible += $remuneracion->sueldoimponible;
+		$basetributaria += $remuneracion->basetributaria;
+
+		if(!isset($array_salud[$remuneracion->prev_salud])){
+			$array_salud[$remuneracion->prev_salud] = 0;
+		}
+
+		if(!isset($array_afp[$remuneracion->afp])){
+			$array_afp[$remuneracion->afp]['cotizacion'] = 0;
+			$array_afp[$remuneracion->afp]['adicional'] = 0;
+			$array_afp[$remuneracion->afp]['ahorrovol'] = 0;
+		}
+
+		if(!is_null($remuneracion->nomapv)){
+
+			if(!isset($array_apv[$remuneracion->nomapv])){
+				$array_apv[$remuneracion->nomapv] = 0;
+			}
+
+		}
+
+
+		$array_salud[$remuneracion->prev_salud] += $remuneracion->cotizacionsalud + $remuneracion->cotadicisapre + $remuneracion->adicsalud + $remuneracion->fonasa + $remuneracion->inp;
+		$array_afp[$remuneracion->afp]['cotizacion'] += $remuneracion->cotizacionobligatoria + $remuneracion->comisionafp;
+		$array_afp[$remuneracion->afp]['adicional'] += $remuneracion->adicafp;
+		$array_afp[$remuneracion->afp]['ahorrovol'] += $remuneracion->montoahorrovol;
+		$total_salud += $remuneracion->cotizacionsalud + $remuneracion->cotadicisapre + $remuneracion->adicsalud + $remuneracion->fonasa + $remuneracion->inp;
+		$total_afp += $remuneracion->cotizacionobligatoria + $remuneracion->comisionafp + $remuneracion->adicafp + $remuneracion->montoahorrovol;
+		if(!is_null($remuneracion->nomapv)){
+			$array_apv[$remuneracion->nomapv] += $remuneracion->montocotapv;
+			$total_apv += $remuneracion->montocotapv;
+		}
+
+		$num_trabajadores++;
+	}
+	//echo '<pre>';
+	//var_dump($array_apv);  exit;
+	$total_haberes = $sueldobase + $gratificacion + $movilizacion + $colacion + $bonosimponibles + $bonosnoimponibles + $horasextras50 + $horasextras100 + $semanacorrida + $aguinaldo + $asigfamiliar;
+	$total_descuentos = $total_salud + $total_afp + $total_apv + $segcesantia + $impuesto + $anticipo + $descuentoaguinaldo + $horasdescuentos + $descuentosvariables;
+	$total_aportes = $aportesegcesantia + $aportesis + $mutualseguridad;
+
+
+//ENCABEZADO REPORTE
+
+	 $sheet->getColumnDimension('B')->setWidth(10);
+	 $sheet->setCellValue('B'.$i, '#');
+	 $sheet->getColumnDimension('C')->setWidth(40);
+	 $sheet->setCellValue('C'.$i, 'Concepto');
+	 $sheet->getColumnDimension('D')->setWidth(15);
+	 $sheet->setCellValue('D'.$i, 'Total General');
+	 $sheet->getColumnDimension('E')->setWidth(35);
+	 $sheet->setCellValue('E'.$i, 'Información Adicional');
+
+	 $i = $i + 1;
+	 $sheet->mergeCells('B' . ($i - 1) . ':B' . $i );	 
+	 $sheet->setCellValue('C'.$i, 'HABERES');
+	 $sheet->mergeCells('D' . ($i - 1) . ':D' . $i );
+	 $sheet->mergeCells('E' . ($i - 1) . ':E' . $i );
+
+     $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, '1');
+	 $sheet->setCellValue('C'.$i, 'Sueldo Base');
+	 $sheet->setCellValue('D'.$i, $sueldobase);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, '');
+
+
+     $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, '2');
+	 $sheet->setCellValue('C'.$i, 'Gratificación');
+	 $sheet->setCellValue('D'.$i, $gratificacion);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, '');
+	 
+     $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, '3');
+	 $sheet->setCellValue('C'.$i, 'Movilización');
+	 $sheet->setCellValue('D'.$i, $movilizacion);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, '');
+
+     $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, '4');
+	 $sheet->setCellValue('C'.$i, 'Colación');
+	 $sheet->setCellValue('D'.$i, $colacion);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, '');	 
+
+     $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, '5');
+	 $sheet->setCellValue('C'.$i, 'Bonos Imponibles');
+	 $sheet->setCellValue('D'.$i, $bonosimponibles);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, '');
+
+     $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, '6');
+	 $sheet->setCellValue('C'.$i, 'Bonos No Imponibles');
+	 $sheet->setCellValue('D'.$i, $bonosnoimponibles);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+
+
+     $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, '7');
+	 $sheet->setCellValue('C'.$i, 'Horas Extras 50%');
+	 $sheet->setCellValue('D'.$i, $horasextras50);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, $numhorasextras50 . ' Horas');
+
+
+
+     $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, '8');
+	 $sheet->setCellValue('C'.$i, 'Horas Extras 100%');
+	 $sheet->setCellValue('D'.$i, $horasextras100);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, $numhorasextras100 . ' Horas');
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, '9');
+	 $sheet->setCellValue('C'.$i, 'Semana Corrida');
+	 $sheet->setCellValue('D'.$i, $semanacorrida);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, '');	 
+
+
+     $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, '10');
+	 $sheet->setCellValue('C'.$i, 'Aguinaldo');
+	 $sheet->setCellValue('D'.$i, $aguinaldo);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 	 
+
+
+     $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, '11');
+	 $sheet->setCellValue('C'.$i, 'Asignación Familiar');
+	 $sheet->setCellValue('D'.$i, $asigfamiliar);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('C'.$i, 'TOTAL HABERES');
+	 //$sheet->mergeCells('B' . $i . ':C' . $i );	 
+	 $sheet->setCellValue('D'.$i, $total_haberes);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 	 
+
+	 $filaTotalHaberes = $i;
+	 $i = $i + 1;
+	 $sheet->setCellValue('C'.$i, 'DESCUENTOS');
+	 //$sheet->mergeCells('B' . $i . ':C' . $i );	 
+	 $sheet->setCellValue('D'.$i, '');
+
+	 //$sheet->mergeCells('B' . $i . ':B' . ($i-1) );
+	 $sheet->mergeCells('D' . $i . ':E' . $i );
+
+	 $j = 1;
+	 foreach($array_afp as $nombreafp => $valores_afp){
+
+		$i = $i + 1;
+		$sheet->setCellValue('B'.$i, $j);
+		$sheet->setCellValue('C'.$i, $nombreafp . ' Cot Obligatoria');
+		$sheet->setCellValue('D'.$i, $valores_afp['cotizacion']);
+		$sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+		$sheet->setCellValue('E'.$i, ''); 
+
+		$i = $i + 1;
+		$j = $j + 1;
+		$sheet->setCellValue('B'.$i, $j);
+		$sheet->setCellValue('C'.$i, $nombreafp . ' Cot Adicional');
+		$sheet->setCellValue('D'.$i, $valores_afp['adicional']);
+		$sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+		$sheet->setCellValue('E'.$i, ''); 
+
+		$i = $i + 1;
+		$j = $j + 1;
+		$sheet->setCellValue('B'.$i, $j);
+		$sheet->setCellValue('C'.$i, $nombreafp . ' Ahorro Voluntario');
+		$sheet->setCellValue('D'.$i, $valores_afp['ahorrovol']);
+		$sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+		$sheet->setCellValue('E'.$i, ''); 	
+		
+		$j = $j + 1;
+	 }
+
+
+	 foreach($array_apv as $nombreapv => $valores_apv){
+
+		$i = $i + 1;
+		$sheet->setCellValue('B'.$i, $j);
+		$sheet->setCellValue('C'.$i, 'APV ' .$nombreapv);
+		$sheet->setCellValue('D'.$i, $valores_apv);
+		$sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+		$sheet->setCellValue('E'.$i, ''); 
+
+		$j = $j + 1;
+	 }
+	 
+
+	 foreach($array_salud as $nombreisapre => $valores_isapre){
+
+		$i = $i + 1;
+		$sheet->setCellValue('B'.$i, $j);
+		$sheet->setCellValue('C'.$i, $nombreisapre);
+		$sheet->setCellValue('D'.$i, $valores_isapre);
+		$sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+		$sheet->setCellValue('E'.$i, ''); 
+
+		$j = $j + 1;
+	 }
+	 
+
+
+     $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, $j);
+	 $sheet->setCellValue('C'.$i, 'Seguro Cesantía');
+	 $sheet->setCellValue('D'.$i, $segcesantia);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+	 $j = $j + 1;
+
+     $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, $j);
+	 $sheet->setCellValue('C'.$i, 'Impuesto');
+	 $sheet->setCellValue('D'.$i, $impuesto);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+	 $j = $j + 1;
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, $j);
+	 $sheet->setCellValue('C'.$i, 'Anticipo');
+	 $sheet->setCellValue('D'.$i, $anticipo);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+	 $j = $j + 1;
+
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, $j);
+	 $sheet->setCellValue('C'.$i, 'Descuento por Aguinaldo');
+	 $sheet->setCellValue('D'.$i, $descuentoaguinaldo);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+	 $j = $j + 1;
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, $j);
+	 $sheet->setCellValue('C'.$i, 'Horas Descuento');
+	 $sheet->setCellValue('D'.$i, $horasdescuentos);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+	 $j = $j + 1;
+
+	 
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, $j);
+	 $sheet->setCellValue('C'.$i, 'Otros Descuentos');
+	 $sheet->setCellValue('D'.$i, $descuentosvariables);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+	 $j = $j + 1;
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('C'.$i, 'TOTAL DESCUENTOS');
+	 //$sheet->mergeCells('B' . $i . ':C' . $i );	 
+	 $sheet->setCellValue('D'.$i, $total_descuentos);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 	 
+
+	 $filaTotalDescuentos = $i;
+	 $i = $i + 1;
+	 $sheet->setCellValue('C'.$i, 'LIQUIDO A PAGAR');
+	 //$sheet->mergeCells('B' . $i . ':C' . $i );	 
+	 $sheet->setCellValue('D'.$i, $liquido_pago);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 	
+
+	 $filaTotalLiquidoPagar = $i;
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('C'.$i, 'APORTES EMPRESA');
+	 //$sheet->mergeCells('B' . $i . ':C' . $i );	 
+	 $sheet->setCellValue('D'.$i, '');	 
+	 $sheet->mergeCells('D' . $i . ':E' . $i );
+
+	 
+	 //$sheet->mergeCells('B' . ($i-2) . ':B' . $i );
+
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, 1);
+	 $sheet->setCellValue('C'.$i, 'Aporte Seguro Cesantia');
+	 $sheet->setCellValue('D'.$i, $aportesegcesantia);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, 2);
+	 $sheet->setCellValue('C'.$i, 'Aporte SIS');
+	 $sheet->setCellValue('D'.$i,$aportesis);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, 3);
+	 $sheet->setCellValue('C'.$i, 'Mutual de Seguridad');
+	 $sheet->setCellValue('D'.$i, $mutualseguridad);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('C'.$i, 'TOTAL APORTES EMPRESA');
+	 //$sheet->mergeCells('B' . $i . ':C' . $i );	 
+	 $sheet->setCellValue('D'.$i,  $total_aportes);	 
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+
+	 $filaTotalAportesEmpresa = $i;
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('C'.$i, 'OTROS DATOS');
+	 //$sheet->mergeCells('B' . $i . ':C' . $i );	 
+	 $sheet->setCellValue('D'.$i, '');	 
+	 //$sheet->mergeCells('D' . $i . ':E' . $i );
+
+	 
+	// $sheet->mergeCells('B' . ($i-1) . ':B' . $i );
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, 1);
+	 $sheet->setCellValue('C'.$i, 'Bases Imponibles');
+	 $sheet->setCellValue('D'.$i, $baseimponible);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+
+	 
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, 2);
+	 $sheet->setCellValue('C'.$i, 'Bases Tributables');
+	 $sheet->setCellValue('D'.$i, $basetributaria);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+	 
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, 3);
+	 $sheet->setCellValue('C'.$i, 'Num Trabajadores');
+	 $sheet->setCellValue('D'.$i, $num_trabajadores);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+
+
+	 /************************* ESTILOS */
+	 /*************************todos los bordes internos *************************************/
+	$sheet->getStyle("B".$filaInicio.":E".$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+	$sheet->getStyle("B" . $filaInicio . ":E".$i)->getFont()->setSize(10);
+	$sheet->getStyle("B".$filaInicio.":E".($filaInicio + 1))->getFont()->setBold(true);
+	$sheet->getStyle("B".$filaInicio.":C".$i)->getFont()->setBold(true);
+
+	for($j = $filaInicio; $j <= $i; $j++){
+
+		if($j % 2 != 0){
+			$sheet->getStyle("B".$j.":E".$j)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+			$sheet->getStyle("B".$j.":E".$j)->getFill()->getStartColor()->setRGB('F7F9FD');	 
+		}
+	}
+
+	/***************************** Color fila superior********************************************************/
+	
+		$sheet->getStyle("B".$filaInicio.":E".($filaInicio + 1))->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+		$sheet->getStyle("B".$filaInicio.":E".($filaInicio + 1))->getFill()->getStartColor()->setRGB('E8EDFF');
+
+		$sheet->getStyle("B".$filaInicio.":C".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+		$sheet->getStyle("B".$filaInicio.":C".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
+
+
+		
+		$sheet->getStyle("B".$filaTotalHaberes.":E".$filaTotalHaberes)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+		$sheet->getStyle("B".$filaTotalHaberes.":E".$filaTotalHaberes)->getFill()->getStartColor()->setRGB('C3ECCB');
+
+		$sheet->getStyle("B".$filaTotalDescuentos.":E".$filaTotalDescuentos)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+		$sheet->getStyle("B".$filaTotalDescuentos.":E".$filaTotalDescuentos)->getFill()->getStartColor()->setRGB('C3ECCB');
+
+		$sheet->getStyle("B".$filaTotalLiquidoPagar.":E".$filaTotalLiquidoPagar)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+		$sheet->getStyle("B".$filaTotalLiquidoPagar.":E".$filaTotalLiquidoPagar)->getFill()->getStartColor()->setRGB('C3ECCB');
+
+		$sheet->getStyle("B".$filaTotalAportesEmpresa.":E".$filaTotalAportesEmpresa)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+		$sheet->getStyle("B".$filaTotalAportesEmpresa.":E".$filaTotalAportesEmpresa)->getFill()->getStartColor()->setRGB('C3ECCB');
+
+		/******************************************************************************************************/
+
+		
+	/*************************bordes cuadro principal (externo) *************************************/
+	$sheet->getStyle("B".$filaInicio.":E".$filaInicio)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B".($filaInicio+1).":E".($filaInicio+1))->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("C".$filaInicio.":E".$filaInicio)->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	
+
+	$sheet->getStyle("B".$filaInicio.":B".$i)->getBorders()->getLeft()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("C".$filaInicio.":C".$i)->getBorders()->getLeft()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("D".$filaInicio.":D".$i)->getBorders()->getLeft()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("E".$filaInicio.":E".$i)->getBorders()->getLeft()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+
+	$sheet->getStyle("B".$filaTotalHaberes.":E".$filaTotalHaberes)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B".$filaTotalHaberes.":E".$filaTotalHaberes)->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+
+	$sheet->getStyle("B".$filaTotalDescuentos.":E".$filaTotalDescuentos)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B".$filaTotalDescuentos.":E".$filaTotalDescuentos)->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+
+	$sheet->getStyle("B".$filaTotalLiquidoPagar.":E".$filaTotalLiquidoPagar)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B".$filaTotalLiquidoPagar.":E".$filaTotalLiquidoPagar)->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+
+	$sheet->getStyle("B".$filaTotalAportesEmpresa.":E".$filaTotalAportesEmpresa)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B".$filaTotalAportesEmpresa.":E".$filaTotalAportesEmpresa)->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+
+	$sheet->getStyle("E".$filaInicio.":E".$i)->getBorders()->getRight()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B".$i.":E".$i)->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	
+
+	
+
+	header("Content-Type: application/vnd.ms-excel");
+	$nombreArchivo = 'resumen_remuneraciones';
+	header("Content-Disposition: attachment; filename=\"$nombreArchivo.xlsx\"");
+	header("Cache-Control: max-age=0");
+	// Genera Excel
+	$writer = new Xlsx($spreadsheet); //objeto de PHPExcel, para escribir en el excel
+	//$writer = new PHPExcel_Writer_Excel2007($this->phpexcel); //objeto de PHPExcel, para escribir en el excel
+	// Escribir
+	//$writer->setIncludeCharts(TRUE);			
+	$writer->save('php://output');
+	exit;		
+
+
+	 $columnaFinal = 43;
+	 $mergeTotal = 44;
+	 $columnaTotales = 43;
+	 $sheet->getStyle("B".$i.":".ordenLetrasExcel($columnaFinal).$i)->getFont()->setBold(true);
+	 $i++;
+	$filaInicio = $i-1; 
+	
+	//$sheet->getStyle("B7:I7")->getFont()->setSize(11);  
+	$linea = 1;
+	foreach ($datos_remuneracion as $remuneracion) {
+         	            	            	
+		 if($i % 2 != 0){
+			 //echo "consulta 4: -- i : ".$i. "  -- mod : ". ($i % 2)."<br>";
+			$sheet->getStyle("B".$i.":".ordenLetrasExcel($columnaFinal).$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+			$sheet->getStyle("B".$i.":".ordenLetrasExcel($columnaFinal).$i)->getFill()->getStartColor()->setRGB('F7F9FD');	  				
+		 }	            	
+		$i++;
+		$linea++;
+	  }
+	 $i--;
+
+
+
+				 
+	$sheet->getStyle("B" . $filaInicio . ":".ordenLetrasExcel($columnaFinal).$i)->getFont()->setSize(10);
+
+
+/*************************todos los bordes internos *************************************/
+	$sheet->getStyle("B".$filaInicio.":".ordenLetrasExcel($columnaFinal).$i)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+
+	/*************************bordes cuadro principal (externo) *************************************/
+			for($j=1;$j<=$columnaFinal;$j++){ //borde superior
+				$sheet->getStyle(ordenLetrasExcel($j).$filaInicio)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+			}
+	
+			for($j=1;$j<=$columnaFinal;$j++){ //borde inferior
+				$sheet->getStyle(ordenLetrasExcel($j).$i)->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+			}
+	
+			for($n=$filaInicio;$n<=$i;$n++){ //borde izquierdo
+				$sheet->getStyle("B".$n)->getBorders()->getLeft()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+			}
+	
+			for($n=$filaInicio;$n<=$i;$n++){ //borde derecho
+				$sheet->getStyle(ordenLetrasExcel($columnaFinal).$n)->getBorders()->getRight()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+			}
+	
+	/**********************************************************************************************************/			        
+		
+
+	/***************************** Segundo borde superior********************************************************/
+	
+			for($j=1;$j<=$columnaFinal;$j++){ //borde inferior
+				$sheet->getStyle(ordenLetrasExcel($j).$filaInicio)->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+			}
+	
+	/******************************************************************************************************/
+	
+
+/***************************** Penultimo borde izquierdo ********************************************************/
+	
+			for($n=$filaInicio;$n<=$i;$n++){ //borde derecho
+				$sheet->getStyle("B".$n)->getBorders()->getRight()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+			}
+	
+/******************************************************************************************************/			
+
+
+
+/***************************** Penultimo borde derecho ********************************************************/
+	
+			for($n=$filaInicio;$n<=$i;$n++){ //borde derecho
+				$sheet->getStyle(ordenLetrasExcel($columnaFinal).$n)->getBorders()->getLeft()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+			}
+	
+/******************************************************************************************************/			
+
+	/***************************** Color fila superior********************************************************/
+	
+			for($j=1;$j<=$columnaFinal;$j++){ //color fondo inferior
+				$sheet->getStyle(ordenLetrasExcel($j).$filaInicio)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+				$sheet->getStyle(ordenLetrasExcel($j).$filaInicio)->getFill()->getStartColor()->setRGB('E8EDFF');
+			}
+	
+	/******************************************************************************************************/
+
+
+/***************************** Color primera columna ********************************************************/
+				$sheet->getStyle("B".$filaInicio.":B".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+				$sheet->getStyle("B".$filaInicio.":B".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
+	
+	/******************************************************************************************************/
+
+
+/***************************** Color montos ********************************************************/
+
+				$sheet->getStyle("R".$filaInicio.":R".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+				$sheet->getStyle("R".$filaInicio.":R".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
+
+				$sheet->getStyle("S".$filaInicio.":S".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+				$sheet->getStyle("S".$filaInicio.":S".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
+
+				$sheet->getStyle("T".$filaInicio.":T".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+				$sheet->getStyle("T".$filaInicio.":T".$i)->getFill()->getStartColor()->setRGB('E8EDFF');
+
+
+				$sheet->getStyle("AF".$filaInicio.":AF".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+				$sheet->getStyle("AF".$filaInicio.":AF".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
+
+
+				$sheet->getStyle("AG".$filaInicio.":AG".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+				$sheet->getStyle("AG".$filaInicio.":AG".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
+
+				$sheet->getStyle("AM".$filaInicio.":AM".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+				$sheet->getStyle("AM".$filaInicio.":AM".$i)->getFill()->getStartColor()->setRGB('E8EDFF');									
+				$sheet->getStyle("AN".$filaInicio.":AN".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+				$sheet->getStyle("AN".$filaInicio.":AN".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
+
+
+				$sheet->getStyle("AR".$filaInicio.":AR".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+				$sheet->getStyle("AR".$filaInicio.":AR".$i)->getFill()->getStartColor()->setRGB('E8EDFF');											
+	/******************************************************************************************************/
+
+
+	$sheet->setSelectedCells('E1'); //celda seleccionada
+
+
+
+	header("Content-Type: application/vnd.ms-excel");
+	$nombreArchivo = 'libro_remuneraciones';
+	header("Content-Disposition: attachment; filename=\"$nombreArchivo.xlsx\"");
+	header("Cache-Control: max-age=0");
+	// Genera Excel
+	$writer = new Xlsx($spreadsheet); //objeto de PHPExcel, para escribir en el excel
+	//$writer = new PHPExcel_Writer_Excel2007($this->phpexcel); //objeto de PHPExcel, para escribir en el excel
+	// Escribir
+	//$writer->setIncludeCharts(TRUE);			
+	$writer->save('php://output');
+	exit;				
+}			
+
 
 
 public function libro($datos_remuneracion){

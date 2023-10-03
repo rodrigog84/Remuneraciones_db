@@ -75,6 +75,7 @@
 													                        <th><small>Previred</small></th>
 													                        <th><small>Pago a Bancos</small></th>
 													                        <th><small>Libro Remuneraciones</small></th>
+																			<th><small>Resumen</small></th>
 													                        <th><small>LRE</small></th>
 													                        <th><small>Liquidaciones</small></th>
 																		</tr> 
@@ -133,6 +134,15 @@
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0){ ?>
 											                              <a href="<?php echo base_url(); ?>rrhh/libro/<?php echo $periodo->id_periodo."/".$idcentrocosto;?>" ><span class="glyphicon glyphicon-book"></span></a>  
+											                              <?php }else{ ?>
+											                              		-
+											                              <?php } ?>
+											                              </center></small>
+											                              </td>
+																		  <td><small>
+											                              <center>
+											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0){ ?>
+											                              <a href="<?php echo base_url(); ?>rrhh/resumen_rem/<?php echo $periodo->id_periodo."/".$idcentrocosto;?>" ><span class="glyphicon glyphicon-book"></span></a>  
 											                              <?php }else{ ?>
 											                              		-
 											                              <?php } ?>
