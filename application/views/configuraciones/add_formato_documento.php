@@ -44,19 +44,24 @@
                           <div class="col-md-12">
 
                                 <ul>
-                                  <li><b>@FechaActual</b>: Fecha Actual en formato dd/mm/aaaa</li>
-                                  <li><b>@TextoFechaActual</b>: Fecha Actual en texto</li>
-                                  <li><b>@Nombre</b>: Nombre Completo Colaborador</li>
-                                  <li><b>@Rut</b>: Rut del Colaborador</li>
-                                  <li><b>@Direccion</b>: Direcci&oacute;n del Colaborador</li>
-                                  <li><b>@FechaNacimiento</b>: Fecha de Nacimiento del Colaborador</li>
-                                  <li><b>@Cargo</b>: Cargo del Colaborador</li>
-                                  <li><b>@SueldoBase</b>: Sueldo Base del Colaborador</li>
-                                  <li><b>@TextoSueldoBase</b>: Sueldo Base del Colaborador como texto</li>
-                                  <li><b>@TipoContrato</b>: Tipo de Contrato del Colaborador (Plazo Fijo o Indefinido)</li>
-                                  <li><b>@FechaIngreso</b>: Fecha de Ingreso a la Empresa</li>
-                                  <li><b>@MontoFiniquito</b>: Monto asociado al finiquito del colaborador (en caso que corresponda)</li>
-                                  <li><b>@DetallePagoFiniquito</b>: Desglose de haberes y descuentos asociados al finiquito de un colaborador</li>
+                                  <li><b>{FechaActual}</b>: Fecha Actual en formato dd/mm/aaaa</li>
+                                  <li><b>{TextoFechaActual}</b>: Fecha Actual en texto</li>
+                                  <li><b>{Nombre}</b>: Nombre Completo Colaborador</li>
+                                  <li><b>{Rut}</b>: Rut del Colaborador</li>
+                                  <li><b>{Direccion}</b>: Direcci&oacute;n del Colaborador</li>
+                                  <li><b>{FechaNacimiento}</b>: Fecha de Nacimiento del Colaborador</li>
+                                  <li><b>{Cargo}</b>: Cargo del Colaborador</li>
+                                  <li><b>{Telefono}</b>: Tel&eacute;fono del Colaborador</li>
+                                  <li><b>{Email}</b>: Correo Electr&oacute;nico del Colaborador</li>
+                                  <li><b>{SueldoBase}</b>: Sueldo Base del Colaborador</li>
+                                  <li><b>{TextoSueldoBase}</b>: Sueldo Base del Colaborador como texto</li>
+                                  <li><b>{TipoContrato}</b>: Tipo de Contrato del Colaborador (Plazo Fijo o Indefinido)</li>
+                                  <li><b>{FechaIngreso}</b>: Fecha de Ingreso a la Empresa</li>
+                                  <li><b>{Afp}</b>: Nombre de la AFP a la que est&aacute; asociada el Colaborador</li>
+                                  <li><b>{InstitucionSalud}</b>: Instituci&oacute;n de Salud a la que pertenece el Colaborador</li>
+                                  <li><b>{MontoFiniquito}</b>: Monto asociado al finiquito del colaborador (en caso que corresponda)</li>
+                                  <li><b>{DetallePagoFiniquito}</b>: Desglose de haberes y descuentos asociados al finiquito de un colaborador</li>
+                                  
                                 </ul>
                             </div>                      
 
