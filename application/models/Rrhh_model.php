@@ -587,17 +587,25 @@ public function add_personal($array_datos,$idtrabajador){
         	$pdf_content = $formatosdocumentos[0]->txt_documento;
 
         	$personal = $this->admin->get_personal_total($datos_documento['id_trabajador']);
-        	//var_dump_new($personal); exit;
 
-        	$pdf_content = str_replace("@FechaActual",date('d/m/Y'),$pdf_content);
-        	$pdf_content = str_replace("@TextoFechaActual",date('d') . ' de ' . month2string((int)date('m')) . ' de ' . date('Y'),$pdf_content);
-			$pdf_content = str_replace("@Nombre",$personal->nombre.' '.$personal->apaterno.' '.$personal->amaterno,$pdf_content);
-			$pdf_content = str_replace("@Rut",$personal->rut.'-'.$personal->dv,$pdf_content);
-			$pdf_content = str_replace("@Direccion",$personal->direccion.', '.$personal->nombrecomuna,$pdf_content);
-			$pdf_content = str_replace("@FechaNacimiento",$personal->fecnacimiento_format,$pdf_content);
-			$pdf_content = str_replace("@Cargo",$personal->nombrecargo,$pdf_content);
-			$pdf_content = str_replace("@SueldoBase",'$ ' . number_format($personal->sueldobase,0,'.','.'),$pdf_content);
-			$pdf_content = str_replace("@TextoSueldoBase",valorEnLetras($personal->sueldobase),$pdf_content);
+			 
+
+        	$pdf_content = str_replace("{FechaActual}",date('d/m/Y'),$pdf_content);
+        	$pdf_content = str_replace("{TextoFechaActual}",date('d') . ' de ' . month2string((int)date('m')) . ' de ' . date('Y'),$pdf_content);
+			$pdf_content = str_replace("{Nombre}",$personal->nombre.' '.$personal->apaterno.' '.$personal->amaterno,$pdf_content);
+			$pdf_content = str_replace("{Rut}",$personal->rut.'-'.$personal->dv,$pdf_content);
+			$pdf_content = str_replace("{Direccion}",$personal->direccion.', '.$personal->nombrecomuna,$pdf_content);
+			$pdf_content = str_replace("{FechaNacimiento}",$personal->fecnacimiento_format,$pdf_content);
+			$pdf_content = str_replace("{Cargo}",$personal->nombrecargo,$pdf_content);
+			$pdf_content = str_replace("{Telefono}",$personal->fono,$pdf_content);
+			$pdf_content = str_replace("{Email}",$personal->email,$pdf_content);
+			$pdf_content = str_replace("{SueldoBase}",'$ ' . number_format($personal->sueldobase,0,'.','.'),$pdf_content);
+			$pdf_content = str_replace("{TextoSueldoBase}",valorEnLetras($personal->sueldobase),$pdf_content);
+			//$pdf_content = str_replace("{TipoContrato}",$tipocontrato,$pdf_content);
+			//$pdf_content = str_replace("{FechaIngreso}",formato_fecha($personal->fecingreso,'Y-m-d','d/m/Y'),$pdf_content);
+			$pdf_content = str_replace("{Afp}",$personal->nomafp,$pdf_content);
+			$pdf_content = str_replace("{InstitucionSalud}",$personal->nomisapre,$pdf_content);
+			
 			$tipo_contrato = '';
 			if($personal->tipocontrato == 'I'){
 				$tipo_contrato = 'Indefinido';
@@ -605,8 +613,8 @@ public function add_personal($array_datos,$idtrabajador){
 				$tipo_contrato = 'Plazo Fijo';
 			}
 
-			$pdf_content = str_replace("@TipoContrato",$tipo_contrato,$pdf_content);
-			$pdf_content = str_replace("@FechaIngreso",$personal->fecingreso_format,$pdf_content);
+			$pdf_content = str_replace("{TipoContrato}",$tipo_contrato,$pdf_content);
+			$pdf_content = str_replace("{FechaIngreso}",$personal->fecingreso_format,$pdf_content);
 
 
 
