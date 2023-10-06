@@ -1923,15 +1923,39 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
             $movimientos = $this->get_lista_movimientos($trabajador->id_personal, null, $idperiodo, 3);
 
+
+
+
             $dias_licencia = 0;
             foreach ($movimientos as $movimiento) {
-                
-                $dias = dias_transcurridos($movimiento->fecmovimiento,$movimiento->fechastamovimiento) + 1; // se agrega uno porque se considera el día inicial
-                $dias_licencia += $dias;
+
+            		$fecdesdelic = $movimiento->fecmovimiento;
+            		$fechastalic = $movimiento->fechastamovimiento;
+
+
+            		$periodo_data = $this->db->select('count(*) as cantidad', false)
+						  ->from('rem_calendario as c')
+						  ->where("c.fecha between '" . str_replace('-','',$fecdesdelic) . "' and '" . str_replace('-','',$fechastalic) . "'");
+
+					$query_dias_licencia = $this->db->get();
+					$result_dias_licencia =  $query_dias_licencia->row();     
+					$dias =     $result_dias_licencia->cantidad;       
+
+                	//$dias = dias_transcurridos($movimiento->fecmovimiento,$movimiento->fechastamovimiento) + 1; // se agrega uno porque se considera el día inicial
+                	$dias_licencia += $dias;
+
+				/*if($trabajador->id_personal == 20445){
+					var_dump($result_dias_licencia);
+					var_dump_new($movimiento);
+					var_dump_new($dias);
+					var_dump_new($dias_licencia);
+				} */               
             }
 
 
-
+			/*	if($trabajador->id_personal == 20445){
+					exit;
+				}*/
 
 			$diastrabajo = $trabajador->parttime == 1 ? $trabajador->diastrabajo : 30;
 
