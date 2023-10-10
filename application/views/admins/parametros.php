@@ -12,11 +12,11 @@
                     </div>
                     <div class="form-group">
                         <label for="uf">Valor UF</label>
-                        <input type="text" class="form-control miles_decimales" name="uf" id="uf" placeholder="Ingrese Valor UF" value="<?php echo number_format($parametros_generales->uf, 2, ",", "."); ?>">
+                        <input type="text" class="form-control miles_decimales" name="uf" id="uf" placeholder="Ingrese Valor UF" value="<?php echo number_format($parametros_generales->uf, 2, ",", "."); ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label for="uf">Valor UTM</label>
-                        <input type="text" class="form-control miles" name="utm" id="utm" placeholder="Ingrese Valor UF" value="<?php echo $parametros_generales->utm; ?>">
+                        <input type="text" class="form-control miles" name="utm" id="utm" placeholder="Ingrese Valor UF" value="<?php echo $parametros_generales->utm; ?>" readonly>
                     </div>
                     <div class="form-group">
                         <label for="uf">Tope Imponible AFP (UF)</label>

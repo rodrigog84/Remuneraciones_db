@@ -1054,14 +1054,14 @@ public function get_mutual_seguridad($idmutual = null){
 				$idperiodo = $datos_periodo->id_periodo;
 		}
 
-		$fecha = date('Ymd');
-		$parametros['uf'] = $this->admin->get_max_indicadores_by_periodo($fecha,'UF');
-		$parametros['topeimponible'] = $this->admin->get_max_indicadores_by_periodo($fecha,'Tope Imponible AFP');
-		$parametros['topeimponibleips'] = $this->admin->get_max_indicadores_by_periodo($fecha,'Tope Imponible IPS');
-		$parametros['topeimponibleafc'] = $this->admin->get_max_indicadores_by_periodo($fecha,'Tope Imponible AFC');
-		$parametros['sueldominimo'] = $this->admin->get_max_indicadores_by_periodo($fecha,'Sueldo Minimo');
-		$parametros['utm'] = $this->admin->get_max_indicadores_by_periodo($fecha,'UTM');
-		$parametros['tasasis'] = $this->admin->get_max_indicadores_by_periodo($fecha,'Tasa SIS');
+
+		$parametros['uf'] = $this->admin->get_indicadores_by_periodo_max($periodo,'UF');
+		$parametros['topeimponible'] = $this->admin->get_indicadores_by_periodo_max($periodo,'Tope Imponible AFP');
+		$parametros['topeimponibleips'] = $this->admin->get_indicadores_by_periodo_max($periodo,'Tope Imponible IPS');
+		$parametros['topeimponibleafc'] = $this->admin->get_indicadores_by_periodo_max($periodo,'Tope Imponible AFC');
+		$parametros['sueldominimo'] = $this->admin->get_indicadores_by_periodo_max($periodo,'Sueldo Minimo');
+		$parametros['utm'] = $this->admin->get_indicadores_by_periodo_max($periodo,'UTM');
+		$parametros['tasasis'] = $this->admin->get_indicadores_by_periodo_max($periodo,'Tasa SIS');
 
 		$data_parametros = array(
 								'uf' =>  $parametros['uf'], 
@@ -1131,6 +1131,31 @@ public function get_indicadores_by_periodo($idperiodo,$indicador){
 		}
 	}	
 
+	
+public function get_indicadores_by_periodo_max($idperiodo,$indicador){
+
+	$sql = "select	p.valor, p.fecha
+				from	rem_parametros p
+				where	p.nombre = '" . $indicador . "'
+				and		p.fecha = (
+									select		max(p.fecha) as maxfecha
+									from		rem_parametros p
+									inner join	rem_calendario c on p.fecha = c.fecha 
+									where		p.nombre = '" . $indicador . "'
+									and			c.periodo = " . $idperiodo ."	
+									)";
+
+	//echo $sql.'<br>'; exit;
+	$parametros_data = $this->db->query($sql);
+	$result = $parametros_data->result();
+
+	if(count($result) == 0){
+		return -1;
+	}else{
+		$datos = $result[0];
+		return $datos->valor;
+	}
+}	
 
 public function get_max_indicadores_by_periodo($date,$indicador){
 
@@ -1178,6 +1203,56 @@ public function get_num_dias_periodo($idperiodo){
 
 	public function edit_parametros_generales($parametros){
 
+		//var_dump($parametros); exit;
+		$periodo = date('Ym');
+
+		$sueldominimo = $parametros['sueldominimo'];
+		$data = array(
+					   'valor' => $sueldominimo
+					);
+
+		$this->db->where('fecha in (select fecha from rem_calendario where periodo = ' . $periodo . ')');
+		$this->db->where('nombre', 'Sueldo Minimo');
+		$this->db->update('rem_parametros',$data); 
+
+		$topeimponible = $parametros['topeimponible'];
+		$data = array(
+					   'valor' => $topeimponible
+					);
+
+		$this->db->where('fecha in (select fecha from rem_calendario where periodo = ' . $periodo . ')');
+		$this->db->where('nombre', 'Tope Imponible AFP');
+		$this->db->update('rem_parametros',$data); 
+
+
+		$topeimponibleips = $parametros['topeimponibleips'];
+		$data = array(
+					   'valor' => $topeimponibleips
+					);
+
+		$this->db->where('fecha in (select fecha from rem_calendario where periodo = ' . $periodo . ')');
+		$this->db->where('nombre', 'Tope Imponible IPS');
+		$this->db->update('rem_parametros',$data); 
+
+
+		$topeimponibleafc = $parametros['topeimponibleafc'];
+		$data = array(
+					   'valor' => $topeimponibleafc
+					);
+
+		$this->db->where('fecha in (select fecha from rem_calendario where periodo = ' . $periodo . ')');
+		$this->db->where('nombre', 'Tope Imponible AFC');
+		$this->db->update('rem_parametros',$data); 
+
+		$tasasis = $parametros['tasasis'];
+		$data = array(
+					   'valor' => $tasasis
+					);
+
+		$this->db->where('fecha in (select fecha from rem_calendario where periodo = ' . $periodo . ')');
+		$this->db->where('nombre', 'Tasa SIS');
+		$this->db->update('rem_parametros',$data); 
+		//echo $this->db->last_query(); exit;
 
 		$this->db->update('rem_parametros_generales',$parametros); 
 		if($this->db->affected_rows() > 0){ 
