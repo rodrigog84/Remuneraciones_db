@@ -1054,14 +1054,14 @@ public function get_mutual_seguridad($idmutual = null){
 				$idperiodo = $datos_periodo->id_periodo;
 		}
 
-
-		$parametros['uf'] = $this->admin->get_indicadores_by_periodo($idperiodo,'UF');
-		$parametros['topeimponible'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tope Imponible AFP');
-		$parametros['topeimponibleips'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tope Imponible IPS');
-		$parametros['topeimponibleafc'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tope Imponible AFC');
-		$parametros['sueldominimo'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Sueldo Minimo');
-		$parametros['utm'] = $this->admin->get_indicadores_by_periodo($idperiodo,'UTM');
-		$parametros['tasasis'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tasa SIS');
+		$fecha = date('Ymd');
+		$parametros['uf'] = $this->admin->get_max_indicadores_by_periodo($fecha,'UF');
+		$parametros['topeimponible'] = $this->admin->get_max_indicadores_by_periodo($fecha,'Tope Imponible AFP');
+		$parametros['topeimponibleips'] = $this->admin->get_max_indicadores_by_periodo($fecha,'Tope Imponible IPS');
+		$parametros['topeimponibleafc'] = $this->admin->get_max_indicadores_by_periodo($fecha,'Tope Imponible AFC');
+		$parametros['sueldominimo'] = $this->admin->get_max_indicadores_by_periodo($fecha,'Sueldo Minimo');
+		$parametros['utm'] = $this->admin->get_max_indicadores_by_periodo($fecha,'UTM');
+		$parametros['tasasis'] = $this->admin->get_max_indicadores_by_periodo($fecha,'Tasa SIS');
 
 		$data_parametros = array(
 								'uf' =>  $parametros['uf'], 
