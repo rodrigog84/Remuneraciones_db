@@ -848,7 +848,8 @@ public function apv()
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';				
 			}
-
+		
+			$this->admin->actualiza_parametros(); 
 			$parametros_generales = $this->admin->get_parametros_generales(); 
 			$content = array(
 						'menu' => 'Remuneraciones',

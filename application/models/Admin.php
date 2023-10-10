@@ -1030,6 +1030,54 @@ public function get_mutual_seguridad($idmutual = null){
 	}	
 
 
+	public function actualiza_parametros(){
+
+
+		// REVISION DE PERIODO
+		$periodo = date('Ym');
+		$mes = date('m');
+		$anno = date('Y');
+		$comunidades_data = $this->db->select('id_periodo')
+						  ->from('rem_periodo')
+						  ->where('periodo',$periodo);
+		$query = $this->db->get();						  
+		$datos_periodo = $query->row();
+		$idperiodo = 0;
+		if($query->num_rows() == 0){ // si no existe periodo, se crea
+				$data = array(
+			      	'mes' => $mes,
+			      	'anno' =>  $anno
+				);
+				$this->db->insert('rem_periodo', $data);
+				$idperiodo = $this->db->insert_id();
+		}else{
+				$idperiodo = $datos_periodo->id_periodo;
+		}
+
+
+		$parametros['uf'] = $this->admin->get_indicadores_by_periodo($idperiodo,'UF');
+		$parametros['topeimponible'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tope Imponible AFP');
+		$parametros['topeimponibleips'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tope Imponible IPS');
+		$parametros['topeimponibleafc'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tope Imponible AFC');
+		$parametros['sueldominimo'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Sueldo Minimo');
+		$parametros['utm'] = $this->admin->get_indicadores_by_periodo($idperiodo,'UTM');
+		$parametros['tasasis'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tasa SIS');
+
+		$data_parametros = array(
+								'uf' =>  $parametros['uf'], 
+								'sueldominimo' => $parametros['sueldominimo'],
+								'tasasis' => $parametros['tasasis'], 
+								'topeimponible' => $parametros['topeimponible'], 
+								'topeimponibleips' => $parametros['topeimponibleips'], 
+								'topeimponibleafc' => $parametros['topeimponibleafc'], 
+								'utm' => $parametros['utm']
+							);
+
+		$this->db->update('rem_parametros_generales',$data_parametros); 
+	}	
+
+
+
 public function get_parametros_generales(){
 
 		$comunidades_data = $this->db->select('uf , sueldominimo, tasasis, topeimponible, topeimponibleips, topeimponibleafc, utm')
