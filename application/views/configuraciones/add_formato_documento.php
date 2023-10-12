@@ -125,21 +125,19 @@ function escribe_texto(){
 }
 
 CKEDITOR.replace('txt_formato', {
-              extraPlugins: 'justify',
               toolbar: [  
                             { name: 'clipboard', 
                               items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] 
                             },                      
                             {
                                 name: 'basicstyles',
-                                items: ['Bold', 'Italic', 'Strike', '-', 'RemoveFormat']
+                                items: ['Bold', 'Italic',  '-', 'RemoveFormat']
                             },
                              { 
                                 name: 'paragraph', 
-                                items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },   
+                                items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'BidiLtr', 'BidiRtl', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', ] },   
                                 { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-                              { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-                            { name: 'tools', items: [  'ShowBlocks' ] }
+                            
 
 
                     ],

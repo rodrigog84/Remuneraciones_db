@@ -95,7 +95,9 @@
         
         <!--script src="//cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script-->
         <link href="<?php echo base_url(); ?>assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.css" rel="stylesheet" type="text/css" />
-        <script src="<?php echo base_url(); ?>assets/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
+        <!--script src="<?php echo base_url(); ?>assets/plugins/ckeditor/ckeditor.js" type="text/javascript"></script-->
+        <script src="<?php echo base_url(); ?>assets/plugins/ckeditor_4.22.1/ckeditor/ckeditor.js" type="text/javascript"></script>
+        <!--script src="<?php echo base_url(); ?>assets/plugins/ckeditor/plugins/justify/plugin.js" type="text/javascript"></script-->
 
         <!--script type="text/javascript" src="<?php echo base_url(); ?>plugins/tiny_mce/jquery.tinymce.js"></script-->
     <?php } ?>
