@@ -53,6 +53,7 @@
                                   <li><b>{Cargo}</b>: Cargo del Colaborador</li>
                                   <li><b>{Telefono}</b>: Tel&eacute;fono del Colaborador</li>
                                   <li><b>{Email}</b>: Correo Electr&oacute;nico del Colaborador</li>
+                                  <li><b>{EstadoCivil}</b>: Estado Civil del Colaborador</li>
                                   <li><b>{SueldoBase}</b>: Sueldo Base del Colaborador</li>
                                   <li><b>{TextoSueldoBase}</b>: Sueldo Base del Colaborador como texto</li>
                                   <li><b>{TipoContrato}</b>: Tipo de Contrato del Colaborador (Plazo Fijo o Indefinido)</li>

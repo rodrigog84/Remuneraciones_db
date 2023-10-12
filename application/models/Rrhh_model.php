@@ -599,6 +599,7 @@ public function add_personal($array_datos,$idtrabajador){
 			$pdf_content = str_replace("{Cargo}",$personal->nombrecargo,$pdf_content);
 			$pdf_content = str_replace("{Telefono}",$personal->fono,$pdf_content);
 			$pdf_content = str_replace("{Email}",$personal->email,$pdf_content);
+			$pdf_content = str_replace("{EstadoCivil}",$personal->estadocivil,$pdf_content);
 			$pdf_content = str_replace("{SueldoBase}",'$ ' . number_format($personal->sueldobase,0,'.','.'),$pdf_content);
 			$pdf_content = str_replace("{TextoSueldoBase}",valorEnLetras($personal->sueldobase),$pdf_content);
 			//$pdf_content = str_replace("{TipoContrato}",$tipocontrato,$pdf_content);
