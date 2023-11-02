@@ -46,7 +46,7 @@ class Excel_model extends CI_Model
 
 	
 
-public function resumen_rem($datos_remuneracion){
+public function resumen_rem($datos_remuneracion,$idperiodo){
 
 	$spreadsheet = new Spreadsheet();
 	$sheet = $spreadsheet->getActiveSheet();
@@ -64,6 +64,9 @@ public function resumen_rem($datos_remuneracion){
 	$this->load->model('rrhh_model');
 	$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
 
+	$datos_periodo = $this->admin->get_periodo_by_id($idperiodo);
+	$periodo = $datos_periodo[0];
+	//var_dump($datos_periodo); exit;
 	/********* COMIENZA A CREAR EXCEL *******/
 	// DATOS INICIALES
 	$sheet->getColumnDimension('A')->setWidth(5);
@@ -86,8 +89,13 @@ public function resumen_rem($datos_remuneracion){
 	$sheet->mergeCells('C6:D6');
 	
 
-	$sheet->getStyle("B2:B6")->getFont()->setBold(true);
-	$sheet->getStyle("B2:D6")->getFont()->setSize(10);    	
+	$sheet->setCellValue('B7', 'Período Reporte');
+	$sheet->setCellValue('C7',month2string($periodo->mes).' '.$periodo->anno );
+	$sheet->mergeCells('C7:D7');
+	
+
+	$sheet->getStyle("B2:B7")->getFont()->setBold(true);
+	$sheet->getStyle("B2:D7")->getFont()->setSize(10);    	
 
 	//D7E4BC
 
@@ -95,27 +103,27 @@ public function resumen_rem($datos_remuneracion){
 	/****************** TABLA INICIAL ****************/
 
 	/*************************todos los bordes internos *************************************/
-	$sheet->getStyle("B2:D6")->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+	$sheet->getStyle("B2:D7")->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
 
 	/*************************bordes cuadro principal (externo) *************************************/
 	$sheet->getStyle("B2:D2")->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
 	$sheet->getStyle("B2:D2")->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
-	$sheet->getStyle("B6:D6")->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
-	$sheet->getStyle("B2:B6")->getBorders()->getLeft()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
-	$sheet->getStyle("B2:B6")->getBorders()->getRight()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
-	$sheet->getStyle("D2:D6")->getBorders()->getRight()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B7:D7")->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B2:B7")->getBorders()->getLeft()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("B2:B7")->getBorders()->getRight()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+	$sheet->getStyle("D2:D7")->getBorders()->getRight()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
 
 	/**********************************************************************************************************/			        
 	/***** COLOR TABLA ****************/
 	$sheet->getStyle("B2:D2")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
 	$sheet->getStyle("B2:D2")->getFill()->getStartColor()->setRGB('FA8D72');
 
-	$sheet->getStyle("B2:B6")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-	$sheet->getStyle("B2:B6")->getFill()->getStartColor()->setRGB('FA8D72');			
+	$sheet->getStyle("B2:B7")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+	$sheet->getStyle("B2:B7")->getFill()->getStartColor()->setRGB('FA8D72');			
 
 
-	$i = 8;		
+	$i = 9;		
 	$filaInicio = $i; 
 	$sueldobase = 0;
 	$gratificacion = 0;

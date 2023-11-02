@@ -4231,7 +4231,7 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
           $this->load->model('excel_model');
 
         //  var_dump_new($remuneraciones); exit;
-					$datosdetalle = $this->excel_model->resumen_rem($remuneraciones);
+					$datosdetalle = $this->excel_model->resumen_rem($remuneraciones,$idperiodo);
 				}
 
 			}
