@@ -64,9 +64,9 @@ public function resumen_rem($datos_remuneracion,$idperiodo){
 	$this->load->model('rrhh_model');
 	$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
 
-	$datos_periodo = $this->admin->get_periodo_by_id($idperiodo);
+	$datos_periodo = $this->admin->get_periodo_by_id_v2($idperiodo);
 	$periodo = $datos_periodo[0];
-	//var_dump($datos_periodo); exit;
+
 	/********* COMIENZA A CREAR EXCEL *******/
 	// DATOS INICIALES
 	$sheet->getColumnDimension('A')->setWidth(5);
@@ -91,6 +91,7 @@ public function resumen_rem($datos_remuneracion,$idperiodo){
 
 	$sheet->setCellValue('B7', 'Período Reporte');
 	$sheet->setCellValue('C7',month2string($periodo->mes).' '.$periodo->anno );
+	//$sheet->setCellValue('C7',date('d/m/Y') );
 	$sheet->mergeCells('C7:D7');
 	
 
