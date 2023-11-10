@@ -474,7 +474,7 @@ public function add_personal($array_datos,$idtrabajador){
 
 	public function get_datos_remuneracion_by_periodo($idperiodo,$idtrabajador = null){
 
-		$personal_data = $this->db->select('r.id_remuneracion, r.idpersonal, r.id_periodo, r.diastrabajo, r.horasdescuento, r.montodescuento, r.horasextras50, r.montohorasextras50, r.horasextras100, r.montohorasextras100, r.anticipo, r.aguinaldo, r.sueldobase, r.gratificacion, r.movilizacion, r.sueldonoimponible, r.sueldoimponible, r.totalleyessociales, r.otrosdescuentos')
+		$personal_data = $this->db->select('r.id_remuneracion, r.idpersonal, r.id_periodo, r.diastrabajo, r.horasdescuento, r.montodescuento, r.horasextras50, r.montohorasextras50, r.horasextras100, r.montohorasextras100, r.anticipo, r.aguinaldo, r.sueldobase, r.gratificacion, r.movilizacion, r.colacion, r.sueldonoimponible, r.sueldoimponible, r.totalleyessociales, r.otrosdescuentos, r.totalhaberes, r.aguinaldobruto, r.asigfamiliar')
 						  ->from('rem_remuneracion r')
 						  ->join('rem_personal pe','r.idpersonal = pe.id_personal')
 						  ->where('pe.id_empresa',$this->session->userdata('empresaid'))

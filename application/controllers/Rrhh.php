@@ -6963,22 +6963,36 @@ public function genera_carta($idpersonal){
             $periodo = $this->admin->get_periodo_by_mes($mes_finiquito,$anno_finiquito);
             $idperiodo = $periodo->id_periodo;
 
-            $idperiodorevisa = $idperiodo;
+            $idperiodorevisa = $this->admin->get_periodo_anterior($idperiodo);
+
             $num_periodos = 0;
             $sueldo_base = 0;
+
+            $array_datos_remuneracion = array();
 
             while($num_periodos < 3){
 
                 $datos_remuneracion = $this->rrhh_model->get_datos_remuneracion_by_periodo($idperiodorevisa,$trabajador->id_personal);
-
                 if(is_null($datos_remuneracion)){
                   break;
+                }else{
+
+                      if($datos_remuneracion->sueldoimponible > 0 && $datos_remuneracion->diastrabajo == 30){
+                          array_push($array_datos_remuneracion,$datos_remuneracion);
+                          $num_periodos++;
+                          
+                      }
+
+                      $idperiodorevisa = $this->admin->get_periodo_anterior($idperiodorevisa);
                 }
 
 
 
 
             }
+
+           // var_dump($num_periodos);
+           // var_dump_new($array_datos_remuneracion);
 
 
             if($num_periodos < 3){
@@ -7012,8 +7026,26 @@ public function genera_carta($idpersonal){
               $colacion = $trabajador->colacion;
                   
             }else{
+           
 
-              $sueldo_base = $trabajador->sueldobase;
+              $sueldo_base_acum = 0;
+              $gratificacion_acum = 0;
+              $comisiones_acum = 0;
+              $movilizacion_acum = 0;
+              $colacion_acum = 0;
+              foreach ($array_datos_remuneracion as $periodo_remuneracion) {
+                $sueldo_base_acum += $periodo_remuneracion->sueldobase;
+                $gratificacion_acum += $periodo_remuneracion->gratificacion;
+
+                //no deben incluirse: - Las horas extras, - Las asignaciones familiares y - Los pagos que no son mensuales (aguinaldos de Fiestas Patrias y/o Navidad) y aquellos que se
+                $comisiones_acum += $periodo_remuneracion->totalhaberes - $periodo_remuneracion->sueldobase - $periodo_remuneracion->gratificacion  - $periodo_remuneracion->movilizacion- $periodo_remuneracion->colacion - $periodo_remuneracion->aguinaldobruto - $periodo_remuneracion->asigfamiliar;
+
+                $movilizacion_acum += $periodo_remuneracion->movilizacion;
+                $colacion_acum += $periodo_remuneracion->colacion;
+              }
+
+
+              $sueldo_base = $sueldo_base_acum/count($array_datos_remuneracion);
 
               // se considera en años de servicio y mes de aviso, no en vacaciones proporcionales;
 
@@ -7029,16 +7061,16 @@ public function genera_carta($idpersonal){
 
                 }
 
-              $gratificacion = 0;
+              $gratificacion = $gratificacion_acum/count($array_datos_remuneracion);
 
               // se considera en todo
-              $comisiones = 0;
+              $comisiones = $comisiones_acum/count($array_datos_remuneracion);
 
               // se considera en todo
-              $movilizacion = $trabajador->movilizacion;
+              $movilizacion = $movilizacion_acum/count($array_datos_remuneracion);
 
               // se considera en todo
-              $colacion = $trabajador->colacion;
+              $colacion = $colacion_acum/count($array_datos_remuneracion);
 
 
             }
