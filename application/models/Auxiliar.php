@@ -53,6 +53,33 @@ class Auxiliar extends CI_Model
 	}	
 
 
+
+
+	public function get_dias_inhabiles_finiquito($fechafiniquito = '',$diashabiles = 0){
+
+		$query= $this->db->query("SELECT	count(*) as cantidad
+							FROM	REM_CALENDARIO
+							WHERE	FECHA > '" . $fechafiniquito ."'
+							AND		FECHA <= (
+
+												select max(fecha) FECHA
+												from (
+														select	top " . $diashabiles. " fecha
+														from	rem_calendario
+														where	fecha > '" . $fechafiniquito ."'
+														and		TIPO_DIA = 'H'
+														order by fecha
+														) c
+											)
+							AND		TIPO_DIA IN ('S','D','F')");
+		
+		 $data_result = $query->result();
+		return  $data_result[0]->cantidad;
+	}	
+
+
+
+
 	public function get_cartola_vacaciones($idpersonal = null,$idcartola = null){
 		$cargos_data = $this->db->select('c.id , c.idpersonal, c.fecinicio, c.fecfin, c.dias, c.comentarios, c.created_at')
 						  ->from('rem_cartola_vacaciones c')

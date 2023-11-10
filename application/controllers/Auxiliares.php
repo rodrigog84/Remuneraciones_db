@@ -1433,4 +1433,156 @@ public function submit_mod_licencia(){
 	}
 
 		
+
+
+public function calcular_finiquito($resultid = '')
+  {
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+      $resultid = $this->session->flashdata('documentos_colaborador_result');
+      if($resultid == 1){
+        $vars['message'] = "Error al crear documento.  Colaborador no existe";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }else if($resultid == 2){
+        $vars['message'] = "Error al eliminar documento.  Debe indicar Colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }else if($resultid == 3){
+        $vars['message'] = "Error al imprimir documento.  Debe indicar Colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }        
+
+      $this->load->model('rrhh_model');
+      $personal = $this->rrhh_model->get_personal(); 
+
+
+
+      $content = array(
+            'menu' => 'Auxiliar Remuneraciones',
+            'title' => 'Auxiliar Remuneraciones',
+            'subtitle' => 'Calcular Finiquito');
+
+      $vars['content_menu'] = $content;       
+      $vars['personal'] = $personal;  
+      $vars['content_view'] = 'auxiliares/calcular_finiquito';
+      $vars['datatable'] = true;
+      $vars['gritter'] = true;
+
+      $template = "template";
+      
+
+      $this->load->view($template,$vars); 
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  } 
+
+
+
+
+public function genera_finiquito($idpersonal){
+
+	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+	$idtipo = 2;
+
+  $this->load->model('auxiliar');
+    $this->load->model('admin');
+
+	$content = array(
+						'menu' => 'Finiquito',
+						'title' => 'Genera Finiquito Colaborador',
+						'subtitle' => 'Finiquitos Colaboradores');
+
+
+
+	
+  $personal = $this->admin->get_personal_total($idpersonal); 
+  $dias_progresivos = $this->auxiliar->get_dias_progresivos($idpersonal);
+  $array_vacaciones['dias_vacaciones'] = dias_vacaciones($personal->fecinicvacaciones,$personal->saldoinicvacaciones);
+  $array_vacaciones['num_dias_progresivos'] = num_dias_progresivos($personal->fecinicvacaciones,$personal->saldoinicvacprog,$dias_progresivos);
+  $parametros = $this->admin->get_parametros_generales();
+
+  if($personal->tipogratificacion == 'SG'){
+        $gratificacion = 0;
+  }else if($personal->tipogratificacion == 'MF'){
+        $gratificacion = $personal->gratificacion;
+  }else if($personal->tipogratificacion == 'TL'){
+        $tope_legal_gratificacion = ($parametros->sueldominimo*4.75)/12;
+        $gratificacion_esperada = $personal->sueldobase*0.25;
+
+       //echo $personal->tipogratificacion;  exit;
+        $gratificacion = $gratificacion_esperada > $tope_legal_gratificacion ? $tope_legal_gratificacion : $gratificacion_esperada;
+
+  }
+
+
+
+
+
+ // $vacaciones = $this->auxiliar->get_cartola_vacaciones($idpersonal);
+
+
+
+  $dias_tomados = 0;
+ /* foreach ($vacaciones as $vacacion) {
+    $dias_tomados += $vacacion->dias;
+  }*/
+
+ // echo"..-". $saldo_dias;
+
+	//print_r($vacaciones);
+
+	//exit;
+
+	$tipocontrato = $this->admin->get_tipo_documento($idtipo);
+  $causales_finiquito = $this->admin->get_causal_finiquito();
+	
+	$vars['personal'] = $personal;
+	$vars['tipocontrato'] = $tipocontrato;
+  $vars['dias_tomados'] = $dias_tomados;
+
+  $vars['array_vacaciones'] = $array_vacaciones;
+  $vars['causales_finiquito'] = $causales_finiquito;
+  $vars['comisiones'] = 0;
+	$vars['contrato'] = 1;
+  $vars['datetimepicker'] = true;
+  $vars['maleta'] = true;
+  $vars['mask'] = true;
+	$vars['content_menu'] = $content;				
+	$vars['content_view'] = 'forbidden';
+	$vars['content_view'] = 'rrhh/genera_finiquito';
+	$this->load->view('template',$vars);
+
+	/*}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}*/
+
+
+}
+
+
 }

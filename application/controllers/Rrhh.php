@@ -6697,9 +6697,19 @@ public function finiquito_colaborador($rut){
 	$vars['rut'] = $rut;
 
 	$personal = $this->admin->get_personal_total($rut);
-	$tipocontrato = $this->admin->get_tipo_contrato();
 
-	$contratos_personal = $this->admin->get_personal_finiquitos($rut); 
+  if(!is_null($personal)){
+
+      $rut_colaborador = $personal->rut;
+
+
+      //$tipocontrato = $this->admin->get_tipo_contrato();
+
+     // $contratos_personal = $this->admin->get_personal_finiquitos($rut_colaborador); 
+
+     // var_dump_new($contratos_personal); exit;    
+  }
+
 	
 	
 	 
@@ -6804,92 +6814,6 @@ public function genera_carta($idpersonal){
 
 }
 
-public function genera_finiquito($idpersonal){
-
-	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
-
-	$idtipo = 2;
-
-  $this->load->model('auxiliar');
-
-	$content = array(
-						'menu' => 'Finiquito',
-						'title' => 'Genera Finiquito Colaborador',
-						'subtitle' => 'Finiquitos Colaboradores');
-	
-	$personal = $this->admin->get_personal_total($idpersonal); 
-  $dias_progresivos = $this->auxiliar->get_dias_progresivos($idpersonal);
-  $array_vacaciones['dias_vacaciones'] = dias_vacaciones($personal->fecinicvacaciones,$personal->saldoinicvacaciones);
-  $array_vacaciones['num_dias_progresivos'] = num_dias_progresivos($personal->fecinicvacaciones,$personal->saldoinicvacprog,$dias_progresivos);
-  $parametros = $this->admin->get_parametros_generales();
-
-  if($personal->tipogratificacion == 'SG'){
-        $gratificacion = 0;
-  }else if($personal->tipogratificacion == 'MF'){
-        $gratificacion = $personal->gratificacion;
-  }else if($personal->tipogratificacion == 'TL'){
-        $tope_legal_gratificacion = ($parametros->sueldominimo*4.75)/12;
-        $gratificacion_esperada = $personal->sueldobase*0.25;
-
-       //echo $personal->tipogratificacion;  exit;
-        $gratificacion = $gratificacion_esperada > $tope_legal_gratificacion ? $tope_legal_gratificacion : $gratificacion_esperada;
-
-  }
-
-
-
-
-
- // $vacaciones = $this->auxiliar->get_cartola_vacaciones($idpersonal);
-
-
-
-  $dias_tomados = 0;
- /* foreach ($vacaciones as $vacacion) {
-    $dias_tomados += $vacacion->dias;
-  }*/
-
- // echo"..-". $saldo_dias;
-
-	//print_r($vacaciones);
-
-	//exit;
-
-	$tipocontrato = $this->admin->get_tipo_documento($idtipo);
-  $causales_finiquito = $this->admin->get_causal_finiquito();
-	
-	$vars['personal'] = $personal;
-	$vars['tipocontrato'] = $tipocontrato;
-  $vars['dias_tomados'] = $dias_tomados;
-
-  $vars['array_vacaciones'] = $array_vacaciones;
-  $vars['causales_finiquito'] = $causales_finiquito;
-  $vars['gratificacion'] = $gratificacion;
-	$vars['contrato'] = 1;
-  $vars['datetimepicker'] = true;
-  $vars['maleta'] = true;
-  $vars['mask'] = true;
-	$vars['content_menu'] = $content;				
-	$vars['content_view'] = 'forbidden';
-	$vars['content_view'] = 'rrhh/genera_finiquito';
-	$this->load->view('template',$vars);
-
-	/*}else{
-			$content = array(
-						'menu' => 'Error 403',
-						'title' => 'Error 403',
-						'subtitle' => '403 error');
-
-
-			$vars['content_menu'] = $content;				
-			$vars['content_view'] = 'forbidden';
-			$this->load->view('template',$vars);
-
-		}*/
-
-
-}
-
 	public function get_tipo_cuenta_banco($id_banco){
 
 
@@ -6944,4 +6868,192 @@ public function genera_finiquito($idpersonal){
   } 
 
 
+
+ public function get_datos_finiquito($idtrabajador = '')
+    {
+
+        //if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
+
+            $this->load->model('admin');
+            $this->load->model('auxiliar');
+
+            $personal = $this->admin->get_personal_total($idtrabajador);
+
+           // var_dump_new($personal); exit;
+           // var_dump($personal->fecinicvacaciones_sformato); exit;
+            $dias_vacaciones = dias_vacaciones($personal->fecinicvacaciones, $personal->saldoinicvacaciones);
+            $dias_progresivos = $this->auxiliar->get_dias_progresivos($idtrabajador);
+            
+            $num_dias_progresivos = num_dias_progresivos($personal->fecinicvacaciones, $personal->saldoinicvacprog, $dias_progresivos);         
+
+
+            $dias_tomados =   $personal->diasvactomados;
+           
+            $vacaciones_totales =  $dias_vacaciones+$num_dias_progresivos - $dias_tomados;
+
+
+
+             //var_dump_new($vacaciones_totales);exit;
+            //    echo '<pre>';
+            //    var_dump($personal);
+           //     var_dump($dias_vacaciones);
+             //   var_dump($num_dias_progresivos);
+
+
+           // $datos_finiquito['mes_aviso'] = number_format($personal->sueldobase + $personal->bonos_fijos + $personal->movilizacion + $personal->colacion,0,".",".");
+             $datos_finiquito['mes_aviso'] = number_format($personal->sueldobase + $personal->movilizacion + $personal->colacion,0,".",".");
+            //  $datos_finiquito['renta_antiguedad'] = number_format(($personal->sueldobase + $personal->bonos_fijos + $personal->movilizacion + $personal->colacion)*$personal->annos_empresa,0,".",".");
+            $datos_finiquito['renta_antiguedad'] = number_format(($personal->sueldobase + $personal->movilizacion + $personal->colacion)*1,0,".",".");
+
+            $datos_finiquito['renta_vacaciones'] = number_format(($personal->sueldobase + $personal->movilizacion + $personal->colacion)/30*($vacaciones_totales)*1.4,0,".",".");
+
+            //$datos_finiquito['renta_vacaciones'] = number_format(($personal->sueldobase + $personal->bonos_fijos + $personal->movilizacion + $personal->colacion)/30*($vacaciones_totales)*1.4,0,".",".");
+
+            //var_dump_new($datos_finiquito); exit;
+
+            echo json_encode($datos_finiquito);
+       /* } else {
+            $content = array(
+                'menu' => 'Error 403',
+                'title' => 'Error 403',
+                'subtitle' => '403 error'
+            );
+
+
+            $vars['content_menu'] = $content;
+            $vars['content_view'] = 'forbidden';
+            $this->load->view('template', $vars);
+        }*/
+    }    
+
+
+
+
+ public function get_valores_finiquito($idtrabajador,$fechafiniquito = '',$diashabiles = 0)
+    {
+
+        //if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
+
+            $this->load->model('auxiliar');
+            $this->load->model('admin');
+            $this->load->model('rrhh_model');
+
+
+            $dias_inhabiles = $this->auxiliar->get_dias_inhabiles_finiquito($fechafiniquito,$diashabiles);
+
+
+            $anno_finiquito = substr($fechafiniquito, 0,4);
+            $mes_finiquito = substr($fechafiniquito, 4,2); 
+
+
+            //vacaciones = sueldo base + bonos
+
+
+            $periodo = $this->admin->get_periodo_by_mes($mes_finiquito,$anno_finiquito);
+            $idperiodo = $periodo->id_periodo;
+
+            $parametros['sueldominimo'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Sueldo Minimo');
+            $tope_legal_gratificacion = ($parametros['sueldominimo']*4.75)/12;
+            $trabajador = $this->rrhh_model->get_personal($idtrabajador);
+
+
+            //vacaciones = sueldo base + bonos 
+
+
+            $periodo = $this->admin->get_periodo_by_mes($mes_finiquito,$anno_finiquito);
+            $idperiodo = $periodo->id_periodo;
+
+            $idperiodorevisa = $idperiodo;
+            $num_periodos = 0;
+            $sueldo_base = 0;
+
+            while($num_periodos < 3){
+
+                $datos_remuneracion = $this->rrhh_model->get_datos_remuneracion_by_periodo($idperiodorevisa,$trabajador->id_personal);
+
+                if(is_null($datos_remuneracion)){
+                  break;
+                }
+
+
+
+
+            }
+
+
+            if($num_periodos < 3){
+
+              $sueldo_base = $trabajador->sueldobase;
+
+              // se considera en años de servicio y mes de aviso, no en vacaciones proporcionales;
+
+              if($trabajador->tipogratificacion == 'SG'){
+                      $gratificacion = 0;
+                }else if($trabajador->tipogratificacion == 'MF'){
+                      $gratificacion = $trabajador->gratificacion;
+                }else if($trabajador->tipogratificacion == 'TL'){
+                      $gratificacion_esperada = $trabajador->sueldobase*0.25;
+
+                     //echo $personal->tipogratificacion;  exit;
+                      $gratificacion_calculada = $gratificacion_esperada > $tope_legal_gratificacion ? $tope_legal_gratificacion : $gratificacion_esperada;
+
+                }
+
+
+              $gratificacion = $gratificacion_calculada;
+
+              // se considera en todo
+              $comisiones = 0;
+
+              // se considera en todo
+              $movilizacion = $trabajador->movilizacion;
+
+              // se considera en todo
+              $colacion = $trabajador->colacion;
+                  
+            }else{
+
+              $sueldo_base = $trabajador->sueldobase;
+
+              // se considera en años de servicio y mes de aviso, no en vacaciones proporcionales;
+
+                if($trabajador->tipogratificacion == 'SG'){
+                      $gratificacion = 0;
+                }else if($trabajador->tipogratificacion == 'MF'){
+                      $gratificacion = $trabajador->gratificacion;
+                }else if($trabajador->tipogratificacion == 'TL'){
+                      $gratificacion_esperada = $trabajador->sueldobase*0.25;
+
+                     //echo $personal->tipogratificacion;  exit;
+                      $gratificacion_calculada = $gratificacion_esperada > $tope_legal_gratificacion ? $tope_legal_gratificacion : $gratificacion_esperada;
+
+                }
+
+              $gratificacion = 0;
+
+              // se considera en todo
+              $comisiones = 0;
+
+              // se considera en todo
+              $movilizacion = $trabajador->movilizacion;
+
+              // se considera en todo
+              $colacion = $trabajador->colacion;
+
+
+            }
+
+
+            $data['sueldobase'] = $sueldo_base;
+            $data['gratificacion'] = $gratificacion;
+            $data['comisiones'] = $comisiones;
+            $data['movilizacion'] = $movilizacion;
+            $data['colacion'] = $colacion;
+            $data['dias_inhabiles'] = $dias_inhabiles;
+
+
+
+            echo json_encode($data);
+
+    }   
 }
