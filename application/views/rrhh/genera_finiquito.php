@@ -20,7 +20,7 @@
                                           <div class='col-md-6'>
                                             <div class="form-group">
                                                 <label for="nombre">Fecha Ingreso</label>  
-                                                 <input type="text" name="fechaingreso" id="fechaingreso" class="form-control" id="" placeholder="<?php echo $personal->fecingreso;?>" readonly >
+                                                 <input type="text" name="fechaingreso" id="fechaingreso" class="form-control" id="" placeholder="<?php echo $personal->fecingreso_format;?>" readonly >
                                             </div>
                                           </div>
 
@@ -290,13 +290,22 @@
 
                           <div class='col-md-4'>
                             <div class="form-group">
-                              <label for="rut">Valor Total Contrato</label>
+                              <label for="rut">Base C&aacute;lculo Años Servicio/Mes Aviso</label>
                               <input placeholder="" name="vtotalcont" id="vtotalcont" class="form-control" required  type="text" value="0"  readonly />
                             </div>
                           </div>                         
                         </div>
 
 
+                        <div class='row'>
+
+                          <div class='col-md-4'>
+                            <div class="form-group">
+                              <label for="rut">Base C&aacute;lculo Vacaciones Proporcionales</label>
+                              <input placeholder="" name="vtotalcont_vac" id="vtotalcont_vac" class="form-control" required  type="text" value="0"  readonly />
+                            </div>
+                          </div>                         
+                        </div>
                       </div>
                     </div>
 
@@ -796,6 +805,10 @@
         var vtotalcont_vac = parseInt(replaceAll($('#sueldobase').val(), ".", "")) +  parseInt(replaceAll($('#comisiones').val(), ".", "")) +  parseInt(replaceAll($('#movilizacion').val(), ".", "")) +  parseInt(replaceAll($('#colacion').val(), ".", ""));
 
 
+        $('#vtotalcont').val(number_format(vtotalcont, 0, '.', '.'));
+        $('#vtotalcont_vac').val(number_format(vtotalcont_vac, 0, '.', '.'));
+
+
         if(diasaviso <= 30 && art_161){
 
             $('#indmesaviso').val(number_format(vtotalcont, 0, '.', '.'))
@@ -817,7 +830,8 @@
 
 
 
-        var ind_feriado_legal =  parseInt(vtotalcont_vac)/30*parseInt($('#totvacpendientes').val());
+        var ind_feriado_legal =  parseInt(vtotalcont_vac)/30*parseFloat($('#totvacpendientes').val());
+
 
         $('#indferiadolegal').val(number_format(ind_feriado_legal, 0, '.', '.'));
 
