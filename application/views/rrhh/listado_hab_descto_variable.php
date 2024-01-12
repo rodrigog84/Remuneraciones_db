@@ -1,5 +1,147 @@
 <!--sub-heard-part-->
 								  <!--//sub-heard-part-->
+
+  
+ <?php if (count($errores_estructura) > 0 || count($errores_contenido) > 0 ){ ?>
+
+         <div class="row">
+
+            <div class="col-md-12">
+
+                  <?php //var_dump_new($errores_estructura); ?>
+
+                <ul class="nav nav-pills">
+                  <li class="active"><a href="#nav-pills-tab-1" data-toggle="tab">Errores Estructura ( <?php echo count($errores_estructura);?> ) </a></li>
+                  <li><a href="#nav-pills-tab-2" data-toggle="tab">Errores Contenido ( <?php echo count($errores_contenido);?> ) </a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane fade active in" id="nav-pills-tab-1">
+                     
+
+
+                  <div class="panel panel-inverse">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">Listado de Errores de Estructura</h4>                    
+                      </div><!-- /.box-header -->
+                      <!-- form start -->
+
+
+                        <div class="panel-body">
+       
+                              <div class='row'    >
+                                <div class='col-md-12'>
+                                          <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Tipo Error</th>
+                            <th>Descripci&oacute;n Error</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          
+                          <?php foreach ($errores_estructura as $k => $error_estructura) { ?> 
+                              <tr>
+                                <td><?php echo $k+1; ?></td>
+                                <td><?php echo $error_estructura['tipo']; ?></td>
+                                <td><?php echo $error_estructura['descripcion']; ?></td>
+                              </tr>
+
+                          <?php } ?>
+                         
+                        </tbody>
+                      </table>
+                    </div>
+
+
+
+
+                                </div>  
+                              </div>   
+                              
+
+                                
+                        </div><!-- /.box-body -->                  
+                    </div><!-- /.box -->
+
+
+
+
+                  </div>
+                  <div class="tab-pane fade" id="nav-pills-tab-2">
+
+
+                  <div class="panel panel-inverse">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">Listado de Errores de Contenido</h4>                    
+                      </div><!-- /.box-header -->
+                      <!-- form start -->
+
+
+                        <div class="panel-body">
+       
+                              <div class='row'    >
+                                <div class='col-md-12'>
+                                          <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Tipo Error</th>
+                            <th>Columna Error</th>
+                            <th>Valor</th>
+                            <th>Descripci&oacute;n Error</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          
+                          <?php foreach ($errores_contenido as $k => $error_contenido) { ?> 
+                              <tr>
+                                <td><?php echo $k+1; ?></td>
+                                <td><?php echo $error_contenido['tipo']; ?></td>
+                                <td><?php echo $error_contenido['columna']; ?></td>
+                                <td><?php echo $error_contenido['valor']; ?></td>
+                                <td><?php echo $error_contenido['descripcion']; ?></td>
+                              </tr>
+
+                          <?php } ?>
+                         
+                        </tbody>
+                      </table>
+                    </div>
+
+
+
+
+                                </div>  
+                              </div>   
+                              
+
+                                
+                        </div><!-- /.box-body -->                  
+                    </div><!-- /.box -->
+
+
+
+
+
+                  </div>
+                </div>
+
+
+
+
+
+
+            </div>
+
+        
+          </div>
+
+ <?php } ?>
+
+
 		
     						<div class="row">
        <div class='col-md-6'>

@@ -43,7 +43,29 @@
                   </div> 
 
 
-                            <div class="panel panel-inverse">                       
+
+              <div class="panel panel-inverse">                       
+                                <div class="panel-heading">
+                                      <h4 class="panel-title">Tipo Carga</h4>
+                                  </div>
+                      <div class="panel-body">
+                        <div class='row'>
+                          <div class='col-md-4'>
+                            <div class="form-group">
+                                  <label for="caja">Tipo de Carga</label>    
+                                  <select name="tipocarga" id="tipocarga" class="form-control">
+                                      <option value="manual" selected >Manual</option>
+                                      <option value="masiva" >Masiva</option>
+                                    </select>
+                            </div>  
+                          </div>
+                        </div>      
+                      </div><!-- /.box-body -->
+
+                 
+                  </div> 
+
+                            <div class="panel panel-inverse" id='carga_manual'>                       
                                 <div class="panel-heading">
                                       <h4 class="panel-title">Datos Haber o Descuento</h4>
                                   </div>
@@ -88,13 +110,70 @@
                       </div><!-- /.box-body -->
 
                  
-                  </div> 
+                  </div>
+
+
+                  <div class="panel panel-inverse" id='carga_masiva'>                       
+                                <div class="panel-heading">
+                                      <h4 class="panel-title">Carga Masiva Haberes y Descuento</h4>
+                                  </div>
+                      <div class="panel-body">
+                        <div class='row'    >
+                          <div class='col-md-6'>
+                            <div class="form-group">
+                                 <label for="exampleInputFile">Archivo de Carga</label>
+                                  <input type="file" id="userfile" name="userfile"><small>(*) Archivo formato .csv Separador: Punto y coma  ";"</small>
+                            </div> 
+                          </div> 
+                           <div class='col-md-2'>
+                            
+                                <a href="<?php echo base_url(); ?>uploads/ejemploCargaHabDesctos.csv" data-toggle="tooltip" title="Ejemplo" class="btn btn-success">Descargar Ejemplo&nbsp;<i class="fa fa-file-excel-o"></i></a>
+
+
+                          </div>   
+                        </div> 
+
+
+                            
+                                                        <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>&nbsp;&nbsp;
+                      </div>
+                      </div><!-- /.box-body -->
+
+                 
+                  </div>
+
+
                   </div>
     </form>                   
 
 <script>
 
     $(document).ready(function() {
+
+
+      $('#carga_manual').show()
+      $('#carga_masiva').hide()
+
+
+      $('#tipocarga').on('change',function(){
+
+            var tipocarga = $(this).val();
+            if(tipocarga == 'manual'){
+                $('#carga_manual').show()
+                $('#carga_masiva').hide()
+            }else if(tipocarga == 'masiva'){
+                $('#carga_manual').hide()
+                $('#carga_masiva').show()
+
+            }else{
+                $('#carga_manual').hide()
+                $('#carga_masiva').hide()
+
+            }
+
+
+      })
 
       $('.periodo').change(function(){
           $('#basicBootstrapForm').formValidation('revalidateField', 'anno');

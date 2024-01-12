@@ -346,6 +346,47 @@ class Proceso extends CI_Model
 
 
             /***** ACTUALIZA UTM *********************/
+
+
+
+
+
+            
+            $query_procesa= $this->db->query("select      case when dias_parametro < dias_mes then 1
+                                                         else 0
+                                                    end as proceso,
+                                                    dias_mes
+
+                                        from        (   
+                                                    select      count(*) as dias_parametro,
+                                                                (
+                                                                select  count(*)
+                                                                from    rem_calendario
+                                                                where   periodo = " . date('Ym') . "
+                                                                ) as dias_mes
+                                                    from        rem_parametros
+                                                    where       nombre = 'UTM'
+                                                    and         fecha in (
+                                                                            SELECT fecha
+                                                                            FROM    rem_calendario
+                                                                            WHERE   PERIODO = " . date('Ym') . ")
+                                                    ) b");
+            $data_procesa = $query_procesa->row();
+
+
+            $datos_faltantes = false;
+            $dias_mes = 30;
+            if(isset($data_procesa->proceso)){
+                    if($data_procesa->proceso == 1){
+                        $datos_faltantes = true;
+                        $dias_mes = $data_procesa->dias_mes;
+                    }
+
+            }
+
+
+            $data_result = $query->row();
+
             $query= $this->db->query("select        count(distinct fecha) as cantidad
                             from        rem_parametros
                             where       nombre = 'UTM'
@@ -354,7 +395,7 @@ class Proceso extends CI_Model
             $data_result = $query->row();
 
             $cantidad = isset($data_result->cantidad) ? $data_result->cantidad : 0;
-            if($cantidad < 10){ // solo procesa en caso que falten datos en los ultimos 10 dias
+            if($cantidad < 10 || $datos_faltantes){ // solo procesa en caso que falten datos en los ultimos 10 dias
 
                 $apiUrl = 'https://mindicador.cl/api/utm';
                 //Es necesario tener habilitada la directiva allow_url_fopen para usar file_get_contents
@@ -369,12 +410,15 @@ class Proceso extends CI_Model
                 }
                  
                 $dailyIndicators = json_decode($json);
+
+                //var_dump_new($dailyIndicators); exit;
                 $i = 1;
                 foreach ($dailyIndicators->serie as $fecha) {
 
 
                     $fecha_ind = substr($fecha->fecha,0,7);
                     //$fecha_ind = str_replace('-', '', $fecha_ind);
+
                     $valor = $fecha->valor;
 
                     $fecha_final = date("d-m-Y");
@@ -384,10 +428,12 @@ class Proceso extends CI_Model
                     $ciclo = 1;
 
                     while($regla){
-
+                        
                          $fecha_inicial = date("Y-m-d",strtotime($fecha_inicial."+ 1 days"));
                          $fecha_inicial_substr = str_replace('-', '', $fecha_inicial);
                          $fecha_inicial_per =  substr($fecha_inicial,0,7);
+                         //var_dump_new($fecha_inicial_substr);
+                         //var_dump_new($ciclo);
                         // var_dump($fecha_inicial_per); exit;
                          if($fecha_ind == $fecha_inicial_per){ // el valor de la API corresponde al periodo que estamos revisando
 
@@ -409,7 +455,7 @@ class Proceso extends CI_Model
                          }
 
 
-                        if($fecha_inicial == $fecha_final  || $ciclo >= 30){
+                        if($fecha_inicial == $fecha_final  || $ciclo >= $dias_mes){
 
                             $regla = false;
                         }
@@ -438,7 +484,7 @@ class Proceso extends CI_Model
              
             }
 
-
+            //exit;
             /**************************  ACTUALIZACION OTROS PARAMETROS *************************/
 
 

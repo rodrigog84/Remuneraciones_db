@@ -4064,6 +4064,8 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
 	public function listado_hab_descto_variable(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
+      $errores_estructura = array();
+      $errores_contenido = array();
 			$resultid = $this->session->flashdata('hab_descto_variable_result');
 			if($resultid == 1){
 				$vars['message'] = "Haber/Descuento Agregado correctamente";
@@ -4081,7 +4083,20 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
 				$vars['message'] = "Haber/Descuento Eliminado correctamente";
 				$vars['classmessage'] = 'success';
 				$vars['icon'] = 'fa-check';		
-			}
+			}elseif($resultid == 5){
+
+        $message = $this->session->flashdata('hab_descto_variable_error_msg');
+
+        $errores_estructura = $this->session->flashdata('array_errores_estructura');
+        $errores_contenido = $this->session->flashdata('array_errores_contenido');
+
+
+        $vars['message'] = "Error en carga masiva de Haberes y/o Descuentos Variables ". $message;
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';   
+
+
+      }
 
       $this->load->model('proceso');
       $this->proceso->haberes_descuentos_periodo_nuevo();
@@ -4104,7 +4119,8 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
 			$vars['gritter'] = true;
 
 			$vars['haberes_descuentos'] = $haberes_descuentos;
-			
+			$vars['errores_estructura'] = $errores_estructura;
+      $vars['errores_contenido'] = $errores_contenido;
 			$template = "template";
 			
 
@@ -5716,42 +5732,424 @@ public function submit_anticipos(){
 	public function submit_hab_descto_variable(){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
+
+      set_time_limit(0); // quita limite de tiempo al hacer carga
 			$array_post = $this->input->post(NULL,true);
 
-			$tipo = $this->input->post('tipo');
-			$id_hab_descto = $this->input->post('hab_descto');
-			$array_col = array();
-			$array_montos = array();
-			foreach ($array_post as $key => $value) {
-				$array_key = explode("-",$key);
-				if($array_key[0] == 'sel_col'){
-					array_push($array_col,$array_key[1]);
-				}
 
-				if($array_key[0] == 'monto_col'){
-					$array_montos[$array_key[1]] = $value;
-				}
-			}
+      $tipocarga = $this->input->post('tipocarga');
 
-			$mes = $this->input->post('mes');
-			$anno = $this->input->post('anno');
+      if($tipocarga == 'masiva'){
+          $config['upload_path'] = "./uploads/cargas/haberesdesctos/";
 
-			if(empty($mes) || empty($anno) || empty($tipo) || empty($id_hab_descto) ){	
-				$this->session->set_flashdata('hab_descto_variable_result', 2);
-				redirect('rrhh/hab_descto_variable');	
-			}
+          if (!file_exists($config['upload_path'])) {
+              mkdir($config['upload_path'], 0777, true);
+          }
+
+
+
+
+          $config['file_name'] = date("Ymd") . "_" . date("His") . "_" . randomstring(5) . "_HABDESCTOS_" .  $this->session->userdata('empresaid');
+
+          $config['allowed_types'] = "*";
+          $config['max_size'] = "10240";
+
+          $this->load->library('upload', $config);
+          $this->upload->do_upload("userfile");
+          $dataupload = $this->upload->data();
+
+          $extension = $dataupload['file_ext'];
+
+
+          $error_carga = false;
+
+          $array_errores_estructura = array();
+          $array_errores_contenido = array();
+          if ($extension != '.csv') {
+              $error_carga = true;
+              $msg = "Archivo debe tener formato csv";
+              $this->session->set_flashdata('hab_descto_variable_result', 5);
+              $this->session->set_flashdata('hab_descto_variable_error_msg', $msg);
+              $this->session->set_flashdata('array_errores_contenido', $array_errores_contenido);
+              $this->session->set_flashdata('array_errores_estructura', $array_errores_estructura);              
+              redirect('rrhh/listado_hab_descto_variable');               
+          }                    
+
+
+
+          if (!$error_carga) {
+
+                  $array_registros_insertar = array();
+
+                  #OBTIENE LISTADO DE PERSONAL
+                  $personal = $this->rrhh_model->get_personal(); 
+                  $array_rut_empresas = array();
+                  $array_idcol_empresas = array();
+                  foreach ($personal as $persona) {
+                    array_push($array_rut_empresas,$persona->rut);
+                    $array_idcol_empresas[$persona->rut] = $persona->id_personal;
+                  }
+                  
+
+                  #OBTIENE LISTADO DE HABERES Y DESCUENTOS
+                  $this->load->model('configuracion');
+                  $haberes_descuentos = $this->configuracion->get_haberes_descuentos();
+                  $array_haberes_descuentos = array();
+                  $array_idhabdescto = array();
+                  foreach ($haberes_descuentos as $haber_descuento) {
+                    $codigo_hab_descto = is_numeric($haber_descuento->codigo) ? (int)$haber_descuento->codigo : $haber_descuento->codigo;
+
+                    $hd = substr($haber_descuento->tipo,0,1).'||'.$codigo_hab_descto;
+                    array_push($array_haberes_descuentos,$hd);
+                    $array_idhabdescto[$hd] = $haber_descuento->id;
+                  }          
+
+
+
+
+
+                  $definicion_encabezado[0] = "Rut";
+                  $definicion_encabezado[1] = "Dv";
+                  $definicion_encabezado[2] = "Codigo";
+                  $definicion_encabezado[3] = "Tipo";
+                  $definicion_encabezado[4] = "Monto";
+
+                  $array_datos_requeridos = array(1,2,3,4,5);
+                  $array_numericos = array(1,5);
+                  $array_valores_tipo = array('D','H');
+                  $array_valores_dv = array('1','2','3','4','5','6','7','8','9','0','K');
+
+                  $array_rut_codigo_ingresados = array();
+
+
+                  $array_registros = array();
+
+
+
+                  $columnas_requeridas = 5;
+                  $cant_errores_estructura = 0;
+                  $cant_errores_contenido = 0;
+                  $fila = 1;   
+
+                  //LECTURA ARCHIVO
+                  if (($gestor = fopen($config['upload_path'] . $dataupload['orig_name'], "r")) !== FALSE){
+
+                      // LECTURA LINEA A LINEA
+                       while (($datos = fgetcsv($gestor, 0, ";")) !== FALSE){
+
+
+                            $numero = count($datos);
+                            $error_fila = false;
+
+                            //LECTURA CAMPO A CAMPO
+                            for ($c=0; $c < $numero; $c++) {
+
+
+                                     // comenzar validaciones
+
+
+                                    // 1.- Validar Estructura.
+                                    //      Validar que todas las filas contengan 4 campos
+                                    //      Validar nombres encabezados
+
+
+                                    if($fila == 1){
+
+                                        if($datos[$c] != utf8_encode($definicion_encabezado[$c])){
+
+                                                  $array_errores_estructura[$cant_errores_estructura]['tipo'] = "Error en fila de encabezados";
+                                                  $array_errores_estructura[$cant_errores_estructura]['descripcion'] = "Se esperaba valor \"" . $definicion_encabezado[$c] . "\" en vez de \"" . utf8_encode($datos[$c]). "\" ";
+                                                  $cant_errores_estructura++;
+
+                                        }
+                                      
+
+                                    }  
+
+
+                                    if($fila > 1){
+
+                                      //validación de datos vacíos
+                                      if(in_array($c+1,$array_datos_requeridos) && $datos[$c] == ''){
+
+                                              $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                              $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Dato es Requerido";
+                                              $cant_errores_contenido++;
+                                              $error_fila = true;
+
+                                      }
+
+
+                                      if(in_array($c+1,$array_numericos) && !is_numeric($datos[$c])){
+                                              $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                              $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                              $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor debe ser numérico";
+                                              $cant_errores_contenido++;
+                                              $error_fila = true;
+
+                                      }                                          
+
+
+
+                                      if(($c+1) == 2 && !in_array($datos[$c],$array_valores_dv)){
+
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor DV Incorrecto";
+                                                    $cant_errores_contenido++;
+                                                    $error_fila = true;
+
+
+                                      }
+
+
+
+                                      if(($c+1) == 4 && !in_array($datos[$c],$array_valores_tipo)){
+
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Valor Tipo Incorrecto";
+                                                    $cant_errores_contenido++;
+                                                    $error_fila = true;
+
+
+                                      }
+
+
+
+                                      // VALIDAR QUE RUT EXISTA
+
+                                      if(($c+1) == 1 && !in_array($datos[$c],$array_rut_empresas)){
+
+                                                    $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                                    $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['valor'] = $datos[$c];
+                                                    $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Rut no existe en lista de trabajadores";
+                                                    $cant_errores_contenido++;
+                                                    $error_fila = true;
+
+
+                                      }
+
+
+
+                                    }          
+                                   
+                                    
+
+
+                            } // END for ($c=0; $c < $numero; $c++) {
+
+
+                            
+                            $rutcodigo = $datos[0].'||'.$datos[2].'||'.$datos[3];
+                            if(in_array($rutcodigo,$array_rut_codigo_ingresados)){
+
+
+                                      $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                      $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[0] . ' - ' . $definicion_encabezado[2];
+                                      $array_errores_contenido[$cant_errores_contenido]['valor'] = "Rut:" . $datos[0].'-'.$datos[1].' . Código: ' . $datos[2] . ' . Tipo: ' . $datos[3];
+                                      $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Rut - Codigo duplicado";
+                                      $cant_errores_contenido++;
+                                      $error_fila = true;
+
+
+                                  
+                            }else{
+                                  array_push($array_rut_codigo_ingresados,$rutcodigo); 
+
+                                 /* $array_reg = array(
+                                                      'rut' => $datos[0],
+                                                      'dv' => $datos[1],
+                                                      'codhabdescto' => $datos[2],
+                                                      'monto' => $datos[4]
+                                              );
+                                  array_push($array_registros,$array_reg);*/
+                            }
+
+                            $codigo_hab_descto_csv = is_numeric($datos[2]) ? (int)$datos[2] : $datos[2];
+                            $hab_descto_csv = $datos[3] . '||' . $codigo_hab_descto_csv;
+
+
+
+                            if(!in_array($hab_descto_csv,$array_haberes_descuentos) && $fila > 1){
+
+                                      $array_errores_contenido[$cant_errores_contenido]['tipo'] = "Error en fila " . $fila;
+                                      $array_errores_contenido[$cant_errores_contenido]['columna'] = $definicion_encabezado[3] . ' - ' . $definicion_encabezado[2];
+                                      $array_errores_contenido[$cant_errores_contenido]['valor'] = 'Tipo : ' . $datos[3]. ' . Código: ' . $datos[2];
+                                      $array_errores_contenido[$cant_errores_contenido]['descripcion'] = "Codigo Haber o Descuento no existe";
+                                      $cant_errores_contenido++;
+                                      $error_fila = true;
+
+                                  
+                            }
+
+
+
+                            // validar cantidad de columnas
+                            if ($numero != $columnas_requeridas){
+                                $fila_error = $fila == 1 ? "de encabezados" : $fila;
+                                $array_errores_estructura[$cant_errores_estructura]['tipo'] = "Error en fila " . $fila_error;
+                                $array_errores_estructura[$cant_errores_estructura]['descripcion'] = "Se esperan " . $columnas_requeridas . " campos";
+                                $cant_errores_estructura++;
+                                $error_fila = true;
+
+                            }                            
+
+
+                            if($fila > 1 && !$error_fila){
+
+
+                              $idcol = 0;
+                              foreach ($array_idcol_empresas as $keyrut => $valuerut) {
+                                  if($datos[0] == $keyrut){
+                                    $idcol = $valuerut;
+                                  }
+                              }
+
+                              $idhabdescto = 0;
+                              foreach ($array_idhabdescto as $keyid => $valueid) {
+                                if($hab_descto_csv == $keyid){
+                                    $idhabdescto = $valueid;
+                                } 
+                              }
+
+
+                                $array_registro = array(
+                                                        'idcol' => $idcol,
+                                                        'idhabdescto' => $idhabdescto,
+                                                        'monto' =>  $datos[4]
+                                                  );
+                                  
+                                array_push($array_registros_insertar,$array_registro);
+                            }
+
+                            $fila++;
+                       }// END while (($datos = fgetcsv($gestor, 0, ";")) !== FALSE){
+
+
+                  }  //END if (($gestor = fopen($config['upload_path'] . $dataupload['orig_name'], "r")) !== FALSE){       
+
+                  if(count($array_errores_contenido) > 0 || count($array_errores_estructura) > 0){
+                          $msg = "Error en el archivo de carga";
+                          $this->session->set_flashdata('hab_descto_variable_result', 5);
+                          $this->session->set_flashdata('hab_descto_variable_error_msg', $msg);
+
+                          $this->session->set_flashdata('array_errores_contenido', $array_errores_contenido);
+                          $this->session->set_flashdata('array_errores_estructura', $array_errores_estructura);
+                          redirect('rrhh/listado_hab_descto_variable');   
+
+                  }else{
+                      // crear carga
+
+                      // SEPARA EN DISTINTOS ARREGLOS.  UNO POR HABER Y DESCUENTO
+                      $array_registr_insertar_habdescto = array();
+                      foreach ($array_registros_insertar as $key => $value) {
+                          if(!isset($array_registr_insertar_habdescto[$value['idhabdescto']] )){
+                              $array_registr_insertar_habdescto[$value['idhabdescto']] = array();
+                          }
+
+                          array_push($array_registr_insertar_habdescto[$value['idhabdescto']],$value);
+
+                      }
+
+
+                      //var_dump_new($array_registr_insertar_habdescto); 
+
+                      $mes = $this->input->post('mes');
+                      $anno = $this->input->post('anno');    
+
+                     // var_dump_new($array_registr_insertar_habdescto);                  
+
+                      foreach ($array_registr_insertar_habdescto as $idhabdescto => $registro) {
+                        
+                          $array_listado_col = array();
+                          $array_lista_montos = array();
+                          foreach ($registro as $reg) {
+                            
+                                if(!in_array($reg['idcol'],$array_listado_col)){
+                                    array_push($array_listado_col,$reg['idcol']);
+                                }
+
+
+                                if(!isset($array_lista_montos[$reg['idcol']])){
+                                    $array_lista_montos[$reg['idcol']] = 0;
+                                }
+
+                                $array_lista_montos[$reg['idcol']] = $reg['monto'];
+
+                          }
+
+
+                          $array_datos_hab_descto = array('id_hab_descto' => $idhabdescto,
+                                                 'mes' => $mes,
+                                                 'anno' => $anno,
+                                                 'listado_col' => $array_listado_col,
+                                                 'lista_montos' => $array_lista_montos
+                          );
+
+                          $this->rrhh_model->save_hab_descto_variable($array_datos_hab_descto);
+
+
+
+                      }
+
+
+                  }
+
+          } 
+
+
+          $this->session->set_flashdata('hab_descto_variable_result', 1);
+      }else if($tipocarga == 'manual'){
+
+          $tipo = $this->input->post('tipo');
+          $id_hab_descto = $this->input->post('hab_descto');
+          $array_col = array();
+          $array_montos = array();
+          foreach ($array_post as $key => $value) {
+            $array_key = explode("-",$key);
+            if($array_key[0] == 'sel_col'){
+              array_push($array_col,$array_key[1]);
+            }
+
+            if($array_key[0] == 'monto_col'){
+              $array_montos[$array_key[1]] = $value;
+            }
+          }
+
+          $mes = $this->input->post('mes');
+          $anno = $this->input->post('anno');
+
+          if(empty($mes) || empty($anno) || empty($tipo) || empty($id_hab_descto) ){  
+            $this->session->set_flashdata('hab_descto_variable_result', 2);
+            redirect('rrhh/listado_hab_descto_variable'); 
+          }
+          
+
+          $array_datos_hab_descto = array('id_hab_descto' => $id_hab_descto,
+                           'mes' => $mes,
+                           'anno' => $anno,
+                           'listado_col' => $array_col,
+                           'lista_montos' => $array_montos );
+
+
+          $this->rrhh_model->save_hab_descto_variable($array_datos_hab_descto);
+
+          $this->session->set_flashdata('hab_descto_variable_result', 1);
+      }else{
+
+          $this->session->set_flashdata('hab_descto_variable_result', 2);
+      }
+
+
+
 			
-
-			$array_datos_hab_descto = array('id_hab_descto' => $id_hab_descto,
-											 'mes' => $mes,
-											 'anno' => $anno,
-											 'listado_col' => $array_col,
-											 'lista_montos' => $array_montos );
-
-
-			$this->rrhh_model->save_hab_descto_variable($array_datos_hab_descto);
-
-			$this->session->set_flashdata('hab_descto_variable_result', 1);
 			$this->session->set_flashdata('hab_descto_mes', $mes);
 			$this->session->set_flashdata('hab_descto_anno', $anno);
 			redirect('rrhh/listado_hab_descto_variable');	

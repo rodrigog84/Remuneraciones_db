@@ -53,6 +53,8 @@ define('PORCT_INP',		0.06); //3.1%  //6%
 define('PORCT_ISL',		0.93); //3.1%  //6%
 
 
+define('ACTUALIZA_INDICADORES',		FALSE); //3.1%  //6%
+
 
 
 /* End of file constants.php */
