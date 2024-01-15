@@ -93,7 +93,7 @@ class Guest extends CI_Controller {
 			$fecvencimiento = date('Ymd', strtotime('+' . PERIODOS_GRATIS . ' month', strtotime(date("Y-m-d"))));
 
        		$datos = array(
-            		'nombre' => strtolower($nombreempresa),
+            		'nombre' => $nombreempresa,
             		'rut' => $arrayRut[0],
             		'dv' => $arrayRut[1],
             		'direccion' => strtolower($direccion),
