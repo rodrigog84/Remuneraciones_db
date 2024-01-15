@@ -1095,3 +1095,90 @@ AND		FECHA NOT IN (SELECT FECHA
 alter table rem_remuneracion add sueldoimponibleafcnotrabajo int default 0
 alter table rem_remuneracion add sueldoimponibleimposicionesnotrabajo int default 0
 
+
+/************************************************************************************/
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/resumen_rem'
+,null
+,5
+,0
+,0
+,1
+,null
+)
+
+
+insert into rem_role (appid,levelid) values (9118,2)
+
+
+/****************************************************************************************/
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'auxiliares/calcular_finiquito'
+,'Calcular Finiquito'
+,9
+,0
+,1
+,1
+,3
+)
+
+
+insert into rem_role (appid,levelid) values (9119,2)
+
+
+
+truncate table rem_causal_finiquito
+
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Acuerdo entre las partes de ponerle término', 'Art. 159 Inciso 1', 1, '2022-06-03 12:48:55');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Renuncia del trabajador', 'Art. 159 Inciso 2', 1, '2022-06-03 12:49:02');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Muerte del trabajador', 'Art. 159 Inciso 3', 1, '2022-06-03 12:49:15');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Vencimiento del plazo del contrato', 'Art. 159 Inciso 4', 1, '2022-06-03 12:52:04');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Término del trabajo acordado', 'Art. 159 Inciso 5', 1, '2022-06-03 12:52:14');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Caso fortuito o fuerza mayor', 'Art. 159 Inciso 6', 1, '2022-06-03 12:52:25');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Conductas indebidas y graves del trabajador', 'Art. 160 Inciso 1', 1, '2022-06-03 12:57:07');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Realizar actividades prohibidas en el contrato de trabajo', 'Art. 160 Inciso 2', 1, '2022-06-03 12:57:36');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('No presentarse el trabajador a sus labores sin causa justificada ', 'Art. 160 Inciso 3', 1, '2022-06-03 12:57:56');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Abandono del trabajo', 'Art. 160 Inciso 4', 1, '2022-06-03 12:58:12');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Actos, omisiones o imprudencias temerarias que afecten a la seguridad o al funcionamiento del establecimiento', 'Art. 160 Inciso 5', 1, '2022-06-03 12:58:33');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('El perjuicio material causado intencionalmente en las instalaciones, maquinarias, herramientas, útiles de trabajo, productos o mercaderías', 'Art. 160 Inciso 6', 1, '2022-06-03 12:58:45');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Incumplimiento grave de las obligaciones que impone el contrato', 'Art. 160 Inciso 7', 1, '2022-06-03 12:58:56');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Necesidades de la empresa, establecimiento o servicio', 'Art. 161', 1, '2022-06-03 12:59:07');
+INSERT INTO rem_causal_finiquito (motivo, articulo, activo, created_at) VALUES ('Por haber sido sometido el empleador, mediante resolución judicial, a un procedimiento concursal de liquidación de sus bienes', 'Artículo 163 bis', 1, '2022-06-03 12:59:24');
+
+
+
+
+/******************************************************************************************************/
+
+
+alter table rem_empresa add centralizacion int default 0;
+update	r
+set		centralizacion = 0
+from	rem_empresa r;
+

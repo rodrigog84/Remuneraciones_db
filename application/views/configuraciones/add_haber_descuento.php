@@ -308,6 +308,120 @@
 																		</tr>  	
 																	</tbody> 
 																</table>
+
+
+																<table class="table"> 
+																	<thead> 
+																		<tr>
+																			<th>Centralizaci&oacute;n:</th> 
+																			<th></th>
+																			<!--th>INE:</th--> 
+																		</tr> 
+																	</thead> 
+																	<tbody> 
+																		<tr class="active" id="variable">
+																			<td>
+																				<div class="form-group">
+																					
+																					<div class="col-sm-6">
+																						<label for="rut">Cuenta Contable</label>
+																						<input list="datalistOptions" id="cuenta" name="cuenta" class="form-control" placeholder="Seleccione Cuenta" autocomplete="off" <?php echo $tiene_centralizacion ? '' : 'disabled'; ?> >
+																						<datalist id="datalistOptions">
+														                                    <?php foreach ($plan_cuentas as $cuenta) { ?>
+														                                            <?php //echo '<pre>'; var_dump( $cuenta); exit; 
+														                                            ?>
+														                                            <option data-id="<?php echo $cuenta['idn4']; ?>" data-referencia='<?php echo $cuenta['referencia']; ?>' data-centro_costo='<?php echo $cuenta['centro_costo']; ?>' data-item_ingreso='<?php echo $cuenta['item_ingreso']; ?>' data-item_gasto='<?php echo $cuenta['item_gasto']; ?>' data-cuenta_corriente='<?php echo $cuenta['cuenta_corriente']; ?>' value='<?php echo $cuenta['nombren4']; ?>'><?php echo $cuenta['codigon4'] . ' | ' . $cuenta['nombren2'] . ' | ' . $cuenta['nombren3']; ?></option>
+
+														                                    <?php } ?>
+														                                </datalist>
+														                                																				
+																					</div>
+																					<div class="col-sm-6">
+																						<label for="rut">Centro de Costo</label>
+																						<select id="centrocosto" name="centrocosto" class="form-control" disabled>
+														                                    <option value="">Seleccione Centro de Costo</option>
+														                                    <?php foreach ($centros_costo as $centro_costo) { ?>
+														                                        <option value="<?php echo $centro_costo['id']; ?>"><?php echo $centro_costo['codigo'] . ' | ' . $centro_costo['nombre']; ?></option>
+														                                    <?php } ?>
+														                                </select>
+														                                																				
+																					</div>
+																																						
+																				</div>
+																				<input type='hidden' id='cuenta_sel' name='cuenta_sel' value='0'>	
+																			</td>
+																		</tr>  	
+																		<tr class="active" id="variable">
+																			<td>
+																				<div class="form-group">
+																					
+																					
+																					<div class="col-sm-6">
+																						<label for="rut">Item Ingreso</label>
+														                                <select id="itemingreso" name="itemingreso" class="form-control" disabled>
+														                                    <option value="">Seleccione Item de Ingreso</option>
+														                                    <?php foreach ($item_ingreso as $item_ing) { ?>
+														                                        <option value="<?php echo $item_ing['id']; ?>"><?php echo $item_ing['codigo'] . ' | ' . $item_ing['nombre']; ?></option>
+														                                    <?php } ?>
+														                                </select>
+														                                																				
+																					</div>		
+																					<div class="col-sm-6">
+																						<label for="rut">Item Gasto</label>
+														                                <select id="itemgasto" name="itemgasto" class="form-control" disabled>
+														                                    <option value="">Seleccione Item de Gasto</option>
+														                                    <?php foreach ($item_gastos as $item_gas) { ?>
+														                                        <option value="<?php echo $item_gas['id']; ?>"><?php echo $item_gas['codigo'] . ' | ' . $item_gas['nombre']; ?></option>
+														                                    <?php } ?>
+														                                </select>
+														                                																				
+																					</div>																																								
+																				</div>
+																			</td>
+																		</tr>  
+																		<tr class="active" id="variable">
+																			<td>
+																				<div class="form-group">
+																					
+																					
+																					<div class="col-sm-6">
+																						<label for="rut">Cuenta Corriente</label>
+																						<input list="datalistOptionsCtaC" id="cuentacorriente" name="cuentacorriente" class="form-control"  autocomplete="off" disabled>
+														                                <datalist id="datalistOptionsCtaC">
+
+														                                    <?php foreach ($cuentas_corrientes as $cuenta_corriente) { ?>
+														                                        <?php $tipocuentas = "Funcionario";
+														                                        if ($cuenta_corriente['tipocuenta'] == "P") {
+														                                            $tipocuentas = "Proveedor";
+														                                        }
+
+														                                        if ($cuenta_corriente['tipocuenta'] == "C") {
+														                                            $tipocuentas = "Cliente";
+														                                        }
+
+														                                        if ($cuenta_corriente['tipocuenta'] == "") {
+														                                            $tipocuentas = "";
+														                                        }
+
+														                                        ?>
+
+														                                        <option data-id="<?php echo $cuenta_corriente['id']; ?>" data-nomrut="<?php echo number_format($cuenta_corriente['rut'], 0, '.', '.') . '-' . $cuenta_corriente['dv'] . ' | ' . $cuenta_corriente['nombre']; ?>" data-nombre="<?php echo $cuenta_corriente['nombre']; ?>" value="<?php echo $cuenta_corriente['nombre']; ?>">
+														                                            <?php echo number_format($cuenta_corriente['rut'], 0, '.', '.') . '-' . $cuenta_corriente['dv'] . ' | ' . $tipocuentas; ?>
+														                                        </option>
+														                                    <?php } ?>
+
+														                                </datalist>
+														                                <input type='hidden' id='cuenta_corriente' name='cuenta_corriente' value='0'>
+														                                
+														                                																				
+																					</div>		
+																																								
+																				</div>
+																			</td>
+																		</tr> 
+																	</tbody> 
+																</table>
+
 																<br>
 																
 															</div>
@@ -325,7 +439,7 @@
 																<input type="hidden" name="idhab" value="<?php echo isset($haberes_descuentos->id) ? $haberes_descuentos->id: 0 ;?>">
 
 											  </div> 
-
+ 	
 											</div>
 
 											</form>
@@ -336,6 +450,131 @@
 
 
 $(document).ready(function() {
+
+
+function selecciona_cuenta() {
+
+
+        var value = $('#cuenta').val();
+
+
+
+
+        //console.log($('#datalistOptions [value="' + value + '"]').data('id'));
+
+
+
+        var cuenta_sel = $('#datalistOptions [value="' + value + '"]').data('id');
+
+        if (cuenta_sel === undefined) {
+
+            $('#cuenta_sel').val(0);
+            $('#centrocosto').val('');
+            $('#centrocosto').attr('disabled', 'disabled');
+
+            $('#itemingreso').val('');
+            $('#itemingreso').attr('disabled', 'disabled');
+
+            $('#itemgasto').val('');
+            $('#itemgasto').attr('disabled', 'disabled');
+
+
+            $('#cuentacorriente').val('');
+            $('#cuentacorriente').attr('disabled', 'disabled');
+
+            /*$('#referencia').val('');
+            $('#referencia').attr('disabled', 'disabled');*/
+
+        } else {
+
+            $('#cuenta_sel').val(cuenta_sel);
+            var centro_costo = $('#datalistOptions [value="' + value + '"]').data('centro_costo');
+            var item_ingreso = $('#datalistOptions [value="' + value + '"]').data('item_ingreso');
+            var item_gasto = $('#datalistOptions [value="' + value + '"]').data('item_gasto');
+            var cuenta_corriente = $('#datalistOptions [value="' + value + '"]').data('cuenta_corriente');
+            var referencia = $('#datalistOptions [value="' + value + '"]').data('referencia');
+
+            if (centro_costo == 1) {
+                $('#centrocosto').attr('disabled', false);
+            } else {
+                $('#centrocosto').val('');
+                $('#centrocosto').attr('disabled', 'disabled');
+            }
+
+
+            if (item_ingreso == 1) {
+                $('#itemingreso').attr('disabled', false);
+            } else {
+                $('#itemingreso').val('');
+                $('#itemingreso').attr('disabled', 'disabled');
+            }
+
+
+            if (item_gasto == 1) {
+                $('#itemgasto').attr('disabled', false);
+            } else {
+                $('#itemgasto').val('');
+                $('#itemgasto').attr('disabled', 'disabled');
+            }
+
+
+            if (cuenta_corriente == 1) {
+                $('#cuentacorriente').attr('disabled', false);
+            } else {
+                $('#cuentacorriente').val('');
+                $('#cuentacorriente').attr('disabled', 'disabled');
+            }
+
+
+
+            /*if (referencia == 1) {
+                $('#referencia').attr('disabled', false);
+            } else {
+                $('#referencia').val('');
+                $('#referencia').attr('disabled', 'disabled');
+            }*/
+
+
+
+        }
+
+
+    }
+
+
+
+    function valida_cuenta_Corriente() {
+        var value = $('#cuentacorriente').val();
+        var cuenta_sel = $('#datalistOptionsCtaC [value="' + value + '"]').data('id');
+
+
+        if (cuenta_sel === undefined) {
+
+            $('#cuenta_corriente').val(0);
+        } else {
+
+            $('#cuenta_corriente').val(cuenta_sel);
+        }
+    }
+
+
+
+
+    $('#cuentacorriente').on('input', function() {
+
+
+        valida_cuenta_Corriente();
+
+
+
+
+
+    });
+
+$('#cuenta').on('input', function() {
+
+        selecciona_cuenta();
+  });
 
 $('#basicBootstrapForm').formValidation({
         framework: 'bootstrap',
@@ -401,8 +640,94 @@ $('#basicBootstrapForm').formValidation({
                     },
                 },
 
-            },              
-           
+            },   
+            cuenta: {
+                row: '.form-group',
+                validators: {
+                    callback: {
+                        message: 'Cuenta Contable es requerida',
+                        callback: function (value, validator, $field) {
+
+                            var cuenta_sel = $('#cuenta_sel').val();
+	                         /* return  {
+	                                valid: false,
+	                                message: 'Cuenta Contable es requerida'
+	                            }*/
+
+                            if(cuenta_sel != '0'){
+                              return true;
+                            }else{
+                              return  {
+                                    valid: false,
+                                    message: 'Cuenta Contable es requerida'
+                                }
+                            }
+                        }
+                    }                    
+
+                },
+
+            },   
+
+   			centrocosto: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Centro de Costo es requerido'
+                    },
+                },
+
+            },                                  
+
+   			itemingreso: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Item de Ingreso es requerido'
+                    },
+                },
+
+            },
+
+   			itemgasto: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Item de Gasto es requerido'
+                    },
+                },
+
+            },   
+
+            cuentacorriente: {
+                row: '.form-group',
+                validators: {
+                    callback: {
+                        message: 'Cuenta Corriente es requerida',
+                        callback: function (value, validator, $field) {
+
+                            var cuenta_corriente = $('#cuenta_corriente').val();
+	                         /* return  {
+	                                valid: false,
+	                                message: 'Cuenta Contable es requerida'
+	                            }*/
+
+                            if(cuenta_corriente != '0'){
+                              return true;
+                            }else{
+                              return  {
+                                    valid: false,
+                                    message: 'Cuenta Corriente es requerida'
+                                }
+                            }
+                        }
+                    }                    
+
+                },
+
+            },               
+
+
         }
     })
 });

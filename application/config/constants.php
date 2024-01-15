@@ -54,6 +54,7 @@ define('PORCT_ISL',		0.93); //3.1%  //6%
 
 
 define('ACTUALIZA_INDICADORES',		FALSE); 
+define('URL_API_ADM',		'http://adm.arnou.cl'); 
 
 
 
