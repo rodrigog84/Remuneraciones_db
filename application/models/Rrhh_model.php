@@ -1707,7 +1707,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 							  ->join('rem_conf_haber_descuento as h','d.idconfhd = h.id')
 			                  ->where('d.id_personal',$idtrabajador);*/
 			
-			$haberes_data = $this->db->select('d.monto, h.imponible, h.nombre, d.idperiodo, h.formacalculo, h.tributable, h.semanacorrida, h.fijo, h.proporcional')
+			$haberes_data = $this->db->select('d.monto, h.imponible, h.nombre, d.idperiodo, h.formacalculo, h.tributable, h.semanacorrida, h.fijo, h.proporcional, h.id as id_hab_descto')
 							  ->from('rem_bonos_personal d')
 							  ->join('rem_conf_haber_descuento as h','d.idconf = h.id')
 							  ->join('rem_personal as p','d.idpersonal = p.id_personal')
@@ -2027,7 +2027,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 								'descripcion' => $bono->nombre,
 								'imponible' => $bono->imponible,
 								'monto' => $valor_bono,
-								'tipo' => 'HABER'
+								'tipo' => 'HABER',
+								'idconfhd' => $bono->id_hab_descto
 								);
 					$this->db->insert('rem_haber_descuento_remuneracion', $data_bono);
 				}
@@ -2301,7 +2302,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 								'descripcion' => $info_descuento->nombre,
 								'imponible' => $info_descuento->imponible,
 								'monto' => $info_descuento->monto,
-								'tipo' => 'DESCUENTO'
+								'tipo' => 'DESCUENTO',
+								'idconfhd' => $bono->id_hab_descto
 								);
 					$this->db->insert('rem_haber_descuento_remuneracion', $data_bono);
 			}

@@ -1200,3 +1200,13 @@ set		idcuentacontable = 0,
 		idcuentacorriente = 0
 from	rem_conf_haber_descuento r
 
+
+
+/*******************************************************************************************************/
+
+
+
+alter table rem_haber_descuento_remuneracion add idconfhd int default 0
+
+
+
