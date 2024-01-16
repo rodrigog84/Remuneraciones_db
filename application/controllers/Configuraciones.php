@@ -993,6 +993,11 @@ public function submit_cargo(){
 				$vars['classmessage'] = 'danger';
 				$vars['icon'] = 'fa-ban';		
 
+			}else if($resultid == 3){
+				$vars['message'] = "C&oacute;digo de Haber/Descuento ya existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
 			}
 
 			$haberes_descuentos = $this->configuracion->get_haberes_descuentos(); 
@@ -1063,9 +1068,13 @@ public function add_haber_descuento($idhaberdescto = null){
 
 			}
 
+
+			//var_dump_new($haberes_descuentos); exit;
 			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
 			
-			$rut_empresa = $empresa->rut;
+			#SI ESTAMOS PROBANDO, UTILIZARA EL RUT DE LA FERIA, EN CASO CONTRARIO EL RUT DE LA EMPRESA
+			$rut_empresa = CENTRALIZACION_PRUEBA ? 90380000 : $empresa->rut;
+
 
 			/**************** DATOS DE PRUEBA ******************************/
 
@@ -1075,6 +1084,10 @@ public function add_haber_descuento($idhaberdescto = null){
 			$array_item_gasto = array();
 			$array_cuenta_corriente = array();
 
+			$array_datos_select = array(
+											'cuenta' => '',
+											'cuentacorriente' => ''
+									);
 
 			$centralizacion = $empresa->centralizacion;
 			$tiene_centralizacion = false;
@@ -1187,9 +1200,26 @@ public function add_haber_descuento($idhaberdescto = null){
 
 					$array_response_plan_cuentas = json_decode($response_plan_cuentas);	
 
+
+
+
 					if($array_response_plan_cuentas->status){
 
 							foreach ($array_response_plan_cuentas->data as $cuenta) {
+
+
+
+										if(!is_null($idhaberdescto)){
+												if(isset($haberes_descuentos->idcuentacontable)){
+														if($haberes_descuentos->idcuentacontable == $cuenta->idn4){
+
+															$array_datos_select['cuenta'] = $cuenta->nombren4;
+
+														}
+
+												}
+
+										}
 
 
 										$array_cuentas = array(
@@ -1294,6 +1324,22 @@ public function add_haber_descuento($idhaberdescto = null){
 							foreach ($array_response_cuenta_corriente->data as $cuenta_corriente) {
 
 
+
+
+										if(!is_null($idhaberdescto)){
+												if(isset($haberes_descuentos->idcuentacorriente)){
+														if($haberes_descuentos->idcuentacorriente == $cuenta_corriente->id){
+
+															$array_datos_select['cuentacorriente'] = $cuenta_corriente->nombre;
+
+														}
+
+												}
+
+										}
+
+
+
 										$array_corriente = array(
 													"id"=> $cuenta_corriente->id,
 										            "rut"=> $cuenta_corriente->rut,
@@ -1353,6 +1399,8 @@ public function add_haber_descuento($idhaberdescto = null){
 			$vars['item_ingreso'] = $array_item_ingreso;
 			$vars['item_gastos'] = $array_item_gasto;
 			$vars['cuentas_corrientes'] = $array_cuenta_corriente;
+			$vars['datos_select'] = $array_datos_select;
+
 
 
 			$vars['gritter'] = true;
@@ -1454,6 +1502,13 @@ public function submit_haber_descuento(){
 			$datos['proporcional'] = $this->input->post('proporcional') == '' ? 0 : 1;
 			$datos['otros_aportes'] = $this->input->post('otros_aportes') == '' ? 0 : 1;
 
+
+			$datos['idcuentacontable'] = $this->input->post('cuenta_sel') == '' ? 0 : $this->input->post('cuenta_sel');
+			$datos['idcentrocosto'] = $this->input->post('centrocosto') == '' ? 0 : $this->input->post('centrocosto');
+			$datos['iditemingreso'] = $this->input->post('itemingreso') == '' ? 0 : $this->input->post('itemingreso');
+			$datos['iditemgasto'] = $this->input->post('itemgasto') == '' ? 0 : $this->input->post('itemgasto');
+			$datos['idcuentacorriente'] = $this->input->post('cuenta_corriente') == '' ? 0 : $this->input->post('cuenta_corriente');
+
 			
 			$datos['editable'] = 1;
 			$datos['visible'] = 1;
@@ -1461,10 +1516,18 @@ public function submit_haber_descuento(){
 			$idhab = $this->input->post('idhab');
 
 
-			$haberes_descuentos = $this->configuracion->add_haberes_descuentos($datos,$idhab); 
+			$result_haberes_descuentos = $this->configuracion->add_haberes_descuentos($datos,$idhab); 
 
-			$this->session->set_flashdata('haber_descuento_result', 1);
-			redirect('configuraciones/hab_descto');	
+
+			if($result_haberes_descuentos == 1){
+				$this->session->set_flashdata('haber_descuento_result', 1);
+				redirect('configuraciones/hab_descto');	
+			}else{
+				$this->session->set_flashdata('haber_descuento_result', 3);
+				redirect('configuraciones/hab_descto');	
+
+			}
+
 
 
 		}else{

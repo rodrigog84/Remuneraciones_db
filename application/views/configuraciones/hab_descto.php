@@ -1,4 +1,4 @@
-/<!--sub-heard-part-->
+<!--sub-heard-part-->
 								  <!--//sub-heard-part-->
 		 <div class="row">
        <div class='col-md-6'>

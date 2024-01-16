@@ -1182,3 +1182,21 @@ update	r
 set		centralizacion = 0
 from	rem_empresa r;
 
+/********************************************************************************************************/
+
+
+
+
+alter table rem_conf_haber_descuento add idcuentacontable int default 0
+alter table rem_conf_haber_descuento add idcentrocosto int default 0
+alter table rem_conf_haber_descuento add iditemingreso int default 0
+alter table rem_conf_haber_descuento add iditemgasto int default 0
+alter table rem_conf_haber_descuento add idcuentacorriente int default 0
+update	r
+set		idcuentacontable = 0,
+		idcentrocosto = 0,
+		iditemingreso = 0,
+		iditemgasto = 0,
+		idcuentacorriente = 0
+from	rem_conf_haber_descuento r
+

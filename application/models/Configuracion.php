@@ -42,7 +42,7 @@ class Configuracion extends CI_Model
 
 	public function get_haberes_descuentos($idhaberdescto = null,$tipo = null){
 
-		$habdescto_data = $this->db->select('d.id, d.codigo, d.tipo, d.nombre, d.editable, d.visible, d.tipocalculo, d.formacalculo, d.imponible, d.fijo, d.proporcional, d.semanacorrida, d.tributable, d.retjudicial, d.otros_aportes')
+		$habdescto_data = $this->db->select('d.id, d.codigo, d.tipo, d.nombre, d.editable, d.visible, d.tipocalculo, d.formacalculo, d.imponible, d.fijo, d.proporcional, d.semanacorrida, d.tributable, d.retjudicial, d.otros_aportes, d.idcuentacontable, d.idcentrocosto, d.iditemingreso, d.iditemgasto, d.idcuentacorriente')
 						  ->from('rem_conf_haber_descuento d')
 						  ->join('rem_conf_haber_descuento_empresa de','d.id = de.idconfhd and de.idempresa = ' . $this->session->userdata('empresaid'),'left')
 						  ->where('valido = 1')
@@ -73,45 +73,156 @@ class Configuracion extends CI_Model
 
 
 	public function add_haberes_descuentos($datos,$idhab){
+		$this->db->trans_start();
 
-		var_dump($idhab); 
-		if($idhab == 0){
-			//echo "1"; exit;
-			$this->db->insert('rem_conf_haber_descuento',$datos);
-			$idhaberdescto = $this->db->insert_id();
+		$habdescto_data = $this->db->select('d.id, d.codigo, d.tipo, d.nombre, d.editable, d.visible, d.tipocalculo, d.formacalculo, d.imponible, d.fijo, d.proporcional, d.semanacorrida, d.tributable, d.retjudicial, d.otros_aportes, d.idcuentacontable, d.idcentrocosto, d.iditemingreso, d.iditemgasto, d.idcuentacorriente')
+					  ->from('rem_conf_haber_descuento d')
+					  ->join('rem_conf_haber_descuento_empresa de','d.id = de.idconfhd and de.idempresa = ' . $this->session->userdata('empresaid'))
+					  ->where('codigo',$datos['codigo'])
+					  ->where('tipo',$datos['tipo'])
+					  ->order_by('nombre');
+		$query = $this->db->get();
 
 
-			$array_hdemp = array('idconfhd' => $idhaberdescto,
-								 'idempresa' => $this->session->userdata('empresaid'));
-			$this->db->insert('rem_conf_haber_descuento_empresa',$array_hdemp);
+		$datos_habdescto = $query->row();
+		if($query->num_rows() == 0){
+
+			if($idhab == 0){
+	
+				$this->db->insert('rem_conf_haber_descuento',$datos);
+				$idhaberdescto = $this->db->insert_id();
+
+
+				$array_hdemp = array('idconfhd' => $idhaberdescto,
+									 'idempresa' => $this->session->userdata('empresaid'));
+				$this->db->insert('rem_conf_haber_descuento_empresa',$array_hdemp);
+				$this->db->trans_complete();
+				return 1;
+
+			}else{
+				//echo "2"; exit;
+
+				$array_datos = array(
+							'tipo' => $datos['tipo'],
+							'nombre' => $datos['nombre'],
+							'tipocalculo' => $datos['tipocalculo'],
+							'formacalculo' => $datos['formacalculo'],
+							'codigo' => $datos['codigo'],
+							'imponible' => $datos['imponible'],
+							'reajustable' => $datos['reajustable'],
+							'provision' => $datos['provision'],
+							'embargable' => $datos['embargable'],
+							'gratifica' => $datos['gratifica'],
+							'insoluto' => $datos['insoluto'],
+							'fijo' => $datos['fijo'],
+							'proporcional' => $datos['proporcional'],
+							'semanacorrida' => $datos['semanacorrida'],
+							'retjudicial' => $datos['retjudicial'],
+							'tributable' => $datos['tributable'],
+							'jornada' => $datos['jornada'],
+							'finiquito' => $datos['finiquito'],
+							'contable' => $datos['contable'],
+							'sobregiro' => $datos['sobregiro'],
+							'liqminimo' => $datos['liqminimo'],
+							'otros_aportes' => $datos['otros_aportes'],						
+							'idcuentacontable' => $datos['idcuentacontable'],
+							'idcentrocosto' => $datos['idcentrocosto'],
+							'iditemingreso' => $datos['iditemingreso'],
+							'iditemgasto' => $datos['iditemgasto'],
+							'idcuentacorriente' => $datos['idcuentacorriente'],
+					);
+
+
+				$this->db->where('id',$idhab);
+				$this->db->update('rem_conf_haber_descuento',$array_datos);
+
+				$this->db->trans_complete();
+				return 1;				
+			}
+
+
 
 		}else{
-			//echo "2"; exit;
 
-			$array_datos = array(
-						'tipo' => $datos['tipo'],
-						'nombre' => $datos['nombre'],
-						'tipocalculo' => $datos['tipocalculo'],
-						'formacalculo' => $datos['formacalculo'],
-						'codigo' => $datos['codigo'],
-						'imponible' => $datos['imponible'],
-						'fijo' => $datos['fijo'],
-						'proporcional' => $datos['proporcional'],
-						'semanacorrida' => $datos['semanacorrida'],
-						'retjudicial' => $datos['retjudicial'],
-						'tributable' => $datos['tributable'],
-				);
+			if($idhab == 0){// ESTA INSERTANDO UN NUEVO REGISTRO CON UN CODIGO YA EXISTENTE
 
 
-			$this->db->where('id',$idhab);
-			$this->db->update('rem_conf_haber_descuento',$array_datos);
-		}
+				$this->db->trans_complete();
+				return -1;
+
+			}else{
+				//var_dump_new($datos_habdescto);
+				//var_dump_new($datos_habdescto->id);
+				//var_dump_new($idhab); exit;
+
+				if($datos_habdescto->id == $idhab){// ESTA MODIFICANDO UN REGISTRO Y MANTENIENDO EL CODIGO
+
+					$array_datos = array(
+								'tipo' => $datos['tipo'],
+								'nombre' => $datos['nombre'],
+								'tipocalculo' => $datos['tipocalculo'],
+								'formacalculo' => $datos['formacalculo'],
+								'codigo' => $datos['codigo'],
+								'imponible' => $datos['imponible'],
+								'reajustable' => $datos['reajustable'],
+								'provision' => $datos['provision'],
+								'embargable' => $datos['embargable'],
+								'gratifica' => $datos['gratifica'],
+								'insoluto' => $datos['insoluto'],
+								'fijo' => $datos['fijo'],
+								'proporcional' => $datos['proporcional'],
+								'semanacorrida' => $datos['semanacorrida'],
+								'retjudicial' => $datos['retjudicial'],
+								'tributable' => $datos['tributable'],
+								'jornada' => $datos['jornada'],
+								'finiquito' => $datos['finiquito'],
+								'contable' => $datos['contable'],
+								'sobregiro' => $datos['sobregiro'],
+								'liqminimo' => $datos['liqminimo'],
+								'otros_aportes' => $datos['otros_aportes'],						
+								'idcuentacontable' => $datos['idcuentacontable'],
+								'idcentrocosto' => $datos['idcentrocosto'],
+								'iditemingreso' => $datos['iditemingreso'],
+								'iditemgasto' => $datos['iditemgasto'],
+								'idcuentacorriente' => $datos['idcuentacorriente'],
+						);
+
+
+					$this->db->where('id',$idhab);
+					$this->db->update('rem_conf_haber_descuento',$array_datos);
+
+					$this->db->trans_complete();
+					return 1;	
+
+
+				}else{// ESTA MODIFICANDO UN REGISTRO Y PONIENDO UN CODIGO NUEVO QUE YA EXISTE
+
+					$this->db->trans_complete();
+					return -1;
+
+
+				}
+
+
+
+			}
+
+
+
+
+		}		
+
+
+
+
+		
+
 
 	}
 
 	public function add_centro_costo($datos,$idcentro){
 
-		var_dump($idcentro); 
+	
 		if($idcentro == 0){
 
 			       

@@ -325,7 +325,7 @@
 																					
 																					<div class="col-sm-6">
 																						<label for="rut">Cuenta Contable</label>
-																						<input list="datalistOptions" id="cuenta" name="cuenta" class="form-control" placeholder="Seleccione Cuenta" autocomplete="off" <?php echo $tiene_centralizacion ? '' : 'disabled'; ?> >
+																						<input list="datalistOptions" id="cuenta" name="cuenta" class="form-control" placeholder="Seleccione Cuenta" value='<?php echo $datos_select['cuenta'];?>' autocomplete="off" <?php echo $tiene_centralizacion ? '' : 'disabled'; ?> >
 																						<datalist id="datalistOptions">
 														                                    <?php foreach ($plan_cuentas as $cuenta) { ?>
 														                                            <?php //echo '<pre>'; var_dump( $cuenta); exit; 
@@ -341,14 +341,22 @@
 																						<select id="centrocosto" name="centrocosto" class="form-control" disabled>
 														                                    <option value="">Seleccione Centro de Costo</option>
 														                                    <?php foreach ($centros_costo as $centro_costo) { ?>
-														                                        <option value="<?php echo $centro_costo['id']; ?>"><?php echo $centro_costo['codigo'] . ' | ' . $centro_costo['nombre']; ?></option>
+															                                    <?php
+															                                    	$ccosto_selected = '';
+															                                    	if(isset($haberes_descuentos->idcentrocosto)){
+															                                    			$ccosto_selected = $haberes_descuentos->idcentrocosto == $centro_costo['id'] ? 'selected' : '';
+
+															                                    	}
+
+															                                    ?>														                                    	
+														                                        <option value="<?php echo $centro_costo['id']; ?>" <?php echo $ccosto_selected; ?>><?php echo $centro_costo['codigo'] . ' | ' . $centro_costo['nombre']; ?></option>
 														                                    <?php } ?>
 														                                </select>
 														                                																				
 																					</div>
 																																						
 																				</div>
-																				<input type='hidden' id='cuenta_sel' name='cuenta_sel' value='0'>	
+																				<input type='hidden' id='cuenta_sel' name='cuenta_sel' value='<?php echo isset($haberes_descuentos->idcuentacontable) ? $haberes_descuentos->idcuentacontable: 0;?>'>	
 																			</td>
 																		</tr>  	
 																		<tr class="active" id="variable">
@@ -361,7 +369,15 @@
 														                                <select id="itemingreso" name="itemingreso" class="form-control" disabled>
 														                                    <option value="">Seleccione Item de Ingreso</option>
 														                                    <?php foreach ($item_ingreso as $item_ing) { ?>
-														                                        <option value="<?php echo $item_ing['id']; ?>"><?php echo $item_ing['codigo'] . ' | ' . $item_ing['nombre']; ?></option>
+															                                    <?php
+															                                    	$iingreso_selected = '';
+															                                    	if(isset($haberes_descuentos->iditemingreso)){
+															                                    			$iingreso_selected = $haberes_descuentos->iditemingreso == $item_ing['id'] ? 'selected' : '';
+
+															                                    	}
+
+															                                    ?>															                                    	
+														                                        <option value="<?php echo $item_ing['id']; ?>" <?php echo $iingreso_selected; ?>><?php echo $item_ing['codigo'] . ' | ' . $item_ing['nombre']; ?></option>
 														                                    <?php } ?>
 														                                </select>
 														                                																				
@@ -371,7 +387,15 @@
 														                                <select id="itemgasto" name="itemgasto" class="form-control" disabled>
 														                                    <option value="">Seleccione Item de Gasto</option>
 														                                    <?php foreach ($item_gastos as $item_gas) { ?>
-														                                        <option value="<?php echo $item_gas['id']; ?>"><?php echo $item_gas['codigo'] . ' | ' . $item_gas['nombre']; ?></option>
+															                                    <?php
+															                                    	$igasto_selected = '';
+															                                    	if(isset($haberes_descuentos->iditemgasto)){
+															                                    			$igasto_selected = $haberes_descuentos->iditemgasto == $item_gas['id'] ? 'selected' : '';
+
+															                                    	}
+
+															                                    ?>															                                    	
+														                                        <option value="<?php echo $item_gas['id']; ?>" <?php echo $igasto_selected; ?>><?php echo $item_gas['codigo'] . ' | ' . $item_gas['nombre']; ?></option>
 														                                    <?php } ?>
 														                                </select>
 														                                																				
@@ -386,7 +410,7 @@
 																					
 																					<div class="col-sm-6">
 																						<label for="rut">Cuenta Corriente</label>
-																						<input list="datalistOptionsCtaC" id="cuentacorriente" name="cuentacorriente" class="form-control"  autocomplete="off" disabled>
+																						<input list="datalistOptionsCtaC" id="cuentacorriente" name="cuentacorriente" class="form-control"  value='<?php echo $datos_select['cuentacorriente'];?>' autocomplete="off" disabled>
 														                                <datalist id="datalistOptionsCtaC">
 
 														                                    <?php foreach ($cuentas_corrientes as $cuenta_corriente) { ?>
@@ -411,7 +435,7 @@
 														                                    <?php } ?>
 
 														                                </datalist>
-														                                <input type='hidden' id='cuenta_corriente' name='cuenta_corriente' value='0'>
+														                                <input type='hidden' id='cuenta_corriente' name='cuenta_corriente' value='<?php echo isset($haberes_descuentos->idcuentacorriente) ? $haberes_descuentos->idcuentacorriente: 0;?>'>
 														                                
 														                                																				
 																					</div>		
@@ -451,6 +475,8 @@
 
 $(document).ready(function() {
 
+
+selecciona_cuenta();
 
 function selecciona_cuenta() {
 
