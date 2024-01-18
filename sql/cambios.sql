@@ -1210,3 +1210,93 @@ alter table rem_haber_descuento_remuneracion add idconfhd int default 0
 
 
 
+/******************************************************************************************************/
+
+
+--  Agregado 18/01/2024
+CREATE TABLE rem_cuentas_centralizacion (
+    id int identity NOT NULL,
+    nombre varchar(50) NOT NULL,
+    active smallint default 1,
+    created_at datetime default getdate()
+)
+
+
+
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('sueldo_base','Sueldo Base')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('gratificacion','Gratificacion')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('movilizacion','Movilizaci&oacute;n')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('colacion','Colaci&oacute;n')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('horasextras50','Horas Extras 50%')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('horasextras100','Horas Extras 100%')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('semanacorrida','Semana Corrida')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('aguinaldo','Aguinaldo')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('asigfamiliar','Asignaci&oacute;n Familiar')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('cotobligatoria','Cotizaci&oacute;n Obligatoria')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('cotadic','Cotizaci&oacute;n Adicional')
+
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('ahorrovol','Ahorro Voluntario')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('apv','APV')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('cotsalud','Cotizaci&oacute;n Salud')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('segurocesantia','Seguro Cesant&iacute;a')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('impuestos','Impuestos')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('anticipos','Anticipos')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('desctoaguinaldo','Descuento Aguinaldo')
+
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('aportesegcesantia','Aporte Seguro Cesant&iacute;a')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('aportesis','Aporte SIS')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('mutseguridad','Mutual Seguridad')
+
+
+
+
+CREATE TABLE rem_cuentas_centralizacion_empresa (
+    id int identity NOT NULL,
+    idctacentralizacion int NOT NULL,
+	idempresa int not null,
+	idcuentacontable int default 0,
+	idcentrocosto int default 0,
+	iditemingreso int default 0,
+	iditemgasto int default 0,
+	idcuentacorriente int default 0,
+    created_at datetime default getdate()
+)
+
+update	r
+set		funcion = 'configuraciones/cuentas_centralizacion'
+from	rem_app r
+where	id = 31
+
+
+
+
+
+insert into rem_app (
+
+funcion
+,menuid
+,leaf
+,visible
+,valid
+)
+
+values (
+'configuracion/edit_cuenta_centralizacion'
+,7
+,0
+,0
+,1
+)
+
+
+insert into rem_role (appid,levelid) values (9120,2)
+
+
+update	r
+set		funcion = 'configuraciones/edit_cuenta_centralizacion'
+--select *
+from rem_app r
+where id = 9120
+
+
+

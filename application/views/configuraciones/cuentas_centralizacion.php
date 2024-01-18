@@ -1,15 +1,11 @@
 <!--sub-heard-part-->
 								  <!--//sub-heard-part-->
 		 <div class="row">
-       <div class='col-md-6'>
-
-                <a href="<?php echo base_url();?>configuraciones/add_haber_descuento" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo Haber / Descuento</a>
-        </div>
-      </div><br>                        
+                       
 
                   <div class="panel panel-inverse">                       
                       <div class="panel-heading">
-                            <h4 class="panel-title">Creaci&oacute;n Haberes y Descuentos</h4>
+                            <h4 class="panel-title">Cuentas Internas Centralizaci&oacute;n</h4>
                         </div>
             <div class="panel-body">
               <div class='row'>
@@ -26,38 +22,36 @@
 																	<thead> 
 																		<tr>
 																			<th>#</th>
-                            												<th>C&oacute;digo</th>
-                            												<th>Tipo</th>
-                            												<th>Nombre</th>
-                            												<!--th>Pertenece a </th-->
+                            												<th>Cuenta Centralizaci&oacute;n</th>
+                            												<th>Cuenta Contable</th>
+                            												<th>Centro Costo</th>
+                                                    <th>Item Ingreso</th>
+                                                    <th>Item Gasto</th>
+                            												<th>Cuenta Corriente</th>
                                                     <th>&nbsp;</th>
 																		</tr> 
 																	</thead> 
 																	<tbody> 
 	                            										<?php $i = 1; ?>
-	                            										<?php foreach ($haberes_descuentos as $haber_descuento) { ?>	<?php if($haber_descuento->visible == 1){ ?>
+	                            										<?php foreach ($cuentas_centralizacion as $cuentacentralizacion) { ?>	
 																		<tr class="active" id="variable">
-											                              <td><small><?php echo $i ;?></small></td>
-	                              										  <td><small><?php echo $haber_descuento->codigo;?></small>
-	                              										  <td><small><?php echo $haber_descuento->tipo;?></small></td>
-	                              										  <td><small><?php echo $haber_descuento->nombre;?></small></td>
-	                              										  <!--td><small><?php echo $haber_descuento->editable == 0 ? 'General' : 'Propio';?></small></td-->
-                                                      <?php if($haber_descuento->editable == 0){ ?>
-                                                      <td>
-                                                           &nbsp;
-                                                      </td>     
+                                                      <td><small><?php echo $i;?></small>
+	                              										  <td><?php echo $cuentacentralizacion->nombre_sistema;?></td>
+	                              										  <td><small><?php echo $cuentacentralizacion->nombrecuentacontable;?></small></td>
+	                              										  <td><small><?php echo $cuentacentralizacion->nombrecentrocosto;?></small></td>
+                                                      <td><small><?php echo $cuentacentralizacion->nombreitemingreso;?></small></td>
+                                                      <td><small><?php echo $cuentacentralizacion->nombreitemgasto;?></small></td>
+                                                      <td><small><?php echo $cuentacentralizacion->nombrecuentacorriente;?></small></td>
 
-                                                      <?php }else{ ?>
                                                       <td>
-                                                           <a href="<?php echo base_url(); ?>configuraciones/add_haber_descuento/<?php echo $haber_descuento->id;?>" data-toggle="tooltip" title="Editar Haber/Descuento"><i class="fa fa-lg fa-edit"></i></a>
+                                                           <a href="<?php echo base_url(); ?>configuraciones/edit_cuenta_centralizacion/<?php echo $cuentacentralizacion->id;?>" data-toggle="tooltip" title="Editar Cuenta Centralizaci&oacute;n"><i class="fa fa-lg fa-edit"></i></a>
                                                           &nbsp;&nbsp;
                                                           <!--i class="fa fa-lg fa-trash"></i-->
-                                                      </td>          
-                                                      <?php } ?>                                            
+                                                      </td>                                                    
 																		</tr> 
 
 											                            <?php $i++;?>
-											                            	<?php } ?>
+
 												                       <?php } ?>
 
 																		

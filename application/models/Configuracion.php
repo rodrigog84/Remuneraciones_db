@@ -57,6 +57,30 @@ class Configuracion extends CI_Model
 
 	}
 
+
+
+	public function get_cuentas_centralizacion($idcuentacentralizacion = null){
+
+		$ctacentralizacion_data = $this->db->select('c.id
+											,c.nombre_codigo
+											,c.nombre_sistema
+											,isnull(e.idcuentacontable,0) as idcuentacontable
+											,isnull(e.idcentrocosto,0) as idcentrocosto
+											,isnull(e.iditemingreso,0) as iditemingreso
+											,isnull(e.iditemgasto,0) as iditemgasto
+											,isnull(e.idcuentacorriente,0) as idcuentacorriente',false)
+						  ->from('rem_cuentas_centralizacion c')
+						  ->join('rem_cuentas_centralizacion_empresa e','c.id = e.idctacentralizacion and e.idempresa = ' . $this->session->userdata('empresaid'),'left')
+						  ->where('c.active = 1')
+						  ->order_by('c.id');
+		$ctacentralizacion_data = is_null($idcuentacentralizacion) ? $ctacentralizacion_data : $ctacentralizacion_data->where('c.id',$idcuentacentralizacion);  				                  
+		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
+		$datos = $query->result();
+		return $datos;
+
+	}	
+
 	public function centro_costo($idcentrocosto = null){
 
 		$centrocosto_data = $this->db->select('d.id_centro_costo, d.codigo, d.id_empresa, d.created_at, d.nombre')
@@ -71,6 +95,64 @@ class Configuracion extends CI_Model
 
 	}
 
+
+
+
+	public function add_cuentas_centralizacion($datos,$idcuentacentralizacion){
+		$this->db->trans_start();
+
+		$centralizacion_data = $this->db->select('id')
+					  ->from('rem_cuentas_centralizacion_empresa')
+					  ->where('idctacentralizacion',$idcuentacentralizacion)
+					  ->where('idempresa',$this->session->userdata('empresaid'));
+		$query = $this->db->get();
+
+
+		$datos_centralizacion = $query->result();
+		if(count($datos_centralizacion) == 0){
+
+				$array_datos = array(
+							'idctacentralizacion' => $idcuentacentralizacion,
+							'idempresa' => $this->session->userdata('empresaid'),
+							'idcuentacontable' => $datos['idcuentacontable'],
+							'idcentrocosto' => $datos['idcentrocosto'],
+							'iditemingreso' => $datos['iditemingreso'],
+							'iditemgasto' => $datos['iditemgasto'],
+							'idcuentacorriente' => $datos['idcuentacorriente']
+					);
+
+				$this->db->insert('rem_cuentas_centralizacion_empresa',$array_datos);
+
+				$this->db->trans_complete();
+				return 1;				
+
+
+
+		}else{
+
+
+			$array_datos = array(
+						'idcuentacontable' => $datos['idcuentacontable'],
+						'idcentrocosto' => $datos['idcentrocosto'],
+						'iditemingreso' => $datos['iditemingreso'],
+						'iditemgasto' => $datos['iditemgasto'],
+						'idcuentacorriente' => $datos['idcuentacorriente']
+				);
+
+
+			$this->db->where('idctacentralizacion',$idcuentacentralizacion);
+			$this->db->where('idempresa',$this->session->userdata('empresaid'));
+			$this->db->update('rem_cuentas_centralizacion_empresa',$array_datos);
+
+			$this->db->trans_complete();
+			return 1;	
+
+
+
+		}		
+
+
+	}
 
 	public function add_haberes_descuentos($datos,$idhab){
 		$this->db->trans_start();

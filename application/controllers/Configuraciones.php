@@ -1040,6 +1040,671 @@ public function submit_cargo(){
 	}	
 
 
+
+
+	public function cuentas_centralizacion(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			
+			$resultid = $this->session->flashdata('cuentas_centralizacion_result');
+			if($resultid == 1){
+				$vars['message'] = "Cuenta de Centralizaci&oacute;n agregada/editada correctamente";
+				$vars['classmessage'] = 'success';
+				$vars['icon'] = 'fa-check';		
+			}else if($resultid == 2){
+				$vars['message'] = "Cuenta de Centralizaci&oacute;n no existe";
+				$vars['classmessage'] = 'danger';
+				$vars['icon'] = 'fa-ban';		
+
+			}
+
+			$cuentas_centralizacion = $this->configuracion->get_cuentas_centralizacion(); 
+
+
+
+			###### OBTIENE DATOS CUENTAS CONTABLES
+
+			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
+			
+			#SI ESTAMOS PROBANDO, UTILIZARA EL RUT DE LA FERIA, EN CASO CONTRARIO EL RUT DE LA EMPRESA
+			$rut_empresa = CENTRALIZACION_PRUEBA ? 90380000 : $empresa->rut;
+
+			#OBTIENE PLAN DE CUENTAS
+			$url_api_plan_cuentas = URL_API_ADM. '/api/plan_cuentas/' . $rut_empresa;
+			$curl_plan_cuentas = curl_init();
+
+			curl_setopt_array($curl_plan_cuentas, array(
+			  CURLOPT_URL => $url_api_plan_cuentas,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_plan_cuentas = curl_exec($curl_plan_cuentas);
+
+			curl_close($curl_plan_cuentas);
+
+			#OBTIENE CENTROS DE COSTO
+			$url_api_centros_costo = URL_API_ADM. '/api/centros_costo/' . $rut_empresa;
+			$curl_centros_costo = curl_init();
+
+			curl_setopt_array($curl_centros_costo, array(
+			  CURLOPT_URL => $url_api_centros_costo,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_centros_costo = curl_exec($curl_centros_costo);
+
+			curl_close($curl_centros_costo);
+
+
+			#OBTIENE ITEM INGRESO
+			$url_api_item_ingreso = URL_API_ADM. '/api/item_ingreso/' . $rut_empresa;
+			$curl_item_ingreso = curl_init();
+
+			curl_setopt_array($curl_item_ingreso, array(
+			  CURLOPT_URL => $url_api_item_ingreso,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_item_ingreso = curl_exec($curl_item_ingreso);
+
+			curl_close($curl_item_ingreso);
+
+
+			#OBTIENE ITEM GASTO
+			$url_api_item_gasto = URL_API_ADM. '/api/item_gasto/' . $rut_empresa;
+			$curl_item_gasto = curl_init();
+
+			curl_setopt_array($curl_item_gasto, array(
+			  CURLOPT_URL => $url_api_item_gasto,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_item_gasto = curl_exec($curl_item_gasto);
+
+			curl_close($curl_item_gasto);
+
+
+
+			#OBTIENE CUENTA CORRIENTE
+			$url_api_cuenta_corriente = URL_API_ADM. '/api/cuentas_corriente/' . $rut_empresa;
+			$curl_cuenta_corriente = curl_init();
+
+			curl_setopt_array($curl_cuenta_corriente, array(
+			  CURLOPT_URL => $url_api_cuenta_corriente,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_cuenta_corriente = curl_exec($curl_cuenta_corriente);
+
+			curl_close($curl_cuenta_corriente);
+
+
+
+
+			$array_response_plan_cuentas = json_decode($response_plan_cuentas);	
+			$array_response_centros_costo = json_decode($response_centros_costo);	
+			$array_response_item_ingreso = json_decode($response_item_ingreso);
+			$array_response_item_gasto = json_decode($response_item_gasto);
+			$array_response_cuenta_corriente = json_decode($response_cuenta_corriente);
+
+			foreach ($cuentas_centralizacion as $cuenta_centralizacion) {
+						if($cuenta_centralizacion->idcuentacontable != 0){
+
+								if($array_response_plan_cuentas->status){
+										foreach ($array_response_plan_cuentas->data as $cuenta){
+
+
+												if($cuenta_centralizacion->idcuentacontable == $cuenta->idn4){
+
+													$cuenta_centralizacion->nombrecuentacontable =  $cuenta->nombren4;
+												}
+
+										}
+
+								}
+
+						}else{
+								$cuenta_centralizacion->nombrecuentacontable = '-';
+
+						}	
+
+
+
+						if($cuenta_centralizacion->idcentrocosto != 0){
+
+								if($array_response_centros_costo->status){
+										foreach ($array_response_centros_costo->data as $centrocosto){
+
+
+												if($cuenta_centralizacion->idcentrocosto == $centrocosto->id){
+
+													$cuenta_centralizacion->nombrecentrocosto =  $centrocosto->nombre;
+												}
+
+										}
+
+								}
+
+						}else{
+								$cuenta_centralizacion->nombrecentrocosto = '-';
+
+						}		
+
+
+						if($cuenta_centralizacion->iditemingreso != 0){
+
+								if($array_response_item_ingreso->status){
+										foreach ($array_response_item_ingreso->data as $item_ingreso){
+
+
+												if($cuenta_centralizacion->iditemingreso == $item_ingreso->id){
+
+													$cuenta_centralizacion->nombreitemingreso =  $item_ingreso->nombre;
+												}
+
+										}
+
+								}
+
+						}else{
+								$cuenta_centralizacion->nombreitemingreso = '-';
+
+						}	
+
+
+
+						if($cuenta_centralizacion->iditemgasto != 0){
+
+								if($array_response_item_gasto->status){
+										foreach ($array_response_item_gasto->data as $item_gasto){
+
+
+												if($cuenta_centralizacion->iditemgasto == $item_gasto->id){
+
+													$cuenta_centralizacion->nombreitemgasto =  $item_gasto->nombre;
+												}
+
+										}
+
+								}
+
+						}else{
+								$cuenta_centralizacion->nombreitemgasto = '-';
+
+						}		
+
+
+
+
+						if($cuenta_centralizacion->idcuentacorriente != 0){
+
+								if($array_response_cuenta_corriente->status){
+										foreach ($array_response_cuenta_corriente->data as $cuenta_corriente){
+
+
+												if($cuenta_centralizacion->idcuentacorriente == $cuenta_corriente->id){
+
+													$cuenta_centralizacion->nombrecuentacorriente =  $cuenta_corriente->nombre;
+												}
+
+										}
+
+								}
+
+						}else{
+								$cuenta_centralizacion->nombrecuentacorriente = '-';
+
+						}													
+			}
+
+
+			//var_dump_new($cuenta_centralizacion); exit;
+
+			$content = array(
+						'menu' => 'Configuraciones',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Creaci&oacute;n Cuentas Centralizaci&oacute;n');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'configuraciones/cuentas_centralizacion';
+			$vars['datatable'] = true;
+			$vars['mask'] = true;
+			$vars['gritter'] = true;
+
+			$vars['cuentas_centralizacion'] = $cuentas_centralizacion;
+			
+			$template = "template";
+			
+
+			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}	
+
+
+	}	
+
+
+
+
+public function edit_cuenta_centralizacion($idcuentacentralizacion = null){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			
+
+			$cuenta_centralizacion = array();
+			if(!is_null($idcuentacentralizacion)){
+					$cuentas_centralizacion = $this->configuracion->get_cuentas_centralizacion($idcuentacentralizacion); 
+					if(count($cuentas_centralizacion) == 0){
+							$this->session->set_flashdata('cuentas_centralizacion_result', 2);
+							redirect('configuraciones/cuentas_centralizacion');	
+
+
+					}else{
+
+						$cuenta_centralizacion = $cuentas_centralizacion[0];
+					}
+
+			}else{
+
+				$this->session->set_flashdata('cuentas_centralizacion_result', 2);
+				redirect('configuraciones/cuentas_centralizacion');	
+
+
+			}
+
+			//var_dump_new($haberes_descuentos); exit;
+			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
+			
+			#SI ESTAMOS PROBANDO, UTILIZARA EL RUT DE LA FERIA, EN CASO CONTRARIO EL RUT DE LA EMPRESA
+			$rut_empresa = CENTRALIZACION_PRUEBA ? 90380000 : $empresa->rut;
+
+
+			/**************** DATOS DE PRUEBA ******************************/
+
+			$array_plan_cuentas = array();
+			$array_centros_costo = array();
+			$array_item_ingreso = array();
+			$array_item_gasto = array();
+			$array_cuenta_corriente = array();
+
+			$array_datos_select = array(
+											'cuenta' => '',
+											'cuentacorriente' => ''
+									);
+
+
+			#OBTIENE PLAN DE CUENTAS
+			$url_api_plan_cuentas = URL_API_ADM. '/api/plan_cuentas/' . $rut_empresa;
+			$curl_plan_cuentas = curl_init();
+
+			curl_setopt_array($curl_plan_cuentas, array(
+			  CURLOPT_URL => $url_api_plan_cuentas,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_plan_cuentas = curl_exec($curl_plan_cuentas);
+
+			curl_close($curl_plan_cuentas);
+
+			#OBTIENE CENTROS DE COSTO
+			$url_api_centros_costo = URL_API_ADM. '/api/centros_costo/' . $rut_empresa;
+			$curl_centros_costo = curl_init();
+
+			curl_setopt_array($curl_centros_costo, array(
+			  CURLOPT_URL => $url_api_centros_costo,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_centros_costo = curl_exec($curl_centros_costo);
+
+			curl_close($curl_centros_costo);
+
+
+			#OBTIENE ITEM INGRESO
+			$url_api_item_ingreso = URL_API_ADM. '/api/item_ingreso/' . $rut_empresa;
+			$curl_item_ingreso = curl_init();
+
+			curl_setopt_array($curl_item_ingreso, array(
+			  CURLOPT_URL => $url_api_item_ingreso,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_item_ingreso = curl_exec($curl_item_ingreso);
+
+			curl_close($curl_item_ingreso);
+
+
+			#OBTIENE ITEM GASTO
+			$url_api_item_gasto = URL_API_ADM. '/api/item_gasto/' . $rut_empresa;
+			$curl_item_gasto = curl_init();
+
+			curl_setopt_array($curl_item_gasto, array(
+			  CURLOPT_URL => $url_api_item_gasto,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_item_gasto = curl_exec($curl_item_gasto);
+
+			curl_close($curl_item_gasto);
+
+
+
+			#OBTIENE CUENTA CORRIENTE
+			$url_api_cuenta_corriente = URL_API_ADM. '/api/cuentas_corriente/' . $rut_empresa;
+			$curl_cuenta_corriente = curl_init();
+
+			curl_setopt_array($curl_cuenta_corriente, array(
+			  CURLOPT_URL => $url_api_cuenta_corriente,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_cuenta_corriente = curl_exec($curl_cuenta_corriente);
+
+			curl_close($curl_cuenta_corriente);
+
+
+
+
+			$array_response_plan_cuentas = json_decode($response_plan_cuentas);	
+
+
+
+
+			if($array_response_plan_cuentas->status){
+
+					foreach ($array_response_plan_cuentas->data as $cuenta) {
+
+
+
+								if(!is_null($idcuentacentralizacion)){
+										if(isset($cuenta_centralizacion->idcuentacontable)){
+												if($cuenta_centralizacion->idcuentacontable == $cuenta->idn4){
+
+													$array_datos_select['cuenta'] = $cuenta->nombren4;
+
+												}
+
+										}
+
+								}
+
+
+								$array_cuentas = array(
+											"idn1" => $cuenta->idn1,
+											"codigon1"=> $cuenta->codigon1,
+											"nombren1"=> $cuenta->nombren1,
+											"idn2"=> $cuenta->idn2,
+											"codigon2"=> $cuenta->codigon2,
+											"nombren2"=> $cuenta->nombren2,
+											"idn3"=> $cuenta->idn3,
+											"codigon3"=> $cuenta->codigon3,
+											"nombren3"=> $cuenta->nombren3,
+											"idn4"=> $cuenta->idn4,
+											"codigon4"=> $cuenta->codigon4,
+											"nombren4"=> $cuenta->nombren4,
+											"centro_costo"=> $cuenta->centro_costo,
+											"item_ingreso"=> $cuenta->item_ingreso,
+											"item_gasto"=> $cuenta->item_gasto,
+											"cuenta_corriente"=> $cuenta->cuenta_corriente,
+											"referencia"=> $cuenta->referencia
+									);
+
+									array_push($array_plan_cuentas,$array_cuentas);
+
+					}
+
+			}
+
+
+
+			$array_response_centros_costo = json_decode($response_centros_costo);	
+
+			if($array_response_centros_costo->status){
+
+					foreach ($array_response_centros_costo->data as $centrocosto) {
+
+
+								$array_centro = array(
+											"id" => $centrocosto->id,
+											"codigo"=> $centrocosto->codigo,
+											"nombre"=> $centrocosto->nombre,
+											"activo"=> $centrocosto->activo
+									);
+
+									array_push($array_centros_costo,$array_centro);
+
+					}
+
+			}	
+
+
+
+			$array_response_item_ingreso = json_decode($response_item_ingreso);	
+
+			if($array_response_item_ingreso->status){
+
+					foreach ($array_response_item_ingreso->data as $item_ingreso) {
+
+
+								$array_ingreso = array(
+											"id" => $item_ingreso->id,
+											"codigo"=> $item_ingreso->codigo,
+											"nombre"=> $item_ingreso->nombre,
+											"activo"=> $item_ingreso->activo
+									);
+
+									array_push($array_item_ingreso,$array_ingreso);
+
+					}
+
+			}	
+
+
+
+			$array_response_item_gasto = json_decode($response_item_gasto);	
+
+			if($array_response_item_gasto->status){
+
+					foreach ($array_response_item_gasto->data as $item_gasto) {
+
+
+								$array_gasto = array(
+											"id" => $item_gasto->id,
+											"codigo"=> $item_gasto->codigo,
+											"nombre"=> $item_gasto->nombre,
+											"activo"=> $item_gasto->activo
+									);
+
+									array_push($array_item_gasto,$array_gasto);
+
+					}
+
+			}	
+
+
+
+
+			$array_response_cuenta_corriente = json_decode($response_cuenta_corriente);	
+
+			if($array_response_cuenta_corriente->status){
+
+					foreach ($array_response_cuenta_corriente->data as $cuenta_corriente) {
+
+
+
+
+								if(!is_null($idcuentacentralizacion)){
+										if(isset($cuenta_centralizacion->idcuentacorriente)){
+												if($cuenta_centralizacion->idcuentacorriente == $cuenta_corriente->id){
+
+													$array_datos_select['cuentacorriente'] = $cuenta_corriente->nombre;
+
+												}
+
+										}
+
+								}
+
+
+
+								$array_corriente = array(
+											"id"=> $cuenta_corriente->id,
+								            "rut"=> $cuenta_corriente->rut,
+								            "dv"=> $cuenta_corriente->dv,
+								            "nombre"=> $cuenta_corriente->nombre,
+								            "direccion"=> $cuenta_corriente->direccion,
+								            "idcomuna"=> $cuenta_corriente->idcomuna,
+								            "email"=>$cuenta_corriente->email,
+								            "telefono"=> $cuenta_corriente->telefono,
+								            "tipocuenta"=> $cuenta_corriente->tipocuenta,
+								            "idbanco"=> $cuenta_corriente->idbanco,
+								            "tipocuentabancaria"=> $cuenta_corriente->tipocuentabancaria,
+								            "nrocuenta"=> $cuenta_corriente->nrocuenta,
+								            "idcuenta"=> $cuenta_corriente->idcuenta,
+								            "idcentrocosto"=> $cuenta_corriente->idcentrocosto,
+								            "iditemgasto"=> $cuenta_corriente->iditemgasto,
+								            "deuda"=> $cuenta_corriente->deuda,
+								            "doctosdeuda"=> $cuenta_corriente->doctosdeuda,
+								            "activo"=> $cuenta_corriente->activo
+									);
+
+									array_push($array_cuenta_corriente,$array_corriente);
+
+					}
+
+			}	
+
+
+
+
+
+
+
+
+			/**************************************************************/
+
+
+
+			
+			//var_dump_new($cuenta_centralizacion); exit;
+			$content = array(
+						'menu' => 'Configuraciones',
+						'title' => 'Configuraciones',
+						'subtitle' => 'Editar Cuenta Centralizaci&oacute;n');
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'configuraciones/edit_cuenta_centralizacion';
+			$vars['formValidation'] = true;
+			$vars['cuenta_centralizacion'] = $cuenta_centralizacion;
+
+
+
+			$vars['plan_cuentas'] = $array_plan_cuentas;
+			$vars['centros_costo'] = $array_centros_costo;
+			$vars['item_ingreso'] = $array_item_ingreso;
+			$vars['item_gastos'] = $array_item_gasto;
+			$vars['cuentas_corrientes'] = $array_cuenta_corriente;
+			$vars['datos_select'] = $array_datos_select;
+
+
+
+			$vars['gritter'] = true;
+
+			$template = "template";			
+
+			$this->load->view($template,$vars);	
+
+		}else{
+			$content = array(
+						'menu' => 'Error 403',
+						'title' => 'Error 403',
+						'subtitle' => '403 error');
+
+
+			$vars['content_menu'] = $content;				
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}	
+
+
+	}
+
+
+
 public function add_haber_descuento($idhaberdescto = null){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
@@ -1465,6 +2130,40 @@ public function add_haber_descuento($idhaberdescto = null){
 			$this->load->view($template,$vars);	
 
 	}		
+
+
+
+public function submit_cuentas_centralizacion(){
+		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+			$datos = array();
+			$datos['idcuentacontable'] = $this->input->post('cuenta_sel') == '' ? 0 : $this->input->post('cuenta_sel');
+			$datos['idcentrocosto'] = $this->input->post('centrocosto') == '' ? 0 : $this->input->post('centrocosto');
+			$datos['iditemingreso'] = $this->input->post('itemingreso') == '' ? 0 : $this->input->post('itemingreso');
+			$datos['iditemgasto'] = $this->input->post('itemgasto') == '' ? 0 : $this->input->post('itemgasto');
+			$datos['idcuentacorriente'] = $this->input->post('cuenta_corriente') == '' ? 0 : $this->input->post('cuenta_corriente');
+
+
+			$idcuentacentralizacion = $this->input->post('idcuentacentralizacion');
+
+
+			$result_haberes_descuentos = $this->configuracion->add_cuentas_centralizacion($datos,$idcuentacentralizacion); 
+
+
+			$this->session->set_flashdata('cuentas_centralizacion_result', 1);
+			redirect('configuraciones/cuentas_centralizacion');	
+
+
+
+
+		}else{
+			$vars['content_view'] = 'forbidden';
+			$this->load->view('template',$vars);
+
+		}		
+
+
+	}
 
 
 public function submit_haber_descuento(){
