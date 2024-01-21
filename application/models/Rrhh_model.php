@@ -2249,7 +2249,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 			
 			//MONTO SEMANA CORRIDA ESTÁ CONSIDERADO DENTRO DE SUELDO IMPONIBLE
-			$base_tributaria = $sueldo_imponible + $bonos_no_imponibles_tributables - $cot_obligatoria - $comision_afp - $adic_afp - $segcesantia - $cot_salud_oblig - $cot_adic_isapre - $adic_salud - $cot_fonasa - $cot_inp;
+			//$base_tributaria = $sueldo_imponible + $bonos_no_imponibles_tributables - $cot_obligatoria - $comision_afp - $adic_afp - $segcesantia - $cot_salud_oblig - $cot_adic_isapre - $adic_salud - $cot_fonasa - $cot_inp;
+
+			$base_tributaria = $sueldo_imponible + $bonos_no_imponibles_tributables - $cot_obligatoria - $comision_afp - $adic_afp - $segcesantia - $cot_salud_oblig - $cot_adic_isapre - $cot_fonasa - $cot_inp;
 
 			$impuesto = 0;
 			foreach ($tabla_impuesto as $rango) {

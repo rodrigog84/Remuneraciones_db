@@ -1216,11 +1216,11 @@ alter table rem_haber_descuento_remuneracion add idconfhd int default 0
 --  Agregado 18/01/2024
 CREATE TABLE rem_cuentas_centralizacion (
     id int identity NOT NULL,
-    nombre varchar(50) NOT NULL,
+    nombre_codigo varchar(50) NOT NULL,
+	nombre_sistema varchar(100) NOT NULL,
     active smallint default 1,
     created_at datetime default getdate()
 )
-
 
 
 insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema) values ('sueldo_base','Sueldo Base')
@@ -1299,4 +1299,20 @@ from rem_app r
 where id = 9120
 
 
+insert into rem_app (
 
+funcion
+,menuid
+,leaf
+,visible
+,valid
+)
+
+values (
+'configuraciones/submit_cuentas_centralizacion'
+,7
+,0
+,0
+,1
+)
+insert into rem_role (appid,levelid) values (9121,2)
