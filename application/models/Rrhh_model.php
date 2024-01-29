@@ -4226,15 +4226,43 @@ public function generar_contenido_comprobante($datos_remuneracion){
 			</head>
 					<body>';
 
-
+			$this->load->model('admin');
+			$datos_empresa = $this->admin->datos_empresa($this->session->userdata('empresaid'));
 			$monto_prevision = $datos_remuneracion->idisapre == 1 ? ' 7% ' : $datos_remuneracion->valorpactado . ' UF ';
 
 			$titulo_fecha_contrato = $this->session->userdata('empresaid') == 140 ? '&nbsp;' : 'Fecha Contrato:';
 			$dato_fecha_contrato = $this->session->userdata('empresaid') == 140 ? '&nbsp;' : $datos_remuneracion->fecingreso;
 			
 			$html .= '
+						<br>
+						<div class="recto"  width="60%">
+						<table class="" width="100%"  >
+						<thead class="">
+						<tr class="headerRow">
+						<th width="100%" colspan="2"><p>Datos Empresa</p></th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+						<td class="tdClass" ><b><i>Nombre Empresa:</i></b></td>
+						<td class="tdClass" >' . html_entity_decode($this->session->userdata('empresanombre')) . '</td>
+						</tr>
+						<tr>
+						<td class="tdClass" ><b><i>Rut Empresa:</i></b></td>
+						<td class="tdClass" >' . number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv . '</td>
+						</tr>
+						<tr>
+						<td class="tdClass" ><b><i>Direcci&oacute;n Empresa:</i></b></td>
+						<td class="tdClass" >' . $datos_empresa->direccion.", ".$datos_empresa->comuna . '</td>
+						</tr>
+						</tbody>
+						</table>
+						</div>		
+
+
 						<p><h4 class="header4">Liquidaci&oacute;n de Remuneraciones ' . date2string($datos_remuneracion->mes,$datos_remuneracion->anno) . '<!--br><br><img src="img/logo4_1_80p_color.png" width="100px"--></h4></p>
 						<hr>
+						
 						<br>
 						<div class="recto">
 						<table class="" width="100%"  >
@@ -4693,6 +4721,9 @@ public function generar_contenido_comprobante($datos_remuneracion){
 						</div>
 						<hr>
 						<p style="text-align:left;font-size: 12px;" ><b>Son: '.ucfirst(strtolower(valorEnLetras($datos_remuneracion->sueldoliquido))).'</b></p>
+						<br>
+						<br>
+						<br>
 						<br>
 						<table width="100%" border="0">
 							<tr>
