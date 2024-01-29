@@ -354,7 +354,7 @@ if (!function_exists('valorEnLetras'))
   //$C3 = $signo.$H6.$I6.$H7.$I7.$H8.$I8.$H9.$I9.$H10.$I10.$H11.$I11; 
   $C3 = $signo.$H6.$I6.$H7.$H8.$I8.$H9.$H10.$I10; 
 
-  return $C3; //Retornar el resultado 
+  return trim($C3); //Retornar el resultado 
 
   } 
 

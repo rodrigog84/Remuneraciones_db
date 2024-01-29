@@ -3717,9 +3717,9 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 					$mpdf->WriteHTML($content->pdf_content);
 				   if(is_null($datos_remuneracion->aprueba)){
-						$mpdf->SetWatermarkText('BORRADOR');
+						/*$mpdf->SetWatermarkText('BORRADOR');
 						$mpdf->watermark_font = 'DejaVuSansCondensed';
-						$mpdf->showWatermarkText = true;
+						$mpdf->showWatermarkText = true;*/
 					}					
 					$i++;
 
@@ -3791,9 +3791,9 @@ public function get_remuneraciones_by_id($idremuneracion){
 			$mpdf->WriteHTML($content->pdf_content);
 
 			if(is_null($datos_remuneracion->aprueba)){
-				$mpdf->SetWatermarkText('BORRADOR');
-				$mpdf->watermark_font = 'DejaVuSansCondensed';
-				$mpdf->showWatermarkText = true;
+				//$mpdf->SetWatermarkText('BORRADOR');
+				//$mpdf->watermark_font = 'DejaVuSansCondensed';
+				//$mpdf->showWatermarkText = true;
 			}
 
 			$nombre_archivo = date("Y")."_".date("m")."_".date("d")."_sueldos_".$datos_remuneracion->id.".pdf";
@@ -4148,7 +4148,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 
 public function generar_contenido_comprobante($datos_remuneracion){
 
-
+			//echo ucfirst(strtolower(valorEnLetras($datos_remuneracion->sueldoliquido))); exit;
 			$html = '<html>
 					<head>
 					<style type="text/css">
@@ -4692,7 +4692,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 						</table>
 						</div>
 						<hr>
-						<p style="text-align:left;font-size: 12px;" ><b>Son: '.valorEnLetras($datos_remuneracion->sueldoliquido).'</b></p>
+						<p style="text-align:left;font-size: 12px;" ><b>Son: '.ucfirst(strtolower(valorEnLetras($datos_remuneracion->sueldoliquido))).'</b></p>
 						<br>
 						<table width="100%" border="0">
 							<tr>
@@ -5580,7 +5580,15 @@ public function previred($datos_remuneracion){
 
 				
 				$sueldoimponible_isapre = $remuneracion->cotizacionsalud > 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
-				$sueldoimponible_mutual = $codprev_mutual != 0 ? $sueldoimponible_afp : 0;
+
+				if($tipo_trabajador == 2){
+
+					$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
+				}else{
+
+					$sueldoimponible_mutual = $codprev_mutual != 0 ? $sueldoimponible_afp : 0;	
+				}
+				
 				//$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponible : 0;
 
 				$sueldoimponible_ccaf = $codprev_ccaf != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
