@@ -2164,8 +2164,20 @@ public function mod_trabajador($idtrabajador = null)
 	{
 
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+    
 			$sueldobase = str_replace(".","",$this->input->post('sueldo_base'));
 			$horassemanales = $this->input->post('horassemanales');
+      $diastrabajo = $this->input->post('diastrabajo');
+
+      $tiporenta = $this->input->post('tiporenta');
+
+        /*
+              <option value="Mensual" selected>Mensual</option>
+              <option value="Diaria">Diaria</option>
+              <option value="Semanal">Semanal</option>
+        */
+      
 			
 			$parttime = $this->input->post('parttime');
 
@@ -2175,13 +2187,13 @@ public function mod_trabajador($idtrabajador = null)
       $parametros = $parametros_generales[0];
 
 
-      
-
 			$valor_hora = $parametros->valor/45;
 			$sueldominimo_proporcional = (int)($valor_hora*str_replace(",",".",$horassemanales));
       $data = array();
 			if($parttime == 'on'){
 				$data['result'] = "ok";
+      }else if($tiporenta == 'Diaria'){
+          $data['result'] = "ok";
 			}else{
 				//if($sueldobase < $parametros_generales->sueldominimo){
 				if($sueldobase < $sueldominimo_proporcional){

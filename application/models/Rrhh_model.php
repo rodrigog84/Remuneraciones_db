@@ -1391,6 +1391,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'diasprogresivos',
 				'diasprogtomados',
 				'saldoinicvacprog',
+				'tiporenta',
 				'idcentrocosto',
 				'semana_corrida',
 				 "case when fecnacimiento is null then 'S/I' else (((365* year(getdate()))-(365*(year(fecnacimiento))))+ (month(getdate())-month(fecnacimiento))*30
@@ -1912,9 +1913,17 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 		$personal = $this->get_personal(null,$centro_costo); 
 
-		
+
 		foreach ($personal as $trabajador) { // calculo de sueldos por cada trabajador
-			//var_dump_new($trabajador); exit;
+			
+			if($trabajador->tiporenta == 'Diaria'){
+				 $trabajador->sueldobase = $trabajador->sueldobase*$trabajador->diastrabajo;
+			}
+
+
+
+
+
 			$datos_remuneracion = $this->get_datos_remuneracion_by_periodo($idperiodo,$trabajador->id_personal);
 
 
