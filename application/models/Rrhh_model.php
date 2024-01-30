@@ -1912,7 +1912,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 		$personal = $this->get_personal(null,$centro_costo); 
 
-
+		
 		foreach ($personal as $trabajador) { // calculo de sueldos por cada trabajador
 			//var_dump_new($trabajador); exit;
 			$datos_remuneracion = $this->get_datos_remuneracion_by_periodo($idperiodo,$trabajador->id_personal);
