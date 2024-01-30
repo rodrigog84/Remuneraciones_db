@@ -2485,7 +2485,11 @@ limit 1		*/
 					$aportesegcesantia = 0;	
 				}	
 
-				$seginvalidez += round($imponibles_no_trabajo_sis*($parametros['tasasis']/100),0);
+				if($trabajador->pensionado != 1){
+					$seginvalidez += round($imponibles_no_trabajo_sis*($parametros['tasasis']/100),0);
+				}
+
+				
 
 			}
 
@@ -3700,7 +3704,8 @@ public function get_remuneraciones_by_id($idremuneracion){
 	
 			//echo $html; exit;
 			$mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
-			$mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			//$mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$mpdf->SetHeader('Arnou - Soluciones Digitales a tu alcance');
 			$mpdf->SetFooter('http://www.arnou.cl');
 			$cantidad = count($datos_remuneraciones);
 			$i = 0;
@@ -3786,7 +3791,8 @@ public function get_remuneraciones_by_id($idremuneracion){
 	
 			//echo $html; exit;
 			$mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
-			$mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			//$mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
+			$mpdf->SetHeader('Arnou - Soluciones Digitales a tu alcance');
 			$mpdf->SetFooter('http://www.arnou.cl');
 			$mpdf->WriteHTML($content->pdf_content);
 
@@ -4591,7 +4597,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 
 						if($datos_remuneracion->impuesto > 0){
 							$html .= '<tr>
-									<td class="tdClass" >Impuesto</td>
+									<td class="tdClass" >Impuesto &Uacute;nico</td>
 									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->impuesto,0,".",".") . '</td>
 									</tr>';
 						}
@@ -5614,10 +5620,21 @@ public function previred($datos_remuneracion){
 
 				if($tipo_trabajador == 2){
 
-					$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
-				}else{
+					if($codprev_mutual != 0){
 
-					$sueldoimponible_mutual = $codprev_mutual != 0 ? $sueldoimponible_afp : 0;	
+						$sueldoimponible_mutual = $remuneracion->sueldoimponibleimposiciones > 0 ? $remuneracion->sueldoimponibleimposiciones : $remuneracion->sueldoimponibleimposicionesnotrabajo;
+					}else{
+						$sueldoimponible_mutual = 0;	
+					}
+					//$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponibleimposiciones : 0;
+				}else{
+					if($codprev_mutual != 0){
+
+						$sueldoimponible_mutual = $sueldoimponible_afp > 0 ? $sueldoimponible_afp : $remuneracion->sueldoimponibleimposicionesnotrabajo;
+					}else{
+						$sueldoimponible_mutual = 0;	
+					}
+					//$sueldoimponible_mutual = $codprev_mutual != 0 ? $sueldoimponible_afp : 0;	
 				}
 				
 				//$sueldoimponible_mutual = $codprev_mutual != 0 ? $remuneracion->sueldoimponible : 0;

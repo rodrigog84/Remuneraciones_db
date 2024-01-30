@@ -2397,8 +2397,8 @@ $(document).ready(function() {
                     },
                     between: {
                         min: 0,
-                        max: 30,
-                        message: 'D&iacute;as de Trabajo debe estar entre 0 y 30'
+                        max: 31,
+                        message: 'D&iacute;as de Trabajo debe estar entre 0 y 31'
                     },
                 }
             }, 
