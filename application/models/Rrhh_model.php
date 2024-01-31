@@ -5384,7 +5384,7 @@ public function lre($datos_remuneracion,$periodo)
                 //Subcategoría N°1: Haberes imponibles y tributables
 
                 $linea .= $remuneracion->sueldobase.";"; //  Sueldo
-                $linea .= "0;"; //  Sobresueldo
+                $linea .= ($remuneracion->montohorasextras50 + $remuneracion->montohorasextras100).";"; //  Sobresueldo
                 $linea .= "0;"; //  Comisiones (mensual) 
                 $linea .= "0;"; //  Semana corrida mensual (Art. 45) 
                 $linea .= "0;"; //  Participación (mensual) 
