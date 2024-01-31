@@ -3713,8 +3713,8 @@ public function get_remuneraciones_by_id($idremuneracion){
 	
 			//echo $html; exit;
 			$mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
-			//$mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
-			$mpdf->SetHeader('Arnou - Soluciones Digitales a tu alcance');
+			$mpdf->SetHeader('<div style="text-align: left;">Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv.'</div>');
+			//$mpdf->SetHeader('Arnou - Soluciones Digitales a tu alcance');
 			$mpdf->SetFooter('http://www.arnou.cl');
 			$cantidad = count($datos_remuneraciones);
 			$i = 0;
@@ -3801,7 +3801,9 @@ public function get_remuneraciones_by_id($idremuneracion){
 			//echo $html; exit;
 			$mpdf->SetTitle('Is RRHH - Liquidación de Sueldos');
 			//$mpdf->SetHeader('Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv);
-			$mpdf->SetHeader('Arnou - Soluciones Digitales a tu alcance');
+			$mpdf->SetHeader('<div style="text-align: left;">Empresa '. $datos_empresa->nombre . ' - ' .$datos_empresa->comuna . ' - RUT: ' .number_format($datos_empresa->rut,0,".",".") . '-' .$datos_empresa->dv.'</div>');
+
+			//$mpdf->SetHeader('Arnou - Soluciones Digitales a tu alcance');
 			$mpdf->SetFooter('http://www.arnou.cl');
 			$mpdf->WriteHTML($content->pdf_content);
 
@@ -4249,7 +4251,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 			$dato_fecha_contrato = $this->session->userdata('empresaid') == 140 ? '&nbsp;' : $datos_remuneracion->fecingreso;
 			
 			$html .= '
-						<br>
+						<!--br>
 						<div class="recto"  width="60%">
 						<table class="" width="100%"  >
 						<thead class="">
@@ -4272,7 +4274,7 @@ public function generar_contenido_comprobante($datos_remuneracion){
 						</tr>
 						</tbody>
 						</table>
-						</div>		
+						</div-->		
 
 
 						<p><h4 class="header4">Liquidaci&oacute;n de Remuneraciones ' . date2string($datos_remuneracion->mes,$datos_remuneracion->anno) . '<!--br><br><img src="img/logo4_1_80p_color.png" width="100px"--></h4></p>
@@ -4738,8 +4740,8 @@ public function generar_contenido_comprobante($datos_remuneracion){
 						<p style="text-align:left;font-size: 12px;" ><b>Son: '.ucfirst(strtolower(valorEnLetras($datos_remuneracion->sueldoliquido))).'</b></p>
 						<br>
 						<br>
-						<br>
-						<br>
+						<!--br>
+						<br-->
 						<table width="100%" border="0">
 							<tr>
 								<td width="10%">&nbsp;</td>
@@ -5685,7 +5687,7 @@ public function previred($datos_remuneracion){
 				foreach ($array_lineas_trabajador as $linea_trabajador) {
 
 
-					$diastrabajo = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->diastrabajo : 0;
+					$diastrabajo = $linea_trabajador['tipo_linea'] == "00" ? (int)$remuneracion->diastrabajo : 0;
 					$tramo_asig_familiar = $linea_trabajador['tipo_linea'] == "00" ? $tramo_asig_familiar : " ";
 					$cargassimples = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cargassimples : 0;
 					$cargasmaternales = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cargasmaternales : 0;
