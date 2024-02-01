@@ -1360,6 +1360,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'segcesantia', 
 				'pensionado', 
 				'diastrabajo', 
+				'diastrabajosemanal', 
 				'horasdiarias', 
 				'horassemanales', 
 				'sueldobase', 
@@ -1917,8 +1918,10 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 		foreach ($personal as $trabajador) { // calculo de sueldos por cada trabajador
 			
+			$sueldobaseorig = $trabajador->sueldobase;
 			if($trabajador->tiporenta == 'Diaria'){
 				 $trabajador->sueldobase = $trabajador->sueldobase*$trabajador->diastrabajo;
+			
 			}
 
 
@@ -2058,7 +2061,19 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 			//$valor_hora = $trabajador->parttime == 1 ? ((($trabajador->sueldobase + $trabajador->bonos_fijos)/$trabajador->diastrabajo)/$trabajador->horasdiarias) : ((($trabajador->sueldobase + $trabajador->bonos_fijos)/30)*7)/45;
-			$valor_hora = $trabajador->parttime == 1 ? ((($trabajador->sueldobase)/$trabajador->diastrabajo)/$trabajador->horasdiarias) : ((($trabajador->sueldobase)/30)*7)/$trabajador->horassemanales;
+
+
+			
+			if($trabajador->tiporenta == 'Mensual'){
+				 $valor_hora = $trabajador->parttime == 1 ? ((($trabajador->sueldobase)/$trabajador->diastrabajo)/$trabajador->horasdiarias) : ((($trabajador->sueldobase)/30)*7)/$trabajador->horassemanales;
+			}else if($trabajador->tiporenta == 'Diaria'){
+				$semanacorrida = 0;
+				$valor_hora = ( (($sueldobaseorig*$trabajador->diastrabajosemanal) + $semanacorrida)/$trabajador->horassemanales);
+			}
+
+
+
+			//$valor_hora = $trabajador->parttime == 1 ? ((($trabajador->sueldobase)/$trabajador->diastrabajo)/$trabajador->horasdiarias) : ((($trabajador->sueldobase)/30)*7)/$trabajador->horassemanales;
 			$valor_hora = round($valor_hora,0);
 			//calculo total haberes
 			$valor_hora50 =  round($valor_hora*1.5,0);

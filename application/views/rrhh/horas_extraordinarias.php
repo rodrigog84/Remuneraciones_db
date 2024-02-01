@@ -162,11 +162,19 @@
 											                              <?php $i = 1; ?>
 											                              <?php $total_horas_50 = 0; ?>
 											                              <?php $total_horas_100 = 0; ?>
+											                              <?php //var_dump_new($personal); exit; ?>
 											                              <?php foreach ($personal as $trabajador) { ?>
-											                              <?php $valorhora = $trabajador->parttime == 1 ? round((($trabajador->sueldobase)/$trabajador->diastrabajo)/$trabajador->horasdiarias,0) : round(((($trabajador->sueldobase)/30)*7)/$trabajador->horassemanales,0); ?>
 
-											                              <?php $valorhora50 = round($valorhora*1.5,0); ?>
-											                              <?php $valorhora100 = round($valorhora*2,0); ?>
+											                              <?php if($trabajador->tiporenta == 'Mensual'){ ?>
+											                              	<?php $valorhora = $trabajador->parttime == 1 ? round((($trabajador->sueldobase)/$trabajador->diastrabajo)/$trabajador->horasdiarias,0) : round(((($trabajador->sueldobase)/30)*7)/$trabajador->horassemanales,0); ?>
+											                              	<?php $valorhora50 = round($valorhora*1.5,0); ?>
+											                              	<?php $valorhora100 = round($valorhora*2,0); ?>
+											                              <?php }else if($trabajador->tiporenta == 'Diaria'){ ?>
+											                              	<?php $semanacorrida = 0; ?>
+											                              	<?php $valorhora = round(( (($trabajador->sueldobase*$trabajador->diastrabajosemanal) + $semanacorrida)/$trabajador->horassemanales),0); ?>
+											                              	<?php $valorhora50 = round($valorhora*1.5,0); ?>
+											                              	<?php $valorhora100 = round($valorhora*2,0); ?>
+											                              <?php } ?>
 											                               <tr >
 											                                <td><small><?php echo $i ;?></small></td>
 											                                <td><small><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></small></td>
