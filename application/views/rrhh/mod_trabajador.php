@@ -435,7 +435,7 @@
 
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
-						                              <label for="diastrabajo">D&iacute;as de Trabajo</label>
+						                              <label for="diastrabajo">D&iacute;as de Trabajo Mensual</label>
 						                              <input type="text" class="form-control" name="diastrabajo" id="diastrabajo" placeholder="Ingrese D&iacute;as de Trabajo" value="<?php echo $datos_form['diastrabajo']; ?>" >                            
 						                            </div> 
 						                          </div>	
@@ -447,10 +447,25 @@
 
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
+						                              <label for="diastrabajo">D&iacute;as de Trabajo Semanal</label>
+						                              <input type="text" class="form-control" name="diastrabajosemanal" id="diastrabajosemanal" placeholder="Ingrese D&iacute;as de Trabajo Semanal" value="<?php echo $datos_form['diastrabajosemanal']; ?>" >                            
+						                            </div> 
+						                          </div>							                        	
+
+						                          <div class='col-md-6'>
+						                            <div class="form-group">
 						                              <label for="horasdiarias">Horas Diarias</label>
 						                              <input type="text" class="form-control" name="horasdiarias" id="horasdiarias" placeholder="Ingrese Horas Diarias" value="<?php echo $datos_form['horasdiarias']; ?>" >                            
 						                            </div> 
 						                          </div>
+
+
+
+						                          
+
+						                        </div>                        
+
+						                        <div class='row'>
 
 
 						                          <div class='col-md-6'>
@@ -460,11 +475,6 @@
 						                            </div> 
 						                          </div>
 
-						                          
-
-						                        </div>                        
-
-						                        <div class='row'>
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
 						                                <label for="tipogratificacion">Tipo Gratificaci&oacute;n</label>   
@@ -478,6 +488,14 @@
 						                          </div>
 
 
+
+						                         
+						                          
+						                        </div>
+
+													<div class='row'>
+
+
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
 						                              <label for="gratificacion">Monto Gratificaci&oacute;n</label>
@@ -486,17 +504,19 @@
 						                          </div>
 
 
-						                         
-						                          
-						                        </div>
-
-													<div class='row'>
 														 <div class='col-md-6'>
 						                            <div class="form-group">
 						                                <label for="movilizacion">Valor Movilizaci&oacute;n</label>   
 						                                <input type="text" class="form-control miles" name="movilizacion" id="movilizacion" placeholder="Ingrese Valor Movilizaci&oacute;n" value="<?php echo $datos_form['movilizacion']; ?>" >                            
 						                            </div> 
 						                          </div>
+
+								                          
+								                          
+
+							                        </div>
+							                        <div class='row'>
+
 
 
 														<div class='col-md-6'>
@@ -507,17 +527,21 @@
 								                         </div>
 
 
-								                          
-								                          
 
-							                        </div>
-							                        <div class='row'>
 														 <div class='col-md-6'>
 						                            <div class="form-group">
 								                              <label for="rut">Anticipo Permanente</label><br>
 																<input class="minimal" id="anticipo_permanente" name="anticipo_permanente" type="checkbox" onchange="habilitar_anticipo(this.checked);" > 
 								                    </div>
 						                          </div>
+
+
+
+								                          
+								                          
+
+							                        </div>
+													<div class='row'>
 
 
 														<div class='col-md-6'>
@@ -527,12 +551,6 @@
 								                            </div> 
 								                         </div>
 
-
-								                          
-								                          
-
-							                        </div>
-													<div class='row'>
 
 														<div class='col-md-6'>
 								                            <div class="form-group">
@@ -548,6 +566,14 @@
 								                            </div>
 								                          </div>
 
+
+								                          
+								                          
+
+							                        </div>
+							                        <div class='row'>
+
+
 														<div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Categoria</label>  
@@ -561,12 +587,6 @@
 								                            </div>
 								                          </div>
 
-
-								                          
-								                          
-
-							                        </div>
-							                        <div class='row'>
 
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
@@ -582,6 +602,12 @@
 								                            </div>
 								                          </div>
 
+								                          
+
+							                        </div>
+							                        <div class='row'>
+
+
 
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
@@ -595,10 +621,6 @@
 								                            </div>
 								                          </div>
 								                          
-								                          
-
-							                        </div>
-							                        <div class='row'>
 
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
@@ -611,6 +633,11 @@
 								                             	</div>
 								                            </div>
 								                          </div>
+
+								                          
+
+							                        </div>
+							                        <div class='row'>
 
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
@@ -626,10 +653,6 @@
 
 
 								                          
-								                          
-
-							                        </div>
-							                        <div class='row'>
 
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
@@ -643,6 +666,14 @@
 								                            </div>
 								                          </div>
 
+								                          
+								                          
+
+							                        </div>
+
+							                        <div class='row'>
+
+
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Saldo Inicial Días Vacaciones Legales</label>
@@ -651,12 +682,6 @@
 								                          </div>
 
 
-								                          
-								                          
-
-							                        </div>
-
-							                        <div class='row'>
 
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
@@ -666,7 +691,14 @@
 								                            </div>
 								                          </div>
 
-							                        	<div class='col-md-6'>
+		
+								                          
+								                          
+
+							                        </div>		
+
+													<div class='row'>
+					                        			<div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Motivo de Egreso</label>
 																<select name="motivo_egreso" id="motivo_egreso" class="form-control">
@@ -679,13 +711,6 @@
 								                            </div>
 								                          </div>
 
-
-								                          
-								                          
-
-							                        </div>		
-
-													<div class='row'>
 
 
 														<div class='col-md-6'>
@@ -700,6 +725,16 @@
 
 								                            </div>
 								                          </div>
+						                          
+
+														
+
+								                         
+								                          
+							                        </div>		
+
+							                        <div class='row'>
+
 
 														<div class='col-md-6'>
 								                            <div class="form-group">
@@ -712,15 +747,7 @@
 																</div>
 
 								                            </div>
-								                          </div>								                          
-
-														
-
-								                         
-								                          
-							                        </div>		
-
-							                        <div class='row'>
+								                          </div>		
 
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
@@ -737,6 +764,14 @@
 								                          </div>
 
 
+								                          
+								                          
+							                        </div>			
+
+
+							                        <div class='row'>
+
+
 							                        	 <div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Código Ine</label>
@@ -751,12 +786,6 @@
 								                          </div>
 							                        	
 
-								                          
-								                          
-							                        </div>			
-
-
-							                        <div class='row'>
 
 														<div class='col-md-6'>
 								                            <div class="form-group">
@@ -781,6 +810,13 @@
 								                            </div>
 								                          </div-->
 							                        	
+
+								                          
+							                        </div>		
+
+
+							                         <div class='row'>
+							                         	
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Semana Corrida</label>
@@ -791,13 +827,6 @@
 																</select>
 								                            </div>
 								                          </div>
-								                          
-							                        </div>		
-
-
-							                         <div class='row'>
-							                         	
-
 
 							                         	<div class='col-md-6'>
 									                           <div class="form-group">
@@ -812,7 +841,12 @@
 								                            </div>
 								                          </div>
 								                          
+		
 								                          
+							                        </div>							                        					       
+							                        <div class='row'>
+
+							                          
 								                           <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Zona Brecha</label>
@@ -825,12 +859,7 @@
 								                                   </select>
 								                            </div>
 								                          </div>
-								                          
-								                          
-							                        </div>							                        					       
-							                        <div class='row'>
-
-							                       
+								                          						                       
 
 							                          <div class='col-md-6'>
 									                           <div class="form-group">
@@ -845,6 +874,13 @@
 								                            </div>
 								                          </div>
 							                          
+					
+							                        </div>  
+														<div class='row'>
+
+							                          
+								                         
+							                          
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">1er Vencimiento</label>
@@ -857,8 +893,7 @@
 								                            </div>
 								                      </div>
 							                          
-							                        </div>  
-							                        
+							                        </div>							                        
 
 												</section>
 											</div>
@@ -1812,6 +1847,7 @@ $(document).ready(function(){
         				$("#nombrefp").val(this.nombre_pago);
         				$("#emailfp").val(this.email_pago);
         				$("#diastrabajo").val(this.diastrabajo);
+        				$("#diastrabajosemanal").val(this.diastrabajosemanal);
         				$("#horasdiarias").val(replaceAll(this.horasdiarias,'.',','));
         				$("#horassemanales").val(replaceAll(this.horassemanales,'.',','));
         				$("#usuario_windows").val(this.usuario_windows);
@@ -2756,7 +2792,19 @@ $(document).ready(function() {
                     },
                 }
             }, 
-
+            diastrabajosemanal: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'D&iacute;as de Trabajo Semanal es requerido'
+                    },
+                    between: {
+                        min: 0,
+                        max: 7,
+                        message: 'D&iacute;as de Trabajo debe estar entre 0 y 7'
+                    },
+                }
+            }, 
 
             horasdiarias: {
                 row: '.form-group',

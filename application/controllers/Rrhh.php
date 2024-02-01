@@ -2073,6 +2073,7 @@ public function mod_trabajador($idtrabajador = null)
 								'tipocontrato' => is_null($idtrabajador) ? "" : $trabajador->tipocontrato,
 								'parttime' => is_null($idtrabajador) ? "" : $trabajador->parttime,
 								'diastrabajo' => is_null($idtrabajador) ? "" : $trabajador->diastrabajo,
+                'diastrabajosemanal' => is_null($idtrabajador) ? "" : $trabajador->diastrabajosemanal,
 								'horasdiarias' => is_null($idtrabajador) ? "" : $trabajador->horasdiarias,
 								'horassemanales' => is_null($idtrabajador) ? "" : $trabajador->horassemanales,
 								'sueldobase' => is_null($idtrabajador) ? "" : number_format($trabajador->sueldobase,0,".","."),
@@ -2309,6 +2310,7 @@ public function mod_trabajador($idtrabajador = null)
 								'tipocontrato' => is_null($idtrabajador) ? "" : $trabajador->tipocontrato,
 								'parttime' => is_null($idtrabajador) ? "" : $trabajador->parttime,
 								'diastrabajo' => is_null($idtrabajador) ? "" : $trabajador->diastrabajo,
+                'diastrabajosemanal' => is_null($idtrabajador) ? "" : $trabajador->diastrabajosemanal,
 								'horasdiarias' => is_null($idtrabajador) ? "" : $trabajador->horasdiarias,
 								'horassemanales' => is_null($idtrabajador) ? "" : $trabajador->horassemanales,
 								'sueldobase' => is_null($idtrabajador) ? "" : number_format($trabajador->sueldobase,0,".","."),
@@ -2533,6 +2535,7 @@ public function editar_trabajador(){
 
 
 			$diastrabajo = $this->input->post('diastrabajo');
+      $diastrabajosemanal = $this->input->post('diastrabajosemanal');
       $horasdiarias = str_replace(",",".",$this->input->post('horasdiarias')); 
       $horassemanales = str_replace(",",".",$this->input->post('horassemanales'));
 
@@ -2796,6 +2799,7 @@ public function editar_trabajador(){
 								'parttime' => $parttime,
 								//'pensionado' => 0,
 								'diastrabajo' => $diastrabajo,
+                'diastrabajosemanal' => $diastrabajosemanal,
 								'horasdiarias' => $horasdiarias,
 								'horassemanales' => $horassemanales,
 								//'sueldobase' => 250000,
@@ -2961,6 +2965,7 @@ public function editar_trabajador(){
 			$trabajo_pesado = $this->input->post('trabajo_pesado');
 
 			$diastrabajo = $this->input->post('diastrabajo');
+      $diastrabajosemanal = $this->input->post('diastrabajosemanal');
 			$horasdiarias = str_replace(",",".",$this->input->post('horasdiarias')); 
 			$horassemanales = str_replace(",",".",$this->input->post('horassemanales'));
 
@@ -3221,6 +3226,7 @@ public function editar_trabajador(){
 								'parttime' => $parttime,
 								//'pensionado' => 0,
 								'diastrabajo' => $diastrabajo,
+                'diastrabajosemanal' => $diastrabajosemanal,
 								'horasdiarias' => $horasdiarias,
 								'horassemanales' => $horassemanales,
 								//'sueldobase' => 250000,
