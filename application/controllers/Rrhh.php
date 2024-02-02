@@ -2566,7 +2566,7 @@ public function editar_trabajador(){
 			
 
 			
-			if($fecingreso !=null){
+			if($fecingreso !=null && $fecingreso !=''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecingreso);
 				$fecingreso = $date->format('Ymd');
 			}else{
@@ -2574,7 +2574,7 @@ public function editar_trabajador(){
 				//$seguro_cesantia =0;
 			}
 
-			if($fecha_retiro !=null){
+			if($fecha_retiro !=null && $fecha_retiro !=''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecha_retiro);
 				$fecha_retiro = $date->format('Ymd');
 			}else{
@@ -2583,7 +2583,7 @@ public function editar_trabajador(){
 			}
 
 
-			if($plazo_contrato !=null){
+			if($plazo_contrato !=null && $plazo_contrato !=''){
 				$date = DateTime::createFromFormat('d/m/Y', $plazo_contrato);
 				$plazo_contrato = $date->format('Ymd');
 			}else{
@@ -2592,7 +2592,7 @@ public function editar_trabajador(){
 			}
 
 
-			if($fecha_finiquito !=null){
+			if($fecha_finiquito !=null && $fecha_finiquito !=''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecha_finiquito);
 				$fecha_finiquito = $date->format('Ymd');
 			}else{
@@ -2600,7 +2600,7 @@ public function editar_trabajador(){
 				//$seguro_cesantia =0;
 			}
 
-			if($fecnacimiento !=null){
+			if($fecnacimiento !=null && $fecnacimiento !=''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
 				$fecnacimiento = $date->format('Ymd');
 			}else{
@@ -2609,7 +2609,7 @@ public function editar_trabajador(){
 			}
 
 
-			if($fecha_inicio_vacaciones !=null){
+			if($fecha_inicio_vacaciones !=null && $fecha_inicio_vacaciones !=''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecha_inicio_vacaciones);
 				$fecha_inicio_vacaciones = $date->format('Ymd');			
 			}else{
@@ -2618,7 +2618,7 @@ public function editar_trabajador(){
 			}
 
 
-			if($fecrealcontrato !=null){
+			if($fecrealcontrato !=null && $fecrealcontrato !=''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecrealcontrato);
 				$fecrealcontrato = $date->format('Ymd');			
 			}else{
@@ -2628,7 +2628,7 @@ public function editar_trabajador(){
 
 
 
-			if($primervenc !=null){
+			if($primervenc !=null && $primervenc !=''){
 				$date = DateTime::createFromFormat('d/m/Y', $primervenc);
 				$primervenc = $date->format('Ymd');			
 			}else{
@@ -2638,7 +2638,7 @@ public function editar_trabajador(){
 
 
 
-			if($fecvencplan !=null){
+			if($fecvencplan !=null && $fecvencplan !=''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecvencplan);
 				$fecvencplan = $date->format('Ymd');			
 			}else{
@@ -2647,8 +2647,7 @@ public function editar_trabajador(){
 			}
 
 
-
-			if($fecapvc !=null){
+			if($fecapvc !=null && $fecapvc !=''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecapvc);
 				$fecapvc = $date->format('Ymd');			
 			}else{
@@ -2658,7 +2657,7 @@ public function editar_trabajador(){
 
 
 
-			if($fectermsubsidio !=null){
+			if($fectermsubsidio !=null && $fectermsubsidio !=''){
 				$date = DateTime::createFromFormat('d/m/Y', $fectermsubsidio);
 				$fectermsubsidio = $date->format('Ymd');			
 			}else{
@@ -2668,7 +2667,7 @@ public function editar_trabajador(){
 
 
 
-			if($fecafp !=null){
+			if($fecafp !=null && $fecafp !=''){
 
 				$date = DateTime::createFromFormat('d/m/Y', $fecafp);
 				$fecafp = $date->format('Ymd');
@@ -2677,7 +2676,7 @@ public function editar_trabajador(){
 				
 			}
 
-			if($fecafc !=null){
+			if($fecafc !=null && $fecafc !=''){
 
 				$date = DateTime::createFromFormat('d/m/Y', $fecafc);
 				$fecafc = $date->format('Ymd');
@@ -2995,7 +2994,7 @@ public function editar_trabajador(){
 			
 
 			
-			if($fecingreso !=null){
+			if($fecingreso !=null && $fecingreso != ''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecingreso);
 				$fecingreso = $date->format('Ymd');
 			}else{
@@ -3003,7 +3002,7 @@ public function editar_trabajador(){
 				//$seguro_cesantia =0;
 			}
 
-			if($fecha_retiro !=null){
+			if($fecha_retiro !=null && $fecha_retiro != ''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecha_retiro);
 				$fecha_retiro = $date->format('Ymd');
 			}else{
@@ -3012,7 +3011,7 @@ public function editar_trabajador(){
 			}
 
 
-			if($plazo_contrato !=null){
+			if($plazo_contrato !=null && $plazo_contrato != ''){
 				$date = DateTime::createFromFormat('d/m/Y', $plazo_contrato);
 				$plazo_contrato = $date->format('Ymd');
 			}else{
@@ -3020,7 +3019,7 @@ public function editar_trabajador(){
 				//$seguro_cesantia =0;
 			}
 
-			if($fecha_finiquito !=null){
+			if($fecha_finiquito !=null && $fecha_finiquito != ''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecha_finiquito);
 				$fecha_finiquito = $date->format('Ymd');
 			}else{
@@ -3028,7 +3027,7 @@ public function editar_trabajador(){
 				//$seguro_cesantia =0;
 			}
 
-			if($fecnacimiento !=null){
+			if($fecnacimiento !=null && $fecnacimiento != ''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecnacimiento);
 				$fecnacimiento = $date->format('Ymd');
 			}else{
@@ -3037,7 +3036,7 @@ public function editar_trabajador(){
 			}
 
 
-			if($fecha_inicio_vacaciones !=null){
+			if($fecha_inicio_vacaciones !=null && $fecha_inicio_vacaciones != ''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecha_inicio_vacaciones);
 				$fecha_inicio_vacaciones = $date->format('Ymd');			
 			}else{
@@ -3046,7 +3045,7 @@ public function editar_trabajador(){
 			}
 
 
-			if($fecrealcontrato !=null){
+			if($fecrealcontrato !=null && $fecrealcontrato != ''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecrealcontrato);
 				$fecrealcontrato = $date->format('Ymd');			
 			}else{
@@ -3056,7 +3055,7 @@ public function editar_trabajador(){
 
 
 
-			if($primervenc !=null){
+			if($primervenc !=null && $primervenc != ''){
 				$date = DateTime::createFromFormat('d/m/Y', $primervenc);
 				$primervenc = $date->format('Ymd');			
 			}else{
@@ -3066,7 +3065,7 @@ public function editar_trabajador(){
 
 
 
-			if($fecvencplan !=null){
+			if($fecvencplan !=null && $fecvencplan != ''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecvencplan);
 				$fecvencplan = $date->format('Ymd');			
 			}else{
@@ -3074,9 +3073,7 @@ public function editar_trabajador(){
 				//$seguro_cesantia =0;
 			}
 
-
-
-			if($fecapvc !=null){
+			if($fecapvc !=null && $fecapvc != ''){
 				$date = DateTime::createFromFormat('d/m/Y', $fecapvc);
 				$fecapvc = $date->format('Ymd');			
 			}else{
@@ -3087,7 +3084,7 @@ public function editar_trabajador(){
 
 
 
-			if($fectermsubsidio !=null){
+			if($fectermsubsidio !=null && $fectermsubsidio != ''){
 				$date = DateTime::createFromFormat('d/m/Y', $fectermsubsidio);
 				$fectermsubsidio = $date->format('Ymd');			
 			}else{
@@ -3097,7 +3094,7 @@ public function editar_trabajador(){
 
 
 
-			if($fecafp !=null){
+			if($fecafp !=null && $fecafp != ''){
 
 				$date = DateTime::createFromFormat('d/m/Y', $fecafp);
 				$fecafp = $date->format('Ymd');
@@ -3106,7 +3103,7 @@ public function editar_trabajador(){
 				
 			}
 
-			if($fecafc !=null){
+			if($fecafc !=null && $fecafc != ''){
 
 				$date = DateTime::createFromFormat('d/m/Y', $fecafc);
 				$fecafc = $date->format('Ymd');
