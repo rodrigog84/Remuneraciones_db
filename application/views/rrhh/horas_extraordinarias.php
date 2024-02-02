@@ -347,7 +347,7 @@ $('.periodo').change(function(){
                               		}
 
                               		montoactual = parseInt(Math.round(((sueldobase*diastrabajosemanal) + semanacorrida)/horassemanales));
-                              		console.log(sueldobase)
+                              		/*console.log(sueldobase)
                               		console.log(dias_habiles)
                               		console.log(dias_inhabiles)
                               		console.log(diastrabajosemanal)
@@ -356,7 +356,7 @@ $('.periodo').change(function(){
                               		console.log(semanacorrida)
                               		console.log(horassemanales)
                               		console.log(montoactual)
-                              		console.log('---------------------')
+                              		console.log('---------------------')*/
 	                              	$('#montoactual_'+idtrabajador).val(montoactual);	
 
                               	}

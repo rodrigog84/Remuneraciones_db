@@ -2105,7 +2105,13 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			if($trabajador->tiporenta == 'Mensual'){
 				 $valor_hora = $trabajador->parttime == 1 ? ((($trabajador->sueldobase)/$trabajador->diastrabajo)/$trabajador->horasdiarias) : ((($trabajador->sueldobase)/30)*7)/$trabajador->horassemanales;
 			}else if($trabajador->tiporenta == 'Diaria'){
-				$semanacorrida = 0;
+
+				if($trabajador->semana_corrida == 'SI'){
+					$semanacorrida = round(($sueldobaseorig/$array_dias['dias_habiles'])*$array_dias['dias_inhabiles'],0);
+				}else{
+					$semanacorrida = 0;
+				}	
+
 				$valor_hora = ( (($sueldobaseorig*$trabajador->diastrabajosemanal) + $semanacorrida)/$trabajador->horassemanales);
 			}
 
