@@ -48,6 +48,9 @@
 									                    </div><!-- /.box-body -->
 									                  </div>
 									                  <!--a href="<?php echo base_url();?>rrhh/carga_masiva_horas_extras" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;Carga Masiva</a--> 
+
+									                  <input type="hidden" name='dias_habiles' id='dias_habiles' value='<?php echo $dias_habiles;?>' >
+									                  <input type="hidden" name='dias_inhabiles' id='dias_inhabiles' value='<?php echo $dias_inhabiles;?>' >
 									                </div>
 
 
@@ -170,10 +173,20 @@
 											                              	<?php $valorhora50 = round($valorhora*1.5,0); ?>
 											                              	<?php $valorhora100 = round($valorhora*2,0); ?>
 											                              <?php }else if($trabajador->tiporenta == 'Diaria'){ ?>
-											                              	<?php $semanacorrida = 0; ?>
+
+											                              	<?php if($trabajador->semana_corrida == 'SI'){
+											                              				//$semanacorrida = $trabajador->sueldobase;
+											                              				$semanacorrida = round(($trabajador->sueldobase/$dias_habiles)*$dias_inhabiles,0);
+											                              		  }else{
+											                              		  		$semanacorrida = 0;
+											                              		  }
+											                              	?>
+
+											                              	<?php //$semanacorrida = 0; ?>
 											                              	<?php $valorhora = round(( (($trabajador->sueldobase*$trabajador->diastrabajosemanal) + $semanacorrida)/$trabajador->horassemanales),0); ?>
 											                              	<?php $valorhora50 = round($valorhora*1.5,0); ?>
 											                              	<?php $valorhora100 = round($valorhora*2,0); ?>
+
 											                              <?php } ?>
 											                               <tr >
 											                                <td><small><?php echo $i ;?></small></td>
@@ -184,7 +197,13 @@
 											                                  <span id="spanvalorhora_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo number_format($valorhora,0,",",".");?></span> 
 
 											                                </td-->
+											                                  <input type="hidden" name="semanacorrida_<?php echo $trabajador->id_personal;?>" id="semanacorrida_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $trabajador->semana_corrida; ?>"  />
+											                                  <input type="hidden" name="tiporenta_<?php echo $trabajador->id_personal;?>" id="tiporenta_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $trabajador->tiporenta; ?>"  />
+											                                  <input type="hidden" name="sueldobase_<?php echo $trabajador->id_personal;?>" id="sueldobase_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $trabajador->sueldobase; ?>"  />
+											                                  <input type="hidden" name="diastrabajosemanal_<?php echo $trabajador->id_personal;?>" id="diastrabajosemanal_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $trabajador->diastrabajosemanal; ?>"  />
+											                                  <input type="hidden" name="horassemanales_<?php echo $trabajador->id_personal;?>" id="horassemanales_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $trabajador->horassemanales; ?>"  />
 											                                  <input type="hidden" name="valorhora_<?php echo $trabajador->id_personal;?>" id="valorhora_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo round($valorhora,0); ?>"  />
+											                                  <input type="hidden" name="montoactualmensual_<?php echo $trabajador->id_personal;?>" id="montoactualmensual_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $valorhora; ?>"  />                                
 											                                  <input type="hidden" name="montoactual_<?php echo $trabajador->id_personal;?>" id="montoactual_<?php echo $trabajador->id_personal;?>" class="form-control" value="<?php echo $valorhora; ?>"  />                                
 											                                <td>
 											                                  <span id="spanvalorhora50_<?php echo $trabajador->id_personal;?>"  class="text-right input-sm" ><?php echo number_format($valorhora50,0,",",".");?></span> 
@@ -275,13 +294,26 @@ $('.periodo').change(function(){
       }
 
 
+      $.ajax({url: "<?php echo base_url();?>rrhh/get_dias_habiles_periodo/"+$('#mes').val()+"/"+$('#anno').val(),
+        type: 'GET',
+        async: false,
+        success : function(data) {
+                  var_json = $.parseJSON(data);
+                  $('#dias_habiles').val(var_json["dias_habiles"]);       
+                  $('#dias_inhabiles').val(var_json["dias_inhabiles"]);    
+        }});
+    
+
       $.get("<?php echo base_url();?>rrhh/get_datos_remuneracion/"+$('#mes').val()+"/"+$('#anno').val(),function(data){
                // Limpiamos el select
+               		//console.log(data)
                    var_json = $.parseJSON(data);
                       var total_horas_50 = 0;
                       var total_horas_100 = 0;
                       $(".horas50").each(
                           function(index,value){
+
+
                               var id_text = $(this).attr('id');
                               var array_field = id_text.split("_");
                               idtrabajador = array_field[1]; 
@@ -296,12 +328,47 @@ $('.periodo').change(function(){
                                 var montohorasextras100 =  typeof(var_json["montohorasextras100_"+idtrabajador]) != 'undefined' && var_json["montohorasextras100_"+idtrabajador] != null ? var_json["montohorasextras100_"+idtrabajador] : 0;
 
                               }else{
-                                var valorhora =  $('#montoactual_'+idtrabajador).val();
-                                var valorhora50 =  $('#montoactual50_'+idtrabajador).val();
-                                var valorhora100 =  $('#montoactual100_'+idtrabajador).val();
+
+                              	if($('#tiporenta_'+idtrabajador).val() == 'Mensual'){
+                              		$('#montoactual_'+idtrabajador).val($('#montoactualmensual_'+idtrabajador).val());
+                              		montoactual = $('#montoactualmensual_'+idtrabajador).val();
+                              	}else if($('#tiporenta_'+idtrabajador).val() == 'Diaria'){
+                              		var sueldobase = parseInt($('#sueldobase_'+idtrabajador).val());
+                              		var diastrabajosemanal = parseInt($('#diastrabajosemanal_'+idtrabajador).val());
+                              		var horassemanales = parseInt($('#horassemanales_'+idtrabajador).val());
+
+                              		if($('#semanacorrida_'+idtrabajador).val() == 'SI'){
+                              			var dias_habiles = parseInt($('#dias_habiles').val());
+                              			var dias_inhabiles = parseInt($('#dias_inhabiles').val());
+                              			
+                              			var semanacorrida = parseInt(Math.round((sueldobase/dias_habiles)*dias_inhabiles));
+                              		}else{
+                              			var semanacorrida = 0;
+                              		}
+
+                              		montoactual = parseInt(Math.round(((sueldobase*diastrabajosemanal) + semanacorrida)/horassemanales));
+                              		console.log(sueldobase)
+                              		console.log(dias_habiles)
+                              		console.log(dias_inhabiles)
+                              		console.log(diastrabajosemanal)
+                              		console.log($('#semanacorrida_'+idtrabajador).val());
+                              		
+                              		console.log(semanacorrida)
+                              		console.log(horassemanales)
+                              		console.log(montoactual)
+                              		console.log('---------------------')
+	                              	$('#montoactual_'+idtrabajador).val(montoactual);	
+
+                              	}
+
+                                var valorhora =  montoactual;
+                                var valorhora50 = parseInt(valorhora*1.5);
+                                var valorhora100 =  parseInt(valorhora*2);
 
                                 var montohorasextras50 = horasextras50*valorhora50;
                                 var montohorasextras100 = horasextras100*valorhora100;
+
+
                               }
 
                               $('#spanvalorhora_'+idtrabajador).html(number_format(valorhora,0,'.','.'));
@@ -332,6 +399,8 @@ $('.periodo').change(function(){
                       $('#total_horas_100').html(number_format(total_horas_100,0,'.','.'));                                    
       });
       
+
+ 
 });
 
 

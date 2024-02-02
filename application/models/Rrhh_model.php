@@ -1776,7 +1776,6 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 	public function dias_habiles($idperiodo){
 
 		$periodo =  $this->get_periodos($this->session->userdata('empresaid'),$idperiodo);
-		//var_dump_new($periodo); exit;
 
 		$periodo_number = $periodo->periodo;
 		//var_dump_new($periodo_number); exit;
@@ -1814,6 +1813,45 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 	}
 
+
+	public function dias_habiles_by_mes($mes,$anno){
+
+
+		$periodo_number = $anno.str_pad($mes,2,"0",STR_PAD_LEFT);
+		//var_dump_new($periodo_number); exit;
+
+		
+		$diashabiles_data = $this->db->select('COUNT(DISTINCT FECHA) AS cantidad',FALSE)
+						  ->from('rem_calendario')
+						  ->where('periodo',$periodo_number)
+						  ->where_in('tipo_dia',array('H','S'));
+
+		$query_diashabiles = $this->db->get();
+		$result_diashabiles =  $query_diashabiles->row();
+
+		$dias_habiles = $result_diashabiles->cantidad; 
+
+
+
+		
+		$diasinhabiles_data = $this->db->select('COUNT(DISTINCT FECHA) AS cantidad',FALSE)
+						  ->from('rem_calendario')
+						  ->where('periodo',$periodo_number)
+						  ->where_in('tipo_dia',array('D','F'));
+
+		$query_diasinhabiles = $this->db->get();
+		$result_diasinhabiles =  $query_diasinhabiles->row();
+
+		$dias_inhabiles = $result_diasinhabiles->cantidad; 
+
+
+
+		$array_dias = array('dias_habiles' => $dias_habiles,
+					   'dias_inhabiles' => $dias_inhabiles);
+
+		return $array_dias;
+
+	}
 
 
 /*	public function dias_habiles($idperiodo){

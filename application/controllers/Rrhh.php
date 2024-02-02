@@ -3715,6 +3715,14 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
 	}	
 
 
+  public function get_dias_habiles_periodo($mes,$anno){
+
+    $array_dias =  $this->rrhh_model->dias_habiles_by_mes($mes,$anno);
+   
+    echo json_encode($array_dias);
+  }   
+
+
 	public function submit_calculo_remuneraciones($idperiodo=null){
 		if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
@@ -5105,7 +5113,8 @@ public function liquidacion_colaborador($idremuneracion = null)
 				$vars['icon'] = 'fa-check';
 			}
 
-			//$this->load->model('admin');
+			$this->load->model('admin');
+      $this->load->model('rrhh_model');
 			//$comunidad = $this->admin->get_comunidades($this->session->userdata('comunidadid')); 
 
 			$mes = $this->session->flashdata('horas_extraordinarias_mes') == '' ? date('m') : $this->session->flashdata('horas_extraordinarias_mes');
@@ -5115,7 +5124,19 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 			$personal = $this->rrhh_model->get_personal(); 
 
+
+
 			$datos_remuneracion = $this->rrhh_model->get_datos_remuneracion($mes,$anno); 
+
+
+      $array_dias =  $this->rrhh_model->dias_habiles_by_mes($mes,$anno);
+
+      //$periodo = $this->admin->get_periodo_by_mes($mes,$anno);
+      //$idperiodo = $periodo->id_periodo;
+
+
+      //$array_dias =  $this->rrhh_model->dias_habiles($idperiodo);
+
 			$array_remuneracion_trabajador = array();
 			foreach ($datos_remuneracion as $remuneracion) {
 				$array_remuneracion_trabajador['horasextras50'][$remuneracion->idpersonal] = $remuneracion->horasextras50;
@@ -5137,6 +5158,8 @@ public function liquidacion_colaborador($idremuneracion = null)
 			$vars['anno'] = $anno;	
 			$vars['content_view'] = 'rrhh/horas_extraordinarias';
 			$vars['formValidation'] = true;
+      $vars['dias_habiles'] = isset($array_dias['dias_habiles']) ? $array_dias['dias_habiles'] : 0;
+      $vars['dias_inhabiles'] = isset($array_dias['dias_inhabiles']) ? $array_dias['dias_inhabiles'] : 0;
 			$vars['maleta'] = true;	
 			$vars['mask'] = true;
 			$vars['gritter'] = true;
