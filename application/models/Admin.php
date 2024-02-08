@@ -99,6 +99,20 @@ class Admin extends CI_Model
 
 
 
+	public function get_centrodecosto_activo_by_empresa($idempresa){
+
+			$this->db->select('distinct idcentrocosto ',false)
+							  ->from('rem_personal')
+							  ->where('id_empresa',$idempresa)
+							  ->where('active',1);
+
+			$query = $this->db->get();	
+			return $query->result();						  
+	}
+
+
+
+
 	public function get_periodo_by_mes($mes,$anno){
 
 			$this->db->select('id_periodo ')
@@ -946,7 +960,7 @@ public function get_cargo_colaborador($idtrabajador = null,$actives = null){
 public function get_personal_total($idtrabajador = null){
 		//echo $idtrabajador;
 
-		$personal_data = $this->db->select('p.id_personal, p.id_empresa, p.rut, p.dv, p.nombre, p.apaterno, p.amaterno, p.fecnacimiento, p.sexo, p.idecivil, e.nombre as estadocivil, p.nacionalidad, p.direccion, p.idregion, p.idcomuna, p.fono, p.email, p.fecingreso, p.idcargo, p.tipocontrato, p.parttime, p.segcesantia, p.fecafc, p.diastrabajo, p.diastrabajosemanal, p.horasdiarias, p.horassemanales, p.sueldobase, p.tipogratificacion, p.gratificacion, p.asigfamiliar, p.cargassimples, p.cargasinvalidas, p.cargasmaternales, p.cargasretroactivas, p.idasigfamiliar, p.movilizacion, p.colacion, p.pensionado, p.idafp, p.adicafp, p.tipoahorrovol, p.ahorrovol, p.instapv, p.nrocontratoapv, p.tipocotapv, p.cotapv, p.formapagoapv, p.depconvapv, p.idisapre, p.valorpactado, p.fecinicvacaciones, p.saldoinicvacaciones, p.saldoinicvacprog, p.active, p.anticipo_permanente, p.anticipo, convert(varchar,p.fecrealcontrato,103) as fecrealcontrato_format, p.fecrealcontrato, p.diasvactomados, c.nombre as nombrecomuna, convert(varchar,p.fecnacimiento,103) as fecnacimiento_format, ca.nombre as nombrecargo, convert(varchar,p.fecingreso,103) as fecingreso_format, a.nombre as nomafp, i.nombre as nomisapre ')
+		$personal_data = $this->db->select('p.id_personal, p.id_empresa, p.rut, p.dv, p.nombre, p.apaterno, p.amaterno, p.fecnacimiento, p.sexo, p.idecivil, e.nombre as estadocivil, p.nacionalidad, p.direccion, p.idregion, p.idcomuna, p.fono, p.email, p.fecingreso, p.idcargo, p.tipocontrato, p.parttime, p.segcesantia, p.fecafc, p.diastrabajo, p.diastrabajosemanal, p.horasdiarias, p.horassemanales, p.sueldobase, p.sueldoprevio,  p.tipogratificacion, p.gratificacion, p.asigfamiliar, p.cargassimples, p.cargasinvalidas, p.cargasmaternales, p.cargasretroactivas, p.idasigfamiliar, p.movilizacion, p.colacion, p.pensionado, p.idafp, p.adicafp, p.tipoahorrovol, p.ahorrovol, p.instapv, p.nrocontratoapv, p.tipocotapv, p.cotapv, p.formapagoapv, p.depconvapv, p.idisapre, p.valorpactado, p.fecinicvacaciones, p.saldoinicvacaciones, p.saldoinicvacprog, p.active, p.anticipo_permanente, p.anticipo, convert(varchar,p.fecrealcontrato,103) as fecrealcontrato_format, p.fecrealcontrato, p.diasvactomados, c.nombre as nombrecomuna, convert(varchar,p.fecnacimiento,103) as fecnacimiento_format, ca.nombre as nombrecargo, convert(varchar,p.fecingreso,103) as fecingreso_format, a.nombre as nomafp, i.nombre as nomisapre ')
 						  ->from('rem_personal p')
 						  ->join('rem_comuna c','p.idcomuna = c.idcomuna','left')
 						  ->join('rem_estado_civil e','p.idecivil = e.id_estado_civil','left')

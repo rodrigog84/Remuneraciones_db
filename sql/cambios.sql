@@ -1325,3 +1325,8 @@ insert into rem_role (appid,levelid) values (9121,2)
 alter table rem_personal add diastrabajosemanal int default 6
 
 
+/*************************************************************************************************************/
+
+
+alter table rem_personal add sueldoprevio bigint default 0
+

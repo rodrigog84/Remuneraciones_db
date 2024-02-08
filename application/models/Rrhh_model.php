@@ -1222,6 +1222,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'horasdiarias', 
 				'horassemanales', 
 				'sueldobase', 
+				'sueldoprevio', 
 				'tipogratificacion', 
 				'gratificacion', 
 				'asigfamiliar', 
@@ -1779,12 +1780,25 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 		$periodo_number = $periodo->periodo;
 		//var_dump_new($periodo_number); exit;
+		//$feria = 10173
+
+		if($this->session->userdata('empresaid') == 10173){ // FERIA
+
+			$diashabiles_data = $this->db->select('COUNT(DISTINCT FECHA) AS cantidad',FALSE)
+							  ->from('rem_calendario')
+							  ->where('periodo',$periodo_number)
+							  ->where_in('tipo_dia',array('H'));
+		}else{
+
+			$diashabiles_data = $this->db->select('COUNT(DISTINCT FECHA) AS cantidad',FALSE)
+							  ->from('rem_calendario')
+							  ->where('periodo',$periodo_number)
+							  ->where_in('tipo_dia',array('H','S'));
+
+		}
 
 		
-		$diashabiles_data = $this->db->select('COUNT(DISTINCT FECHA) AS cantidad',FALSE)
-						  ->from('rem_calendario')
-						  ->where('periodo',$periodo_number)
-						  ->where_in('tipo_dia',array('H','S'));
+
 
 		$query_diashabiles = $this->db->get();
 		$result_diashabiles =  $query_diashabiles->row();
@@ -1792,12 +1806,22 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$dias_habiles = $result_diashabiles->cantidad; 
 
 
-
-		
-		$diasinhabiles_data = $this->db->select('COUNT(DISTINCT FECHA) AS cantidad',FALSE)
+		if($this->session->userdata('empresaid') == 10173){ // FERIA
+			$diasinhabiles_data = $this->db->select('COUNT(DISTINCT FECHA) AS cantidad',FALSE)
 						  ->from('rem_calendario')
 						  ->where('periodo',$periodo_number)
 						  ->where_in('tipo_dia',array('D','F'));
+
+		}else{
+
+			$diasinhabiles_data = $this->db->select('COUNT(DISTINCT FECHA) AS cantidad',FALSE)
+						  ->from('rem_calendario')
+						  ->where('periodo',$periodo_number)
+						  ->where_in('tipo_dia',array('D','F'));
+
+		}
+		
+
 
 		$query_diasinhabiles = $this->db->get();
 		$result_diasinhabiles =  $query_diasinhabiles->row();
@@ -2689,8 +2713,31 @@ limit 1		*/
 
 
 	public function get_periodos_cerrados($empresaid,$idperiodo = null,$idcentrocosto = null){
-		$sql_centro_costo = is_null($idcentrocosto) ? '' : 'and pe.idcentrocosto = ' . $idcentrocosto;
-		$sql_centro_costo_rem = is_null($idcentrocosto) ? '' : 'and r.idcentrocosto = ' . $idcentrocosto;
+
+		$this->load->model('admin');
+		if(is_null($idcentrocosto)){
+
+				$centroscosto = $this->admin->get_centrodecosto_activo_by_empresa($empresaid);
+				$array_centros_costo = array();
+				foreach ($centroscosto as $centrocosto) {
+					array_push($array_centros_costo,$centrocosto->idcentrocosto);
+
+				}
+
+				$string_centros_costo = '(' . implode(',',$array_centros_costo) . ')';
+				$sql_centro_costo = 'and pe.idcentrocosto in ' . $string_centros_costo;
+				$sql_centro_costo_rem = 'and r.idcentrocosto in ' . $string_centros_costo;
+
+		}else{
+
+			$sql_centro_costo = 'and pe.idcentrocosto = ' . $idcentrocosto;
+			$sql_centro_costo_rem = 'and r.idcentrocosto = ' . $idcentrocosto;
+		}
+
+		//$sql_centro_costo = is_null($idcentrocosto) ? '' : 'and pe.idcentrocosto = ' . $idcentrocosto;
+		//$sql_centro_costo_rem = is_null($idcentrocosto) ? '' : 'and r.idcentrocosto = ' . $idcentrocosto;
+
+
 
 
 		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, pr.cierre, pr.aprueba, pr.cierre as cierre,  (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo_rem . ') as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoliquido', false)
@@ -2702,6 +2749,7 @@ limit 1		*/
 		                  ->order_by('p.anno desc')
 		                  ->order_by('p.mes desc');
 		$periodo_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.id_periodo',$idperiodo);
+		$periodo_data = is_null($idcentrocosto) ? $periodo_data->where_in('pr.id_centro_costo',$array_centros_costo) : $periodo_data->where('pr.id_centro_costo',$idcentrocosto);
 		$query = $this->db->get();
 		//echo $this->db->last_query(); exit;
 		//$datos = is_null($idperiodo) ? $query->result() : $query->row();				                  
@@ -4930,9 +4978,12 @@ public function get_lista_movimientos($idpersonal = null,$idmovimiento = null,$i
 		$anno = substr($array_datos['fecmovimiento'],0,4);
 		$this->load->model('admin');
 		$periodo = $this->admin->get_periodo_by_mes($mes,$anno);
+
 		if(!is_null($periodo)){
 			$idperiodo = $periodo->id_periodo;
 			$periodo_cerrado = $this->get_periodos_cerrados($this->session->userdata('empresaid'),$idperiodo);
+
+			//var_dump_new($periodo_cerrado); exit;
 			//if(!is_null($periodo_cerrado)){
 			if(count($periodo_cerrado) > 0){
 

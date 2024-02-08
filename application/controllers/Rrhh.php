@@ -2077,6 +2077,7 @@ public function mod_trabajador($idtrabajador = null)
 								'horasdiarias' => is_null($idtrabajador) ? "" : $trabajador->horasdiarias,
 								'horassemanales' => is_null($idtrabajador) ? "" : $trabajador->horassemanales,
 								'sueldobase' => is_null($idtrabajador) ? "" : number_format($trabajador->sueldobase,0,".","."),
+                'sueldoprevio' => is_null($idtrabajador) ? "" : number_format($trabajador->sueldoprevio,0,".","."),
 								'tipogratificacion' => is_null($idtrabajador) ? "" : $trabajador->tipogratificacion,
 								'gratificacion' => is_null($idtrabajador) ? "" : number_format($trabajador->gratificacion,0,".","."),
 
@@ -2452,6 +2453,7 @@ public function editar_trabajador(){
 			$afp = $this->input->post('afp');
 			$isapre = $this->input->post('isapre');
 			$sueldo_base = str_replace(".","",$this->input->post('sueldo_base'));
+      $sueldo_previo = str_replace(".","",$this->input->post('sueldo_previo'));
 			$fecinicvacaciones = $this->input->post('fecha_inicio_vacaciones');
 			$tipogratificacion = $this->input->post('tipogratificacion');
 			$gratificacion = str_replace(".","",$this->input->post('gratificacion'));
@@ -2718,6 +2720,7 @@ public function editar_trabajador(){
 								'idafp' => $afp,
 								'idisapre' => $isapre,
 								'sueldobase' => $sueldo_base,
+                'sueldoprevio' => $sueldo_previo,                
 								'tipogratificacion' => $tipogratificacion,
 								'gratificacion' => $gratificacion,
 								'movilizacion' => $movilizacion,
@@ -2883,6 +2886,7 @@ public function editar_trabajador(){
 			$afp = $this->input->post('afp');
 			$isapre = $this->input->post('isapre');
 			$sueldo_base = str_replace(".","",$this->input->post('sueldo_base'));
+      $sueldo_previo = str_replace(".","",$this->input->post('sueldo_previo'));
 			$fecinicvacaciones = $this->input->post('fecha_inicio_vacaciones');
 			$tipogratificacion = $this->input->post('tipogratificacion');
 			$gratificacion = str_replace(".","",$this->input->post('gratificacion'));
@@ -3144,6 +3148,7 @@ public function editar_trabajador(){
 								'idafp' => $afp,
 								'idisapre' => $isapre,
 								'sueldobase' => $sueldo_base,
+                'sueldoprevio' => $sueldo_previo,
 								'tipogratificacion' => $tipogratificacion,
 								'gratificacion' => $gratificacion,
 								'movilizacion' => $movilizacion,

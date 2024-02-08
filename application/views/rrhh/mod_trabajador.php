@@ -433,17 +433,29 @@
 								                            </div>
 								                          </div>
 
+
+												 <div class='col-md-6'>
+								                            <div class="form-group">
+								                                <label for="nombre">Sueldo Anterior Licencia</label>  
+								                                 <input type="text" name="sueldo_previo" class="form-control" id="sueldo_previo" placeholder="Sueldo Previo" value="0">
+								                                 <small class="help-block"  >(*) En caso de llenar este campo, se considerar&aacute; para cálculos de renta imponible&nbsp;</small>
+								                            </div>
+								                          </div>								                          
+
+
+
+						                          						                          
+						                        </div>
+
+						                        <div class='row'>
+
+
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
 						                              <label for="diastrabajo">D&iacute;as de Trabajo Mensual</label>
 						                              <input type="text" class="form-control" name="diastrabajo" id="diastrabajo" placeholder="Ingrese D&iacute;as de Trabajo" value="<?php echo $datos_form['diastrabajo']; ?>" >                            
 						                            </div> 
 						                          </div>	
-
-						                          						                          
-						                        </div>
-
-						                        <div class='row'>
 
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
@@ -452,12 +464,6 @@
 						                            </div> 
 						                          </div>							                        	
 
-						                          <div class='col-md-6'>
-						                            <div class="form-group">
-						                              <label for="horasdiarias">Horas Diarias</label>
-						                              <input type="text" class="form-control" name="horasdiarias" id="horasdiarias" placeholder="Ingrese Horas Diarias" value="<?php echo $datos_form['horasdiarias']; ?>" >                            
-						                            </div> 
-						                          </div>
 
 
 
@@ -470,10 +476,26 @@
 
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
+						                              <label for="horasdiarias">Horas Diarias</label>
+						                              <input type="text" class="form-control" name="horasdiarias" id="horasdiarias" placeholder="Ingrese Horas Diarias" value="<?php echo $datos_form['horasdiarias']; ?>" >                            
+						                            </div> 
+						                          </div>
+
+						                          <div class='col-md-6'>
+						                            <div class="form-group">
 						                              <label for="horassemanales">Horas Semanales</label>
 						                              <input type="text" class="form-control" name="horassemanales" id="horassemanales" placeholder="Ingrese Horas Semanales" value="<?php echo $datos_form['horassemanales']; ?>" >   
 						                            </div> 
 						                          </div>
+
+
+
+
+						                         
+						                          
+						                        </div>
+
+													<div class='row'>
 
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
@@ -488,20 +510,20 @@
 						                          </div>
 
 
-
-						                         
-						                          
-						                        </div>
-
-													<div class='row'>
-
-
 						                          <div class='col-md-6'>
 						                            <div class="form-group">
 						                              <label for="gratificacion">Monto Gratificaci&oacute;n</label>
 						                              <input type="text" class="form-control miles" name="gratificacion" id="gratificacion" placeholder="Ingrese Monto Gratificaci&oacute;n" value="<?php echo $datos_form['gratificacion'] == 0 ? '' : $datos_form['gratificacion']; ?>" <?php echo $datos_form['tipogratificacion'] == 'MF' ? '' : 'disabled'; ?> >                            
 						                            </div> 
 						                          </div>
+
+
+
+								                          
+								                          
+
+							                        </div>
+							                        <div class='row'>
 
 
 														 <div class='col-md-6'>
@@ -511,14 +533,6 @@
 						                            </div> 
 						                          </div>
 
-								                          
-								                          
-
-							                        </div>
-							                        <div class='row'>
-
-
-
 														<div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="colacion">Valor Colaci&oacute;n</label>   
@@ -526,6 +540,11 @@
 								                            </div> 
 								                         </div>
 
+
+								                          
+
+							                        </div>
+													<div class='row'>
 
 
 														 <div class='col-md-6'>
@@ -535,21 +554,21 @@
 								                    </div>
 						                          </div>
 
-
-
-								                          
-								                          
-
-							                        </div>
-													<div class='row'>
-
-
 														<div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="colacion">Valor Anticipo</label>   
 								                                <input type="text" class="form-control miles" name="anticipo" id="anticipo" placeholder="Ingrese Valor Anticipo" disabled value="<?php echo $datos_form['anticipo']; ?>" >                            
 								                            </div> 
 								                         </div>
+
+
+
+
+								                          
+								                          
+
+							                        </div>
+							                        <div class='row'>
 
 
 														<div class='col-md-6'>
@@ -566,14 +585,6 @@
 								                            </div>
 								                          </div>
 
-
-								                          
-								                          
-
-							                        </div>
-							                        <div class='row'>
-
-
 														<div class='col-md-6'>
 								                            <div class="form-group">
 								                                <label for="nombre">Categoria</label>  
@@ -586,6 +597,11 @@
 																</select>
 								                            </div>
 								                          </div>
+
+								                          
+
+							                        </div>
+							                        <div class='row'>
 
 
 							                        	<div class='col-md-6'>
@@ -602,11 +618,6 @@
 								                            </div>
 								                          </div>
 
-								                          
-
-							                        </div>
-							                        <div class='row'>
-
 
 
 							                        	<div class='col-md-6'>
@@ -622,6 +633,12 @@
 								                          </div>
 								                          
 
+								                          
+
+							                        </div>
+							                        <div class='row'>
+
+
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Fecha de Retiro</label>
@@ -633,11 +650,6 @@
 								                             	</div>
 								                            </div>
 								                          </div>
-
-								                          
-
-							                        </div>
-							                        <div class='row'>
 
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
@@ -651,6 +663,13 @@
 								                            </div>
 								                          </div>
 
+
+
+								                          
+
+							                        </div>
+
+							                        <div class='row'>
 
 								                          
 
@@ -667,12 +686,6 @@
 								                          </div>
 
 								                          
-								                          
-
-							                        </div>
-
-							                        <div class='row'>
-
 
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
@@ -680,6 +693,11 @@
 								                                <input type="text" class="form-control" id="vacaciones_legales" name="vacaciones_legales" placeholder="Saldo Inicial Vacaciones Legales" size="30" value="0">
 								                            </div>
 								                          </div>
+
+
+							                        </div>		
+
+													<div class='row'>
 
 
 
@@ -691,13 +709,6 @@
 								                            </div>
 								                          </div>
 
-		
-								                          
-								                          
-
-							                        </div>		
-
-													<div class='row'>
 					                        			<div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Motivo de Egreso</label>
@@ -710,6 +721,11 @@
 																</select>
 								                            </div>
 								                          </div>
+
+								                          
+							                        </div>		
+
+							                        <div class='row'>
 
 
 
@@ -727,15 +743,6 @@
 								                          </div>
 						                          
 
-														
-
-								                         
-								                          
-							                        </div>		
-
-							                        <div class='row'>
-
-
 														<div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Plazo Contrato</label>
@@ -748,6 +755,13 @@
 
 								                            </div>
 								                          </div>		
+
+								                          
+								                          
+							                        </div>			
+
+
+							                        <div class='row'>
 
 							                        	<div class='col-md-6'>
 								                            <div class="form-group">
@@ -763,15 +777,6 @@
 								                            </div>
 								                          </div>
 
-
-								                          
-								                          
-							                        </div>			
-
-
-							                        <div class='row'>
-
-
 							                        	 <div class='col-md-6'>
 								                            <div class="form-group">
 								                            	<label for="rut">Código Ine</label>
@@ -786,18 +791,6 @@
 								                          </div>
 							                        	
 
-
-														<div class='col-md-6'>
-								                            <div class="form-group">
-								                              <label for="rut">Sindicato</label>
-																<select name="sindicato" id="sindicato" class="form-control">
-																	<option value="SI">SI</option>
-																	<option value="NO">NO</option>
-																
-																</select>
-
-								                            </div>
-								                          </div>
 
 							                        	<!--div class='col-md-6'>
 								                            <div class="form-group">
@@ -817,6 +810,21 @@
 
 							                         <div class='row'>
 							                         	
+
+
+
+														<div class='col-md-6'>
+								                            <div class="form-group">
+								                              <label for="rut">Sindicato</label>
+																<select name="sindicato" id="sindicato" class="form-control">
+																	<option value="SI">SI</option>
+																	<option value="NO">NO</option>
+																
+																</select>
+
+								                            </div>
+								                          </div>
+
 								                          <div class='col-md-6'>
 								                            <div class="form-group">
 								                              <label for="rut">Semana Corrida</label>
@@ -827,6 +835,11 @@
 																</select>
 								                            </div>
 								                          </div>
+
+		
+								                          
+							                        </div>							                        					       
+							                        <div class='row'>
 
 							                         	<div class='col-md-6'>
 									                           <div class="form-group">
@@ -841,11 +854,6 @@
 								                            </div>
 								                          </div>
 								                          
-		
-								                          
-							                        </div>							                        					       
-							                        <div class='row'>
-
 							                          
 								                           <div class='col-md-6'>
 								                            <div class="form-group">
@@ -861,6 +869,11 @@
 								                          </div>
 								                          						                       
 
+					
+							                        </div>  
+														<div class='row'>
+
+	
 							                          <div class='col-md-6'>
 									                           <div class="form-group">
 								                              <label for="rut">Fecha Real Contrato</label>
@@ -873,12 +886,7 @@
 
 								                            </div>
 								                          </div>
-							                          
-					
-							                        </div>  
-														<div class='row'>
-
-							                          
+							                          						                          
 								                         
 							                          
 								                          <div class='col-md-6'>
@@ -1594,6 +1602,7 @@ $(document).ready(function(){
 		      			$("#email").val(this.email);	
         				$("#nacionalidad").val(this.idnacionalidad);
         				$("#sueldo_base").val(this.sueldobase);
+        				$("#sueldo_previo").val(this.sueldoprevio);
         				
 
 
@@ -1933,6 +1942,8 @@ $(document).ready(function(){
         				$('#movilizacion').mask('000.000.000.000.000', {reverse: true});
         				$('#colacion').mask('000.000.000.000.000', {reverse: true});
         				$('#sueldo_base').mask('000.000.000.000.000', {reverse: true});
+        				$('#sueldo_previo').mask('000.000.000.000.000', {reverse: true});
+
 
 
         				}
@@ -2466,6 +2477,18 @@ $(document).ready(function() {
                 }
                                   
             },
+
+  			sueldo_previo: {
+                row: '.form-group',
+                validators: {
+                    notEmpty: {
+                        message: 'Sueldo Previo es requerido'
+                    },
+                    // The bank validator doesn't have any option
+                    blank: {}  
+                }
+                                  
+            },             
 
 			tipogratificacion: {
                 row: '.form-group',
