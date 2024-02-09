@@ -1365,6 +1365,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'horasdiarias', 
 				'horassemanales', 
 				'sueldobase', 
+				'sueldoprevio', 
 				'tipogratificacion', 
 				'gratificacion', 
 				'asigfamiliar', 
@@ -1613,10 +1614,17 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 	public function aprobar_remuneracion($idperiodo){
 
+
+		$this->db->trans_start();
+		
 		$this->db->where('id_periodo', $idperiodo);
 		//$this->db->where('id_centro_costo', $centro_costo);
 		$this->db->where('id_empresa', $this->session->userdata('empresaid'));
 		$this->db->update('rem_periodo_remuneracion',array('aprueba' => date("Ymd H:i:s"))); 
+
+		$this->db->where('id_empresa', $this->session->userdata('empresaid'));
+		$this->db->update('rem_personal',array('sueldoprevio' => 0)); 
+		$this->db->trans_complete();
 		return 1;
 	}
 
@@ -2463,6 +2471,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			//$movimientos = array();
 			//$tiene_licencia = count($movimientos) > 0 ? true : false;
 			$tiene_licencia = count($movimientos)  > 0 ? true : false;
+			$sueldoprevio = $trabajador->sueldoprevio;
 			//ocupo esta query para sacar el ultimo sueldo imponible, sino tomar suedo base según contrato.
 			/*select r.sueldoimponible from gc_remuneracion r
 inner join gc_periodo p on r.id_periodo = p.id
@@ -2483,6 +2492,9 @@ limit 1		*/
 			}else{
 				$aportesegcesantia = 0;	
 			}	
+
+
+
 
 			if($tiene_licencia && $dias_trabajados < 30){ // SI TIENE LICENCIA SE DEBE SUMAR AL SEGURO LOS DÍAS NO TRABAJADOS POR EL PROPORCIONAL 
 
@@ -2537,7 +2549,20 @@ limit 1		*/
 
 				
 				//if(!is_null($datos_remuneracion_ant)){
-				if($sueldo_mes_anterior){
+
+				if($sueldoprevio != '' && $sueldoprevio > 0){
+
+					/*
+					if($trabajador->id_personal == 40198){
+						var_dump_new($sueldoprevio);
+						exit;
+					}*/				
+
+
+					#CALCULAMOS EL PROPORCIONAL
+					$imponibles_no_trabajo = round(($sueldoprevio/$diastrabajo)*($diastrabajo-$dias_trabajados),0);	
+
+				}else if($sueldo_mes_anterior){
 
 
 					//$parametros_ant['topeimponibleafc'] = $this->admin->get_indicadores_by_periodo($idperiodo_ant,'Tope Imponible AFC');
