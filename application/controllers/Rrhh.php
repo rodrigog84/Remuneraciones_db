@@ -3839,6 +3839,120 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
 	}		
 
 
+
+
+  public function submit_centralizacion_mensual($idperiodo=null){
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+      set_time_limit(0);
+
+      $mes = $this->input->post('mes');
+      $anno = $this->input->post('anno');
+
+      $array_mensajes = array();
+      //if($mes == '' || $anno == ''){
+      if(empty($mes) && empty($anno)){
+        $this->session->set_flashdata('centralizacion_mensual_result', 2);
+        redirect('rrhh/add_centralizacion_mensual');  
+      }
+
+      $this->load->model('admin');
+      $this->load->model('rrhh_model');
+      $this->load->model('configuracion');
+      $periodo = $this->admin->get_periodo_by_mes($mes,$anno);
+      $idperiodo = $periodo->id_periodo;
+
+      $resumen_remuneracion = $this->rrhh_model->get_resumen_rem($idperiodo);
+      
+      
+
+      $cuentas_centralizacion = $this->configuracion->get_cuentas_centralizacion(); 
+      $cuentas_centralizacion_haberes_desctos = $this->rrhh_model->get_bonos_by_periodo($idperiodo);
+
+
+      $cant_mensajes = 0;
+
+      //ITEMS FIJOS
+      foreach ($resumen_remuneracion as $item => $remuneracion) {
+
+        if($item != 'descuentos_variables' && $item != 'haberes_variables'){
+            if($remuneracion > 0){ // LA VALIDACION ES SOLO PARA LOS ITEMS QUE SE OCUPAN
+                foreach ($cuentas_centralizacion as $cuenta_centralizacion) {
+                      if($cuenta_centralizacion->nombre_codigo == $item){
+                          if($cuenta_centralizacion->idcuentacontable == 0){
+                              $array_mensajes[$cant_mensajes] = "No existe cuenta contable asociada a " . $cuenta_centralizacion->nombre_sistema;
+                              $cant_mensajes++;
+
+                          }
+                      }
+
+                }
+            }
+
+        }
+
+      }
+
+      // HABERES Y DESCUENTOS VARIABLES
+     foreach ($resumen_remuneracion as $item => $remuneracion) {
+
+        if($item == 'descuentos_variables' || $item == 'haberes_variables'){
+            foreach ($remuneracion as $item_rem => $rem) { 
+                  if($rem > 0){
+                        foreach ($cuentas_centralizacion_haberes_desctos as $cuenta_centralizacion) {
+                              if($cuenta_centralizacion->idconfhd == $item_rem){
+                                  if($cuenta_centralizacion->idcuentacontable == 0){
+                                      $array_mensajes[$cant_mensajes] = "No existe cuenta contable asociada a " . strtolower($cuenta_centralizacion->tipo) . ' ' .  strtolower($cuenta_centralizacion->descripcion) ;
+                                      $cant_mensajes++;
+                                  }
+                              }
+
+                        }
+
+
+                  }
+            }                              
+
+        }
+
+      }
+
+
+      $asiento_centralizacion = array();
+      if(count($array_mensajes) > 0){
+        $this->session->set_flashdata('centralizacion_mensual_result', 2);
+      }else{
+          //armar asiento contable
+          $asiento_centralizacion = $this->rrhh_model->get_centralizacion($idperiodo);
+
+      }     
+      
+
+      //}
+      $this->session->set_flashdata('centralizacion_mensual_mensajes', $array_mensajes);
+      $this->session->set_flashdata('centralizacion_mensual_mes', $mes);
+      $this->session->set_flashdata('centralizacion_mensual_anno', $anno);
+      $this->session->set_flashdata('centralizacion_mensual_asiento', $asiento_centralizacion);
+      redirect('rrhh/add_centralizacion_mensual');  
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }   
+
+
+  }   
+
+
+
 	public function get_detalle_rrhh($idcentrocosto = null){
 
 		$idcentrocosto = $idcentrocosto == '0' ? null : $idcentrocosto;
@@ -5316,6 +5430,10 @@ public function liquidacion_colaborador($idremuneracion = null)
           $estado_periodo = 0;
       }
 			//$estado_periodo = count($centros_costo) > 0 ? 2 : 0;
+    }else if($tipo_status == 'centralizacion'){
+
+      $estado_periodo = $this->rrhh_model->get_estado_periodo_centralizacion($mes,$anno);
+
 		}else{
 			$estado_periodo = $this->rrhh_model->get_estado_periodo($mes,$anno);
 		}
@@ -5326,6 +5444,12 @@ public function liquidacion_colaborador($idremuneracion = null)
         $array_result['label_style'] = 'label-danger';
         $array_result['label_text'] = 'No existen centros de costo creados';
         $array_result['status'] = 'nuevo';
+      }else if($tipo_status == 'centralizacion'){
+
+        $array_result['label_style'] = 'label-danger';
+        $array_result['label_text'] = 'Per&iacute;odo de remuneraciones no aprobado';
+        $array_result['status'] = 'noaprobado';  
+
       }else{
         $array_result['label_style'] = 'label-success';
         $array_result['label_text'] = 'Datos ingresados (puede editar informaci&oacute;n)';
@@ -5333,14 +5457,31 @@ public function liquidacion_colaborador($idremuneracion = null)
       }           
     }else if($estado_periodo == 3){ // NO EXISTE, ES NUEVO
 
+      if($tipo_status == 'centralizacion'){
+
+        $array_result['label_style'] = 'label-danger';
+        $array_result['label_text'] = 'Centralizaci&oacute;n ya cerrada para el per&iacute;odo';
+        $array_result['status'] = 'noaprobado';  
+      }else{
+
+
         $array_result['label_style'] = 'label-danger';
         $array_result['label_text'] = 'Existen colaboradores sin centro de costo asociado';
         $array_result['status'] = 'nuevo';
+
+      }
+
     }else if($estado_periodo == 2){ // NO EXISTE, ES NUEVO
 			if($tipo_status == 'calculo'){
 				$array_result['label_style'] = 'label-primary';
 				$array_result['label_text'] = 'Per&iacute;odo en condiciones de calcular';
 				$array_result['status'] = 'nuevo';	
+      }else if($tipo_status == 'centralizacion'){
+
+        $array_result['label_style'] = 'label-danger';
+        $array_result['label_text'] = 'Per&iacute;odo de remuneraciones no aprobado';
+        $array_result['status'] = 'noaprobado';  
+
 			}else{
 				$array_result['label_style'] = 'label-primary';
 				$array_result['label_text'] = 'Per&iacute;odo Nuevo (sin datos)';
@@ -5348,9 +5489,21 @@ public function liquidacion_colaborador($idremuneracion = null)
 			}
 
 		}else if($estado_periodo == 0){ // NO EXISTE, ES NUEVO
-			$array_result['label_style'] = 'label-danger';
-			$array_result['label_text'] = 'Per&iacute;odo Cerrado';			
-			$array_result['status'] = 'cerrado';
+
+      if($tipo_status == 'centralizacion'){
+
+        $array_result['label_style'] = 'label-danger';
+        $array_result['label_text'] = 'Per&iacute;odo en condiciones de centralizar';
+        $array_result['status'] = 'aprobado';  
+      }else{
+
+        $array_result['label_style'] = 'label-danger';
+        $array_result['label_text'] = 'Per&iacute;odo Cerrado';     
+        $array_result['status'] = 'cerrado';
+
+      }
+
+
 		}else{
 			if($tipo_status == 'calculo'){
 				$array_result['label_style'] = 'label-primary';
@@ -5469,7 +5622,10 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 
 				 //$estado_periodo = count($centros_costo) > 0 ? 2 : 0;
-			}else{
+      }else if($tipo_status == 'centralizacion'){
+
+        $estado_periodo = $this->rrhh_model->get_estado_periodo_centralizacion($this->input->post('mes'),$this->input->post('anno'));
+      }else{
 				$estado_periodo = $this->rrhh_model->get_estado_periodo($this->input->post('mes'),$this->input->post('anno'));	
 			}
 			//echo "estado_periodo:".$estado_periodo;
@@ -5477,7 +5633,9 @@ public function liquidacion_colaborador($idremuneracion = null)
 
 			if(is_null($tipo_status)){
 				$valid = $estado_periodo == 1 || $estado_periodo == 2 || $estado_periodo == 3 ? true : false;
-			}else{
+			}else if($tipo_status == 'centralizacion'){
+        $valid = $estado_periodo == 0 ? true : false;
+      }else{
 				$valid = $estado_periodo == 1 || $estado_periodo == 2 ? true : false;
 			}
 		}
@@ -7529,4 +7687,303 @@ public function genera_carta($idpersonal){
             echo json_encode($data);
 
     }   
+
+
+
+
+  public function centralizacion_mensual(){
+    
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){  
+
+      $resultid = $this->session->flashdata('licencias_result');
+      if($resultid == 1){
+        $vars['message'] = "Error al agregar Licencia.  Debe seleccionar un colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';   
+      }else if($resultid == 2){
+        $vars['message'] = "Error al agregar Licencia.  Colaborador no existe";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';   
+      }else if($resultid == 3){
+        $vars['message'] = "Error al editar Licencia.  Debe seleccionar una licencia";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';   
+      }else if($resultid == 4){
+        $vars['message'] = "Error al editar Licencia.  Licencia no existe";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';   
+      }else if($resultid == 5){
+        $vars['message'] = "Licencia Agregada correctamente";
+        $vars['classmessage'] = 'success';
+        $vars['icon'] = 'fa-check';   
+      }else if($resultid == 6){
+        $vars['message'] = "Error al agregar licencia.  Per&iacute;odo se encuentra cerrado o no disponible";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';   
+      }else if($resultid == 7){
+        $vars['message'] = "Licencia editada correctamente";
+        $vars['classmessage'] = 'success';
+        $vars['icon'] = 'fa-check';   
+      }else if($resultid == 8){
+        $vars['message'] = "Error al editar/eliminar licencia.  Per&iacute;odo se encuentra cerrado o no disponible";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';   
+      }else if($resultid == 9){
+        $vars['message'] = "Licencia M&eacute;dica eliminada correctamente";
+        $vars['classmessage'] = 'success';
+        $vars['icon'] = 'fa-check';   
+      }else if($resultid == 10){
+        $vars['message'] = "Error al eliminar licencia.  Licencia no existe";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';   
+      }
+
+      $this->load->model('rrhh_model');
+      $centralizaciones =  $this->rrhh_model->get_centralizaciones();
+
+      //var_dump_new($centralizaciones); exit;
+      //$licencia = $this->auxiliar->get_licencias();
+      //var_dump_new($licencia); exit;
+
+      $content = array(
+            'menu' => 'Licencias Medicas',
+            'title' => 'Licencias Medicas',
+            'subtitle' => 'Licencias Medicas');
+
+      $vars['datatable'] = true;
+      $vars['content_menu'] = $content; 
+      $vars['content_view'] = 'rrhh/centralizacion_mensual';
+      $vars['centralizaciones'] = $centralizaciones;
+      $vars['gritter'] = true;
+      $vars['sweetalert'] = true;
+      $vars['maleta']  = true;
+
+      $template = "template";
+      
+
+      $this->load->view($template,$vars); 
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+
+    }
+
+
+  }
+
+
+
+
+
+  public function add_centralizacion_mensual($resultid = '')
+  {
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+      $resultid = $this->session->flashdata('centralizacion_mensual_result');
+
+
+      
+      if($resultid == 1){
+        $vars['message'] = "Remuneraciones calculadas correctamente";
+        $vars['classmessage'] = 'success';
+        $vars['icon'] = 'fa-check';   
+      }elseif($resultid == 2){
+        $vars['message'] = "Error al Calcular Centralizacion. Falta informaci&oacute;n para per&iacute;odo seleccionado";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }else if($resultid == 3){
+        $vars['message'] = "Remuneracion aprobada";
+        $vars['classmessage'] = 'success';
+        $vars['icon'] = 'fa-check';         
+      }else if($resultid == 4){
+        $vars['message'] = "Remuneracion rechazada.  Puede corregir los valores necesarios para calcular nuevamente";
+        $vars['classmessage'] = 'success';
+        $vars['icon'] = 'fa-check';         
+      }else if($resultid == 5){
+        $vars['message'] = "Error al Calcular Remuneraciones. No se encuentran algunos indicadores para el per&iacute;odo seleccionado";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';         
+      }
+      $mes = $this->session->flashdata('centralizacion_mensual_mes') == '' ? date('m') : $this->session->flashdata('centralizacion_mensual_mes');
+      $anno = $this->session->flashdata('centralizacion_mensual_anno') == '' ? date('Y') : $this->session->flashdata('centralizacion_mensual_anno');
+      $this->load->model('admin');
+      //$centros_costo = $this->admin->get_centro_costo(null,'trabajadores');
+      $periodos_remuneracion = $this->rrhh_model->get_periodos_remuneracion_abiertos_resumen(); 
+
+      $array_asiento_contable = array('DEBE' => array(),
+                                      'HABER' => array());
+      if(!is_null($this->session->flashdata('centralizacion_mensual_asiento'))){
+        $array_asiento_contable = $this->session->flashdata('centralizacion_mensual_asiento');
+
+      }
+      
+      
+
+      if ($periodos_remuneracion == null){
+        $mes_curso = $mes;
+        $anno_curso = $anno;
+      }else{
+        $mes_curso = $periodos_remuneracion[0]->mes;
+        $anno_curso = $periodos_remuneracion[0]->anno;
+      }
+      $mensajes_flashdata = $this->session->flashdata('centralizacion_mensual_mensajes');
+      if(is_null($mensajes_flashdata)){
+        $array_mensajes = array();    
+      }else{
+        $array_mensajes = $mensajes_flashdata;
+      } 
+      /***** ANALIZAR DATOS DE EMPRESA *****/
+
+
+      $content = array(
+            'menu' => 'Remuneraciones',
+            'title' => 'Remuneraciones',
+            'subtitle' => 'Calculo Centralizaci&oacute;n');
+
+      $vars['mes_curso'] = $mes_curso;
+      $vars['anno_curso'] = $anno_curso;
+      $vars['mensajes'] = $array_mensajes;
+
+
+      $vars['content_menu'] = $content;       
+      $vars['mes'] = $mes;  
+      $vars['anno'] = $anno;  
+      $vars['periodos_remuneracion'] = $periodos_remuneracion;  
+      $vars['array_asiento_contable'] = $array_asiento_contable;  
+
+      
+      $vars['formValidation'] = true;
+      $vars['gritter'] = true;
+      $vars['sweetalert'] = true;
+      //$vars['multipleSelect'] = true;
+      //$vars['centro_costo_periodo'] = $centro_costo_periodo;  
+      $vars['content_view'] = 'rrhh/add_centralizacion_mensual';
+
+      $template = "template";
+      
+
+      $this->load->view($template,$vars); 
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  }
+
+
+
+
+  public function crea_asiento_centralizacion()
+  {
+
+
+
+    
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+        $data = $this->input->post('data');
+        $mes = $this->input->post('mes');
+        $anno = $this->input->post('anno');
+        $array_asiento = json_decode($data);
+        $asiento_centralizacion = $this->rrhh_model->guarda_centralizacion($mes,$anno,$array_asiento);
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  }
+
+
+
+  public function aprobar_centralizacion($idcentralizacion,$tipo = 'a')
+  {
+
+
+
+    
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+        $this->rrhh_model->aprobar_centralizacion($idcentralizacion, $tipo);
+
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  }  
+
+
+  public function get_centralizacion($idcentralizacion)
+  {
+
+
+
+    
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+        $this->load->model('admin');
+        $centralizaciones = $this->rrhh_model->get_centralizaciones($idcentralizacion);
+        $centralizacion = $centralizaciones[0];
+        $idperiodo = $centralizacion->idperiodo;
+        
+        //$periodo = $this->admin->get_periodo_by_id($idperiodo);
+        $asiento_centralizacion = $this->rrhh_model->get_centralizacion($idperiodo);
+
+        $result['asiento'] = $asiento_centralizacion;
+
+        echo json_encode($result);
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  }    
+
 }

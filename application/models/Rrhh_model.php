@@ -769,6 +769,35 @@ public function add_personal($array_datos,$idtrabajador){
 	}
 
 
+
+	public function get_estado_periodo_centralizacion($mes,$anno){
+
+		$this->db->select('pr.anticipo, pr.aprueba, c.aprobado, c.calculado')
+						  ->from('rem_periodo_remuneracion as pr')
+						  ->join('rem_periodo as p','pr.id_periodo = p.id_periodo')
+						  ->join('rem_centralizacion_periodo as c','pr.id_periodo = c.idperiodo','LEFT')
+		                  ->where('p.mes', $mes)
+		                  ->where('p.anno', $anno)
+		                  ->where('pr.id_empresa', $this->session->userdata('empresaid'))
+		                  ->order_by('pr.aprueba');
+		                  //->where('pr.cierre is null');
+		$query = $this->db->get();
+		$datos_periodo = $query->row();
+		if($query->num_rows() == 0){
+			return 2;
+		}else{
+			
+			if(is_null($datos_periodo->aprueba)){
+				return 1;  #EL 3 aplica sólo en cálculo de anticipo
+			}else if(!is_null($datos_periodo->aprobado) || !is_null($datos_periodo->calculado)){
+				return 3;
+			}else{
+				return 0;
+			}
+		}
+	}	
+
+
 public function save_asistencia($array_trabajadores,$mes,$anno){
 
 
@@ -1616,7 +1645,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 		$this->db->trans_start();
-		
+
 		$this->db->where('id_periodo', $idperiodo);
 		//$this->db->where('id_centro_costo', $centro_costo);
 		$this->db->where('id_empresa', $this->session->userdata('empresaid'));
@@ -1770,7 +1799,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$campo_imponible = $imponible == true ? 1 : 0;	
 		}
 		
-		$bonos_data = $this->db->select('id, descripcion, imponible, monto')
+		$bonos_data = $this->db->select('id, descripcion, imponible, monto, idconfhd')
 						  ->from('rem_haber_descuento_remuneracion')
 						  ->where('idremuneracion',$idremuneracion)
 		                  ->order_by('id');
@@ -1780,6 +1809,35 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$query = $this->db->get();
 		return $query->result();
 	}	
+
+
+
+
+	public function get_bonos_by_periodo($idperiodo){
+
+		
+		$bonos_data = $this->db->select('r.id_remuneracion
+										,r.idpersonal
+										,r.id_periodo
+										,h.tipo
+										,h.descripcion
+										,h.monto
+										,h.idconfhd
+										,c.idcuentacontable
+										,c.idcentrocosto
+										,c.iditemingreso
+										,c.iditemgasto
+										,c.idcuentacorriente')
+						  ->from('rem_remuneracion r')
+						  ->join('rem_haber_descuento_remuneracion h','r.id_remuneracion = h.idremuneracion')
+						  ->join('rem_conf_haber_descuento c','h.idconfhd = c.id')
+						  ->where('r.id_empresa',$this->session->userdata('empresaid'))
+						  ->where('r.id_periodo',$idperiodo);
+		 		                  
+		$query = $this->db->get();
+		return $query->result();
+	}	
+
 
 
 	public function dias_habiles($idperiodo){
@@ -2406,7 +2464,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 								'imponible' => $info_descuento->imponible,
 								'monto' => $info_descuento->monto,
 								'tipo' => 'DESCUENTO',
-								'idconfhd' => $bono->id_hab_descto
+								'idconfhd' => $info_descuento->id_hab_descto
 								);
 					$this->db->insert('rem_haber_descuento_remuneracion', $data_bono);
 			}
@@ -6053,6 +6111,652 @@ public function previred($datos_remuneracion){
 	}		
 
 
+
+public function get_centralizaciones($idcentralizacion = null){
+
+
+			$centralizacion_data = $this->db->select('c.id,  c.idperiodo, c.calculado, c.aprobado, c.nrocomprobante, c.totaldebe, c.totalhaber, p.mes, p.anno ',false)
+							  ->from('rem_centralizacion_periodo c')
+							  ->join('rem_periodo p','c.idperiodo = p.id_periodo')
+							  ->where('c.idempresa',$this->session->userdata('empresaid'))
+							  ->order_by('c.created_at','desc');
+
+			$centralizacion_data = is_null($idcentralizacion) ? $centralizacion_data : $centralizacion_data->where('c.id',$idcentralizacion);  	
+
+			$query = $this->db->get();	
+			return $query->result();		
+
+}
+
+
+public function get_resumen_rem($idperiodo){
+
+	$this->load->model('rrhh_model');
+	$datos_remuneracion = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo,true);
+
+	//var_dump_new($datos_remuneracion); exit;
+	$array_cuentas_centralizacion = array();
+
+	$array_cuentas_centralizacion['sueldo_base'] = 0;
+	$array_cuentas_centralizacion['gratificacion'] = 0;
+	$array_cuentas_centralizacion['movilizacion'] = 0;
+	$array_cuentas_centralizacion['colacion'] = 0;
+	$array_cuentas_centralizacion['horasextras50'] = 0;
+	$array_cuentas_centralizacion['horasextras100'] = 0;
+	$array_cuentas_centralizacion['semanacorrida'] = 0;
+	$array_cuentas_centralizacion['aguinaldo'] = 0;
+	$array_cuentas_centralizacion['asigfamiliar'] = 0;
+	$array_cuentas_centralizacion['cotobligatoria'] = 0;
+	$array_cuentas_centralizacion['cotadic'] = 0;
+	$array_cuentas_centralizacion['ahorrovol'] = 0;
+	$array_cuentas_centralizacion['apv'] = 0;
+	$array_cuentas_centralizacion['cotsalud'] = 0;
+	$array_cuentas_centralizacion['segurocesantia'] = 0;
+	$array_cuentas_centralizacion['impuestos'] = 0;
+	$array_cuentas_centralizacion['anticipos'] = 0;
+	$array_cuentas_centralizacion['desctoaguinaldo'] = 0;
+	$array_cuentas_centralizacion['aportesegcesantia'] = 0;
+	$array_cuentas_centralizacion['aportesis'] = 0;
+	$array_cuentas_centralizacion['mutseguridad'] = 0;
+	$array_cuentas_centralizacion['sueldo_liquido'] = 0;
+
+	$array_cuentas_centralizacion['descuentos_variables'] = array();
+	$array_cuentas_centralizacion['haberes_variables'] = array();
+
+
+	$array_salud = array();
+	$array_afp = array();
+	$array_apv = array();
+	
+	$num_trabajadores = 0;
+
+
+	foreach($datos_remuneracion as $remuneracion){
+
+		$datos_descuentos = $this->rrhh_model->get_bonos_by_remuneracion($remuneracion->id_remuneracion,null,'DESCUENTO');
+		$datos_haberes = $this->rrhh_model->get_bonos_by_remuneracion($remuneracion->id_remuneracion,true,'HABER');
+
+		//exit;
+		//$datos_d = $this->get_haberes_descuentos($datos_remuneracion->idtrabajador,null,'DESCUENTO',$datos_remuneracion->id_periodo);
+		foreach ($datos_descuentos as $dato_descuento) {
+			if(!isset($array_cuentas_centralizacion['descuentos_variables'][$dato_descuento->idconfhd])){
+				$array_cuentas_centralizacion['descuentos_variables'][$dato_descuento->idconfhd] = 0;
+			}
+
+			$array_cuentas_centralizacion['descuentos_variables'][$dato_descuento->idconfhd] += $dato_descuento->monto;
+		}
+		
+
+		foreach ($datos_haberes as $dato_haber) {
+			if(!isset($array_cuentas_centralizacion['haberes_variables'][$dato_haber->idconfhd])){
+				$array_cuentas_centralizacion['haberes_variables'][$dato_haber->idconfhd] = 0;
+			}
+
+			$array_cuentas_centralizacion['haberes_variables'][$dato_haber->idconfhd] += $dato_haber->monto;
+		}
+
+
+		/*** HABERES  **********/
+
+		$array_cuentas_centralizacion['sueldo_base'] += $remuneracion->sueldobase;
+		$array_cuentas_centralizacion['gratificacion'] += $remuneracion->gratificacion;
+		$array_cuentas_centralizacion['movilizacion'] += $remuneracion->movilizacion;
+		$array_cuentas_centralizacion['colacion'] += $remuneracion->colacion;
+
+		/************************************************************/
+		//$bonosimponibles += $remuneracion->bonosimponibles;
+		//$bonosnoimponibles += $remuneracion->bonosnoimponibles;
+		/*************************************************************/
+	
+		$array_cuentas_centralizacion['horasextras50'] += $remuneracion->montohorasextras50;
+		$array_cuentas_centralizacion['horasextras100'] += $remuneracion->montohorasextras100;
+		$array_cuentas_centralizacion['semanacorrida'] += $remuneracion->semana_corrida;
+		$array_cuentas_centralizacion['aguinaldo'] += $remuneracion->aguinaldobruto;
+		$array_cuentas_centralizacion['asigfamiliar'] += $remuneracion->asigfamiliar;
+
+		/***************************************************/
+
+
+		$array_cuentas_centralizacion['segurocesantia'] += $remuneracion->segcesantia;
+		$array_cuentas_centralizacion['impuestos'] += $remuneracion->impuesto;
+		$array_cuentas_centralizacion['anticipos'] += $remuneracion->anticipo;
+		$array_cuentas_centralizacion['desctoaguinaldo'] += $remuneracion->aguinaldo;
+
+		/**************************************************************/
+		//$descuentosvariables += $monto_descuento;
+		/**************************************************************/
+
+		$array_cuentas_centralizacion['aportesegcesantia'] += $remuneracion->aportesegcesantia;
+		$array_cuentas_centralizacion['aportesis'] += $remuneracion->seginvalidez;
+		$array_cuentas_centralizacion['mutseguridad'] += $remuneracion->aportepatronal;
+
+		$array_cuentas_centralizacion['sueldo_liquido'] += $remuneracion->sueldoliquido;
+
+
+		if(!isset($array_salud[$remuneracion->prev_salud])){
+			$array_salud[$remuneracion->prev_salud] = 0;
+		}
+
+		if(!isset($array_afp[$remuneracion->afp])){
+			$array_afp[$remuneracion->afp]['cotizacion'] = 0;
+			$array_afp[$remuneracion->afp]['adicional'] = 0;
+			$array_afp[$remuneracion->afp]['ahorrovol'] = 0;
+		}
+
+		if(!is_null($remuneracion->nomapv)){
+
+			if(!isset($array_apv[$remuneracion->nomapv])){
+				$array_apv[$remuneracion->nomapv] = 0;
+			}
+
+		}
+
+
+		$array_salud[$remuneracion->prev_salud] += $remuneracion->cotizacionsalud + $remuneracion->cotadicisapre + $remuneracion->adicsalud + $remuneracion->fonasa + $remuneracion->inp;
+		$array_afp[$remuneracion->afp]['cotizacion'] += $remuneracion->cotizacionobligatoria + $remuneracion->comisionafp;
+		$array_afp[$remuneracion->afp]['adicional'] += $remuneracion->adicafp;
+		$array_afp[$remuneracion->afp]['ahorrovol'] += $remuneracion->montoahorrovol;
+
+
+		if(!is_null($remuneracion->nomapv)){
+			$array_apv[$remuneracion->nomapv] += $remuneracion->montocotapv;
+		}
+
+
+		$array_cuentas_centralizacion['cotobligatoria'] = 0;
+		$array_cuentas_centralizacion['cotadic'] = 0;
+		$array_cuentas_centralizacion['ahorrovol'] = 0;
+		foreach($array_afp as $nombreafp => $valores_afp){
+
+			$array_cuentas_centralizacion['cotobligatoria'] += $valores_afp['cotizacion'];
+			$array_cuentas_centralizacion['cotadic'] += $valores_afp['adicional'];
+			$array_cuentas_centralizacion['ahorrovol'] += $valores_afp['ahorrovol'];
+
+
+		}
+
+
+
+		$array_cuentas_centralizacion['apv'] = 0;
+		 foreach($array_apv as $nombreapv => $valores_apv){
+
+		 	$array_cuentas_centralizacion['apv'] += $valores_apv;
+
+		 }
+
+		 $array_cuentas_centralizacion['cotsalud'] = 0;
+		 foreach($array_salud as $nombreisapre => $valores_isapre){
+		 	$array_cuentas_centralizacion['cotsalud'] += $valores_isapre;
+
+		 }
+		 
+
+			
+
+	}
+	
+
+	return $array_cuentas_centralizacion;
+
+
+
+}
+
+
+
+public function get_centralizacion($idperiodo){
+
+	$this->load->model('rrhh_model');
+	$this->load->model('configuracion');
+	$resumen_remuneracion = $this->rrhh_model->get_resumen_rem($idperiodo);
+  	$cuentas_centralizacion = $this->configuracion->get_cuentas_centralizacion(); 
+  	$cuentas_centralizacion_haberes_desctos = $this->rrhh_model->get_bonos_by_periodo($idperiodo);
+
+
+
+  	$array_asiento_contable_debe = array();
+  	$array_asiento_contable_haber = array();
+     foreach ($resumen_remuneracion as $item => $remuneracion) {
+
+     	if($item != 'descuentos_variables' && $item != 'haberes_variables'){
+            if($remuneracion > 0){ // LA VALIDACION ES SOLO PARA LOS ITEMS QUE SE OCUPAN
+                foreach ($cuentas_centralizacion as $cuenta_centralizacion) {
+                      if($cuenta_centralizacion->nombre_codigo == $item){
+
+                      		$array_linea = array(
+                      								'item' => $item,
+                      								'idcuentacontable' => $cuenta_centralizacion->idcuentacontable,
+                      								'nomcuentacontable' => '',
+                      								'idcentrocosto' => $cuenta_centralizacion->idcentrocosto,
+                      								'iditemingreso' => $cuenta_centralizacion->iditemingreso,
+                      								'iditemgasto' => $cuenta_centralizacion->iditemgasto,
+                      								'idcuentacorriente' => $cuenta_centralizacion->idcuentacorriente,
+                      								'monto' => $remuneracion
+                      							);
+
+                      		if($cuenta_centralizacion->tipo_cuadratura == 'A'){
+
+
+
+	                      		array_push($array_asiento_contable_debe,$array_linea);
+	                      		array_push($array_asiento_contable_haber,$array_linea);	                      		
+
+
+                      		}else if($cuenta_centralizacion->tipo_cuadratura == 'D'){
+
+	                      		array_push($array_asiento_contable_debe,$array_linea);
+
+                      		}else if($cuenta_centralizacion->tipo_cuadratura == 'H'){
+                      			array_push($array_asiento_contable_haber,$array_linea);
+
+                      		}
+
+
+                      		
+                      }
+
+                }
+            }
+
+        }
+
+      }
+
+
+
+
+foreach ($resumen_remuneracion as $item => $remuneracion) {
+
+     	if($item == 'descuentos_variables' || $item == 'haberes_variables'){
+     		foreach ($remuneracion as $item_rem => $rem) {
+
+
+	            if($rem > 0){ // LA VALIDACION ES SOLO PARA LOS ITEMS QUE SE OCUPAN
+	                foreach ($cuentas_centralizacion_haberes_desctos as $cuenta_centralizacion) {
+	                      if($cuenta_centralizacion->idconfhd == $item_rem){
+
+	                      		$array_linea = array(
+	                      								'item' => $cuenta_centralizacion->descripcion,
+	                      								'idcuentacontable' => $cuenta_centralizacion->idcuentacontable,
+	                      								'nomcuentacontable' => '',
+	                      								'idcentrocosto' => $cuenta_centralizacion->idcentrocosto,
+	                      								'iditemingreso' => $cuenta_centralizacion->iditemingreso,
+	                      								'iditemgasto' => $cuenta_centralizacion->iditemgasto,
+	                      								'idcuentacorriente' => $cuenta_centralizacion->idcuentacorriente,
+	                      								'monto' => $cuenta_centralizacion->monto
+	                      							);
+
+	                      		if($cuenta_centralizacion->tipo == 'HABER'){
+
+
+
+		                      		array_push($array_asiento_contable_debe,$array_linea);                 		
+
+
+	                      		}else if($cuenta_centralizacion->tipo == 'DESCUENTO'){
+
+	                      			array_push($array_asiento_contable_haber,$array_linea);
+
+	                      		}
+
+
+	                      		
+	                      }
+
+	                }
+	            }
+
+
+
+
+     		}
+
+
+
+
+        }
+
+      }
+
+
+      $array_asiento_contable_debe_final = array();
+      $array_asiento_contable_haber_final = array();
+      foreach ($array_asiento_contable_debe as $array_asiento_contable) {
+      	
+      	$existe_cuenta = false;
+      	foreach ($array_asiento_contable_debe_final as $key_contable => $array_asiento_contable_final) {
+      			if($array_asiento_contable['idcuentacontable'] == $array_asiento_contable_final['idcuentacontable']){
+      				if($array_asiento_contable['idcentrocosto'] == $array_asiento_contable_final['idcentrocosto'] && $array_asiento_contable['iditemingreso'] == $array_asiento_contable_final['iditemingreso'] && $array_asiento_contable['iditemgasto'] == $array_asiento_contable_final['iditemgasto'] && $array_asiento_contable['idcuentacorriente'] == $array_asiento_contable_final['idcuentacorriente']){
+      					$array_asiento_contable_debe_final[$key_contable]['monto'] = $array_asiento_contable_debe_final[$key_contable]['monto'] + $array_asiento_contable['monto'];
+      					$existe_cuenta = true;
+      				}
+
+      			}
+      	}
+
+      	if(!$existe_cuenta){
+
+      		array_push($array_asiento_contable_debe_final,$array_asiento_contable);
+      	}
+
+
+
+      }
+
+
+      foreach ($array_asiento_contable_haber as $array_asiento_contable) {
+      	
+      	$existe_cuenta = false;
+      	foreach ($array_asiento_contable_haber_final as $key_contable => $array_asiento_contable_final) {
+      			if($array_asiento_contable['idcuentacontable'] == $array_asiento_contable_final['idcuentacontable']){
+      				if($array_asiento_contable['idcentrocosto'] == $array_asiento_contable_final['idcentrocosto'] && $array_asiento_contable['iditemingreso'] == $array_asiento_contable_final['iditemingreso'] && $array_asiento_contable['iditemgasto'] == $array_asiento_contable_final['iditemgasto'] && $array_asiento_contable['idcuentacorriente'] == $array_asiento_contable_final['idcuentacorriente']){
+      					$array_asiento_contable_debe_final[$key_contable]['monto'] = $array_asiento_contable_debe_final[$key_contable]['monto'] + $array_asiento_contable['monto'];
+      					$existe_cuenta = true;
+      				}
+
+      			}
+      	}
+
+      	if(!$existe_cuenta){
+
+      		array_push($array_asiento_contable_haber_final,$array_asiento_contable);
+      	}
+
+
+
+      }
+
+
+			###### OBTIENE DATOS CUENTAS CONTABLES
+
+			$empresa = $this->admin->get_empresas($this->session->userdata('empresaid'));
+			
+			#SI ESTAMOS PROBANDO, UTILIZARA EL RUT DE LA FERIA, EN CASO CONTRARIO EL RUT DE LA EMPRESA
+			$rut_empresa = CENTRALIZACION_PRUEBA ? 90380000 : $empresa->rut;
+
+			#OBTIENE PLAN DE CUENTAS
+			$url_api_plan_cuentas = URL_API_ADM. '/api/plan_cuentas/' . $rut_empresa;
+			$curl_plan_cuentas = curl_init();
+
+			curl_setopt_array($curl_plan_cuentas, array(
+			  CURLOPT_URL => $url_api_plan_cuentas,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_plan_cuentas = curl_exec($curl_plan_cuentas);
+
+			curl_close($curl_plan_cuentas);
+
+			#OBTIENE CENTROS DE COSTO
+			$url_api_centros_costo = URL_API_ADM. '/api/centros_costo/' . $rut_empresa;
+			$curl_centros_costo = curl_init();
+
+			curl_setopt_array($curl_centros_costo, array(
+			  CURLOPT_URL => $url_api_centros_costo,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_centros_costo = curl_exec($curl_centros_costo);
+
+			curl_close($curl_centros_costo);
+
+
+			#OBTIENE ITEM INGRESO
+			$url_api_item_ingreso = URL_API_ADM. '/api/item_ingreso/' . $rut_empresa;
+			$curl_item_ingreso = curl_init();
+
+			curl_setopt_array($curl_item_ingreso, array(
+			  CURLOPT_URL => $url_api_item_ingreso,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_item_ingreso = curl_exec($curl_item_ingreso);
+
+			curl_close($curl_item_ingreso);
+
+
+			#OBTIENE ITEM GASTO
+			$url_api_item_gasto = URL_API_ADM. '/api/item_gasto/' . $rut_empresa;
+			$curl_item_gasto = curl_init();
+
+			curl_setopt_array($curl_item_gasto, array(
+			  CURLOPT_URL => $url_api_item_gasto,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_item_gasto = curl_exec($curl_item_gasto);
+
+			curl_close($curl_item_gasto);
+
+
+
+			#OBTIENE CUENTA CORRIENTE
+			$url_api_cuenta_corriente = URL_API_ADM. '/api/cuentas_corriente/' . $rut_empresa;
+			$curl_cuenta_corriente = curl_init();
+
+			curl_setopt_array($curl_cuenta_corriente, array(
+			  CURLOPT_URL => $url_api_cuenta_corriente,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => '',
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 0,
+			  CURLOPT_FOLLOWLOCATION => true,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => 'GET',
+			));
+
+			$response_cuenta_corriente = curl_exec($curl_cuenta_corriente);
+
+			curl_close($curl_cuenta_corriente);
+
+
+
+
+			$array_response_plan_cuentas = json_decode($response_plan_cuentas);	
+			$array_response_centros_costo = json_decode($response_centros_costo);	
+			$array_response_item_ingreso = json_decode($response_item_ingreso);
+			$array_response_item_gasto = json_decode($response_item_gasto);
+			$array_response_cuenta_corriente = json_decode($response_cuenta_corriente);
+
+
+
+			foreach ($array_asiento_contable_debe_final as $key => $asiento) {
+						if($asiento['idcuentacontable'] != 0){
+
+								if($array_response_plan_cuentas->status){
+										foreach ($array_response_plan_cuentas->data as $cuenta){
+
+
+												if($asiento['idcuentacontable'] == $cuenta->idn4){
+
+													$array_asiento_contable_debe_final[$key]['nomcuentacontable'] =  $cuenta->nombren4;
+												}
+
+										}
+
+								}
+
+						}else{
+								$array_asiento_contable_debe_final[$key]['nomcuentacontable'] = '';
+
+						}	
+
+			}
+
+
+
+
+			foreach ($array_asiento_contable_haber_final as $key => $asiento) {
+						if($asiento['idcuentacontable'] != 0){
+
+								if($array_response_plan_cuentas->status){
+										foreach ($array_response_plan_cuentas->data as $cuenta){
+
+
+												if($asiento['idcuentacontable'] == $cuenta->idn4){
+
+													$array_asiento_contable_haber_final[$key]['nomcuentacontable'] =  $cuenta->nombren4;
+												}
+
+										}
+
+								}
+
+						}else{
+								$array_asiento_contable_haber_final[$key]['nomcuentacontable'] = '';
+
+						}	
+
+			}
+
+
+      //PENDIENTE:
+      // 2.- LOGICA DE ASIGNACION FAMIIAR (SE RESTA SOLO DE FONASA?  QUE PASA SI TIENE ISAPRE?)
+      // 3.- QUE PASA SI UN TRABAJADOR TIENE MAS DESCUENTOS QUE HABERES?
+
+			//var_dump_new($array_asiento_contable_debe_final);// exit;
+			//var_dump_new($array_asiento_contable_haber_final); exit;
+      $array_asiento_contable = array('DEBE' => $array_asiento_contable_debe_final,
+      								  'HABER' => $array_asiento_contable_haber_final );
+
+      return $array_asiento_contable;
+}	
+
+
+
+public function guarda_centralizacion($mes,$anno,$array_asiento){
+
+		$this->db->trans_start();
+			$periodo = $this->admin->get_periodo_by_mes($mes,$anno);
+
+			$idperiodo = 0;
+			if(!is_null($periodo)){
+				$idperiodo = $periodo->id_periodo;
+			}
+
+			$array_datos_centralizacion_periodo = array(
+															'idperiodo' => $idperiodo,
+															'idempresa' => $this->session->userdata('empresaid'),
+															'calculado' => date('Y-m-d H:i:s'),
+
+												);
+			$this->db->insert('rem_centralizacion_periodo', $array_datos_centralizacion_periodo);
+			$idcentralizacion = $this->db->insert_id();
+
+			$montodebe = 0;
+			$montohaber = 0;
+			if(isset($array_asiento->DEBE)){
+
+				foreach ($array_asiento->DEBE as $fila) {
+						$array_datos_centralizacion_fila = array(
+																	'idcentralizacion' => $idcentralizacion,
+																	'idcuentacontable' => $fila->idcuentacontable,
+																	'idcentrocosto' => $fila->idcuentacontable,
+																	'iditemingreso' => $fila->iditemingreso,
+																	'iditemgasto' => $fila->iditemgasto,
+																	'idcuentacorriente' => $fila->idcuentacorriente,
+																	'montodebe' => $fila->monto,
+																	'montohaber' => 0
+														);
+						$this->db->insert('rem_centralizacion_periodo_detalle', $array_datos_centralizacion_fila);		
+						$montodebe += 	$fila->monto;
+
+				}
+
+
+
+			}
+
+
+
+			if(isset($array_asiento->HABER)){
+
+				foreach ($array_asiento->HABER as $fila) {
+						$array_datos_centralizacion_fila = array(
+																	'idcentralizacion' => $idcentralizacion,
+																	'idcuentacontable' => $fila->idcuentacontable,
+																	'idcentrocosto' => $fila->idcuentacontable,
+																	'iditemingreso' => $fila->iditemingreso,
+																	'iditemgasto' => $fila->iditemgasto,
+																	'idcuentacorriente' => $fila->idcuentacorriente,
+																	'montodebe' => 0,
+																	'montohaber' => $fila->monto
+														);
+						$this->db->insert('rem_centralizacion_periodo_detalle', $array_datos_centralizacion_fila);	
+						$montohaber += 	$fila->monto;		
+
+				}
+
+
+
+			}
+
+
+			$this->db->where('id', $idcentralizacion);
+			$this->db->where('idempresa', $this->session->userdata('empresaid'));
+			$this->db->update('rem_centralizacion_periodo',array('totaldebe' => $montodebe,'totalhaber' => $montohaber)); 
+
+		$this->db->trans_complete();
+
+}
+
+
+
+
+
+
+public function aprobar_centralizacion($idcentralizacion, $tipo){
+
+		$this->db->trans_start();
+
+		if($tipo == 'a'){
+			$this->db->where('id', $idcentralizacion);
+			$this->db->where('idempresa', $this->session->userdata('empresaid'));
+			$this->db->update('rem_centralizacion_periodo',array('aprobado' => date('Y-m-d H:i:s'))); 
+			//echo $this->db->last_query(); exit;
+			//FALTA DISTRIBUIR HACIA EL SISTEMA DE ADMINISTRACION
+		}else if($tipo == 'r'){
+
+			$this->db->where('idcentralizacion', $idcentralizacion);
+			$this->db->delete('rem_centralizacion_periodo_detalle'); 
+
+
+			$this->db->where('id', $idcentralizacion);
+			$this->db->where('idempresa', $this->session->userdata('empresaid'));
+			$this->db->delete('rem_centralizacion_periodo'); 
+		}
+
+
+
+
+		$this->db->trans_complete();
+		return 1;
+
+}
 
 
 public function pago_bancos($datos_remuneracion){

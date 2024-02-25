@@ -64,6 +64,7 @@ class Configuracion extends CI_Model
 		$ctacentralizacion_data = $this->db->select('c.id
 											,c.nombre_codigo
 											,c.nombre_sistema
+											,c.tipo_cuadratura
 											,isnull(e.idcuentacontable,0) as idcuentacontable
 											,isnull(e.idcentrocosto,0) as idcentrocosto
 											,isnull(e.iditemingreso,0) as iditemingreso

@@ -1330,3 +1330,169 @@ alter table rem_personal add diastrabajosemanal int default 6
 
 alter table rem_personal add sueldoprevio bigint default 0
 
+
+/****************************************************************************************************************/
+
+CREATE TABLE rem_centralizacion_periodo (
+    id int identity NOT NULL,
+	idperiodo int not null,
+	idempresa int not null,
+	calculado datetime,
+	aprobado datetime,
+	tipomovimiento char(1),
+	nrocomprobante int default 0,
+	totaldebe bigint default 0,
+	totalhaber bigint default 0,
+    created_at datetime default getdate()
+)
+
+
+
+CREATE TABLE rem_centralizacion_periodo_detalle (
+    id int identity NOT NULL,
+	idcentralizacion int NOT NULL,
+	idcuentacontable int default 0,
+	idcentrocosto int default 0,
+	iditemingreso int default 0,
+	iditemgasto int default 0,
+	idcuentacorriente int default 0,
+	montodebe bigint default 0,
+	montohaber bigint default 0,
+    created_at datetime default getdate()
+)
+
+
+update	a
+set		funcion = 'rrhh/centralizacion_mensual'
+--select	*
+from	rem_app a
+where	id = 32
+
+
+
+insert into rem_app (
+
+funcion
+,menuid
+,leaf
+,visible
+,valid
+)
+
+values (
+'rrhh/add_centralizacion_mensual'
+,8
+,0
+,0
+,1
+)
+insert into rem_role (appid,levelid) values (9122,2)
+
+
+
+insert into rem_app (
+
+funcion
+,menuid
+,leaf
+,visible
+,valid
+)
+
+values (
+'rrhh/submit_centralizacion_mensual'
+,8
+,0
+,0
+,1
+)
+insert into rem_role (appid,levelid) values (9123,2)
+
+
+
+alter table rem_cuentas_centralizacion add tipo_cuadratura char(1)
+
+
+update rem_cuentas_centralizacion set tipo_cuadratura = 'D' where nombre_codigo = 'sueldo_base'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'D' where nombre_codigo = 'gratificacion'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'D' where nombre_codigo = 'movilizacion'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'D' where nombre_codigo = 'colacion'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'D' where nombre_codigo = 'horasextras50'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'D' where nombre_codigo = 'horasextras100'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'D' where nombre_codigo = 'semanacorrida'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'D' where nombre_codigo = 'aguinaldo'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'D' where nombre_codigo = 'asigfamiliar'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'H' where nombre_codigo = 'cotobligatoria'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'H' where nombre_codigo = 'cotadic'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'H' where nombre_codigo = 'ahorrovol'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'H' where nombre_codigo = 'apv'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'H' where nombre_codigo = 'cotsalud'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'H' where nombre_codigo = 'segurocesantia'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'H' where nombre_codigo = 'impuestos'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'H' where nombre_codigo = 'anticipos'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'H' where nombre_codigo = 'desctoaguinaldo'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'A' where nombre_codigo = 'aportesegcesantia'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'A' where nombre_codigo = 'aportesis'
+update rem_cuentas_centralizacion set tipo_cuadratura = 'A' where nombre_codigo = 'mutseguridad'
+
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema, tipo_cuadratura) values ('sueldo_liquido','Sueldo Liquido','H')
+insert into rem_cuentas_centralizacion (nombre_codigo,nombre_sistema, tipo_cuadratura) values ('saldo_asig_familiar','Saldo a Favor Asignacion Familiar','H')
+	
+
+insert into rem_app (
+
+funcion
+,menuid
+,leaf
+,visible
+,valid
+)
+
+values (
+'rrhh/crea_asiento_centralizacion'
+,8
+,0
+,0
+,1
+)
+insert into rem_role (appid,levelid) values (10122,2)
+
+insert into rem_app (
+
+funcion
+,menuid
+,leaf
+,visible
+,valid
+)
+
+values (
+'rrhh/aprobar_centralizacion'
+,8
+,0
+,0
+,1
+)
+
+
+insert into rem_role (appid,levelid) values (10123,2)
+
+insert into rem_app (
+
+funcion
+,menuid
+,leaf
+,visible
+,valid
+)
+
+values (
+'rrhh/get_centralizacion'
+,8
+,0
+,0
+,1
+)
+
+
+insert into rem_role (appid,levelid) values (10124,2)

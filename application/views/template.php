@@ -122,6 +122,12 @@
     <?php } ?>
 
 
+  <?php if(isset($sweetalert)){ ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>node_modules/sweetalert2/dist/sweetalert2.min.js" charset="UTF-8"></script>
+    <link rel="stylesheet" href="<?php echo base_url(); ?>node_modules/sweetalert2/dist/sweetalert2.min.css">
+  <?php } ?>  
+
+
 
     <?php if (isset($multipleSelect)) { ?>
         <link href="<?php echo base_url(); ?>plugins/jQuery-Multiple-Select/dist/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
