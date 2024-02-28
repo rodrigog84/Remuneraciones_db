@@ -1895,6 +1895,12 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$dias_inhabiles = $result_diasinhabiles->cantidad; 
 
 
+		$dias_faltantes = 30 - ($dias_habiles + $dias_inhabiles);
+		if($dias_faltantes > 0){
+			$dias_habiles = $dias_habiles + $dias_faltantes;
+		}
+
+
 
 		$array_dias = array('dias_habiles' => $dias_habiles,
 					   'dias_inhabiles' => $dias_inhabiles);
