@@ -2001,7 +2001,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$idperiodo_ant2 = $this->admin->get_periodo_anterior($idperiodo_ant);
 		$idperiodo_ant3 = $this->admin->get_periodo_anterior($idperiodo_ant2);
 		$dias_periodo = $this->admin->get_num_dias_periodo($idperiodo);
-		$dias_periodo = $dias_periodo < 30 ? 30 : $dias_periodo;
+		//$dias_periodo = $dias_periodo; //$dias_periodo < 30 ? 30 : $dias_periodo;
 		
 		$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
 
