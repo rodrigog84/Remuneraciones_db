@@ -47,8 +47,8 @@ define('ENVIO_MAIL',		TRUE);
 
 
 
-define('PORCT_FONASA',		0.039); //3.9% //1% //3.9%
-define('PORCT_INP',		0.031); //3.1%  //6% //3.1%
+define('PORCT_FONASA',		0.021); //3.9% //1% //3.9% // 2.1%
+define('PORCT_INP',		0.049); //3.1%  //6% //3.1% // 4.9 %
 
 define('PORCT_ISL',		0.93); //3.1%  //6%
 
