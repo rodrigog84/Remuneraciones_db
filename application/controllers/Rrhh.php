@@ -7986,4 +7986,81 @@ public function genera_carta($idpersonal){
 
   }    
 
+
+    public function decjurada_rentas()
+    {
+        if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
+
+            $encabezado = array();
+            if ($this->input->post('anno') != '') {
+                $anno = $this->input->post('anno');
+                $this->load->model('rrhh_model');
+
+                $descjurada_data = $this->rrhh_model->calculo_declaracion_jurada($anno);
+                $encabezado = $this->rrhh_model->get_decjurada_rentas_encabezado($anno);
+                //$descjurada_data = $this->remuneracion->archivo_decjurada_rentas($anno);
+                
+            } else {
+                $anno = date('Y') - 1 ;
+            }
+
+
+            $content = array(
+                'menu' => 'Remuneraciones',
+                'title' => 'Remuneraciones',
+                'subtitle' => 'Declaraci&oacute;n Jurada Rentas '
+            );
+
+            $vars['content_menu'] = $content;
+
+            $vars['anno'] = $anno;
+            $vars['encabezado'] = $encabezado;
+            $vars['content_view'] = 'rrhh/decjurada_rentas';
+            $vars['formValidation'] = true;
+            $vars['dataTables'] = true;
+
+            $template = "template";
+
+
+            $this->load->view($template, $vars);
+        } else {
+            $content = array(
+                'menu' => 'Error 403',
+                'title' => 'Error 403',
+                'subtitle' => '403 error'
+            );
+
+
+            $vars['content_menu'] = $content;
+            $vars['content_view'] = 'forbidden';
+            $this->load->view('template', $vars);
+        }
+    }
+
+
+
+  public function decjurada_rentas_exportar($anno)
+    {
+        if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
+
+            $this->load->model('rrhh_model');
+
+            $descjurada_data = $this->rrhh_model->archivo_decjurada_rentas($anno);
+
+            exit;
+
+        } else {
+            $content = array(
+                'menu' => 'Error 403',
+                'title' => 'Error 403',
+                'subtitle' => '403 error'
+            );
+
+
+            $vars['content_menu'] = $content;
+            $vars['content_view'] = 'forbidden';
+            $this->load->view('template', $vars);
+        }
+    }
+
 }

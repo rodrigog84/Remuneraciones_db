@@ -1612,7 +1612,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 					);				
 					$this->db->where('idpersonal', $idtrabajador);
 					$this->db->where('idperiodo', $idperiodo);
-					$this->db->update('gc_remuneracion',$data); 
+					$this->db->update('rem_remuneracion',$data); 
 
 			}*/
 		}
@@ -2560,8 +2560,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$tiene_licencia = count($movimientos)  > 0 ? true : false;
 			$sueldoprevio = $trabajador->sueldoprevio;
 			//ocupo esta query para sacar el ultimo sueldo imponible, sino tomar suedo base según contrato.
-			/*select r.sueldoimponible from gc_remuneracion r
-inner join gc_periodo p on r.id_periodo = p.id
+			/*select r.sueldoimponible from rem_remuneracion r
+inner join rem_periodo p on r.id_periodo = p.id
 where idpersonal = 41 and diastrabajo > 0
 order by p.anno desc, p.mes desc
 limit 1		*/	
@@ -6838,6 +6838,360 @@ public function pago_bancos($datos_remuneracion){
 
 			unlink($path_archivo.$nombre_archivo);
 	}	
+
+
+
+public function get_decjurada_rentas($anno)
+    {
+
+
+        $queryQuestion = $this->db->query("
+												SELECT	id
+														,max(rut) as rut
+														,max(dv) as dv
+														,max(nombre) as nombre
+														,max(apaterno) as apaterno
+														,max(horassemanales) as horassemanales
+														,sum(sueldoliquido) as sueldoliquidonoactualiza
+														,sum(leyessociales) as leyessociales
+														,sum(rentatotalsinactualizar) as rentatotalsinactualizar
+														,sum(rentatotalneta) as rentatotalneta
+														,sum(sueldoimponible) as sueldoimponible
+														,sum(impuesto) as impuesto
+														,sum(impuestoactualizado) as impuestoactualizado
+														,sum(bonosnoimponibles) as bonosnoimponibles
+														,sum(bonosnoimponiblessinactualizar) as bonosnoimponiblessinactualizar
+														,max(renta_enero_ind) as renta_enero_ind
+														,max(renta_febrero_ind) as renta_febrero_ind
+														,max(renta_marzo_ind) as renta_marzo_ind
+														,max(renta_abril_ind) as renta_abril_ind
+														,max(renta_mayo_ind) as renta_mayo_ind
+														,max(renta_junio_ind) as renta_junio_ind
+														,max(renta_julio_ind) as renta_julio_ind
+														,max(renta_agosto_ind) as renta_agosto_ind
+														,max(renta_septiembre_ind) as renta_septiembre_ind
+														,max(renta_octubre_ind) as renta_octubre_ind
+														,max(renta_noviembre_ind) as renta_noviembre_ind
+														,max(renta_diciembre_ind) as renta_diciembre_ind
+														,sum(renta_enero) as renta_enero
+														,sum(renta_febrero) as renta_febrero
+														,sum(renta_marzo) as renta_marzo
+														,sum(renta_abril) as renta_abril
+														,sum(renta_mayo) as renta_mayo
+														,sum(renta_junio) as renta_junio
+														,sum(renta_julio) as renta_julio
+														,sum(renta_agosto) as renta_agosto
+														,sum(renta_septiembre) as renta_septiembre
+														,sum(renta_octubre) as renta_octubre
+														,sum(renta_noviembre) as renta_noviembre
+														,sum(renta_diciembre) as renta_diciembre
+												FROM	(
+															SELECT	p.id_personal as id
+																	, p.rut
+																	, p.dv
+																	, p.nombre
+																	, p.apaterno
+																	, p.amaterno
+																	, p.horassemanales
+																	, r.id_periodo
+																	, pe.mes
+																	,isnull(r.sueldoliquido,0) as sueldoliquido
+																	,isnull((r.totalleyessociales - r.montoahorrovol - r.impuesto),0) as leyessociales
+																	,isnull((r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)),0) as rentatotalsinactualizar
+																	,round(isnull((r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)),0)*(SELECT       1 + (t.dic/100) 
+																	FROM            rem_periodo p
+																	left JOIN   rem_tabla_correccion_monetaria t  ON p.mes = t.mes_orig AND p.anno = t.anno
+																	WHERE       p.id_periodo = r.id_periodo  ),0) as rentatotalneta
+																	,isnull(r.sueldoimponible,0) as sueldoimponible
+																	,isnull(r.impuesto,0) as impuesto
+																	,round(isnull(r.impuesto,0)*(SELECT       1 + (t.dic/100) 
+																	FROM            rem_periodo p
+																	left JOIN   rem_tabla_correccion_monetaria t  ON p.mes = t.mes_orig AND p.anno = t.anno
+																	WHERE       p.id_periodo = r.id_periodo  ),0) as impuestoactualizado
+																	,round((SELECT isnull(sum(monto),0) as monto 
+																	  from rem_haber_descuento_remuneracion
+																	  where	idremuneracion = r.id_remuneracion
+																	  and	imponible = 0)*(SELECT       1 + (t.dic/100) 
+																	FROM            rem_periodo p
+																	left JOIN   rem_tabla_correccion_monetaria t  ON p.mes = t.mes_orig AND p.anno = t.anno
+																	WHERE       p.id_periodo = r.id_periodo  ),0) as bonosnoimponibles
+																	,(SELECT isnull(sum(monto),0) as monto 
+																	  from rem_haber_descuento_remuneracion
+																	  where	idremuneracion = r.id_remuneracion
+																	  and	imponible = 0) as bonosnoimponiblessinactualizar
+																	,(SELECT       1 + (t.dic/100) 
+																	FROM            rem_periodo p
+																	left JOIN   rem_tabla_correccion_monetaria t  ON p.mes = t.mes_orig AND p.anno = t.anno
+																	WHERE       p.id_periodo = r.id_periodo  ) as factormes
+																	,CASE WHEN (pe.mes = 1 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN 'C' ELSE '' END AS renta_enero_ind
+																	,CASE WHEN (pe.mes = 2 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN 'C' ELSE '' END AS renta_febrero_ind
+																	,CASE WHEN (pe.mes = 3 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN 'C' ELSE '' END AS renta_marzo_ind
+																	,CASE WHEN (pe.mes = 4 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN 'C' ELSE '' END AS renta_abril_ind
+																	,CASE WHEN (pe.mes = 5 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN 'C' ELSE '' END AS renta_mayo_ind
+																	,CASE WHEN (pe.mes = 6 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN 'C' ELSE '' END AS renta_junio_ind
+																	,CASE WHEN (pe.mes = 7 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN 'C' ELSE '' END AS renta_julio_ind
+																	,CASE WHEN (pe.mes = 8 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN 'C' ELSE '' END AS renta_agosto_ind
+																	,CASE WHEN (pe.mes = 9 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN 'C' ELSE '' END AS renta_septiembre_ind
+																	,CASE WHEN (pe.mes = 10 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN 'C' ELSE '' END AS renta_octubre_ind
+																	,CASE WHEN (pe.mes = 11 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN 'C' ELSE '' END AS renta_noviembre_ind
+																	,CASE WHEN (pe.mes = 12 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN 'C' ELSE '' END AS renta_diciembre_ind
+																	,CASE WHEN (pe.mes = 1 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)) ELSE 0 END AS renta_enero
+																	,CASE WHEN (pe.mes = 2 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)) ELSE 0 END AS renta_febrero
+																	,CASE WHEN (pe.mes = 3 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)) ELSE 0 END AS renta_marzo
+																	,CASE WHEN (pe.mes = 4 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)) ELSE 0 END AS renta_abril
+																	,CASE WHEN (pe.mes = 5 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)) ELSE 0 END AS renta_mayo
+																	,CASE WHEN (pe.mes = 6 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)) ELSE 0 END AS renta_junio
+																	,CASE WHEN (pe.mes = 7 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)) ELSE 0 END AS renta_julio
+																	,CASE WHEN (pe.mes = 8 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)) ELSE 0 END AS renta_agosto
+																	,CASE WHEN (pe.mes = 9 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)) ELSE 0 END AS renta_septiembre
+																	,CASE WHEN (pe.mes = 10 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)) ELSE 0 END AS renta_octubre
+																	,CASE WHEN (pe.mes = 11 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)) ELSE 0 END AS renta_noviembre
+																	,CASE WHEN (pe.mes = 12 AND (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto) > 0)) THEN (r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)) ELSE 0 END AS renta_diciembre
+
+															FROM rem_personal p
+															JOIN rem_remuneracion r ON p.id_personal = r.idpersonal
+															JOIN rem_periodo pe ON r.id_periodo = pe.id_periodo
+															WHERE p.id_empresa ='" . $this->session->userdata('empresaid') . "'
+															AND pe.anno =  '" . $anno . "'
+															) a
+												group by id");
+
+        //$movimiento_data = is_null($idmovimiento) ? $movimiento_data : $movimiento_data->where('lm.id',$idmovimiento);
+        $data = $queryQuestion->result();
+
+              // echo $this->db->last_query(); exit;
+        return $data;
+    }
+
+
+    public function calculo_declaracion_jurada($anno){
+
+
+        $this->db->trans_start();
+
+        $this->db->select("id")
+            ->from('rem_declaracion_jurada d')
+            ->where("d.anno", $anno)
+            ->where("d.idempresa", $this->session->userdata('empresaid'));
+
+        $query = $this->db->get();
+        $declaracion_existe = $query->result();
+
+        //eliminar y calcular 
+        if(count($declaracion_existe) > 0){
+
+            $declaracion = $declaracion_existe[0];     
+            $this->db->where('iddeclaracion', $declaracion->id);
+            $this->db->delete('rem_declaracion_jurada_detalle');            
+
+
+            $this->db->where('id', $declaracion->id);
+            $this->db->delete('rem_declaracion_jurada');   
+
+
+        }     
+
+        $descjurada_data = $this->rrhh_model->get_decjurada_rentas($anno);
+
+        $array_declaracion_jurada = array(
+                                            'anno' => $anno,
+                                            'idempresa' => $this->session->userdata('empresaid')
+
+                                         );
+
+        $this->db->insert('rem_declaracion_jurada',$array_declaracion_jurada);
+        $declaracion_id = $this->db->insert_id();
+        $i = 1;
+        $rentatotalsinactualizar = 0;
+        $rentatotalneta = 0;
+        $impuestosinactualizar = 0;
+        $impuestoactualizado = 0;
+        $bonosnoimponiblessinactualizar = 0;
+        $bonosnoimponibles = 0;
+        $leyessociales = 0;
+         foreach ($descjurada_data as $data) {
+            $array_detalle_declaracion_jurada = array(
+                                                    'iddeclaracion' => $declaracion_id,
+                                                    'idpersonal' => $data->id,
+                                                    'rut' => $data->rut,
+                                                    'dv' => $data->dv,
+                                                    'rentatotalsinactualizar' => $data->rentatotalsinactualizar,
+                                                    'rentatotalneta' => $data->rentatotalneta,
+                                                    'impuestosinactualizar' => $data->impuesto,
+                                                    'impuestoactualizado' => $data->impuestoactualizado,
+                                                    'bonosnoimponibles' => $data->bonosnoimponibles,
+                                                    'bonosnoimponiblessinactualizar' => $data->bonosnoimponiblessinactualizar,
+                                                    'leyessociales' => $data->leyessociales,
+                                                    'eneroind' => $data->renta_enero_ind,
+                                                    'febreroind' => $data->renta_febrero_ind,
+                                                    'marzoind' => $data->renta_marzo_ind,
+                                                    'abrilind' => $data->renta_abril_ind,
+                                                    'mayoind' => $data->renta_mayo_ind,
+                                                    'junioind' => $data->renta_junio_ind,
+                                                    'julioind' => $data->renta_julio_ind,
+                                                    'agostoind' => $data->renta_agosto_ind,
+                                                    'septiembreind' => $data->renta_septiembre_ind,
+                                                    'octubreind' => $data->renta_octubre_ind,
+                                                    'noviembreind' => $data->renta_noviembre_ind,
+                                                    'diciembreind' => $data->renta_diciembre_ind,
+                                                    'correlativo' => $i,
+                                                    'enerorenta' => $data->renta_enero,
+                                                    'febrerorenta' => $data->renta_febrero,
+                                                    'marzorenta' => $data->renta_marzo,
+                                                    'abrilrenta' => $data->renta_abril,
+                                                    'mayorenta' => $data->renta_mayo,
+                                                    'juniorenta' => $data->renta_junio,
+                                                    'juliorenta' => $data->renta_julio,
+                                                    'agostorenta' => $data->renta_agosto,
+                                                    'septiembrerenta' => $data->renta_septiembre,
+                                                    'octubrerenta' => $data->renta_octubre,
+                                                    'noviembrerenta' => $data->renta_noviembre,
+                                                    'diciembrerenta' => $data->renta_diciembre,
+                                                    'horassemanales' => $data->horassemanales
+                                                );
+                $this->db->insert('rem_declaracion_jurada_detalle',$array_detalle_declaracion_jurada);
+
+                $impuestosinactualizar += $data->impuesto;
+                $rentatotalsinactualizar += $data->rentatotalsinactualizar;
+                $rentatotalneta += $data->rentatotalneta;
+                $impuestoactualizado += $data->impuestoactualizado;
+                $bonosnoimponibles += $data->bonosnoimponibles;
+                $bonosnoimponiblessinactualizar += $data->bonosnoimponiblessinactualizar;
+                $leyessociales += $data->leyessociales;
+                $i++;
+
+
+        }
+
+        $array_actualiza_dj = array(
+                                    'rentatotalsinactualizar' => $rentatotalsinactualizar,
+                                    'rentatotalneta' => $rentatotalneta,
+                                    'impuestorentasinactualizar' => $impuestosinactualizar,
+                                    'impuestorentapagada' => $impuestoactualizado,
+                                    'rentanogravada' => $bonosnoimponibles,
+                                    'rentanogravadasinactualizar' => $bonosnoimponiblessinactualizar,
+                                    'leyessociales' => $leyessociales
+                                );
+        $this->db->where('id',$declaracion_id);
+        $this->db->update('rem_declaracion_jurada', $array_actualiza_dj);
+
+        $this->db->trans_complete();
+
+
+    }
+
+
+     public function get_decjurada_rentas_encabezado($anno){
+
+            $this->db->select("anno, rentatotalsinactualizar, rentatotalneta, impuestorentapagada, impuestorentasinactualizar, impuestorentaaccesoria, rentanogravada, rentanogravadasinactualizar, rentaexenta, rebajazonasextremas, leyessociales")
+                ->from('rem_declaracion_jurada d')
+                ->where("d.anno", $anno)
+                ->where("d.idempresa", $this->session->userdata('empresaid'));
+
+            $query = $this->db->get();
+            $declaracion = $query->result();
+
+            return $declaracion;
+     }
+
+
+
+     public function get_decjurada_rentas_detalle($anno){
+
+            $this->db->select("d.rut, d.dv, d.rentatotalneta, d.impuestoactualizado, d.bonosnoimponibles, d.eneroind, d.febreroind, d.marzoind, d.abrilind, d.mayoind, d.junioind, d.julioind, d.agostoind, d.septiembreind, d.octubreind, d.noviembreind, d.diciembreind, d.correlativo, d.enerorenta, d.febrerorenta, d.marzorenta, d.abrilrenta, d.mayorenta, d.juniorenta, d.juliorenta, d.agostorenta, d.septiembrerenta, d.octubrerenta, d.noviembrerenta, d.diciembrerenta, d.horassemanales ")
+                ->from('rem_declaracion_jurada_detalle d')
+                ->join('rem_declaracion_jurada j', 'd.iddeclaracion = j.id')
+                ->where("j.anno", $anno)
+                ->where("j.idempresa", $this->session->userdata('empresaid'));
+
+            $query = $this->db->get();
+            $declaracion = $query->result();
+
+            return $declaracion;
+     }
+
+
+
+
+     public function archivo_decjurada_rentas($anno){
+
+        $nombre_archivo = $this->session->userdata('empresaid') . "_dj_" . $anno . ".csv";
+        $path_archivo = "./uploads/tmp/";
+        $file = fopen($path_archivo . $nombre_archivo, "w");
+
+
+
+
+
+        $this->load->model('rrhh_model');
+        $descjurada_data = $this->rrhh_model->get_decjurada_rentas_detalle($anno);
+       // echo '<pre>';
+        //var_dump_new($descjurada_data); exit;
+        $i = 1;
+
+        foreach ($descjurada_data as $data) {
+                $linea  = $data->rut.';'; // rut.dv
+                $linea .= $data->dv.';'; // rut.dv
+                $linea .= $data->rentatotalneta.';'; // sueldo liquido
+                $linea .= $data->impuestoactualizado.';'; // impuesto
+                $linea .= '0;'; // mayor retencion
+                $linea .= $data->bonosnoimponibles.';'; // renta total no gravada
+                $linea .= '0;'; // renta total exenta
+                $linea .= '0;'; // rebaja zonas extremas
+                $linea .= '0;'; // 3% prestamos
+                $linea .= $data->eneroind.';'; // IND ENERO
+                $linea .= $data->febreroind.';'; // IND FEBRERO
+                $linea .= $data->marzoind.';'; // IND MARZO
+                $linea .= $data->abrilind.';'; // IND ABRIL
+                $linea .= $data->mayoind.';'; // IND MAYO
+                $linea .= $data->junioind.';'; // IND JUNIO
+                $linea .= $data->julioind.';'; // IND JULIO
+                $linea .= $data->agostoind.';'; // IND AGOSTO
+                $linea .= $data->septiembreind.';'; // IND SEPTIEMBRE
+                $linea .= $data->octubreind.';'; // IND OCTUBRE
+                $linea .= $data->noviembreind.';'; // IND NOVIEMBRE
+                $linea .= $data->diciembreind.';'; // IND DICIEMBRE
+                $linea .= $data->correlativo. ';'; // correlativo      
+                $linea .= $data->enerorenta.';'; // IND ENERO
+                $linea .= $data->febrerorenta.';'; // IND FEBRERO
+                $linea .= $data->marzorenta.';'; // IND MARZO
+                $linea .= $data->abrilrenta.';'; // IND ABRIL
+                $linea .= $data->mayorenta.';'; // IND MAYO
+                $linea .= $data->juniorenta.';'; // IND JUNIO
+                $linea .= $data->juliorenta.';'; // IND JULIO
+                $linea .= $data->agostorenta.';'; // IND AGOSTO
+                $linea .= $data->septiembrerenta.';'; // IND SEPTIEMBRE
+                $linea .= $data->octubrerenta.';'; // IND OCTUBRE
+                $linea .= $data->noviembrerenta.';'; // IND NOVIEMBRE
+                $linea .= $data->diciembrerenta.';'; // IND DICIEMBRE
+                $linea .= $data->horassemanales.';'; // IND DICIEMBRE
+
+                $i++;
+
+                $linea .= "\r\n";
+                //$linea = $rut.$dv.$apaterno.$amaterno.$nombres."\r\n";
+                fputs($file, $linea);
+
+
+        }
+
+
+
+
+        fclose($file);
+
+        $data_archivo = basename($path_archivo . $nombre_archivo);
+        header('Content-Type: text/plain');
+        header('Content-Disposition: attachment; filename=' . $data_archivo);
+        header('Content-Length: ' . filesize($path_archivo . $nombre_archivo));
+        readfile($path_archivo . $nombre_archivo);
+
+
+        unlink($path_archivo . $nombre_archivo);
+
+
+
+     }
 
 
 

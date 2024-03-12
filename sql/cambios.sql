@@ -1559,7 +1559,7 @@ insert into rem_role (appid,levelid) values (10126,1)
 update rem_app set visible = 0 where id = 10126
 
 
-	
+
 insert into rem_app (
 
 funcion
@@ -1578,3 +1578,117 @@ values (
 )
 
 insert into rem_role (appid,levelid) values (10127,1)
+
+
+/********************************************************************************/
+
+
+insert into rem_app (
+
+funcion
+,menuid
+,leaf
+,visible
+,valid
+,orden
+)
+
+values (
+'rrhh/decjurada_rentas'
+,5
+,0
+,1
+,1
+,11
+)
+
+insert into rem_role (appid,levelid) values (10128,2)
+
+
+update rem_app set nombre = 'Declaración Jurada Rentas' where id = 10128
+
+
+
+CREATE TABLE rem_declaracion_jurada (
+	id INT identity,
+	anno INT,
+	rentatotalsinactualizar BIGINT DEFAULT 0,
+	rentatotalneta BIGINT DEFAULT 0,
+	impuestorentasinactualizar BIGINT DEFAULT 0,
+	impuestorentapagada BIGINT DEFAULT 0,
+	impuestorentaaccesoria BIGINT DEFAULT 0,
+	rentanogravada BIGINT DEFAULT 0,
+	rentanogravadasinactualizar BIGINT DEFAULT 0,
+	rentaexenta BIGINT DEFAULT 0,
+	rebajazonasextremas BIGINT DEFAULT 0,
+	leyessociales BIGINT DEFAULT 0,
+	idempresa INT DEFAULT NULL,
+	created_at DATETIME DEFAULT GETDATE(),
+	PRIMARY KEY (id) 
+)
+;
+
+
+CREATE TABLE rem_declaracion_jurada_detalle (
+	id INT NOT NULL identity,
+	iddeclaracion INT DEFAULT NULL,
+	idpersonal INT DEFAULT NULL,
+	rut INT DEFAULT NULL,
+	dv CHAR(1) DEFAULT NULL,
+	rentatotalsinactualizar BIGINT DEFAULT 0,
+	rentatotalneta BIGINT DEFAULT 0,
+	impuestosinactualizar BIGINT DEFAULT 0,
+	impuestoactualizado BIGINT DEFAULT 0,
+	bonosnoimponiblessinactualizar BIGINT DEFAULT 0,
+	bonosnoimponibles BIGINT DEFAULT 0,
+	leyessociales BIGINT DEFAULT 0,
+	eneroind CHAR(1),
+	febreroind CHAR(1),
+	marzoind CHAR(1),
+	abrilind CHAR(1),
+	mayoind CHAR(1),
+	junioind CHAR(1),
+	julioind CHAR(1),
+	agostoind CHAR(1),
+	septiembreind CHAR(1),
+	octubreind CHAR(1),
+	noviembreind CHAR(1),
+	diciembreind CHAR(1),
+	correlativo INT DEFAULT 0,
+	enerorenta BIGINT DEFAULT 0,
+	febrerorenta BIGINT DEFAULT 0,
+	marzorenta BIGINT DEFAULT 0,
+	abrilrenta BIGINT DEFAULT 0,
+	mayorenta BIGINT DEFAULT 0,
+	juniorenta BIGINT DEFAULT 0,
+	juliorenta BIGINT DEFAULT 0,
+	agostorenta BIGINT DEFAULT 0,
+	septiembrerenta BIGINT DEFAULT 0,
+	octubrerenta BIGINT DEFAULT 0,
+	noviembrerenta BIGINT DEFAULT 0,
+	diciembrerenta BIGINT DEFAULT 0,
+	horassemanales INT DEFAULT 0,
+	PRIMARY KEY (id)
+)
+
+
+
+insert into rem_app (
+
+funcion
+,menuid
+,leaf
+,visible
+,valid
+)
+
+values (
+'rrhh/decjurada_rentas_exportar'
+,5
+,0
+,0
+,1
+)
+
+
+insert into rem_role (appid,levelid) values (10129,2)
