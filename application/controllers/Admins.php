@@ -1368,5 +1368,165 @@ public function submit_user()
 
 
 
+public function correccion_monetaria()
+    {
+        if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
+            $resultid = $this->session->flashdata('correccion_monetaria_result');
+            if ($resultid == 1) {
+                $vars['message'] = "Correcci&oacute;n Monetaria actualizada correctamente";
+                $vars['classmessage'] = 'success';
+                $vars['icon'] = 'fa-check';
+            }
+
+
+            $anno_guarda = $this->session->flashdata('correccion_monetaria_anno');
+
+
+
+            $this->load->model('admin');
+
+
+            $anno = $anno_guarda == '' ? date('Y') - 1 : $anno_guarda;
+
+            $tabla_correccion_monetaria = $this->admin->get_tabla_correccion_monetaria($anno);
+
+          //    echo '<pre>';
+            $array_tabla_correccion_monetaria = array();
+            foreach ($tabla_correccion_monetaria as $tabla) {
+
+
+                $array_tabla_correccion_monetaria[$tabla->mes_orig] = $tabla->dic;
+
+
+              //  var_dump($tabla);
+             //   var_dump($array_tabla_correccion_monetaria);
+
+
+            }
+
+           
+            //var_dump($anno);
+           // var_dump($tabla_correccion_monetaria); 
+           //  var_dump($array_tabla_correccion_monetaria);exit;
+            $meses = array(1 => 'Enero',
+                           2 => 'Febrero',
+                           3 => 'Marzo',
+                           4 => 'Abril',
+                           5 => 'Mayo',
+                           6 => 'Junio',
+                           7 => 'Julio',
+                           8 => 'Agosto',
+                           9 => 'Septiembre',
+                           10 => 'Octubre',
+                           11 => 'Noviembre',
+                           12 => 'Diciembre',
+                          );
+
+            $content = array(
+                'menu' => 'Remuneraciones',
+                'title' => 'Remuneraciones',
+                'subtitle' => 'Correcci&oacute;n Monetaria'
+            );
+
+
+            $vars['formValidation'] = true;
+            $vars['mask'] = true;
+            $vars['content_menu'] = $content;
+            $vars['content_view'] = 'admins/correccion_monetaria';
+            $vars['tabla_correccion_monetaria'] = $array_tabla_correccion_monetaria;
+            $vars['anno'] = $anno;
+            $vars['meses'] = $meses;
+            $vars['maleta'] = true;
+            $vars['gritter'] = true;
+
+            $template = "template";
+
+
+            $this->load->view($template, $vars);
+        } else {
+            $content = array(
+                'menu' => 'Error 403',
+                'title' => 'Error 403',
+                'subtitle' => '403 error'
+            );
+
+
+            $vars['content_menu'] = $content;
+            $vars['content_view'] = 'forbidden';
+            $this->load->view('template', $vars);
+        }
+    }
+
+
+    public function submit_correccion_monetaria()
+    {
+
+
+        if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
+
+            $array_datos = $this->input->post(NULL, true);
+            $anno = $this->input->post('anno');
+
+
+            $array_factores = array();
+            foreach ($array_datos as $key => $dato) {
+                if($key != 'anno'){
+
+                    $array_elem = explode("_", $key);
+                    $mes = $array_elem[1];
+                    $array_factores[$mes] = $dato;
+
+                }
+
+            }
+
+            //echo '<pre>';
+            //var_dump($array_factores); exit;
+
+            $this->load->model('admin');
+            $this->admin->edit_tabla_correccion_monetaria($anno, $array_factores);
+            $this->session->set_flashdata('correccion_monetaria_result', 1);
+            $this->session->set_flashdata('correccion_monetaria_anno', $anno);
+            redirect('admins/correccion_monetaria');
+        } else {
+            $content = array(
+                'menu' => 'Error 403',
+                'title' => 'Error 403',
+                'subtitle' => '403 error'
+            );
+
+
+            $vars['content_menu'] = $content;
+            $vars['content_view'] = 'forbidden';
+            $this->load->view('template', $vars);
+        }
+    }    
+
+    public function get_correccion_monetaria()
+    {
+        if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
+         
+            
+            $anno = $this->input->post('anno');
+            $this->load->model('admin');
+            $tabla_correccion_monetaria = $this->admin->get_tabla_correccion_monetaria($anno);
+
+            echo json_encode($tabla_correccion_monetaria);
+
+
+        } else {
+            $content = array(
+                'menu' => 'Error 403',
+                'title' => 'Error 403',
+                'subtitle' => '403 error'
+            );
+
+
+            $vars['content_menu'] = $content;
+            $vars['content_view'] = 'forbidden';
+            $this->load->view('template', $vars);
+        }
+    }
+
 
 }

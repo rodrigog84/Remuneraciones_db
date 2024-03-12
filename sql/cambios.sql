@@ -1496,3 +1496,85 @@ values (
 
 
 insert into rem_role (appid,levelid) values (10124,2)
+
+
+
+/***************************************************************************************/
+
+insert into rem_app (
+
+funcion
+,menuid
+,leaf
+,visible
+,valid
+,orden
+)
+
+values (
+'admins/correccion_monetaria'
+,2
+,0
+,1
+,1
+,4
+)
+
+insert into rem_role (appid,levelid) values (10125,1)
+
+update rem_app set nombre = 'Correccion Monetaria' where id = 10125
+
+
+
+create table rem_tabla_correccion_monetaria (
+		id int identity,
+		anno int default 0,
+		mes_orig int default 0,
+		dic float default 0
+)
+
+
+
+
+insert into rem_app (
+
+funcion
+,menuid
+,leaf
+,visible
+,valid
+)
+
+values (
+'admins/submit_correccion_monetaria'
+,2
+,0
+,1
+,1
+)
+
+insert into rem_role (appid,levelid) values (10126,1)
+
+
+update rem_app set visible = 0 where id = 10126
+
+
+	
+insert into rem_app (
+
+funcion
+,menuid
+,leaf
+,visible
+,valid
+)
+
+values (
+'admins/get_correccion_monetaria'
+,2
+,0
+,0
+,1
+)
+
+insert into rem_role (appid,levelid) values (10127,1)

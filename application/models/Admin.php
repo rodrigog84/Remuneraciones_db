@@ -56,6 +56,66 @@ class Admin extends CI_Model
 	}
 
 
+
+
+    public function get_tabla_correccion_monetaria($anno)
+    {
+
+        $this->db->select('id, anno, mes_orig, dic')
+            ->from('rem_tabla_correccion_monetaria')
+            ->where('anno',$anno)
+            ->order_by('anno', 'asc')
+            ->order_by('mes_orig', 'asc');
+
+        $query = $this->db->get();
+        return $query->result();
+    }    
+
+
+
+    public function edit_tabla_correccion_monetaria($anno, $array_factores)
+    {
+
+        foreach ($array_factores as $key => $mes) {
+
+               $this->db->select('dic')
+                ->from('rem_tabla_correccion_monetaria')
+                ->where('anno',$anno)
+                ->where('mes_orig',$key);
+                $query = $this->db->get();
+                $data_factor =  $query->result();         
+
+                if(count($data_factor) > 0){
+
+                    $array_data_factor = array(
+                                                'dic' => $mes
+                                        );
+
+                    $this->db->where('anno', $anno);
+                    $this->db->where('mes_orig', $key);
+                    $this->db->update('rem_tabla_correccion_monetaria', $array_data_factor);
+
+
+                }else{
+
+
+                    $array_data_factor = array(
+                                                'anno' => $anno,
+                                                'mes_orig' => $key,
+                                                'dic' => $mes
+                                        );
+
+                    $this->db->insert('rem_tabla_correccion_monetaria', $array_data_factor);
+
+                }
+
+        }
+
+        return 1;
+    }
+
+
+
 	public function get_comunas_by_region($idregion){
 
 		$this->db->select('c.idcomuna , c.nombre ')

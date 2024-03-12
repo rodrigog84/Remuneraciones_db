@@ -189,7 +189,7 @@
 
 											                               	 	//SI TIENE UN DATO YA INGRESADO, CONSIDERA ESE VALOR 
 											                               	 	$dias_trabajo_mes = $datos_remuneracion[$trabajador->id_personal];
-											                               	 	$dias_trabajo_mes = ($dias_periodo - $licencias[$trabajador->id_personal]) < $dias_trabajo_mes ? ($dias_periodo - $licencias[$trabajador->id_personal]) :  $dias_trabajo_mes;
+											                               	 	//$dias_trabajo_mes = ($dias_periodo - $licencias[$trabajador->id_personal]) < $dias_trabajo_mes ? ($dias_periodo - $licencias[$trabajador->id_personal]) :  $dias_trabajo_mes;
 
 
 											                               	 }else{

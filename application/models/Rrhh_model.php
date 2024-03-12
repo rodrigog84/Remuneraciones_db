@@ -1988,6 +1988,14 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		//var_dump_new($centro_costo); exit;
 		$this->db->trans_start();
 
+
+
+			$this->db->where('ahorrovol != 0');
+			$this->db->where('tipoahorrovol is null');
+			$this->db->where('id_empresa', $this->session->userdata('empresaid'));
+			$this->db->update('rem_personal',array('tipoahorrovol' => 'pesos')); 	
+
+
 		$periodo =  $this->get_periodos($this->session->userdata('empresaid'),$idperiodo);
 
 
@@ -2001,7 +2009,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$idperiodo_ant2 = $this->admin->get_periodo_anterior($idperiodo_ant);
 		$idperiodo_ant3 = $this->admin->get_periodo_anterior($idperiodo_ant2);
 		$dias_periodo = $this->admin->get_num_dias_periodo($idperiodo);
-		//$dias_periodo = $dias_periodo; //$dias_periodo < 30 ? 30 : $dias_periodo;
+		$dias_periodo_orig = $dias_periodo;
+		$dias_periodo = $dias_periodo < 30 ? 30 : $dias_periodo;
 		
 		$empresa = $this->admin->get_empresas($this->session->userdata('empresaid')); 
 
@@ -2027,6 +2036,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$array_descuentos = array();
 		$array_prestamos = array();
 		$dia_mes =  $periodo->mes == 2 ? 28 : 30;
+		$febrero = $periodo->mes == 2 ? true : false;
 		$perint = $periodo->periodo;
 
 
@@ -2116,9 +2126,22 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$diastrabajo = $trabajador->parttime == 1 ? $trabajador->diastrabajo : 30;
 
 			 
+			if($febrero && ($dias_periodo_orig == $dias_licencia) ){
+				$dias_trabajados = 0;
 
+			}else{
+				$dias_trabajados =  $datos_remuneracion->diastrabajo > ($dias_periodo - $dias_licencia) ?  ($dias_periodo - $dias_licencia) : $datos_remuneracion->diastrabajo;
 
-			$dias_trabajados =  $datos_remuneracion->diastrabajo > ($dias_periodo - $dias_licencia) ?  ($dias_periodo - $dias_licencia) : $datos_remuneracion->diastrabajo;
+			}
+
+			/*if($dias_licencia > 0){
+				$dias_trabajados =  $datos_remuneracion->diastrabajo > ($dias_periodo_orig - $dias_licencia) ?  ($dias_periodo_orig - $dias_licencia) : $datos_remuneracion->diastrabajo;
+
+			}else{
+
+				$dias_trabajados =  $datos_remuneracion->diastrabajo > ($dias_periodo - $dias_licencia) ?  ($dias_periodo - $dias_licencia) : $datos_remuneracion->diastrabajo;
+			}*/
+			
 			$dias_trabajados = $dias_trabajados < 0 ? 0 : $dias_trabajados;
 
 
