@@ -1692,3 +1692,12 @@ values (
 
 
 insert into rem_role (appid,levelid) values (10129,2)
+
+
+/***************************************************************************************/
+
+alter table rem_declaracion_jurada_detalle add sueldoimponible bigint default 0
+alter table rem_declaracion_jurada_detalle add sueldoimponiblesinactualizar bigint default 0
+
+alter table rem_declaracion_jurada add sueldoimponible bigint default 0
+alter table rem_declaracion_jurada add sueldoimponiblesinactualizar bigint default 0
