@@ -98,7 +98,10 @@
                                                       <th >Leyes Sociales</th>
                                                       <th>$&nbsp;<?php echo number_format($linea->leyessociales,0,'.','.'); ?></th>
                                                     </tr>
-
+                                                    <tr>
+                                                      <th >Total Remuneraci&oacute;n Imponible Para Efectos Previsionales Actualizada A Todos los Trabajadores</th>
+                                                      <th>$&nbsp;<?php echo number_format($linea->sueldoimponible,0,'.','.'); ?></th>
+                                                    </tr>
                                                   </thead>
                                                   </table>
 

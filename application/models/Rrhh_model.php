@@ -6856,6 +6856,7 @@ public function get_decjurada_rentas($anno)
 														,sum(leyessociales) as leyessociales
 														,sum(rentatotalsinactualizar) as rentatotalsinactualizar
 														,sum(rentatotalneta) as rentatotalneta
+														,sum(sueldoimponiblesinactualizar) as sueldoimponiblesinactualizar
 														,sum(sueldoimponible) as sueldoimponible
 														,sum(impuesto) as impuesto
 														,sum(impuestoactualizado) as impuestoactualizado
@@ -6902,7 +6903,11 @@ public function get_decjurada_rentas($anno)
 																	FROM            rem_periodo p
 																	left JOIN   rem_tabla_correccion_monetaria t  ON p.mes = t.mes_orig AND p.anno = t.anno
 																	WHERE       p.id_periodo = r.id_periodo  ),0) as rentatotalneta
-																	,isnull(r.sueldoimponible,0) as sueldoimponible
+																	,isnull(r.sueldoimponible,0) as sueldoimponiblesinactualizar
+																	,round(isnull(r.sueldoimponible,0)*(SELECT       1 + (t.dic/100) 
+																	FROM            rem_periodo p
+																	left JOIN   rem_tabla_correccion_monetaria t  ON p.mes = t.mes_orig AND p.anno = t.anno
+																	WHERE       p.id_periodo = r.id_periodo  ),0) as sueldoimponible
 																	,isnull(r.impuesto,0) as impuesto
 																	,round(isnull(r.impuesto,0)*(SELECT       1 + (t.dic/100) 
 																	FROM            rem_periodo p
@@ -7009,6 +7014,8 @@ public function get_decjurada_rentas($anno)
         $bonosnoimponiblessinactualizar = 0;
         $bonosnoimponibles = 0;
         $leyessociales = 0;
+        $sueldoimponible = 0;
+        $sueldoimponiblesinactualizar = 0;
          foreach ($descjurada_data as $data) {
             $array_detalle_declaracion_jurada = array(
                                                     'iddeclaracion' => $declaracion_id,
@@ -7047,7 +7054,9 @@ public function get_decjurada_rentas($anno)
                                                     'octubrerenta' => $data->renta_octubre,
                                                     'noviembrerenta' => $data->renta_noviembre,
                                                     'diciembrerenta' => $data->renta_diciembre,
-                                                    'horassemanales' => $data->horassemanales
+                                                    'horassemanales' => $data->horassemanales,
+                                                    'sueldoimponible' => $data->sueldoimponible,
+                                                    'sueldoimponiblesinactualizar' => $data->sueldoimponiblesinactualizar
                                                 );
                 $this->db->insert('rem_declaracion_jurada_detalle',$array_detalle_declaracion_jurada);
 
@@ -7058,6 +7067,9 @@ public function get_decjurada_rentas($anno)
                 $bonosnoimponibles += $data->bonosnoimponibles;
                 $bonosnoimponiblessinactualizar += $data->bonosnoimponiblessinactualizar;
                 $leyessociales += $data->leyessociales;
+                $sueldoimponible += $data->sueldoimponible;
+                $sueldoimponiblesinactualizar += $data->sueldoimponiblesinactualizar;
+
                 $i++;
 
 
@@ -7070,7 +7082,9 @@ public function get_decjurada_rentas($anno)
                                     'impuestorentapagada' => $impuestoactualizado,
                                     'rentanogravada' => $bonosnoimponibles,
                                     'rentanogravadasinactualizar' => $bonosnoimponiblessinactualizar,
-                                    'leyessociales' => $leyessociales
+                                    'leyessociales' => $leyessociales,
+                                    'sueldoimponible' => $sueldoimponible,
+                                    'sueldoimponiblesinactualizar' => $sueldoimponiblesinactualizar
                                 );
         $this->db->where('id',$declaracion_id);
         $this->db->update('rem_declaracion_jurada', $array_actualiza_dj);
@@ -7083,7 +7097,7 @@ public function get_decjurada_rentas($anno)
 
      public function get_decjurada_rentas_encabezado($anno){
 
-            $this->db->select("anno, rentatotalsinactualizar, rentatotalneta, impuestorentapagada, impuestorentasinactualizar, impuestorentaaccesoria, rentanogravada, rentanogravadasinactualizar, rentaexenta, rebajazonasextremas, leyessociales")
+            $this->db->select("anno, rentatotalsinactualizar, rentatotalneta, impuestorentapagada, impuestorentasinactualizar, impuestorentaaccesoria, rentanogravada, rentanogravadasinactualizar, rentaexenta, rebajazonasextremas, leyessociales, sueldoimponible, sueldoimponiblesinactualizar")
                 ->from('rem_declaracion_jurada d')
                 ->where("d.anno", $anno)
                 ->where("d.idempresa", $this->session->userdata('empresaid'));
