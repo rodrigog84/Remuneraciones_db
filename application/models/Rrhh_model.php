@@ -2998,7 +2998,7 @@ public function get_periodos_aprobados_detalle($empresaid,$idperiodo = null,$idc
 
 	public function get_remuneraciones_by_periodo($idperiodo,$sinsueldo = null,$idcentrocosto = null){
 		
-		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.basetributaria, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentosnolegales, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, ap.nombre as nomapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips, pe.direccion, com.nombre as comuna, pe.parttime, pe.idregion, pe.idcomuna, a.codlre, i.codlre as codlreisapre, ccaf.codlre as codlrecaja, m.codprevired as codlremutual, pr.cierre, pr.aprueba,  f.tramo as tramo_asig_familiar, f.tramo, r.totaldescuentoslegales, cc.codigo as codcentrocosto, r.sueldoimponibleafcnotrabajo, r.sueldoimponibleimposicionesnotrabajo, pe.pensionado ')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.basetributaria, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentosnolegales, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, ap.nombre as nomapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips, pe.direccion, com.nombre as comuna, pe.parttime, pe.idregion, pe.idcomuna, a.codlre, i.codlre as codlreisapre, ccaf.codlre as codlrecaja, m.codprevired as codlremutual, pr.cierre, pr.aprueba,  f.tramo as tramo_asig_familiar, f.tramo, r.totaldescuentoslegales, cc.codigo as codcentrocosto, r.sueldoimponibleafcnotrabajo, r.sueldoimponibleimposicionesnotrabajo, pe.pensionado, isnull(r.ccafcredito,0) as ccafcredito, isnull(r.ccafseguro,0) as ccafseguro ')
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
@@ -5908,7 +5908,8 @@ public function previred($datos_remuneracion){
 
 				$cotizacion_fonasa = $codprev_ccaf == 0 ? $remuneracion->fonasa+$remuneracion->inp : $remuneracion->fonasa;
 
-				$monto_prestamos = 0;
+				$monto_prestamos = $remuneracion->ccafcredito;
+				$monto_seguro = $remuneracion->ccafseguro;
 				/*$prestamos = $this->get_descuento($remuneracion->idperiodo,'P',$remuneracion->idtrabajador);
 				foreach ($prestamos as $prestamo) {
 					$monto_prestamos += $prestamo->tipodescuento == 2 ? $prestamo->monto : 0;
@@ -5956,6 +5957,7 @@ public function previred($datos_remuneracion){
 					$adicisapre = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->adicisapre : 0;
 
 					$monto_prestamos = $linea_trabajador['tipo_linea'] == "00" ? $monto_prestamos : 0;
+					$monto_seguro = $linea_trabajador['tipo_linea'] == "00" ? $monto_seguro : 0;
 					$cotccaffon = $linea_trabajador['tipo_linea'] == "00" ? $cotccaffon : 0;
 					$asigfamiliar_mes = $linea_trabajador['tipo_linea'] == "00" ? $asigfamiliar_mes : 0;
 					$asigfamiliar_ccaf = $linea_trabajador['tipo_linea'] == "00" ? $asigfamiliar_ccaf : 0;
@@ -6089,7 +6091,7 @@ public function previred($datos_remuneracion){
 					$linea .= str_pad($monto_prestamos,8,"0",STR_PAD_LEFT); //Créditos Personales CCAF 
 					$linea .= "00000000"; //Descuento Dental CCAF *****************
 					$linea .= "00000000"; //Descuentos por Leasing (Programa Ahorro) *****************
-					$linea .= "00000000"; //Descuentos por seguro de vida CCAF*****************
+					$linea .= str_pad($monto_seguro,8,"0",STR_PAD_LEFT); //Descuentos por seguro de vida CCAF*****************
 					$linea .= "00000000"; //Otros descuentos CCAF *****************
 					$linea .= str_pad($cotccaffon,8,"0",STR_PAD_LEFT); //Cotización a CCAF de no afiliados a Isapres
 					$linea .= str_pad($asigfamiliar_mes,8,"0",STR_PAD_LEFT); //Descuento Cargas Familiares CCAF 
