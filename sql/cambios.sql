@@ -1709,3 +1709,10 @@ alter table rem_declaracion_jurada add sueldoimponiblesinactualizar bigint defau
 alter table rem_personal add ccafcredito bigint default 0
 alter table rem_personal add ccafseguro bigint default 0
 
+
+/********************************************************************************************/
+
+alter table rem_remuneracion add ccafcredito bigint default 0
+alter table rem_remuneracion add ccafseguro bigint default 0
+
+

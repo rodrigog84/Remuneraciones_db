@@ -1409,6 +1409,8 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				'adicafp', 
 				'tipoahorrovol', 
 				'ahorrovol', 
+				'isnull(ccafcredito,0) as ccafcredito',		
+				'isnull(ccafseguro,0) as ccafseguro',				
 				'tipocotapv', 
 				'cotapv', 
 				'idisapre', 
@@ -1431,7 +1433,6 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				+(day(getdate()) -  day(fecnacimiento)))/365 end as edad"
 			);
 		
-		//var_dump_new($array_campos); exit;
 		$personal_data = $this->db->select($array_campos)
 						  ->from('rem_personal p')
 						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
@@ -2418,6 +2419,11 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				$ahorrovol = round($sueldo_imponible*($trabajador->ahorrovol/100),0);	
 			}
 
+
+			$ccafcredito = $trabajador->ccafcredito;
+			$ccafseguro = $trabajador->ccafseguro;
+
+
 			$cotapv = 0;
 			//echo $trabajador->cotapv." - ". $parametros->uf . " -  ". $trabajador->tipocotapv."<br>";
 			//print_r($parametros);
@@ -2522,7 +2528,7 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
 
 
-			$total_descuentos = $cot_obligatoria + $comision_afp + $adic_afp + $segcesantia + $cot_salud_oblig + $cot_fonasa + $cot_inp + $adic_isapre + $impuesto + $ahorrovol + $cotapv + $datos_remuneracion->anticipo + $descuentos + $monto_descuento + $monto_prestamos + $datos_remuneracion->aguinaldo;
+			$total_descuentos = $cot_obligatoria + $comision_afp + $adic_afp + $segcesantia + $cot_salud_oblig + $cot_fonasa + $cot_inp + $adic_isapre + $impuesto + $ahorrovol + $ccafcredito + $ccafseguro + $cotapv + $datos_remuneracion->anticipo + $descuentos + $monto_descuento + $monto_prestamos + $datos_remuneracion->aguinaldo;
 			$total_descuentos_legales = $cot_obligatoria + $comision_afp + $adic_afp + $segcesantia + $cot_salud_oblig + $cot_fonasa + $cot_inp + $adic_isapre + $impuesto + $ahorrovol + $cotapv;
 			$total_leyes_sociales = $cot_obligatoria + $comision_afp + $adic_afp + $segcesantia + $cot_salud_oblig + $cot_fonasa + $cot_inp + $adic_isapre + $ahorrovol + $cotapv;
 			$otros_descuentos = $total_descuentos - $total_leyes_sociales;			
@@ -2769,6 +2775,8 @@ limit 1		*/
 					'tipoahorrovol' => $trabajador->tipoahorrovol,
 					'ahorrovol' => $trabajador->ahorrovol,
 					'montoahorrovol' => $ahorrovol,
+					'ccafcredito' => $trabajador->ccafcredito,
+					'ccafseguro' => $trabajador->ccafseguro,
 					'tipocotapv' => $trabajador->tipocotapv,					
 					'cotapv' => $trabajador->cotapv,					
 					'montocotapv' => $cotapv,					
