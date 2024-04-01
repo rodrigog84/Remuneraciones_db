@@ -490,6 +490,7 @@ public function submit_salud(){
 			$vars['salud'] = '';	
 			$vars['otros'] = '';	
 			$vars['apv'] = '';
+      $vars['ccaf'] = '';
 
 			$resultid = $this->session->flashdata('personal_result');
 			if($resultid == 1){
@@ -499,7 +500,8 @@ public function submit_salud(){
 				$vars['mantencion_personal'] = 'active';		
         $vars['ccostocargo'] = '';    		
 				$vars['leyes_sociales'] = '';		
-				$vars['apv'] = '';		
+				$vars['apv'] = '';	
+        $vars['ccaf'] = '';	
 				$vars['salud'] = '';		
 				$vars['otros'] = '';	
 			}elseif($resultid == 2){
@@ -509,7 +511,8 @@ public function submit_salud(){
 				$vars['mantencion_personal'] = 'active';	
         $vars['ccostocargo'] = '';   			
 				$vars['leyes_sociales'] = '';		
-				$vars['apv'] = '';		
+				$vars['apv'] = '';
+        $vars['ccaf'] = '';		
 				$vars['salud'] = '';
 				$vars['otros'] = '';							
 			}elseif($resultid == 3){
@@ -518,7 +521,8 @@ public function submit_salud(){
 				$vars['icon'] = 'fa-check';
 				$vars['mantencion_personal'] = '';	
         $vars['ccostocargo'] = '';   			
-				$vars['apv'] = '';		
+				$vars['apv'] = '';
+        $vars['ccaf'] = '';		
 				$vars['leyes_sociales'] = 'active';		
 				$vars['salud'] = '';	
 				$vars['otros'] = '';						
@@ -528,7 +532,8 @@ public function submit_salud(){
 				$vars['icon'] = 'fa-check';	
 				$vars['mantencion_personal'] = '';		
         $vars['ccostocargo'] = '';   		
-				$vars['apv'] = '';		
+				$vars['apv'] = '';
+        $vars['ccaf'] = '';		
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = 'active';							
 				$vars['otros'] = '';	
@@ -538,7 +543,8 @@ public function submit_salud(){
 				$vars['icon'] = 'fa-check';		
 				$vars['mantencion_personal'] = '';		
         $vars['ccostocargo'] = '';   		
-				$vars['apv'] = '';		
+				$vars['apv'] = '';
+        $vars['ccaf'] = '';		
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = '';							
 				$vars['otros'] = 'active';											
@@ -548,7 +554,8 @@ public function submit_salud(){
 				$vars['icon'] = 'fa-check';		
 				$vars['mantencion_personal'] = 'active';		
         $vars['ccostocargo'] = '';   		
-				$vars['apv'] = '';		
+				$vars['apv'] = '';
+        $vars['ccaf'] = '';		
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = '';	
 				$vars['otros'] = '';							
@@ -558,7 +565,8 @@ public function submit_salud(){
 				$vars['icon'] = 'fa-check';		
 				$vars['mantencion_personal'] = '';			
         $vars['ccostocargo'] = '';   	
-				$vars['apv'] = 'active';		
+				$vars['apv'] = 'active';
+        $vars['ccaf'] = '';		
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = '';	
 				$vars['otros'] = '';							
@@ -572,7 +580,8 @@ public function submit_salud(){
         $vars['icon'] = 'fa-check'; 
         $vars['mantencion_personal'] = 'active';    
         $vars['ccostocargo'] = '';       
-        $vars['apv'] = '';    
+        $vars['apv'] = ''; 
+        $vars['ccaf'] = '';   
         $vars['leyes_sociales'] = '';   
         $vars['salud'] = '';              
         $vars['otros'] = '';  
@@ -582,7 +591,8 @@ public function submit_salud(){
         $vars['icon'] = 'fa-check'; 
         $vars['mantencion_personal'] = '';   
         $vars['ccostocargo'] = 'active';        
-        $vars['apv'] = '';    
+        $vars['apv'] = ''; 
+        $vars['ccaf'] = '';   
         $vars['leyes_sociales'] = '';   
         $vars['salud'] = '';              
         $vars['otros'] = '';  
@@ -593,7 +603,8 @@ public function submit_salud(){
         $vars['mantencion_personal'] = 'active';  
         $vars['ccostocargo'] = '';        
         $vars['leyes_sociales'] = '';   
-        $vars['apv'] = '';    
+        $vars['apv'] = ''; 
+        $vars['ccaf'] = '';   
         $vars['salud'] = '';
         $vars['otros'] = '';              
       }elseif($resultid == 12){
@@ -603,7 +614,8 @@ public function submit_salud(){
         $vars['mantencion_personal'] = 'active';  
         $vars['ccostocargo'] = '';        
         $vars['leyes_sociales'] = '';   
-        $vars['apv'] = '';    
+        $vars['apv'] = ''; 
+        $vars['ccaf'] = '';   
         $vars['salud'] = '';
         $vars['otros'] = '';              
       }elseif($resultid == 13){
@@ -613,7 +625,8 @@ public function submit_salud(){
         $vars['mantencion_personal'] = 'active';  
         $vars['ccostocargo'] = '';        
         $vars['leyes_sociales'] = '';   
-        $vars['apv'] = '';    
+        $vars['apv'] = ''; 
+        $vars['ccaf'] = '';   
         $vars['salud'] = '';
         $vars['otros'] = '';             
       }elseif($resultid == 14){
@@ -623,7 +636,8 @@ public function submit_salud(){
         $vars['mantencion_personal'] = 'active';  
         $vars['ccostocargo'] = '';        
         $vars['leyes_sociales'] = '';   
-        $vars['apv'] = '';    
+        $vars['apv'] = ''; 
+        $vars['ccaf'] = '';   
         $vars['salud'] = '';
         $vars['otros'] = '';             
       }elseif($resultid == 15){
@@ -633,7 +647,8 @@ public function submit_salud(){
         $vars['mantencion_personal'] = 'active';  
         $vars['ccostocargo'] = '';        
         $vars['leyes_sociales'] = '';   
-        $vars['apv'] = '';    
+        $vars['apv'] = ''; 
+        $vars['ccaf'] = '';   
         $vars['salud'] = '';
         $vars['otros'] = '';             
       }elseif($resultid == 16){
@@ -643,7 +658,8 @@ public function submit_salud(){
         $vars['mantencion_personal'] = 'active';  
         $vars['ccostocargo'] = '';        
         $vars['leyes_sociales'] = '';   
-        $vars['apv'] = '';    
+        $vars['apv'] = ''; 
+        $vars['ccaf'] = '';   
         $vars['salud'] = '';
         $vars['otros'] = '';             
       }elseif($resultid == 17){
@@ -653,7 +669,8 @@ public function submit_salud(){
         $vars['mantencion_personal'] = 'active';  
         $vars['ccostocargo'] = '';        
         $vars['leyes_sociales'] = '';   
-        $vars['apv'] = '';    
+        $vars['apv'] = ''; 
+        $vars['ccaf'] = '';   
         $vars['salud'] = '';
         $vars['otros'] = '';              
       }elseif($resultid == 18){
@@ -663,7 +680,8 @@ public function submit_salud(){
         $vars['mantencion_personal'] = 'active';  
         $vars['ccostocargo'] = '';        
         $vars['leyes_sociales'] = '';   
-        $vars['apv'] = '';    
+        $vars['apv'] = ''; 
+        $vars['ccaf'] = '';   
         $vars['salud'] = '';
         $vars['otros'] = '';              
       }
@@ -7435,8 +7453,7 @@ public function genera_carta($idpersonal){
   public function actualiza_datos_colaborador(){
     
     if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){  
-
-      var_dump($_POST);
+      
       $idpersonal = $this->input->post('idpersonal');
       $valor = $this->input->post('valor');
       $parametro = $this->input->post('parametro');

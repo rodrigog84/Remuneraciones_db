@@ -13,6 +13,7 @@
 	  										<li class="<?php echo $ccostocargo; ?>"><a href="#ccostocargo" data-toggle="tab">Cargo/Centro de Costo&nbsp;&nbsp;<i class="fa"></i> </a></li>
 	  										<li class="<?php echo $leyes_sociales; ?>"><a href="#leyes_sociales" data-toggle="tab">Previsi&oacute;n Afp&nbsp;&nbsp;<i class="fa"></i></a></li>
 	  										<li class="<?php echo $apv; ?>"><a href="#apv" data-toggle="tab">A.P.V.&nbsp;&nbsp;<i class="fa"></i></a></li>
+	  										<li class="<?php echo $ccaf; ?>"><a href="#ccaf" data-toggle="tab">CCAF&nbsp;&nbsp;<i class="fa"></i></a></li>
 	  										<li class="<?php echo $salud; ?>"><a href="#cotizacion_salud" data-toggle="tab">Cotizaci&oacute;n de Salud&nbsp;&nbsp;<i class="fa"></i></a></li>
 	  										<!--li><a href="#otros" data-toggle="tab">Otros&nbsp;&nbsp;<i class="fa"></i></a></li-->
 										</ul>
@@ -404,8 +405,67 @@
 								                        <!--button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>" >Guardar</button-->&nbsp;&nbsp;
 								                    </section>    
 								                    </form>                  
-								                  </div>									                  												
+								                  </div>									                  								
 
+								                  <!--  CCAF -->
+
+
+
+
+													<div class="tab-pane <?php echo $ccaf; ?>" id="ccaf" >
+								                      
+								                      <form id="formapv" action="<?php echo base_url();?>rrhh/submit_personal_ccaf" method="post" role="form" enctype="multipart/form-data">
+								                      <section id="new">
+								                        <h3 class="page-header">Listado de Colaboradores</h3>
+								                        <table  id="listado_ccaf_colaborador" class="table table-bordered table-striped dt-responsive">
+								                        <thead>
+								                          <tr>
+								                            <th><small>#</small></th>
+								                            <th><small>Rut</small></th>
+								                            <th><small>Nombre Colaborador</small></th>
+								                            <th><small>Cr&eacute;ditos Personales ($)</small></th>
+								                            <th><small>Descuento Seguro de Vida ($)</small></th>
+								                          </tr>
+								                        </thead>
+								                        <tbody>
+								                          <?php if(count($personal) > 0 ){ ?>
+								                            <?php $i = 1; ?>
+								                            <?php foreach ($personal as $trabajador) { ?>
+								                            	<?php if ($trabajador->active == 1) { ?>			
+								                             <tr>
+								                              <td><small><?php echo $i ;?></small></td>
+								                              <td><small><?php echo $trabajador->rut == '' ? '' : $trabajador->rut."-".$trabajador->dv;?></small></td>
+								                              <td><small><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></small></td>
+								                              <td>
+								                              	<div class="form-group">
+								                                <input type="text" name="ccafcredito_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>" id="ccafcredito_<?php echo $trabajador->id_personal;?>" data-tipodato="ccafcredito" class="form-control input-sm ccafcredito miles dato_actualiza_input" value="<?php echo number_format($trabajador->ccafcredito,0,'.','.'); ?>"   />   
+								                              </div>
+								                              </td>  
+								                              <td>
+								                              	<div class="form-group">
+								                              <?php $depconvapv = is_null($trabajador->depconvapv) ? 0 : number_format($trabajador->depconvapv,0,".","."); ?>
+								                                <input type="text" name="ccafseguro_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>" data-tipodato="ccafseguro"  id="ccafseguro_<?php echo $trabajador->id_personal;?>" class="form-control input-sm miles ccafseguro dato_actualiza_input" value="<?php echo number_format($trabajador->ccafseguro,0,'.','.'); ?>"   />   
+								                              </div>
+								                              </td>                                                      
+								                            </tr>
+								                            <?php $i++;?>
+								                            	<?php } ?>
+								                            <?php } ?>
+								                          <?php }else{ ?>
+								                            <tr>
+								                              <td colspan="10">No existen Colaboradores en la empresa</td>
+								                            </tr>
+								                          <?php } ?>
+								                        </tbody>
+								                        </table>
+
+								                        <!--button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>" >Guardar</button-->&nbsp;&nbsp;
+								                    </section>    
+								                    </form>                  
+								                  </div>									                  							
+
+
+								                  <!-------------->
 
 								 					<div class="tab-pane <?php echo $salud; ?>" id="cotizacion_salud" >
 								                      <form id="formsalud" action="<?php echo base_url();?>rrhh/submit_salud" method="post" role="form" enctype="multipart/form-data">
@@ -691,6 +751,12 @@ $('.dato_actualiza_input').on('input',function(){
 	}
 
 
+	if(tipodato == 'ccafcredito' || tipodato == 'ccafseguro'){
+
+		valor = replaceAll(valor,".","");
+	}	
+
+
           $.ajax({
               type: "POST",
               url: '<?php echo base_url();?>rrhh/actualiza_datos_colaborador/',
@@ -712,7 +778,7 @@ $('.dato_actualiza_input').on('input',function(){
 
 
 $(function () {
-        $('#listado_prevision_afp,#cotizacion_de_salud,#listado_apv_colaborador,#listado_cargos').dataTable({
+        $('#listado_prevision_afp,#cotizacion_de_salud,#listado_apv_colaborador,#listado_ccaf_colaborador,#listado_cargos').dataTable({
           "bLengthChange": true,
           "bFilter": true,
           "bInfo": true,

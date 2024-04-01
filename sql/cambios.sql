@@ -1701,3 +1701,11 @@ alter table rem_declaracion_jurada_detalle add sueldoimponiblesinactualizar bigi
 
 alter table rem_declaracion_jurada add sueldoimponible bigint default 0
 alter table rem_declaracion_jurada add sueldoimponiblesinactualizar bigint default 0
+
+
+
+/********************************************************************************************/
+
+alter table rem_personal add ccafcredito bigint default 0
+alter table rem_personal add ccafseguro bigint default 0
+
