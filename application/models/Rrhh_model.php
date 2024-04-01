@@ -6968,6 +6968,7 @@ public function get_decjurada_rentas($anno)
 															JOIN rem_periodo pe ON r.id_periodo = pe.id_periodo
 															WHERE p.id_empresa ='" . $this->session->userdata('empresaid') . "'
 															AND pe.anno =  '" . $anno . "'
+															AND r.active = 1
 															) a
 												group by id");
 
