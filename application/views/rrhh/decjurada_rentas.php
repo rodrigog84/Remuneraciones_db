@@ -19,6 +19,7 @@
                                                   <option value="<?php echo $i;?>" <?php echo $yearselected; ?>><?php echo $i;?></option>
                                                   <?php } ?>
                                                 </select>
+                                                <b><small>(*) DJ se calcular&aacute; s&oacute;lo sobre per&iacute;odos aprobados</small></b>
                                               </div>
                                             </div>
 
