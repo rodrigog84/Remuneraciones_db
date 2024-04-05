@@ -6966,6 +6966,14 @@ public function get_decjurada_rentas($anno)
 															FROM rem_personal p
 															JOIN rem_remuneracion r ON p.id_personal = r.idpersonal
 															JOIN rem_periodo pe ON r.id_periodo = pe.id_periodo
+															JOIN (
+
+																select	distinct id_periodo, id_empresa
+																from	rem_periodo_remuneracion
+																where	cierre is not null
+																and		aprueba is not null				
+
+																) pr ON r.id_periodo = pr.id_periodo and r.id_empresa = pr.id_empresa 
 															WHERE p.id_empresa ='" . $this->session->userdata('empresaid') . "'
 															AND pe.anno =  '" . $anno . "'
 															AND r.active = 1
