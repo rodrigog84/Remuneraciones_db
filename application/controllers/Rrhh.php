@@ -491,6 +491,8 @@ public function submit_salud(){
 			$vars['otros'] = '';	
 			$vars['apv'] = '';
       $vars['ccaf'] = '';
+      $vars['rol_privado'] = '';
+
 
 			$resultid = $this->session->flashdata('personal_result');
 			if($resultid == 1){
@@ -504,6 +506,7 @@ public function submit_salud(){
         $vars['ccaf'] = '';	
 				$vars['salud'] = '';		
 				$vars['otros'] = '';	
+        $vars['rol_privado'] = '';
 			}elseif($resultid == 2){
 				$vars['message'] = "Error al agregar Trabajador. Trabajador ya existe";
 				$vars['classmessage'] = 'danger';
@@ -514,7 +517,8 @@ public function submit_salud(){
 				$vars['apv'] = '';
         $vars['ccaf'] = '';		
 				$vars['salud'] = '';
-				$vars['otros'] = '';							
+				$vars['otros'] = '';		
+        $vars['rol_privado'] = '';					
 			}elseif($resultid == 3){
 				$vars['message'] = "Leyes sociales actualizadas correctamente";
 				$vars['classmessage'] = 'success';
@@ -525,7 +529,8 @@ public function submit_salud(){
         $vars['ccaf'] = '';		
 				$vars['leyes_sociales'] = 'active';		
 				$vars['salud'] = '';	
-				$vars['otros'] = '';						
+				$vars['otros'] = '';				
+        $vars['rol_privado'] = '';		
 			}elseif($resultid == 4){
 				$vars['message'] = "Datos de Cotizaciones de Salud actualizados correctamente";
 				$vars['classmessage'] = 'success';
@@ -537,6 +542,7 @@ public function submit_salud(){
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = 'active';							
 				$vars['otros'] = '';	
+        $vars['rol_privado'] = '';
 			}elseif($resultid == 5){
 				$vars['message'] = "Mutual de Seguridad/Caja de Compensaci&oacute;n actualizados correctamente";
 				$vars['classmessage'] = 'success';
@@ -547,7 +553,8 @@ public function submit_salud(){
         $vars['ccaf'] = '';		
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = '';							
-				$vars['otros'] = 'active';											
+				$vars['otros'] = 'active';		
+        $vars['rol_privado'] = '';									
 			}elseif($resultid == 6){
 				$vars['message'] = "Trabajador Editado correctamente";
 				$vars['classmessage'] = 'success';
@@ -558,7 +565,8 @@ public function submit_salud(){
         $vars['ccaf'] = '';		
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = '';	
-				$vars['otros'] = '';							
+				$vars['otros'] = '';	
+        $vars['rol_privado'] = '';						
 			}elseif($resultid == 7){
 				$vars['message'] = "A.P.V. Editado correctamente";
 				$vars['classmessage'] = 'success';
@@ -569,7 +577,8 @@ public function submit_salud(){
         $vars['ccaf'] = '';		
 				$vars['leyes_sociales'] = '';		
 				$vars['salud'] = '';	
-				$vars['otros'] = '';							
+				$vars['otros'] = '';			
+        $vars['rol_privado'] = '';				
 			}elseif($resultid == 8){
 				$vars['message'] = "Colaboradores Cargados correctamente";
 				$vars['classmessage'] = 'success';
@@ -585,6 +594,7 @@ public function submit_salud(){
         $vars['leyes_sociales'] = '';   
         $vars['salud'] = '';              
         $vars['otros'] = '';  
+        $vars['rol_privado'] = '';
       }elseif($resultid == 10){
         $vars['message'] = "Datos del Trabajador actualizados correctamente";
         $vars['classmessage'] = 'success';
@@ -596,6 +606,7 @@ public function submit_salud(){
         $vars['leyes_sociales'] = '';   
         $vars['salud'] = '';              
         $vars['otros'] = '';  
+        $vars['rol_privado'] = '';
        }elseif($resultid == 11){
         $vars['message'] = "Error al imprimir liquidac&oacute;n. Debe seleccionar colaborador";
         $vars['classmessage'] = 'danger';
@@ -606,7 +617,8 @@ public function submit_salud(){
         $vars['apv'] = ''; 
         $vars['ccaf'] = '';   
         $vars['salud'] = '';
-        $vars['otros'] = '';              
+        $vars['otros'] = '';
+        $vars['rol_privado'] = '';              
       }elseif($resultid == 12){
         $vars['message'] = "Error al imprimir liquidac&oacute;n. No existen liquidaciones para el colaborador seleccionado";
         $vars['classmessage'] = 'danger';
@@ -617,7 +629,8 @@ public function submit_salud(){
         $vars['apv'] = ''; 
         $vars['ccaf'] = '';   
         $vars['salud'] = '';
-        $vars['otros'] = '';              
+        $vars['otros'] = '';
+        $vars['rol_privado'] = '';              
       }elseif($resultid == 13){
         $vars['message'] = "Error al ver informaci&oacute;n hist&oacute;rica. Debe seleccionar colaborador";
         $vars['classmessage'] = 'danger';
@@ -628,7 +641,8 @@ public function submit_salud(){
         $vars['apv'] = ''; 
         $vars['ccaf'] = '';   
         $vars['salud'] = '';
-        $vars['otros'] = '';             
+        $vars['otros'] = '';       
+        $vars['rol_privado'] = '';      
       }elseif($resultid == 14){
         $vars['message'] = "Error al ver informaci&oacute;n hist&oacute;rica. No existe colaborador";
         $vars['classmessage'] = 'danger';
@@ -639,7 +653,8 @@ public function submit_salud(){
         $vars['apv'] = ''; 
         $vars['ccaf'] = '';   
         $vars['salud'] = '';
-        $vars['otros'] = '';             
+        $vars['otros'] = '';   
+        $vars['rol_privado'] = '';          
       }elseif($resultid == 15){
         $vars['message'] = "Error al ver Licencias. Debe seleccionar colaborador";
         $vars['classmessage'] = 'danger';
@@ -650,7 +665,8 @@ public function submit_salud(){
         $vars['apv'] = ''; 
         $vars['ccaf'] = '';   
         $vars['salud'] = '';
-        $vars['otros'] = '';             
+        $vars['otros'] = '';    
+        $vars['rol_privado'] = '';         
       }elseif($resultid == 16){
         $vars['message'] = "Error al ver Licencias. No existe colaborador";
         $vars['classmessage'] = 'danger';
@@ -661,7 +677,8 @@ public function submit_salud(){
         $vars['apv'] = ''; 
         $vars['ccaf'] = '';   
         $vars['salud'] = '';
-        $vars['otros'] = '';             
+        $vars['otros'] = '';   
+        $vars['rol_privado'] = '';          
       }elseif($resultid == 17){
         $vars['message'] = "Error al editar colaborador. Debe seleccionar colaborador";
         $vars['classmessage'] = 'danger';
@@ -672,7 +689,8 @@ public function submit_salud(){
         $vars['apv'] = ''; 
         $vars['ccaf'] = '';   
         $vars['salud'] = '';
-        $vars['otros'] = '';              
+        $vars['otros'] = '';       
+        $vars['rol_privado'] = '';       
       }elseif($resultid == 18){
         $vars['message'] = "Error al editar colaborador. Colaborador no existe";
         $vars['classmessage'] = 'danger';
@@ -683,7 +701,8 @@ public function submit_salud(){
         $vars['apv'] = ''; 
         $vars['ccaf'] = '';   
         $vars['salud'] = '';
-        $vars['otros'] = '';              
+        $vars['otros'] = '';    
+        $vars['rol_privado'] = '';          
       }
 
 			$this->load->model('admin');

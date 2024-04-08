@@ -1727,3 +1727,10 @@ UPDATE rem_empresa set rol_privado = 0
 
 alter table rem_users add rol_privado tinyint default 0
 UPDATE rem_users set rol_privado = 0
+
+
+/***********************************************************************************************/
+
+alter table rem_personal add rol_privado_personal tinyint default 0
+UPDATE rem_personal set rol_privado_personal = 0
+

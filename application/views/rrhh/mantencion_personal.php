@@ -15,6 +15,9 @@
 	  										<li class="<?php echo $apv; ?>"><a href="#apv" data-toggle="tab">A.P.V.&nbsp;&nbsp;<i class="fa"></i></a></li>
 	  										<li class="<?php echo $ccaf; ?>"><a href="#ccaf" data-toggle="tab">CCAF&nbsp;&nbsp;<i class="fa"></i></a></li>
 	  										<li class="<?php echo $salud; ?>"><a href="#cotizacion_salud" data-toggle="tab">Cotizaci&oacute;n de Salud&nbsp;&nbsp;<i class="fa"></i></a></li>
+	  										<?php if($this->session->userdata('rol_privado_empresa') == 1 && $this->session->userdata('rol_privado_user') == 1){ ?>
+	  											<li class="<?php echo $rol_privado; ?>"><a href="#rol_privado" data-toggle="tab">Rol Privado&nbsp;&nbsp;<i class="fa"></i></a></li>
+	  										<?php } ?>
 	  										<!--li><a href="#otros" data-toggle="tab">Otros&nbsp;&nbsp;<i class="fa"></i></a></li-->
 										</ul>
 									</div>								  
@@ -108,6 +111,10 @@
 
 															</section>
 														</div>	
+
+
+
+
 
 												<div class="tab-pane <?php echo $ccostocargo; ?>" id="ccostocargo">
 												 <form id="formpersonaldata" action="<?php echo base_url();?>rrhh/submit_personal_data" method="post" role="form" enctype="multipart/form-data">
@@ -527,6 +534,63 @@
 								                    </section>    
 								                    </form>  
 								                  </div>   
+
+
+
+
+								              <?php if($this->session->userdata('rol_privado_empresa') == 1 && $this->session->userdata('rol_privado_user') == 1){ ?>
+
+												<div class="tab-pane <?php echo $rol_privado; ?>" id="rol_privado">
+												 <form id="formpersonaldata" action="<?php echo base_url();?>rrhh/submit_personal_data" method="post" role="form" enctype="multipart/form-data">
+													<section id="rol_privado">										
+
+													  <div class="graph">
+
+														  	
+															<div class="tables">
+																<table id="listado_cargos" class="table"> 
+																	<thead> 
+																		<tr>
+																			<th>#</th>
+                            												<th>Nombre Colaborador</th>
+                            												<th>Rut</th>
+                            												<th>Rol Privado</th>				
+																		</tr> 
+																	</thead> 
+																	<tbody> 
+	                          										<?php if(count($personal) > 0 ){ ?>
+	                            										<?php $i = 1; ?>
+	                            										<?php foreach ($personal as $trabajador) { ?>	
+	                            										 <?php if ($trabajador->active == 1) { ?>			
+																		<tr class="active" id="variable">
+											                              <td><?php echo $i ;?></td>
+	                              										  <td><?php echo $trabajador->apaterno." ".$trabajador->amaterno." ".$trabajador->nombre;?></td>
+	                                									  <td><?php echo $trabajador->rut == '' ? '' : $trabajador->rut."-".$trabajador->dv;?></td>
+	                              										   <td>
+																				<select name="rolprivado_<?php echo $trabajador->id_personal;?>" data-idpersonal="<?php echo $trabajador->id_personal;?>" data-tipodato="rol_privado_personal" id="rolprivado_<?php echo $trabajador->id_personal;?>" class="form-control input-sm dato_actualiza_select">
+																					<?php $rol_privado_personal = $trabajador->rol_privado_personal; ?>   
+												                                      <option value="1" <?php echo $rol_privado_personal == 1 ? 'selected' : ''; ?>>SI</option>
+                                													  <option value="0" <?php echo $rol_privado_personal != 1 ? 'selected' : ''; ?>>NO</option>
+																				</select>
+	                              										   </td>
+																		</tr> 
+
+											                            <?php $i++;?>
+											                            <?php } ?>
+												                       <?php } ?>
+                          												<?php } ?>		
+																		
+																	</tbody> 
+																</table> 
+																 <!--button type="submit" class="btn btn-primary <?php echo count($personal) == 0 ? 'disabled' : ''; ?>" >Guardar</button-->&nbsp;&nbsp
+															</div>
+
+															</section>
+														</form>
+														</div>	
+
+													<?php } ?>
+
 
 
 												
