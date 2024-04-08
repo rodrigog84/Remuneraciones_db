@@ -325,7 +325,7 @@ class Mantenedores_model extends CI_Model
 
 	public function empresa($idempresa = null){
 
-		$empresa_data = $this->db->select('d.id_empresa, d.nombre, d.rut, d.dv, d.direccion , d.active, c2.nombre as nombrecomuna, c3.nombre as nombreregion')
+		$empresa_data = $this->db->select('d.id_empresa, d.nombre, d.rut, d.dv, d.direccion , d.active, c2.nombre as nombrecomuna, c3.nombre as nombreregion, d.rol_privado')
 			  ->from('rem_empresa d')
 			  ->join('rem_comuna c2','d.idcomuna = c2.idcomuna','left')
 			  ->join('rem_region c3','d.idregion = c3.id_region','left')
@@ -491,6 +491,7 @@ class Mantenedores_model extends CI_Model
             'fecinicio' => $datos['fecinicio'],
             'fecvencimiento' => $datos['fecvencimiento'],
             'codvendedor' => $datos['codvendedor'],
+            'rol_privado' => $datos['rol_privado'],
             'active' => 1
             //'iduser' => $this->session->userdata('user_id'),
         );

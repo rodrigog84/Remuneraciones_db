@@ -1,4 +1,4 @@
-/<!--sub-heard-part-->
+<!--sub-heard-part-->
 								  <!--//sub-heard-part-->
 								
 									<div class="graph-visual tables-main">

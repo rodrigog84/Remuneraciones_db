@@ -14,14 +14,14 @@
         </th>
         </tr>
         <tr>
-        <th >Comuna : <select name="comuna" id="comuna" class="form-control1" required>
+        <th >Comuna : <select name="comuna" id="comuna" class="form-control" required>
         <?php foreach ($comuna as $comuna) { ?>
               <?php $comunaselected = $comuna->idcomuna == $datos_form['idcomuna'] ? "selected" : ""; ?>
               <option value="<?php echo $comuna->idcomuna;?>" <?php echo $comunaselected;?> ><?php echo $comuna->nombre;?></option>
             <?php } ?>
         </select>  
         </th>  
-        <th >Region  :  <select name="region" id="region" class="form-control1" required>
+        <th >Region  :  <select name="region" id="region" class="form-control" required>
         <?php foreach ($region as $region) { ?>
               <?php $regionselected = $region->id_region == $datos_form['id_region'] ? "selected" : ""; ?>
               <option value="<?php echo $region->id_region;?>" <?php echo $regionselected;?> ><?php echo $region->nombre;?></option>
@@ -31,6 +31,17 @@
         <th >Fono   : <input type="text" name="fono" id="fono" class="descripcion  form-control" id="fono" placeholder="fono" value="<?php echo isset($empresa->fono) ? $empresa->fono : '';?>" requiere>
         </th>
 		</tr> 
+
+
+        <tr>
+
+        <?php $rol_privado = isset($empresa->rol_privado) ? $empresa->rol_privado : 0; ?>
+        <th >Tiene Rol Privado : <select name="rol_privado" id="rol_privado" class="form-control" required>
+              <option value="1" <?php echo $rol_privado == 1 ? 'selected' : ''; ?>>SI</option>
+              <option value="0" <?php echo $rol_privado != 1 ? 'selected' : ''; ?>>NO</option>
+        </select>  
+        </th>  
+        </tr>         
 		</thead> 
 		<tbody> 
 		<tr class="active" id="variable">
@@ -41,7 +52,7 @@
 		<a href="<?php echo base_url(); ?>mantenedores/empresas" class = "btn btn-primary" >Volver</a>
 		<button type = "submit" class = "btn btn-info" id="comando">Guardar
 		</button>
-		<input type="text" name="idempresas" value="<?php echo isset($empresa->id_empresa) ? $empresa->id_empresa: 0 ;?>">
+		<input type="hidden" name="idempresas" value="<?php echo isset($empresa->id_empresa) ? $empresa->id_empresa: 0 ;?>">
 		</div>
 </form>
 </div>

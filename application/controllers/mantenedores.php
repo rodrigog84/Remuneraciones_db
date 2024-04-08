@@ -1723,6 +1723,7 @@ public function submit_empresas(){
         	$idcomuna = $this->input->post('comuna');
         	$idregion = $this->input->post('region');
         	$fono = $this->input->post('fono');
+        	$rol_privado = $this->input->post('rol_privado');
         	$idempresa = $this->input->post('idempresas');
 
         	$existe = $this->Mantenedores_model->valida_existe_empresa($rut);
@@ -1739,7 +1740,8 @@ public function submit_empresas(){
             		'idcomuna' => $idcomuna,
             		'idregion' => $idregion,
             		'fecinicio' => $fecinicio,
-            		'fecvencimiento' => $fecvencimiento
+            		'fecvencimiento' => $fecvencimiento,
+            		'rol_privado' => $rol_privado,
 
         			);
 
