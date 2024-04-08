@@ -63,7 +63,19 @@
                       </div>                      
                     </div>
 
-
+                    <div class='row'>
+                      <div class='col-md-6'>
+                        <div class="form-group">
+                              <label for="email">Rol Privado</label> 
+                              <?php $rol_privado = $datos_form['rol_privado']; ?>   
+                              <select name="rol_privado" id="rol_privado" class="form-control" required>
+                                <option value="1" <?php echo $rol_privado == 1 ? 'selected' : ''; ?>>SI</option>
+                                <option value="0" <?php echo $rol_privado != 1 ? 'selected' : ''; ?>>NO</option>
+                          </select>
+                        </div> 
+                      </div>
+ 
+                    </div>
                   <input type="hidden" name="iduser" value="<?php echo $datos_form['iduser']; ?>" >
               </div>
           </div>

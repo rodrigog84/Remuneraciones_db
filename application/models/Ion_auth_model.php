@@ -2312,6 +2312,13 @@ class Ion_auth_model extends CI_Model
 
 
 
+
+	public function update_rol_privado($userid,$rol_privado){
+		$this->db->where('id', $userid);		
+		$this->db->update($this->tables['users'],array('rol_privado' => $rol_privado)); 					
+	}
+
+
 	/*public function asocia_comunidad($userid,$idcomunidad){
 		$this->db->select(' idusuario ')
 						  ->from('gc_usuario_comunidad')

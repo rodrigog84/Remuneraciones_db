@@ -1696,7 +1696,7 @@ public function get_bonos($idtrabajador = null){
 
 	public function get_users($iduser = null){
 
-		$usuario_data = $this->db->select("distinct u.id, u.first_name, u.last_name, u.first_name+' '+u.last_name as nombre, u.email, u.level, l.description as levelname",false)
+		$usuario_data = $this->db->select("distinct u.id, u.first_name, u.last_name, u.first_name+' '+u.last_name as nombre, u.email, u.level, l.description as levelname, u.rol_privado",false)
 						  ->from('rem_users as u')
 						  ->join('rem_level as l','u.level = l.id')
 						  ->join('rem_usuario_empresa as ue','u.id = ue.idusuario','left')

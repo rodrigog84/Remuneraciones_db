@@ -1718,8 +1718,12 @@ alter table rem_remuneracion add ccafseguro bigint default 0
 
 /**********************************************************************************************/
 
+alter table rem_empresa add rol_privado tinyint default 0
+UPDATE rem_empresa set rol_privado = 0
 
-alter table rem_empresa add rol_privado char(2) default 'NO'
-UPDATE rem_empresa set rol_privado = 'NO'
+
+/*********************************************************************************************/
 
 
+alter table rem_users add rol_privado tinyint default 0
+UPDATE rem_users set rol_privado = 0

@@ -1044,6 +1044,7 @@ public function submit_parametros_generales()
 							'apellido' => is_null($user) ? '' : $user->last_name,
 							'email' => is_null($user) ? '' : $user->email,
 							'perfil' => is_null($user) ? '' : $user->level,
+							'rol_privado' => is_null($user) ? 0 : $user->rol_privado,
 							'idempresa' => $idempresa,
 							);
 
@@ -1247,6 +1248,7 @@ public function submit_user()
 			//$idpropiedad = $this->input->post('propiedad');
 			$password = $this->input->post('password');
 			$iduser = $this->input->post('iduser');
+			$rol_privado = $this->input->post('rol_privado');
 
 			$array_elem = $this->input->post(NULL,true);
 
@@ -1280,7 +1282,7 @@ public function submit_user()
 							'first_name' => $nombre,
 							'last_name'  => $apellido,
 							'company'    => '',
-							'phone'      => '',
+							'phone'      => ''
 						);
 
 			//$this->load->model('admin');
@@ -1289,6 +1291,8 @@ public function submit_user()
 			$userid = $iduser == 0 ? $userid : $iduser;
 
 			$result = $this->ion_auth->update_level($userid,$perfil); //actualiza perfil
+
+			$result = $this->ion_auth->update_rol_privado($userid,$rol_privado); //actualiza rol_privado
 
 			//en caso de crear un usuario asociado a un mail ya existente, aparte de activarlo, se debe actualizar password
 			if($activa_antiguo){
