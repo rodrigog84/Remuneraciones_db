@@ -711,7 +711,7 @@ public function add_apv($array_datos){
 
 	public function empresas_asignadas($userid,$levelid,$empresaid = null){
 
-		$empresa_data = $this->db->select('c.id_empresa, c.nombre, DATEDIFF(DD,CAST(GETDATE() AS DATE),c.fecvencimiento) AS vencsuscripcion',FALSE)
+		$empresa_data = $this->db->select('c.id_empresa, c.nombre, DATEDIFF(DD,CAST(GETDATE() AS DATE),c.fecvencimiento) AS vencsuscripcion, c.rol_privado',FALSE)
 						  ->from('rem_empresa as c')
 						  ->join('rem_usuario_empresa as uc','c.id_empresa = uc.id_empresa')
 		                  ->where('uc.idusuario', $userid)

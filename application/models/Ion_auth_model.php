@@ -983,7 +983,7 @@ class Ion_auth_model extends CI_Model
 
 		$this->trigger_events('extra_where');
 
-		$query = $this->db->select($this->identity_column . ', username, email, id, password, active, last_login, level, created_on, first_name, last_name')
+		$query = $this->db->select($this->identity_column . ', username, email, id, password, active, last_login, level, created_on, first_name, last_name, rol_privado')
 		                  ->where($this->identity_column, $identity)
 		                  ->limit(1)
 		    			  ->order_by('id', 'desc')
@@ -1762,6 +1762,7 @@ class Ion_auth_model extends CI_Model
 		    'level_name'		   => $level_data->description,
 		    'name'			   	   => $user->first_name." ".$user->last_name,
 		    'created_on'		   => $user->created_on,
+		    'rol_privado_user'	   => $user->rol_privado,
 		 //   'photo'		   		   => $photo
 		);
 		//exit;
@@ -1848,7 +1849,7 @@ class Ion_auth_model extends CI_Model
 
 		//get the user
 		$this->trigger_events('extra_where');
-		$query = $this->db->select($this->identity_column.', id, username, email, last_login, level, DATE_FORMAT(FROM_UNIXTIME(created_on),"%d-%m-%Y %H:%i:%s") as created_on, first_name, last_name')
+		$query = $this->db->select($this->identity_column.', id, username, email, last_login, level, DATE_FORMAT(FROM_UNIXTIME(created_on),"%d-%m-%Y %H:%i:%s") as created_on, first_name, last_name, rol_privado')
 		                  ->where($this->identity_column, get_cookie($this->config->item('identity_cookie_name', 'ion_auth')))
 		                  ->where('remember_code', get_cookie($this->config->item('remember_cookie_name', 'ion_auth')))
 		                  ->limit(1)

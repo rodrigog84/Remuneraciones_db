@@ -165,11 +165,18 @@ class Main extends CI_Controller
                 //var_dump_new($empresas_asignadas);
                 $empresas_asignadas = $empresas_asignadas[0];
 
+                $rol_privado_empresa = $empresas_asignadas->rol_privado;
+
 
                 $this->session->set_userdata('empresaid', $empresas_asignadas->id_empresa);
+                $this->session->set_userdata('rol_privado_empresa', $rol_privado_empresa);
                 $this->session->set_userdata('empresanombre', $empresas_asignadas->nombre);
                 $this->session->set_userdata('diasvencsuscripcion', $empresas_asignadas->vencsuscripcion);
                 $unidad_id = $empresas_asignadas->id_empresa;
+
+
+
+               // var_dump_new($this->session->all_userdata()); exit;
             } else {
                 redirect('auth/logout');
             }
