@@ -1442,6 +1442,16 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);
 		$personal_data = !$centro_costo  ? $personal_data : $personal_data->where_in('idcentrocosto',$centro_costo);
 
+
+		if($this->session->userdata('rol_privado_empresa') == 1){
+				if($this->session->userdata('rol_privado_user') == 0){ // si la empresa maneja rol privado y el usuario no, se quitan los trabajadores con rol privado
+
+					$personal_data = $personal_data->where('p.rol_privado_personal',0);
+				}
+
+
+		}
+
 		$query = $this->db->get();
 		//echo $this->db->last_query(); exit;
 		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
@@ -2025,6 +2035,23 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		$parametros['sueldominimo'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Sueldo Minimo');
 		$parametros['utm'] = $this->admin->get_indicadores_by_periodo($idperiodo,'UTM');
 		$parametros['tasasis'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tasa SIS');
+
+
+        if($parametros['uf'] == -1){
+
+            $valor_uf = $this->admin->get_indicadores_by_day(date('Y-m-d'),'UF');
+            $parametros['uf'] = $valor_uf[0]->valor;
+        }
+
+
+
+        if($parametros['utm'] == -1){
+
+            $valor_utm = $this->admin->get_indicadores_by_day(date('Y-m-d'),'UTM');
+            $parametros['utm'] = $valor_utm[0]->valor;
+        }
+
+
 
 		//$parametros = $this->admin->get_parametros_generales();
 		$monto_total_sueldos = 0;

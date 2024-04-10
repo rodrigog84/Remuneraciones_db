@@ -3842,6 +3842,22 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
         $parametros['utm'] = $this->admin->get_indicadores_by_periodo($idperiodo,'UTM');
         $parametros['tasasis'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Tasa SIS');
 
+        //var_dump($parametros); exit;
+
+        if($parametros['uf'] == -1){
+
+            $valor_uf = $this->admin->get_indicadores_by_day(date('Y-m-d'),'UF');
+            $parametros['uf'] = $valor_uf[0]->valor;
+        }
+
+
+
+        if($parametros['utm'] == -1){
+
+            $valor_utm = $this->admin->get_indicadores_by_day(date('Y-m-d'),'UTM');
+            $parametros['utm'] = $valor_utm[0]->valor;
+        }
+
         if($parametros['uf'] == -1 || $parametros['topeimponible'] == -1 ||  $parametros['topeimponibleips'] == -1 ||  $parametros['topeimponibleafc'] == -1 ||  $parametros['sueldominimo'] == -1 ||  $parametros['utm'] == -1){
               $this->session->set_flashdata('calculo_remuneraciones_result', 5);
               redirect('rrhh/calculo_remuneraciones');

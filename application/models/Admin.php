@@ -995,6 +995,9 @@ public function get_zona_brecha($id_empresa=null){
 
 public function get_cargo_colaborador($idtrabajador = null,$actives = null){
 
+
+
+
 		$personal_data = $this->db->select("p.id_personal, p.id_empresa, p.rut, p.dv, p.nombre, p.apaterno, p.amaterno, p.fecnacimiento, p.sexo, p.idecivil, p.nacionalidad, p.direccion, 
 		p.idregion, p.idcomuna, p.fono, p.email, p.fecingreso, p.idcargo, p.tipocontrato, p.parttime, p.segcesantia, p.fecafc, p.diastrabajo, p.horasdiarias, 
 		p.horassemanales, p.sueldobase, p.tipogratificacion, p.gratificacion, p.asigfamiliar, p.cargassimples, p.cargasinvalidas, p.cargasmaternales, p.cargasretroactivas, 
@@ -1008,7 +1011,18 @@ public function get_cargo_colaborador($idtrabajador = null,$actives = null){
 						  //->where('p.active',1)
 						  ->order_by('p.active','desc')
 		                  ->order_by('p.apaterno');
-		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);  	
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);
+
+
+		if($this->session->userdata('rol_privado_empresa') == 1){
+				if($this->session->userdata('rol_privado_user') == 0){ // si la empresa maneja rol privado y el usuario no, se quitan los trabajadores con rol privado
+
+					$personal_data = $personal_data->where('p.rol_privado_personal',0);
+				}
+
+
+		}
+
 		//$personal_data = is_null($actives) ? $personal_data : $personal_data->where('p.active',1);  		                  
 
 		$query = $this->db->get();
