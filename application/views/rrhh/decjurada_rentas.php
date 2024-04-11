@@ -1,6 +1,23 @@
 
           <form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/decjurada_rentas" id="basicBootstrapForm" method="post"> 
 
+            <?php 
+
+                $muestra = true;
+                if($this->session->userdata('rol_privado_empresa') == 1){
+                    if($this->session->userdata('rol_privado_user') == 0){ // si la empresa maneja rol privado y el usuario no, se quitan los trabajadores con rol privado
+
+                      $muestra = false;
+                    }
+
+
+                }
+            
+              ?>
+
+
+              <?php if($muestra){ ?>
+
               <div class="row">
                                   <div class="col-md-6">
                                     <div class="panel panel-inverse">
@@ -44,6 +61,15 @@
 
 
              </div>
+
+           <?php }else{ ?>
+            <div class="alert alert-info fade in m-b-15">
+                <strong>Atenci&oacute;n!</strong>
+                Opci&oacute;n disponible s&oacute;lo para usuarios con rol privado
+              </div>
+
+
+           <?php } ?>
 
         <?php if(count($encabezado) > 0){ ?>
 
