@@ -1,3 +1,20 @@
+								
+            <?php 
+
+                $muestra = true;
+                if($this->session->userdata('rol_privado_empresa') == 1){
+                    if($this->session->userdata('rol_privado_user') == 0){ // si la empresa maneja rol privado y el usuario no, se quitan los trabajadores con rol privado
+
+                      $muestra = false;
+                    }
+
+
+                }
+            
+              ?>
+
+
+
 									<div class="graph-visual tables-main">
 											
 									        <?php if(isset($message)): ?>
@@ -81,8 +98,10 @@
 																			<th>A&ntilde;o</th> 
 													                        <th>N&uacute;mero Colaboradores</th>
 													                        <th>Remuneraci&oacute;n Total (L&iacute;quido)</th>
+													                        <?php if($muestra){ ?>
 													                        <th>Previred</th>
 													                        <th>Libro Remuneraciones</th>
+													                        <?php } ?>
 													                        <th>Liquidaciones</th>
 													                        <th>Detalle Remuneraciones</th>
 													                        <th>Estado</th>
@@ -109,6 +128,7 @@
 											                            <td><?php echo date2string($periodo->mes,$periodo->anno) == 'Saldo Inicial' ? 'Inicial' : $periodo->anno;?></td>
 											                            <td><?php echo number_format($periodo->numtrabajadores,0,".",".");?></td>
 											                            <td>$&nbsp;<?php echo number_format($periodo->sueldoliquido,0,".",".");?></td>
+											                            <?php if($muestra){ ?>
 											                            	<td>
 											                              <center>
 											                              	<?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0){ ?>
@@ -123,6 +143,7 @@
 											                              <?php } ?>
 											                              </center>
 											                              </td>
+											                              <?php } ?>
 											                              <td>
 											                              	<center>
 											                              		<a href="<?php echo base_url(); ?>rrhh/liquidaciones/<?php echo $periodo->id_periodo."/".$idcentrocosto; ?>" target="_blank"><span class="glyphicon glyphicon-paperclip"></span>

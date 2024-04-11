@@ -1,4 +1,21 @@
 <!--sub-heard-part-->
+
+
+
+            <?php 
+
+                $muestra = true;
+                if($this->session->userdata('rol_privado_empresa') == 1){
+                    if($this->session->userdata('rol_privado_user') == 0){ // si la empresa maneja rol privado y el usuario no, se quitan los trabajadores con rol privado
+
+                      $muestra = false;
+                    }
+
+
+                }
+            
+              ?>
+
 									  <div class="sub-heard-part">
 									   <ol class="breadcrumb m-b-0">
 											<li><a href="inicio.html">Inicio</a></li>
@@ -181,9 +198,11 @@
 																			<th><small>Per&iacute;odo</small></th> 
 																			<!--th><small>Estado</small></th-->
 																			<th><small>Centros de Costo Calculados</small></th> 
+																			<?php if($muestra){ ?>
 																			<th><small>Previred</small></th>
 																			<th><small>Libro Remuneraciones</small></th>
 																			<th><small>Resumen</small></th>
+																			<?php } ?>
 																			<th><small>Liquidaciones</small></th>
 																			<!--th>Acci&oacute;n</th--> 
 																			<th><small>Ver Detalle Remuneraciones</small></th> 
@@ -204,6 +223,8 @@
                         													<?php if($periodo->estado == 'Falta Informaci&oacute;n'){ ?><i class="fa fa-question-circle" data-toggle="popover" data-placement="top" data-content="<?php echo $mensaje_html[$periodo->id];?>" title="Datos Pendientes:"></i><?php } ?>
                         													</small></td-->
                         													<td><small><center><?php echo $periodo->ccostocalculados."/".$periodo->ccostoexistentes;?></center></small></td>
+												                             <?php if($muestra){ ?>
+
 												                              <td><small>
 												                              <center>
 												                              <a href="<?php echo base_url(); ?>rrhh/previred/<?php echo $periodo->id_periodo;?>" target="_blank"><span class="glyphicon glyphicon-list-alt"></span></a>  
@@ -219,6 +240,7 @@
 												                              <a href="<?php echo base_url(); ?>rrhh/resumen_rem/<?php echo $periodo->id_periodo;?>" ><span class="glyphicon glyphicon-book"></span></a>  
 												                              </center>
 												                             </small></td>
+												                            <?php } ?>
 												                            <td><small>
 											                              	<center>
 											                              		<a href="<?php echo base_url(); ?>rrhh/liquidaciones/<?php echo $periodo->id_periodo; ?>" target="_blank"><span class="glyphicon glyphicon-paperclip"></span>

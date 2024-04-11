@@ -1,3 +1,19 @@
+								
+            <?php 
+
+                $muestra = true;
+                if($this->session->userdata('rol_privado_empresa') == 1){
+                    if($this->session->userdata('rol_privado_user') == 0){ // si la empresa maneja rol privado y el usuario no, se quitan los trabajadores con rol privado
+
+                      $muestra = false;
+                    }
+
+
+                }
+            
+              ?>
+
+
 									<div class="graph-visual tables-main">
 											
 
@@ -72,11 +88,13 @@
 													                        <th><small>Remuneraci&oacute;n Total (L&iacute;quido)</small></th>
 													                        <th><small>Detalle</small></th>
 													                        <!--th>Planillas Imposiciones</th-->
+													                        <?php if($muestra){ ?>
 													                        <th><small>Previred</small></th>
 													                        <th><small>Pago a Bancos</small></th>
 													                        <th><small>Libro Remuneraciones</small></th>
 																			<th><small>Resumen</small></th>
 													                        <th><small>LRE</small></th>
+													                        <?php } ?>
 													                        <th><small>Liquidaciones</small></th>
 																		</tr> 
 																	</thead> 
@@ -112,6 +130,7 @@
 											                              <?php } ?>
 											                              </center>
 											                              </td-->
+											                              <?php if($muestra){ ?>
 											                              <td><small>
 											                              <center>
 											                              <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0 ){ ?>
@@ -157,6 +176,7 @@
 											                              <?php } ?>
 											                              </center></small>
 											                              </td>  
+											                              <?php } ?>
 											                              <td><small>
 											                              	<center>
 											                              	 <?php if(!is_null($periodo->cierre)  && $periodo->numtrabajadores > 0 ){ ?>
