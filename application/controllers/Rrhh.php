@@ -4097,6 +4097,8 @@ public function get_datos_licencia($mes,$anno,$idtrabajador = null){
 			$datosperiodo = $this->rrhh_model->get_periodos_cerrados_detalle($this->session->userdata('empresaid'),$idperiodo,$idcentrocosto);
 
 
+
+
 			//var_dump($datosperiodo); exit;
 			//$centros_costo = $this->rrhh_model->get_centro_costo();
 			$centros_costo = $this->rrhh_model->get_centro_costo_periodo_abierto($idperiodo);

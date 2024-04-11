@@ -2957,7 +2957,19 @@ public function get_periodos_cerrados_detalle($empresaid,$idperiodo = null,$idce
 		$sql_centro_costo_rem = is_null($idcentrocosto) ? 'and pe.idcentrocosto in (' . $lista_centro_costos_validos . ')' : 'and r.idcentrocosto = ' . $idcentrocosto;
 
 
-		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, max(pr.cierre) as cierre, pr.aprueba, (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo_rem . ') as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ') as sueldoliquido', false)
+
+		$sql_filtra_colaboradores = '';
+		if($this->session->userdata('rol_privado_empresa') == 1){
+				if($this->session->userdata('rol_privado_user') == 0){ // si la empresa maneja rol privado y el usuario no, se quitan los trabajadores con rol privado
+
+					$sql_filtra_colaboradores = 'and pe.rol_privado_personal = 0';
+				}
+
+
+		}
+
+
+		$periodo_data = $this->db->select('p.id_periodo, p.mes, p.anno, max(pr.cierre) as cierre, pr.aprueba, (select count(*) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo_rem . ' ' . $sql_filtra_colaboradores . ') as numtrabajadores, (select sum(sueldoimponible) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo  . ' ' . $sql_filtra_colaboradores . ') as sueldoimponible, (select sum(sueldoliquido) from rem_remuneracion r inner join rem_personal pe on r.idpersonal = pe.id_personal where r.id_periodo = p.id_periodo and pe.id_empresa = ' . $empresaid . ' and r.active = 1 ' . $sql_centro_costo . ' ' . $sql_filtra_colaboradores . ') as sueldoliquido', false)
 						  ->from('rem_periodo as p')
 						  ->join('rem_periodo_remuneracion as pr','p.id_periodo = pr.id_periodo')
 						  ->where('pr.id_empresa', $empresaid)
@@ -2966,6 +2978,10 @@ public function get_periodos_cerrados_detalle($empresaid,$idperiodo = null,$idce
 		                  ->order_by('p.anno desc')
 		                  ->order_by('p.mes desc');
 		$periodo_data = is_null($idperiodo) ? $periodo_data : $periodo_data->where('pr.id_periodo',$idperiodo);
+
+
+
+
 		$query = $this->db->get();
 		//	echo $this->db->last_query(); exit;
 		//$datos = is_null($idperiodo) ? $query->result() : $query->row();				                  
@@ -3049,7 +3065,19 @@ public function get_periodos_aprobados_detalle($empresaid,$idperiodo = null,$idc
 		                  ->order_by('pe.nombre asc');
 
 		$periodo_data = is_null($sinsueldo) ? $periodo_data->where('r.sueldoliquido <> 0') : $periodo_data;	
-		$periodo_data = is_null($idcentrocosto) ? $periodo_data : $periodo_data->where('pe.idcentrocosto',$idcentrocosto);		                  
+		$periodo_data = is_null($idcentrocosto) ? $periodo_data : $periodo_data->where('pe.idcentrocosto',$idcentrocosto);		   
+
+
+		if($this->session->userdata('rol_privado_empresa') == 1){
+				if($this->session->userdata('rol_privado_user') == 0){ // si la empresa maneja rol privado y el usuario no, se quitan los trabajadores con rol privado
+
+					$periodo_data = $periodo_data->where('pe.rol_privado_personal',0);
+				}
+
+
+		}
+
+
 		$query = $this->db->get();
 		//echo $this->db->last_query(); exit;
 		return $query->result();

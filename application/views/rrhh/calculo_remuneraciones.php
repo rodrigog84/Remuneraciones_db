@@ -38,6 +38,9 @@
 									            </div>            
 									          </div-->
 									          <?php endif; ?>
+
+
+									           <?php if($muestra){ ?>
 												<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_calculo_remuneraciones" name="basicBootstrapForm" method="post" > 
 									            <div class="row">
 
@@ -106,6 +109,17 @@
 
 									            </div>
 									            </form>
+
+								           <?php }else{ ?>
+								            <div class="alert alert-info fade in m-b-15">
+								                <strong>Atenci&oacute;n!</strong>
+								                Opci&oacute;n disponible s&oacute;lo para usuarios con rol privado
+								              </div>
+
+
+								           <?php } ?>
+
+
 
 									            <?php if(count($mensajes) > 0){ ?>
 
@@ -206,8 +220,9 @@
 																			<th><small>Liquidaciones</small></th>
 																			<!--th>Acci&oacute;n</th--> 
 																			<th><small>Ver Detalle Remuneraciones</small></th> 
+																			<?php if($muestra){ ?>
 																			<th><small>Validar</small></th> 
-																			
+																			<?php } ?>
 
 																		</tr> 
 																	</thead> 
@@ -260,6 +275,7 @@
                            															&nbsp;
                         														<?php } ?>
 																			</small></td> 
+																			<?php if($muestra){ ?>
 																			<td><small>
 																				<?php if($periodo->estado == 'Informaci&oacute;n Completa'){ ?>
                             															<!--<a href="#" data-href="<?php echo base_url(); ?>rrhh/aprueba_remuneraciones/<?php echo $periodo->id_periodo; ?>" data-toggle="modal" data-target="#confirm-publish" title="Aprobar" class="btn btn-xs btn-success"><span class="fa fa-check"></span></a>-->
@@ -275,6 +291,7 @@
                           														<?php } ?>																				
 
 																			</small></td> 
+																			<?php } ?>	
 																		</tr> 
 																			<?php 
 																				$i++;
