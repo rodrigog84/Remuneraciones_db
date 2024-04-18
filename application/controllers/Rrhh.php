@@ -2229,19 +2229,43 @@ public function mod_trabajador($idtrabajador = null)
 			$valor_hora = $parametros->valor/45;
 			$sueldominimo_proporcional = (int)($valor_hora*str_replace(",",".",$horassemanales));
       $data = array();
-			if($parttime == 'on'){
-				$data['result'] = "ok";
-      }else if($tiporenta == 'Diaria'){
-          $data['result'] = "ok";
-			}else{
-				//if($sueldobase < $parametros_generales->sueldominimo){
-				if($sueldobase < $sueldominimo_proporcional){
-					$data['result'] = "error";
-					$data['fields']['sueldo_base'] = "Sueldo Base no puede ser menor a Sueldo M&iacute;nimo";	
-				}else{
-					$data['result'] = "ok";
-				}
-			}
+
+        if($this->session->userdata('empresaid') == 10169){
+            $data['result'] = "ok";
+
+        }else{
+
+            if($parttime == 'on'){
+                    $data['result'] = "ok";
+            }else if($tiporenta == 'Diaria'){
+              $data['result'] = "ok";
+            }else{
+                //if($sueldobase < $parametros_generales->sueldominimo){
+                if($sueldobase < $sueldominimo_proporcional){
+                    $data['result'] = "error";
+                    $data['fields']['sueldo_base'] = "Sueldo Base no puede ser menor a Sueldo M&iacute;nimo";   
+                }else{
+                    $data['result'] = "ok";
+                }
+            }
+
+
+            
+        }
+
+            if($parttime == 'on'){
+                    $data['result'] = "ok";
+            }else if($tiporenta == 'Diaria'){
+              $data['result'] = "ok";
+            }else{
+                //if($sueldobase < $parametros_generales->sueldominimo){
+                if($sueldobase < $sueldominimo_proporcional){
+                    $data['result'] = "error";
+                    $data['fields']['sueldo_base'] = "Sueldo Base no puede ser menor a Sueldo M&iacute;nimo";   
+                }else{
+                    $data['result'] = "ok";
+                }
+            }
 
 			echo json_encode($data);
 
