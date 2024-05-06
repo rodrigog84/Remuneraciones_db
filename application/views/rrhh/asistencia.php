@@ -56,7 +56,7 @@
 									                            <div class="form-group">
 									                                <label for="anno">A&ntilde;o</label>
 									                                <select name="anno" id="anno" class="form-control periodo">
-									                                  <?php for($i=(date('Y')-2);$i<=(date('Y')+2);$i++){ ?>
+									                                  <?php for($i=(date('Y')-3);$i<=(date('Y')+2);$i++){ ?>
 									                                  <?php $yearselected = $i == $anno ? "selected" : ""; ?>
 									                                  <option value="<?php echo $i;?>" <?php echo $yearselected; ?>><?php echo $i;?></option>
 									                                  <?php } ?>
