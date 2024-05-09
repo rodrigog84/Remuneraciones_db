@@ -1734,3 +1734,13 @@ UPDATE rem_users set rol_privado = 0
 alter table rem_personal add rol_privado_personal tinyint default 0
 UPDATE rem_personal set rol_privado_personal = 0
 
+/**********************************************************************************************/
+
+CREATE TABLE rem_procesos (
+id int identity,
+nombre varchar(50),
+fec_ult_actualizacion date,
+fechora_ult_actualizacion datetime default getdate()
+)
+
+insert into rem_procesos (nombre) values ('Indicadores')
