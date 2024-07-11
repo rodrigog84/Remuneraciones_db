@@ -148,6 +148,11 @@ public function resumen_rem($datos_remuneracion,$idperiodo){
 	$total_afp = 0;
 	$total_salud = 0;
 	$total_apv = 0;
+
+	$ccafcredito = 0;
+	$ccafseguro = 0;
+
+
 	$liquido_pago = 0;
 	$aportesegcesantia = 0;
 	$aportesis = 0;
@@ -193,6 +198,10 @@ public function resumen_rem($datos_remuneracion,$idperiodo){
 		$descuentoaguinaldo += $remuneracion->aguinaldo;
 		$horasdescuentos += $remuneracion->montodescuento;
 		$descuentosvariables += $monto_descuento;
+
+		$ccafcredito += $remuneracion->ccafcredito;
+		$ccafseguro += $remuneracion->ccafseguro;
+
 		$liquido_pago += $remuneracion->sueldoliquido;
 
 		$aportesegcesantia += $remuneracion->aportesegcesantia;
@@ -237,7 +246,7 @@ public function resumen_rem($datos_remuneracion,$idperiodo){
 	//echo '<pre>';
 	//var_dump($array_apv);  exit;
 	$total_haberes = $sueldobase + $gratificacion + $movilizacion + $colacion + $bonosimponibles + $bonosnoimponibles + $horasextras50 + $horasextras100 + $semanacorrida + $aguinaldo + $asigfamiliar;
-	$total_descuentos = $total_salud + $total_afp + $total_apv + $segcesantia + $impuesto + $anticipo + $descuentoaguinaldo + $horasdescuentos + $descuentosvariables;
+	$total_descuentos = $total_salud + $total_afp + $total_apv + $segcesantia + $impuesto + $anticipo + $descuentoaguinaldo + $horasdescuentos + $descuentosvariables + $ccafcredito + $ccafseguro;
 	$total_aportes = $aportesegcesantia + $aportesis + $mutualseguridad;
 
 
@@ -446,6 +455,25 @@ public function resumen_rem($datos_remuneracion,$idperiodo){
 	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
 	 $sheet->setCellValue('E'.$i, ''); 
 	 $j = $j + 1;
+
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, $j);
+	 $sheet->setCellValue('C'.$i, 'CCAF Crédito');
+	 $sheet->setCellValue('D'.$i, $ccafcredito);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+	 $j = $j + 1;
+
+
+	 $i = $i + 1;
+	 $sheet->setCellValue('B'.$i, $j);
+	 $sheet->setCellValue('C'.$i, 'CCAF Seguro');
+	 $sheet->setCellValue('D'.$i, $ccafseguro);
+	 $sheet->getStyle('D'.$i)->getNumberFormat()->setFormatCode('#,##0');
+	 $sheet->setCellValue('E'.$i, ''); 
+	 $j = $j + 1;
+	 	 	 
 
 	 $i = $i + 1;
 	 $sheet->setCellValue('B'.$i, $j);
@@ -924,25 +952,34 @@ public function libro($datos_remuneracion){
 			 $sheet->setCellValue('AK'.$i, 'Otros Descuentos');	
 			 $sheet->getColumnDimension('AL')->setWidth(15);			
 			 $sheet->setCellValue('AL'.$i, 'Préstamos');	
+
 			 $sheet->getColumnDimension('AM')->setWidth(15);			
-			 $sheet->setCellValue('AM'.$i, 'Total Otros Descuentos');				 			 			 			 		
+			 $sheet->setCellValue('AM'.$i, 'CCAF Crédito');	
+
+
 			 $sheet->getColumnDimension('AN')->setWidth(15);			
-			 $sheet->setCellValue('AN'.$i, 'Líquido a Pagar');				 			 			 			 		
-			 $sheet->getColumnDimension('AO')->setWidth(15);	
-			 $sheet->setCellValue('AO'.$i, 'Aporte Seguro Cesantía');	 
+			 $sheet->setCellValue('AN'.$i, 'CCAF Seguro');	
+
+
+			 $sheet->getColumnDimension('AO')->setWidth(15);			
+			 $sheet->setCellValue('AO'.$i, 'Total Otros Descuentos');				 			 			 			 		
 			 $sheet->getColumnDimension('AP')->setWidth(15);			
-			 $sheet->setCellValue('AP'.$i, 'Aporte SIS');	 
-			 $sheet->getColumnDimension('AQ')->setWidth(15);			
-			 $sheet->setCellValue('AQ'.$i, 'Mutual de Seguridad');	 
+			 $sheet->setCellValue('AP'.$i, 'Líquido a Pagar');				 			 			 			 		
+			 $sheet->getColumnDimension('AQ')->setWidth(15);	
+			 $sheet->setCellValue('AQ'.$i, 'Aporte Seguro Cesantía');	 
 			 $sheet->getColumnDimension('AR')->setWidth(15);			
-			 $sheet->setCellValue('AR'.$i, 'Total Aportes Empresa');	 
+			 $sheet->setCellValue('AR'.$i, 'Aporte SIS');	 
+			 $sheet->getColumnDimension('AS')->setWidth(15);			
+			 $sheet->setCellValue('AS'.$i, 'Mutual de Seguridad');	 
+			 $sheet->getColumnDimension('AT')->setWidth(15);			
+			 $sheet->setCellValue('AT'.$i, 'Total Aportes Empresa');	 
 
 
 
 
-			 $columnaFinal = 43;
-			 $mergeTotal = 44;
-			 $columnaTotales = 43;
+			 $columnaFinal = 45;
+			 $mergeTotal = 46;
+			 $columnaTotales = 45;
 			 $sheet->getStyle("B".$i.":".ordenLetrasExcel($columnaFinal).$i)->getFont()->setBold(true);
 			 $i++;
 			$filaInicio = $i-1; 
@@ -1072,18 +1109,28 @@ public function libro($datos_remuneracion){
             	$sheet->getStyle('AK'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
             	$sheet->setCellValue("AL".$i,$monto_prestamo);
             	$sheet->getStyle('AL'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
-            	$sheet->setCellValue("AM".$i,$remuneracion->descuentosnolegales);
-            	$sheet->getStyle('AM'.$i)->getNumberFormat()->setFormatCode('#,##0');             	            	            	
-            	$sheet->setCellValue("AN".$i,$remuneracion->sueldoliquido);
-            	$sheet->getStyle('AN'.$i)->getNumberFormat()->setFormatCode('#,##0');              	
-            	$sheet->setCellValue("AO".$i,$remuneracion->aportesegcesantia);
-            	$sheet->getStyle('AO'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AP".$i,$remuneracion->seginvalidez);
-            	$sheet->getStyle('AP'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AQ".$i,$remuneracion->aportepatronal);
+
+            	$sheet->setCellValue("AM".$i,$remuneracion->ccafcredito);
+            	$sheet->getStyle('AM'.$i)->getNumberFormat()->setFormatCode('#,##0'); 
+
+            	$sheet->setCellValue("AN".$i,$remuneracion->ccafseguro);
+            	$sheet->getStyle('AN'.$i)->getNumberFormat()->setFormatCode('#,##0');             	
+
+            	$sheet->setCellValue("AO".$i,$remuneracion->descuentosnolegales);
+            	$sheet->getStyle('AO'.$i)->getNumberFormat()->setFormatCode('#,##0');
+
+
+
+            	$sheet->setCellValue("AP".$i,$remuneracion->sueldoliquido);
+            	$sheet->getStyle('AP'.$i)->getNumberFormat()->setFormatCode('#,##0');              	
+            	$sheet->setCellValue("AQ".$i,$remuneracion->aportesegcesantia);
             	$sheet->getStyle('AQ'.$i)->getNumberFormat()->setFormatCode('#,##0');  
-            	$sheet->setCellValue("AR".$i,$remuneracion->aportesegcesantia + $remuneracion->seginvalidez + $remuneracion->aportepatronal);
-            	$sheet->getStyle('AR'.$i)->getNumberFormat()->setFormatCode('#,##0');              	            	            	
+            	$sheet->setCellValue("AR".$i,$remuneracion->seginvalidez);
+            	$sheet->getStyle('AR'.$i)->getNumberFormat()->setFormatCode('#,##0');  
+            	$sheet->setCellValue("AS".$i,$remuneracion->aportepatronal);
+            	$sheet->getStyle('AS'.$i)->getNumberFormat()->setFormatCode('#,##0');  
+            	$sheet->setCellValue("AT".$i,$remuneracion->aportesegcesantia + $remuneracion->seginvalidez + $remuneracion->aportepatronal);
+            	$sheet->getStyle('AT'.$i)->getNumberFormat()->setFormatCode('#,##0');              	            	            	
 
 	 			if($i % 2 != 0){
 	 				//echo "consulta 4: -- i : ".$i. "  -- mod : ". ($i % 2)."<br>";
@@ -1188,14 +1235,14 @@ public function libro($datos_remuneracion){
 						$sheet->getStyle("AG".$filaInicio.":AG".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
 						$sheet->getStyle("AG".$filaInicio.":AG".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
 
-						$sheet->getStyle("AM".$filaInicio.":AM".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-						$sheet->getStyle("AM".$filaInicio.":AM".$i)->getFill()->getStartColor()->setRGB('E8EDFF');									
-						$sheet->getStyle("AN".$filaInicio.":AN".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-						$sheet->getStyle("AN".$filaInicio.":AN".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
+						$sheet->getStyle("AO".$filaInicio.":AM".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("AO".$filaInicio.":AM".$i)->getFill()->getStartColor()->setRGB('E8EDFF');									
+						$sheet->getStyle("AP".$filaInicio.":AN".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("AP".$filaInicio.":AN".$i)->getFill()->getStartColor()->setRGB('E8EDFF');	
 
 
-						$sheet->getStyle("AR".$filaInicio.":AR".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-						$sheet->getStyle("AR".$filaInicio.":AR".$i)->getFill()->getStartColor()->setRGB('E8EDFF');											
+						$sheet->getStyle("AT".$filaInicio.":AR".$i)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+						$sheet->getStyle("AT".$filaInicio.":AR".$i)->getFill()->getStartColor()->setRGB('E8EDFF');											
 			/******************************************************************************************************/
 
 

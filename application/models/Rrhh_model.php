@@ -3913,7 +3913,7 @@ public function exporta_colaborador($datos_colaborador){
 
 
 public function get_remuneraciones_by_id($idremuneracion){
-		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.semana_corrida,  r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentosnolegales, r.descuentos, r.prestamos, pr.id_periodo, pr.cierre, pr.aprueba, f.tramo, r.totaldescuentoslegales, r.basetributaria')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.semana_corrida,  r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentosnolegales, r.descuentos, r.prestamos, pr.id_periodo, pr.cierre, pr.aprueba, f.tramo, r.totaldescuentoslegales, r.basetributaria, isnull(r.ccafcredito,0) as ccafcredito, isnull(r.ccafseguro,0) as ccafseguro')
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
@@ -4980,12 +4980,34 @@ public function generar_contenido_comprobante($datos_remuneracion){
 						}
 
 
+
+						if($datos_remuneracion->ccafcredito > 0){
+							$html .= '<tr>
+									<td class="tdClass" >CCAF Cr&eacute;dito</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->ccafcredito,0,".",".") . '</td>
+									</tr>';
+						}							
+
+
+
+
+						if($datos_remuneracion->ccafseguro > 0){
+							$html .= '<tr>
+									<td class="tdClass" >CCAF Seguro</td>
+									<td class="tdClass tdClassNumber" >$ ' . number_format($datos_remuneracion->ccafseguro,0,".",".") . '</td>
+									</tr>';
+						}		
+
+
 						if($datos_remuneracion->descuentosnolegales > 0){
 							$html .= '<tr>
 									<td class="tdClass" ><b>Total Otros Descuentos</b></td>
 									<td class="tdClass tdClassNumber" ><b>$ ' . number_format($datos_remuneracion->descuentosnolegales,0,".",".") . '</b></td>
 									</tr>';
 						}
+
+
+
 
 						if($datos_remuneracion->totaldescuentos > 0){
 							$html .= '<tr>
