@@ -587,6 +587,8 @@ public function add_personal($array_datos,$idtrabajador){
         	$pdf_content = $formatosdocumentos[0]->txt_documento;
 
         	$personal = $this->admin->get_personal_total($datos_documento['id_trabajador']);
+        	//echo '<pre>';
+        	//var_dump($personal); exit;
 
 			 
 
@@ -596,6 +598,7 @@ public function add_personal($array_datos,$idtrabajador){
 			$pdf_content = str_replace("{Rut}",$personal->rut.'-'.$personal->dv,$pdf_content);
 			$pdf_content = str_replace("{Direccion}",$personal->direccion.', '.$personal->nombrecomuna,$pdf_content);
 			$pdf_content = str_replace("{FechaNacimiento}",$personal->fecnacimiento_format,$pdf_content);
+			$pdf_content = str_replace("{Nacionalidad}",$personal->nacionalidadpais,$pdf_content);
 			$pdf_content = str_replace("{Cargo}",$personal->nombrecargo,$pdf_content);
 			$pdf_content = str_replace("{Telefono}",$personal->fono,$pdf_content);
 			$pdf_content = str_replace("{Email}",$personal->email,$pdf_content);

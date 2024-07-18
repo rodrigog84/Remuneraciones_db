@@ -2095,6 +2095,7 @@ public function mod_trabajador($idtrabajador = null)
 								'sexo' => is_null($idtrabajador) ? "" : $trabajador->sexo,
 								'idecivil' => is_null($idtrabajador) ? "" : $trabajador->idecivil,
 								'nacionalidad' => is_null($idtrabajador) ? "" : $trabajador->nacionalidad,
+                                'id_nacionalidad' => is_null($idtrabajador) ? 46 : $trabajador->idnacionalidad,
 								'direccion' => is_null($idtrabajador) ? "" : $trabajador->direccion,
 								'idregion' => is_null($idtrabajador) ? "" : $trabajador->idregion,
 								'idcomuna' => is_null($idtrabajador) ? "" : $trabajador->idcomuna,
@@ -2134,8 +2135,7 @@ public function mod_trabajador($idtrabajador = null)
                 'anticipo' =>  is_null($idtrabajador) ? "" : $trabajador->anticipo,
 								'active' => is_null($idtrabajador) ? "1" : $trabajador->active,
 								);
-			
-			
+
 			$vars['content_menu'] = $content;				
 			$vars['regiones'] = $regiones;
 			$vars['estados_civiles'] = $estados_civiles;			
@@ -2217,20 +2217,24 @@ public function mod_trabajador($idtrabajador = null)
               <option value="Semanal">Semanal</option>
         */
       
-			
-			$parttime = $this->input->post('parttime');
+      if(ACTUALIZA_INDICADORES){
 
-			$this->load->model('admin');
-			//$parametros_generales = $this->admin->get_parametros_generales();
+            $parttime = $this->input->post('parttime');
+
+            $this->load->model('admin');
+            //$parametros_generales = $this->admin->get_parametros_generales();
       $parametros_generales = $this->admin->get_indicadores_by_day(date('Y-m-d'),'Sueldo Minimo');
       $parametros = $parametros_generales[0];
 
 
-			$valor_hora = $parametros->valor/45;
-			$sueldominimo_proporcional = (int)($valor_hora*str_replace(",",".",$horassemanales));
+            $valor_hora = $parametros->valor/45;
+            $sueldominimo_proporcional = (int)($valor_hora*str_replace(",",".",$horassemanales));
+
+	
+
       $data = array();
 
-        if($this->session->userdata('empresaid') == 10169){
+        if($this->session->userdata('empresaid') == 10169 || !ACTUALIZA_INDICADORES){
             $data['result'] = "ok";
 
         }else{
@@ -2266,6 +2270,15 @@ public function mod_trabajador($idtrabajador = null)
                     $data['result'] = "ok";
                 }
             }
+
+
+        }else{
+
+                 $data = array();
+
+                 $data['result'] = "ok";
+        }
+        
 
 			echo json_encode($data);
 

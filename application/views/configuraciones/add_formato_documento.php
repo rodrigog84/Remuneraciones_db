@@ -50,6 +50,7 @@
                                   <li><b>{Rut}</b>: Rut del Colaborador</li>
                                   <li><b>{Direccion}</b>: Direcci&oacute;n del Colaborador</li>
                                   <li><b>{FechaNacimiento}</b>: Fecha de Nacimiento del Colaborador</li>
+                                  <li><b>{Nacionalidad}</b>: Nacionalidad del colaborador</li>
                                   <li><b>{Cargo}</b>: Cargo del Colaborador</li>
                                   <li><b>{Telefono}</b>: Tel&eacute;fono del Colaborador</li>
                                   <li><b>{Email}</b>: Correo Electr&oacute;nico del Colaborador</li>
@@ -62,6 +63,7 @@
                                   <li><b>{InstitucionSalud}</b>: Instituci&oacute;n de Salud a la que pertenece el Colaborador</li>
                                   <li><b>{MontoFiniquito}</b>: Monto asociado al finiquito del colaborador (en caso que corresponda)</li>
                                   <li><b>{DetallePagoFiniquito}</b>: Desglose de haberes y descuentos asociados al finiquito de un colaborador</li>
+
                                   
                                 </ul>
                             </div>                      
