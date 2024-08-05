@@ -1744,3 +1744,45 @@ fechora_ult_actualizacion datetime default getdate()
 )
 
 insert into rem_procesos (nombre) values ('Indicadores')
+
+
+/*******************************************************************************************/
+
+
+create table rem_finiquito (
+	id int identity,
+	idpersonal int,
+	idempresa int,
+	idcausal int,
+	fechaaviso date,
+	fechafiniquito date,
+	totaldiastrabajados int,
+	totaldiasaviso int,
+	factorcalculodiario float,
+	annosservicio int,
+	totalvacaciones float,
+	diasvacacionestomados float,
+	saldovacaciones float,
+	diasinhabilespost float,
+	totalvacacionespendientes float,
+	sueldobase bigint,
+	gratificacion bigint,
+	comisiones bigint,
+	movilizacion bigint,
+	colacion bigint,
+	basecalculoannosservicio bigint,
+	basecalculovacaciones bigint,
+	indemnizacionmesaviso bigint,
+	indemnizacionannosservicio bigint,
+	indemnizacionferiadolegal bigint,
+	rempendiente bigint,
+	indemnizacionvoluntaria bigint,
+	desahucio bigint,
+	totalindemnizaciones bigint,
+	prestamoempresa bigint,
+	prestamoccaf bigint,
+	otros bigint,
+	totaldescuentos bigint,
+	totalfiniquito bigint,
+	created_at datetime DEFAULT GETDATE() )
+
