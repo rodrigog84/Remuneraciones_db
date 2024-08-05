@@ -1456,7 +1456,7 @@ public function calcular_finiquito($resultid = '')
       }        
 
       $this->load->model('rrhh_model');
-      $personal = $this->rrhh_model->get_personal(); 
+      $personal = $this->rrhh_model->get_personal_finiquitos(); 
 
 
 
@@ -1494,7 +1494,7 @@ public function calcular_finiquito($resultid = '')
 
 
 
-public function genera_finiquito($idpersonal){
+public function genera_finiquito($idpersonal,$idfiniquito = 0){
 
 	//if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
 
@@ -1516,6 +1516,14 @@ public function genera_finiquito($idpersonal){
   $array_vacaciones['dias_vacaciones'] = dias_vacaciones($personal->fecinicvacaciones,$personal->saldoinicvacaciones);
   $array_vacaciones['num_dias_progresivos'] = num_dias_progresivos($personal->fecinicvacaciones,$personal->saldoinicvacprog,$dias_progresivos);
   $parametros = $this->admin->get_parametros_generales();
+
+  $finiquito = array();
+
+  if($idfiniquito != 0){
+  		$finiquitos = $this->admin->get_finiquito($idfiniquito);
+  		$finiquito = $finiquitos[0];
+
+  }
 
   if($personal->tipogratificacion == 'SG'){
         $gratificacion = 0;
@@ -1560,6 +1568,9 @@ public function genera_finiquito($idpersonal){
   $vars['causales_finiquito'] = $causales_finiquito;
   $vars['comisiones'] = 0;
 	$vars['contrato'] = 1;
+
+	$vars['idfiniquito'] = $idfiniquito;
+	$vars['finiquito'] = $finiquito;
   $vars['datetimepicker'] = true;
   $vars['maleta'] = true;
   $vars['mask'] = true;

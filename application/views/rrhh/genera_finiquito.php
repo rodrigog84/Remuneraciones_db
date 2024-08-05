@@ -1,4 +1,6 @@
-<form target="_blank" id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_genera_finiquito" method="post" role="form" enctype="multipart/form-data">
+
+
+<form id="basicBootstrapForm" action="<?php echo base_url();?>rrhh/submit_genera_finiquito" method="post" role="form" enctype="multipart/form-data">
 
                       <div class="panel panel-inverse">                       
                           <div class="panel-heading">
@@ -95,9 +97,17 @@
                           <div class="form-group">
                             <label for="rut">Art&iacute;culo Causal Finiquito</label>
                             <select class="form-control fecha_calc_dias" name="causalfiniquito" id="causalfiniquito">
-                                <option value="">Seleccione Causal Finiquito</option>
+                                <!--option value="">Seleccione Causal Finiquito</option-->
                                 <?php foreach ($causales_finiquito as $causal_finiquito) { ?>
-                                  <?php $art_selected = $causal_finiquito->articulo == 'Art. 161' ? 'selected' : ''; ?>
+                                  <?php 
+                                      if($idfiniquito != 0){
+                                        $art_selected = $causal_finiquito->idcausal == $finiquito->idcausal ? 'selected' : ''; 
+                                      }else{
+                                        $art_selected = $causal_finiquito->articulo == 'Art. 161' ? 'selected' : ''; 
+                                      }
+
+                                  
+                                  ?>
                                   <option value="<?php echo $causal_finiquito->idcausal;?>" <?php echo $art_selected; ?> data-articulo="<?php echo $causal_finiquito->articulo;?>"><?php echo str_pad($causal_finiquito->articulo,20,' ',STR_PAD_LEFT)." | ".$causal_finiquito->motivo;?></option>
                                 <?php } ?>                            
                                </select>
@@ -118,7 +128,7 @@
                           <div class="form-group">
                             <label for="rut">Fecha Aviso Despido</label>
 
-                            <input type="text" name="fechaaviso" id="fechaaviso" class="form-control fecha_calc_dias"  value="<?php echo date('d/m/Y');?>" readonly >
+                            <input type="text" name="fechaaviso" id="fechaaviso" class="form-control fecha_calc_dias"  value="<?php echo $idfiniquito == 0 ? date('d/m/Y') : formato_fecha($finiquito->fechaaviso,'Y-m-d','d/m/Y') ;?>" readonly >
 
                           </div>
 
@@ -130,7 +140,7 @@
                         <div class='col-md-4'>
                           <div class="form-group">
                             <label for="rut">Fecha Finiquito </label>
-                            <input placeholder="Fecha Finiquito" name="fechafiniquito" id="fechafiniquito" class="form-control fecha_calc_dias" required  type="text" value="<?php echo date('d/m/Y');?>" onblur="if (this.value == '') {this.value = '';}" readonly/>
+                            <input placeholder="Fecha Finiquito" name="fechafiniquito" id="fechafiniquito" class="form-control fecha_calc_dias" required  type="text" value="<?php echo $idfiniquito == 0 ? date('d/m/Y') : formato_fecha($finiquito->fechafiniquito,'Y-m-d','d/m/Y') ;?>" onblur="if (this.value == '') {this.value = '';}" readonly/>
                           </div>
 
                         </div>
@@ -139,7 +149,7 @@
                         <div class='col-md-4'>
                           <div class="form-group">
                             <label for="rut">Total d&iacute;as trabajados</label>
-                            <input placeholder="D&iacute;as Trabajados" name="diastrabajados" id="diastrabajados" class="form-control" required  type="text" value=""  onblur="if (this.value == '') {this.value = '';}" readonly/>
+                            <input placeholder="D&iacute;as Trabajados" name="diastrabajados" id="diastrabajados" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? '' : $finiquito->totaldiastrabajados ;?>"  onblur="if (this.value == '') {this.value = '';}" readonly/>
                           </div>
 
                         </div>
@@ -148,7 +158,7 @@
                         <div class='col-md-4'>
                           <div class="form-group">
                             <label for="rut">Total d&iacute;as aviso</label>
-                            <input placeholder="D&iacute;as Aviso" name="diasaviso" id="diasaviso" class="form-control" required  type="text" value=""  onblur="if (this.value == '') {this.value = '';}" readonly/>
+                            <input placeholder="D&iacute;as Aviso" name="diasaviso" id="diasaviso" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? '' : $finiquito->totaldiasaviso ;?>"  onblur="if (this.value == '') {this.value = '';}" readonly/>
                           </div>
 
                         </div>                                                    
@@ -159,7 +169,7 @@
                         <div class='col-md-4'>
                           <div class="form-group">
                             <label for="rut">Factor c&aacute;lculo diario </label>
-                            <input placeholder="Factor C&aacute;lculo Diario" name="fcalculodiario" id="fcalculodiario" class="form-control" required  type="text" value=""  onblur="if (this.value == '') {this.value = '';}" readonly/>
+                            <input placeholder="Factor C&aacute;lculo Diario" name="fcalculodiario" id="fcalculodiario" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? '' : $finiquito->factorcalculodiario ;?>"  onblur="if (this.value == '') {this.value = '';}" readonly/>
                           </div>
 
                         </div>
@@ -168,7 +178,7 @@
                         <div class='col-md-4'>
                           <div class="form-group">
                             <label for="rut">A&ntilde;os de Servicio </label>
-                            <input placeholder="A&ntilde;os de Servicio" name="annosservicio" id="annosservicio" class="form-control" required  type="text" value=""  onblur="if (this.value == '') {this.value = '';}" readonly/>
+                            <input placeholder="A&ntilde;os de Servicio" name="annosservicio" id="annosservicio" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? '' : $finiquito->annosservicio ;?>"  onblur="if (this.value == '') {this.value = '';}" readonly/>
                           </div>
 
                         </div>                                                  
@@ -186,7 +196,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Total Vacaciones </label>
-                              <input placeholder="Total Vacaciones" name="totalvacaciones" id="totalvacaciones" class="form-control" required  type="text" value="<?php echo number_format($array_vacaciones['dias_vacaciones'] + $array_vacaciones['num_dias_progresivos'],2,",",".");?>"  onblur="if (this.value == '') {this.value = '';}" readonly />
+                              <input placeholder="Total Vacaciones" name="totalvacaciones" id="totalvacaciones" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? (number_format($array_vacaciones['dias_vacaciones'] + $array_vacaciones['num_dias_progresivos'],2,",",".")) : str_replace('.',',',$finiquito->totalvacaciones);?>"  onblur="if (this.value == '') {this.value = '';}" readonly />
                             </div>
 
                           </div>
@@ -195,7 +205,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">D&iacute;as Vacaciones Tomados</label>
-                              <input placeholder="D&iacute;as Vacaciones Tomados" name="vacacionestomados" id="vacacionestomados" class="form-control" required  type="text" value="<?php echo $personal->diasvactomados; ?>"  onblur="if (this.value == '') {this.value = '';}" readonly />
+                              <input placeholder="D&iacute;as Vacaciones Tomados" name="vacacionestomados" id="vacacionestomados" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? $personal->diasvactomados : $finiquito->diasvacacionestomados; ?>"  onblur="if (this.value == '') {this.value = '';}" readonly />
                             </div>
 
                           </div>
@@ -204,7 +214,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Saldo Vacaciones</label>
-                              <input placeholder="Saldo Vacaciones" name="saldovacaciones" id="saldovacaciones" class="form-control" required  type="text" value="<?php echo number_format($array_vacaciones['dias_vacaciones'] + $array_vacaciones['num_dias_progresivos'] - $personal->diasvactomados,2,",","."); ?>"  onblur="if (this.value == '') {this.value = '';}" readonly />
+                              <input placeholder="Saldo Vacaciones" name="saldovacaciones" id="saldovacaciones" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? number_format($array_vacaciones['dias_vacaciones'] + $array_vacaciones['num_dias_progresivos'] - $personal->diasvactomados,2,",",".") : str_replace('.',',',$finiquito->saldovacaciones); ?>"  onblur="if (this.value == '') {this.value = '';}" readonly />
                             </div>
 
                           </div>  
@@ -218,7 +228,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">D&iacute;as Inh&aacute;biles Posteriores </label>
-                              <input placeholder="D&iacute;as Inh&aacute;biles Posteriores" name="diasinhabiles" id="diasinhabiles" class="form-control numeros" required  type="text" value="0"  readonly />
+                              <input placeholder="D&iacute;as Inh&aacute;biles Posteriores" name="diasinhabiles" id="diasinhabiles" class="form-control numeros" required  type="text" value="<?php echo $idfiniquito == 0 ? '0' : $finiquito->diasinhabilespost ;?>"  readonly />
                             </div>
 
                           </div>
@@ -227,7 +237,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Total Vacaciones Pendientes</label>
-                              <input placeholder="Total Vacaciones Pendientes" name="totvacpendientes" id="totvacpendientes" class="form-control" required  type="text" value="<?php echo number_format($array_vacaciones['dias_vacaciones'] + $array_vacaciones['num_dias_progresivos'] - $personal->diasvactomados,2,",","."); ?>"  onblur="if (this.value == '') {this.value = '';}" readonly/>
+                              <input placeholder="Total Vacaciones Pendientes" name="totvacpendientes" id="totvacpendientes" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? (number_format($array_vacaciones['dias_vacaciones'] + $array_vacaciones['num_dias_progresivos'] - $personal->diasvactomados,2,",",".")) : $finiquito->totalvacacionespendientes; ?>"  onblur="if (this.value == '') {this.value = '';}" readonly/>
                             </div>
 
                           </div>
@@ -248,14 +258,14 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Sueldo Base </label>
-                              <input placeholder="" name="sueldobase" id="sueldobase" class="form-control" required  type="text" value="0"  readonly />
+                              <input placeholder="" name="sueldobase" id="sueldobase" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->sueldobase,0,'.','.');?>"  readonly />
                             </div>
 
                           </div>
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Gratificaci&oacute;n</label>
-                              <input placeholder="" name="gratificacion" id="gratificacion" class="form-control" required  type="text" value="0"  readonly />
+                              <input placeholder="" name="gratificacion" id="gratificacion" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->gratificacion,0,'.','.');?>"  readonly />
                             </div>
                           </div>
 
@@ -263,7 +273,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Comisiones</label>
-                              <input placeholder="" name="comisiones" id="comisiones" class="form-control" required  type="text" value="0"  readonly />
+                              <input placeholder="" name="comisiones" id="comisiones" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->comisiones,0,'.','.');?>"  readonly />
                             </div>
                           </div>
 
@@ -274,7 +284,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Movilizaci&oacute;n </label>
-                              <input placeholder="" name="movilizacion" id="movilizacion" class="form-control" required  type="text" value="0" readonly />
+                              <input placeholder="" name="movilizacion" id="movilizacion" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->movilizacion,0,'.','.');?>" readonly />
                             </div>
 
                           </div>    
@@ -282,7 +292,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Colaci&oacute;n</label>
-                              <input placeholder="" name="colacion" id="colacion" class="form-control" required  type="text" value="0"  readonly />
+                              <input placeholder="" name="colacion" id="colacion" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->colacion,0,'.','.');?>"  readonly />
                             </div>
 
                           </div>
@@ -291,7 +301,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Base C&aacute;lculo Años Servicio/Mes Aviso</label>
-                              <input placeholder="" name="vtotalcont" id="vtotalcont" class="form-control" required  type="text" value="0"  readonly />
+                              <input placeholder="" name="vtotalcont" id="vtotalcont" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->basecalculoannosservicio,0,'.','.');?>"  readonly />
                             </div>
                           </div>                         
                         </div>
@@ -302,7 +312,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Base C&aacute;lculo Vacaciones Proporcionales</label>
-                              <input placeholder="" name="vtotalcont_vac" id="vtotalcont_vac" class="form-control" required  type="text" value="0"  readonly />
+                              <input placeholder="" name="vtotalcont_vac" id="vtotalcont_vac" class="form-control" required  type="text" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->basecalculovacaciones,0,'.','.');?>"  readonly />
                             </div>
                           </div>                         
                         </div>
@@ -322,7 +332,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Indemnización Sustitutiva Mes de Aviso</label>
-                              <input type="text" name="indmesaviso" id="indmesaviso" class="form-control miles required indemnizacion"  placeholder="Ingrese Monto" size="20" readonly>
+                              <input type="text" name="indmesaviso" id="indmesaviso" class="form-control miles required indemnizacion"  placeholder="Ingrese Monto" size="20" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->indemnizacionmesaviso,0,'.','.');?>" readonly>
                                <p class="help-block"><small>(*) Aplica s&oacute;lo si no se di&oacute; aviso con 30 d&iacute;as de anticipaci&oacute;n y s&oacute;lo para causales del art&iacute;culo 161</small></p>
                             </div>
 
@@ -333,7 +343,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Indemnizacion Años de Servicio</label>
-                              <input type="text" name="indannoservicio" id="indannoservicio" class="form-control miles required indemnizacion" placeholder="Ingrese Monto" value="0" size="20" readonly>
+                              <input type="text" name="indannoservicio" id="indannoservicio" class="form-control miles required indemnizacion" placeholder="Ingrese Monto" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->indemnizacionannosservicio,0,'.','.');?>" size="20" readonly>
                             </div>
 
                           </div>   
@@ -343,7 +353,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Indemnización Feriado Legal</label>
-                              <input type="text" class="form-control miles indemnizacion" name="indferiadolegal" id="indferiadolegal" placeholder="Ingrese Indemnizaci&oacute;n Feriado Legal" value="0" readonly>
+                              <input type="text" class="form-control miles indemnizacion" name="indferiadolegal" id="indferiadolegal" placeholder="Ingrese Indemnizaci&oacute;n Feriado Legal" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->indemnizacionferiadolegal,0,'.','.');?>" readonly>
                             </div>
 
                           </div>
@@ -357,7 +367,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Remuneraci&oacute;n Pendiente </label>
-                              <input type="text" name="rem_pendiente" id="rem_pendiente" class="form-control miles required indemnizacion" placeholder="Ingrese Monto" size="20">
+                              <input type="text" name="rem_pendiente" id="rem_pendiente" class="form-control miles required indemnizacion" placeholder="Ingrese Monto" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->rempendiente,0,'.','.');?>" size="20" <?php echo $idfiniquito == 0 ? '' : 'readonly';?>>
                             </div>
 
                           </div>
@@ -367,7 +377,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Indemnizacion Voluntaria</label>
-                              <input type="text" class="form-control miles indemnizacion" name="indvoluntaria" id="indvoluntaria" placeholder="Ingrese Indemnizaci&oacute;n Voluntaria" value="" >
+                              <input type="text" class="form-control miles indemnizacion" name="indvoluntaria" id="indvoluntaria" placeholder="Ingrese Indemnizaci&oacute;n Voluntaria" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->indemnizacionvoluntaria,0,'.','.');?>" <?php echo $idfiniquito == 0 ? '' : 'readonly';?>>
                             </div>
 
                           </div>
@@ -376,7 +386,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Desahucio</label>
-                              <input type="text" name="desahucio" id="desahucio" class="form-control miles required indemnizacion" placeholder="Ingrese Monto" size="20">
+                              <input type="text" name="desahucio" id="desahucio" class="form-control miles required indemnizacion" placeholder="Ingrese Monto" size="20" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->desahucio,0,'.','.');?>" <?php echo $idfiniquito == 0 ? '' : 'readonly';?>>
                             </div>
 
                           </div>   
@@ -389,7 +399,7 @@
                           <div class='col-md-4'>
                               <div class="form-group">
                                   <label for="indtotal">Total Indemnizaci&oacute;nes</label>
-                                  <input type="text" class="form-control miles" name="indtotal" id="indtotal" value="" readOnly>
+                                  <input type="text" class="form-control miles" name="indtotal" id="indtotal" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->totalindemnizaciones,0,'.','.');?>" readOnly>
                                   <p class="help-block"><small>(*) Datos requeridos para LRE.  En caso de no ingresar ser&aacute;n informados en cero .</small></p>
                               </div>
 
@@ -411,7 +421,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Prestamo Empresa</label>
-                              <input type="text" name="prestamo" id="prestamo" class="form-control miles required descuento" placeholder="Ingrese Monto" size="20" >
+                              <input type="text" name="prestamo" id="prestamo" class="form-control miles required descuento" placeholder="Ingrese Monto" size="20"  value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->prestamoempresa,0,'.','.');?>" <?php echo $idfiniquito == 0 ? '' : 'readonly';?>>
                             </div>
 
                           </div>
@@ -420,7 +430,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Prestamo C.C.A.F</label>
-                              <input type="text" name="cajacompensacion" id="cajacompensacion" class="form-control miles required descuento" placeholder="Ingrese Monto" size="20" >
+                              <input type="text" name="cajacompensacion" id="cajacompensacion" class="form-control miles required descuento" placeholder="Ingrese Monto" size="20" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->prestamoccaf,0,'.','.');?>" <?php echo $idfiniquito == 0 ? '' : 'readonly';?>>
                             </div>
 
                           </div>
@@ -429,7 +439,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Otros</label>
-                              <input type="text" name="otros" id="otros" class="form-control miles required descuento" placeholder="Ingrese Monto" size="20" >
+                              <input type="text" name="otros" id="otros" class="form-control miles required descuento" placeholder="Ingrese Monto" size="20" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->otros,0,'.','.');?>" <?php echo $idfiniquito == 0 ? '' : 'readonly';?>>
                             </div>
 
                           </div> 
@@ -444,7 +454,7 @@
                           <div class='col-md-4'>
                             <div class="form-group">
                               <label for="rut">Total Descuentos</label>
-                              <input type="number" name="totaldescuentos" id="totaldescuentos" class="form-control required" placeholder="Ingrese Monto" size="20" readonly>
+                              <input type="number" name="totaldescuentos" id="totaldescuentos" class="form-control required" placeholder="Ingrese Monto" size="20" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->totaldescuentos,0,'.','.');?>" readonly>
                             </div>
 
                           </div>
@@ -498,7 +508,9 @@
 
 
                       <div class="panel-footer">
-                       <!--button type="submit" class="btn btn-primary">Guardar</button-->&nbsp;&nbsp;
+                        <?php if($idfiniquito == 0){ ?>
+                       <button type="submit" class="btn btn-primary">Guardar</button>&nbsp;&nbsp;
+                     <?php } ?>
                         <a  href="<?php echo base_url();?>auxiliares/calcular_finiquito"  class="btn btn-warning">Volver</a>
                       </div>
 
@@ -689,6 +701,9 @@
   */
 
   $(function() {
+
+<?php if($idfiniquito == 0){ ?>
+
     $( "#fechaingreso,#fechafiniquito,#fechaaviso").datetimepicker({
         format: "dd/mm/yyyy",
         //format: "yyyy-mm-dd",
@@ -702,6 +717,7 @@
         language:  'es', 
 });
 
+<?php } ?>
 
 
 
@@ -834,7 +850,7 @@
 
 
         $('#indferiadolegal').val(number_format(ind_feriado_legal, 0, '.', '.'));
-
+         calcular_descuento();
         calcular_finiquito();
       });
 

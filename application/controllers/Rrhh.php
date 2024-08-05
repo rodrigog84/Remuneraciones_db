@@ -2233,8 +2233,9 @@ public function mod_trabajador($idtrabajador = null)
 	
 
       $data = array();
+        if($this->session->userdata('empresaid') == 10160 || $this->session->userdata('empresaid') == 10169 || !ACTUALIZA_INDICADORES){
 
-        if($this->session->userdata('empresaid') == 10169 || !ACTUALIZA_INDICADORES){
+
             $data['result'] = "ok";
 
         }else{
@@ -2263,12 +2264,20 @@ public function mod_trabajador($idtrabajador = null)
               $data['result'] = "ok";
             }else{
                 //if($sueldobase < $parametros_generales->sueldominimo){
-                if($sueldobase < $sueldominimo_proporcional){
-                    $data['result'] = "error";
-                    $data['fields']['sueldo_base'] = "Sueldo Base no puede ser menor a Sueldo M&iacute;nimo";   
-                }else{
+                if($this->session->userdata('empresaid') == 10160 || $this->session->userdata('empresaid') == 10169 || !ACTUALIZA_INDICADORES){
+
                     $data['result'] = "ok";
+
+                }else{
+                    if($sueldobase < $sueldominimo_proporcional){
+                        $data['result'] = "error";
+                        $data['fields']['sueldo_base'] = "Sueldo Base no puede ser menor a Sueldo M&iacute;nimo";   
+                    }else{
+                        $data['result'] = "ok";
+                    }
+                    
                 }
+
             }
 
 
@@ -6009,16 +6018,221 @@ public function submit_anticipos(){
 
 	
 	public function submit_genera_finiquito(){
+        //echo '<pre>';
+        //var_dump($_POST); exit;
 
-		$tipo = $this->input->post("tipo");
-		$fecha = $this->input->post("fechacontrato");
-		$idtrabajador = $this->input->post("idtrabajador");
+/*array(37) {
+  ["rut"]=>
+  string(0) ""
+  ["fechaingreso"]=>
+  string(0) ""
+  ["idtrabajador"]=>
+  string(5) "20745"
+  ["causalfiniquito"]=>
+  string(2) "14"
+  ["fechacontrato"]=>
+  string(10) "01/03/2024"
+  ["fechaaviso"]=>
+  string(10) "30/07/2024"
+  ["fechafiniquito"]=>
+  string(10) "30/07/2024"
+  ["diastrabajados"]=>
+  string(3) "152"
+  ["diasaviso"]=>
+  string(1) "0"
+  ["fcalculodiario"]=>
+  string(3) "0.4"
+  ["annosservicio"]=>
+  string(1) "0"
+  ["totalvacaciones"]=>
+  string(4) "7,46"
+  ["vacacionestomados"]=>
+  string(1) "0"
+  ["saldovacaciones"]=>
+  string(4) "7,46"
+  ["diasinhabiles"]=>
+  string(1) "2"
+  ["totvacpendientes"]=>
+  string(4) "9.46"
+  ["sueldobase"]=>
+  string(7) "460.000"
+  ["gratificacion"]=>
+  string(1) "0"
+  ["comisiones"]=>
+  string(1) "0"
+  ["movilizacion"]=>
+  string(1) "0"
+  ["colacion"]=>
+  string(1) "0"
+  ["vtotalcont"]=>
+  string(7) "460.000"
+  ["vtotalcont_vac"]=>
+  string(7) "460.000"
+  ["indmesaviso"]=>
+  string(7) "460.000"
+  ["indannoservicio"]=>
+  string(1) "0"
+  ["indferiadolegal"]=>
+  string(7) "145.053"
+  ["rem_pendiente"]=>
+  string(0) ""
+  ["indvoluntaria"]=>
+  string(0) ""
+  ["desahucio"]=>
+  string(0) ""
+  ["indtotal"]=>
+  string(7) "605.053"
+  ["prestamo"]=>
+  string(0) ""
+  ["cajacompensacion"]=>
+  string(0) ""
+  ["otros"]=>
+  string(0) ""
+  ["totaldescuentos"]=>
+  string(0) ""
+  ["totalgenindemnizaciones"]=>
+  string(7) "605.053"
+  ["totalgendescuentos"]=>
+  string(0) ""
+  ["totalgenfiniquito"]=>
+  string(7) "605.053"
+}
+*/
 
-		$personal = $this->admin->get_personal_total($idtrabajador);
+		$idpersonal = $this->input->post("idtrabajador");
+        $idcausal = $this->input->post("causalfiniquito");
+
+        $fechaaviso = $this->input->post("fechaaviso");
+        $fechaaviso = formato_fecha($fechaaviso,'d/m/Y','Y-m-d');
+        $fechafiniquito = $this->input->post("fechafiniquito");
+        $fechafiniquito = formato_fecha($fechafiniquito,'d/m/Y','Y-m-d');
+        
+        $totaldiastrabajados = $this->input->post("diastrabajados");
+        $totaldiasaviso = $this->input->post("diasaviso");
+        $factorcalculodiario = $this->input->post("fcalculodiario");
+        
+        $annosservicio = $this->input->post("annosservicio");
+        $totalvacaciones = $this->input->post("totalvacaciones");
+        $totalvacaciones = str_replace(",",".",$totalvacaciones);
+
+        $diasvacacionestomados = $this->input->post("vacacionestomados");
+        $saldovacaciones = $this->input->post("saldovacaciones");
+        $saldovacaciones = str_replace(",",".",$saldovacaciones);
+
+
+        $diasinhabilespost = $this->input->post("diasinhabiles");
+
+        $totalvacacionespendientes = $this->input->post("totvacpendientes");
+        $totalvacacionespendientes = str_replace(",",".",$totalvacacionespendientes);
 
 
 
-		
+        $sueldobase = $this->input->post("sueldobase");
+        $sueldobase = str_replace(".","",$sueldobase);
+
+        $gratificacion = $this->input->post("gratificacion");
+        $gratificacion = str_replace(".","",$gratificacion);
+
+        $comisiones = $this->input->post("comisiones");
+        $comisiones = str_replace(".","",$comisiones);
+
+        $movilizacion = $this->input->post("movilizacion");
+        $movilizacion = str_replace(".","",$movilizacion);
+
+        $colacion = $this->input->post("colacion");
+        $colacion = str_replace(".","",$colacion);
+
+        $basecalculoannosservicio = $this->input->post("vtotalcont");
+        $basecalculoannosservicio = str_replace(".","",$basecalculoannosservicio);
+
+        $basecalculovacaciones = $this->input->post("vtotalcont_vac");
+        $basecalculovacaciones = str_replace(".","",$basecalculovacaciones);
+
+        $indemnizacionmesaviso = $this->input->post("indmesaviso");
+        $indemnizacionmesaviso = str_replace(".","",$indemnizacionmesaviso);
+
+        $indemnizacionannosservicio = $this->input->post("indannoservicio");
+        $indemnizacionannosservicio = str_replace(".","",$indemnizacionannosservicio);
+
+        $indemnizacionferiadolegal = $this->input->post("indferiadolegal");
+        $indemnizacionferiadolegal = str_replace(".","",$indemnizacionferiadolegal);
+
+        $rempendiente = $this->input->post("rem_pendiente");
+        $rempendiente = str_replace(".","",$rempendiente);
+
+        $indemnizacionvoluntaria = $this->input->post("indvoluntaria");
+        $indemnizacionvoluntaria = str_replace(".","",$indemnizacionvoluntaria);
+
+        $desahucio = $this->input->post("desahucio");
+        $desahucio = str_replace(".","",$desahucio);
+
+        $totalindemnizaciones = $this->input->post("indtotal");
+        $totalindemnizaciones = str_replace(".","",$totalindemnizaciones);
+
+        $prestamoempresa = $this->input->post("prestamo");
+        $prestamoempresa = str_replace(".","",$prestamoempresa);
+
+        $prestamoccaf = $this->input->post("cajacompensacion");
+        $prestamoccaf = str_replace(".","",$prestamoccaf);
+
+        $otros = $this->input->post("otros");
+        $otros = str_replace(".","",$otros);
+
+        $totaldescuentos = $this->input->post("totalgendescuentos");
+        $totaldescuentos = str_replace(".","",$totaldescuentos);
+
+        $totalfiniquito = $this->input->post("totalgenfiniquito");
+        $totalfiniquito = str_replace(".","",$totalfiniquito);
+
+
+        $array_finiquito = array(
+                                    'idpersonal' => $idpersonal
+                                    ,'idempresa' => $this->session->userdata('empresaid')
+                                    ,'idcausal' => $idcausal
+                                    ,'fechaaviso' => $fechaaviso
+                                    ,'fechafiniquito' => $fechafiniquito
+                                    ,'totaldiastrabajados' => $totaldiastrabajados
+                                    ,'totaldiasaviso' => $totaldiasaviso
+                                    ,'factorcalculodiario' => $factorcalculodiario
+                                    ,'annosservicio' => $annosservicio
+                                    ,'totalvacaciones' => $totalvacaciones
+                                    ,'diasvacacionestomados' => $diasvacacionestomados
+                                    ,'saldovacaciones' => $saldovacaciones
+                                    ,'diasinhabilespost' => $diasinhabilespost
+                                    ,'totalvacacionespendientes' => $totalvacacionespendientes
+                                    ,'sueldobase' => $sueldobase
+                                    ,'gratificacion' => $gratificacion
+                                    ,'comisiones' => $comisiones
+                                    ,'movilizacion' => $movilizacion
+                                    ,'colacion' => $colacion
+                                    ,'basecalculoannosservicio' => $basecalculoannosservicio
+                                    ,'basecalculovacaciones' => $basecalculovacaciones
+                                    ,'indemnizacionmesaviso' => $indemnizacionmesaviso
+                                    ,'indemnizacionannosservicio' => $indemnizacionannosservicio
+                                    ,'indemnizacionferiadolegal' => $indemnizacionferiadolegal
+                                    ,'rempendiente' => $rempendiente
+                                    ,'indemnizacionvoluntaria' => $indemnizacionvoluntaria
+                                    ,'desahucio' => $desahucio
+                                    ,'totalindemnizaciones' => $totalindemnizaciones
+                                    ,'prestamoempresa' => $prestamoempresa
+                                    ,'prestamoccaf' => $prestamoccaf
+                                    ,'otros' => $otros
+                                    ,'totaldescuentos' => $totaldescuentos
+                                    ,'totalfiniquito' => $totalfiniquito
+
+                            );
+
+        //echo '<pre>';
+        //var_dump($idpersonal);
+        //var_dump($array_finiquito);
+        //exit;
+
+        $this->rrhh_model->add_finiquito($array_finiquito,$idpersonal);
+
+        redirect('auxiliares/calcular_finiquito');
+
+
+		//Z   >Nexit;
 		
 	}
 
@@ -7690,7 +7904,7 @@ public function genera_carta($idpersonal){
               $sueldo_base = $trabajador->sueldobase;
 
               // se considera en años de servicio y mes de aviso, no en vacaciones proporcionales;
-
+              $gratificacion_calculada = 0;
               if($trabajador->tipogratificacion == 'SG'){
                       $gratificacion = 0;
                 }else if($trabajador->tipogratificacion == 'MF'){

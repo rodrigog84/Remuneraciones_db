@@ -472,6 +472,44 @@ public function add_personal($array_datos,$idtrabajador){
 
 
 
+public function add_finiquito($array_datos,$idtrabajador){
+
+
+		$this->db->trans_start();
+
+		$this->db->select('p.id')
+						  ->from('rem_finiquito as p')
+		                  ->where('p.idpersonal', $idtrabajador)
+		                  ->where('p.idempresa', $this->session->userdata('empresaid'));		
+		$query = $this->db->get();
+		$datos = $query->row();
+		if($query->num_rows() == 0){ // finiquito trabajador no existe
+		
+			$this->db->insert('rem_finiquito',$array_datos); 
+
+			$this->db->trans_complete();
+			return 1;
+		}else{ // ya existe trabajador
+
+			if($idtrabajador != 0){
+
+				$this->db->where('idpersonal', $idtrabajador);
+				$this->db->where('idempresa', $this->session->userdata('empresaid'));		
+				$this->db->update('rem_finiquito',$array_datos); 		
+
+				$this->db->trans_complete();
+				return 1;
+			}else{
+				$this->db->trans_complete();
+				return -1;	
+			}
+			
+		}
+
+	}	
+
+
+
 	public function get_datos_remuneracion_by_periodo($idperiodo,$idtrabajador = null){
 
 		$personal_data = $this->db->select('r.id_remuneracion, r.idpersonal, r.id_periodo, r.diastrabajo, r.horasdescuento, r.montodescuento, r.horasextras50, r.montohorasextras50, r.horasextras100, r.montohorasextras100, r.anticipo, r.aguinaldo, r.sueldobase, r.gratificacion, r.movilizacion, r.colacion, r.sueldonoimponible, r.sueldoimponible, r.totalleyessociales, r.otrosdescuentos, r.totalhaberes, r.aguinaldobruto, r.asigfamiliar')
@@ -609,6 +647,7 @@ public function add_personal($array_datos,$idtrabajador){
 			//$pdf_content = str_replace("{FechaIngreso}",formato_fecha($personal->fecingreso,'Y-m-d','d/m/Y'),$pdf_content);
 			$pdf_content = str_replace("{Afp}",$personal->nomafp,$pdf_content);
 			$pdf_content = str_replace("{InstitucionSalud}",$personal->nomisapre,$pdf_content);
+			$pdf_content = str_replace("{MontoFiniquito}",'$ ' . number_format($personal->totalfiniquito,0,'.','.'),$pdf_content);
 			
 			$tipo_contrato = '';
 			if($personal->tipocontrato == 'I'){
@@ -1461,6 +1500,109 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		return $datos;
 	}
 	
+
+
+	public function get_personal_finiquitos($idtrabajador = null,$centro_costo =false){
+
+
+		$array_campos = array(
+				'p.id_personal', 
+				'p.id_empresa', 
+				'p.rut', 
+				'p.dv', 
+				'p.nombre', 
+				'p.apaterno', 
+				'p.amaterno', 
+				'p.fecnacimiento', 
+				'p.sexo', 
+				"case when p.sexo = 'F' then 'Femenino' 
+					  when p.sexo = 'M' then 'Masculino'
+					  else 'S/I'
+				end as sexo_traducido",
+				'p.idecivil', 
+				'p.nacionalidad', 
+				'p.direccion', 
+				'p.idregion', 
+				'p.idcomuna', 
+				'p.fono', 
+				'p.email', 
+				'p.fecingreso', 
+				'p.fecingreso as fecingreso_sformat',
+				'p.idcargo', 
+				'p.tipocontrato', 
+				'p.parttime', 
+				'p.segcesantia', 
+				'p.pensionado', 
+				'p.diastrabajo', 
+				'p.diastrabajosemanal', 
+				'p.horasdiarias', 
+				'p.horassemanales', 
+				'p.sueldobase', 
+				'p.sueldoprevio', 
+				'p.tipogratificacion', 
+				'p.gratificacion', 
+				'p.asigfamiliar', 
+				'p.cargassimples', 
+				'p.cargasinvalidas', 
+				'p.cargasmaternales', 
+				'p.cargasretroactivas', 
+				'p.idasigfamiliar',
+				'p.movilizacion', 
+				'p.colacion', 
+				'p.idafp', 
+				'p.adicafp', 
+				'p.tipoahorrovol', 
+				'p.ahorrovol', 
+				'isnull(p.ccafcredito,0) as ccafcredito',		
+				'isnull(p.ccafseguro,0) as ccafseguro',				
+				'p.tipocotapv', 
+				'p.cotapv', 
+				'p.idisapre', 
+				'p.valorpactado',
+				"COALESCE((select sum(per.monto) as monto from rem_bonos_personal per
+							inner join rem_conf_haber_descuento h on per.idconf = h.id
+ 							where per.valido = 1 and per.idpersonal = p.id_personal and h.tipo = 'HABER' and h.fijo = 1 and h.imponible = 1),0) as bonos_fijos",
+				'DATEDIFF(YY,p.fecafc,getdate()) as annos_afc',
+				'DATEDIFF(MM,p.fecinicvacaciones,getdate()) as meses_vac',
+				'p.fecinicvacaciones',
+				'p.saldoinicvacaciones',
+				'p.diasvactomados',
+				'p.diasprogresivos',
+				'p.diasprogtomados',
+				'p.saldoinicvacprog',
+				'p.tiporenta',
+				'p.idcentrocosto',
+				'p.semana_corrida',
+				"f.id as idfiniquito"
+			);
+		
+		$personal_data = $this->db->select($array_campos)
+						  ->from('rem_personal p')
+						  ->join('rem_finiquito f','p.id_personal = f.idpersonal','LEFT')
+						  ->where('p.id_empresa',$this->session->userdata('empresaid'))
+						  ->where('p.active = 1')
+						 // ->where_in('idcentrocosto',$centro_costo)
+		                  ->order_by('p.nombre');
+		$personal_data = is_null($idtrabajador) ? $personal_data : $personal_data->where('p.id_personal',$idtrabajador);
+		$personal_data = !$centro_costo  ? $personal_data : $personal_data->where_in('idcentrocosto',$centro_costo);
+
+
+		if($this->session->userdata('rol_privado_empresa') == 1){
+				if($this->session->userdata('rol_privado_user') == 0){ // si la empresa maneja rol privado y el usuario no, se quitan los trabajadores con rol privado
+
+					$personal_data = $personal_data->where('p.rol_privado_personal',0);
+				}
+
+
+		}
+
+		$query = $this->db->get();
+		//echo $this->db->last_query(); exit;
+		$datos = is_null($idtrabajador) ? $query->result() : $query->row();
+		return $datos;
+	}
+	
+
 	public function get_personal_paso($idtrabajador = null,$centro_costo =false){
 
 

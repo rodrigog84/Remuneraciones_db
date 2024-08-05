@@ -25,7 +25,11 @@
                                 <td><?php echo $trabajador->rut == '' ? '' : number_format($trabajador->rut,0,".",".")."-".$trabajador->dv;?></td>
                                 <td><?php echo $trabajador->nombre." ".$trabajador->apaterno." ".$trabajador->amaterno;?></td>
                                 <td >
-                                    <center><a href="<?php echo base_url();?>auxiliares/genera_finiquito/<?php echo $trabajador->id_personal;?>" data-toggle="tooltip" title="Crear Documento" ><i class="fa fa-plus-square fa-lg"></i></a></center>
+                                    <?php if(is_null($trabajador->idfiniquito)){ ?>
+                                    <center><a href="<?php echo base_url();?>auxiliares/genera_finiquito/<?php echo $trabajador->id_personal;?>" data-toggle="tooltip" title="Crear Finiquito" ><i class="fa fa-plus-square fa-lg"></i></a></center>
+                                <?php  }else{ ?>
+                                       <center><a href="<?php echo base_url();?>auxiliares/genera_finiquito/<?php echo $trabajador->id_personal.'/'.$trabajador->idfiniquito;?>" data-toggle="tooltip" title="Editar Finiquito" ><i class="fa fa-edit fa-lg"></i></a></center>
+                                <?php } ?>
                                 </td>                                
                                 <!--td >
                                     <center><a href="<?php echo base_url();?>remuneraciones/add_movimiento_personal/<?php echo $trabajador->id;?>" data-toggle="tooltip" title="Agregar Movimiento" ><i class="fa fa-plus-square"></i></a></center>
