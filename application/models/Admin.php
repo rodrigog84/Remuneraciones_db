@@ -77,43 +77,45 @@ class Admin extends CI_Model
     public function get_finiquito($idfiniquito)
     {
 
-        $this->db->select('id,
-							idpersonal,
-							idempresa,
-							idcausal,
-							fechaaviso,
-							fechafiniquito,
-							totaldiastrabajados,
-							totaldiasaviso,
-							factorcalculodiario,
-							annosservicio,
-							totalvacaciones,
-							diasvacacionestomados,
-							saldovacaciones,
-							diasinhabilespost,
-							totalvacacionespendientes,
-							sueldobase,
-							gratificacion,
-							comisiones,
-							movilizacion,
-							colacion,
-							basecalculoannosservicio,
-							basecalculovacaciones,
-							indemnizacionmesaviso,
-							indemnizacionannosservicio,
-							indemnizacionferiadolegal,
-							rempendiente,
-							indemnizacionvoluntaria,
-							desahucio,
-							totalindemnizaciones,
-							prestamoempresa,
-							prestamoccaf,
-							otros,
-							totaldescuentos,
-							totalfiniquito')
-            ->from('rem_finiquito')
-            ->where('id',$idfiniquito)
-            ->where('idempresa',$this->session->userdata('empresaid'));
+        $this->db->select('f.id,
+							f.idpersonal,
+							f.idempresa,
+							f.idcausal,
+							c.motivo as motivocausal,
+							f.fechaaviso,
+							f.fechafiniquito,
+							f.totaldiastrabajados,
+							f.totaldiasaviso,
+							f.factorcalculodiario,
+							f.annosservicio,
+							f.totalvacaciones,
+							f.diasvacacionestomados,
+							f.saldovacaciones,
+							f.diasinhabilespost,
+							f.totalvacacionespendientes,
+							f.sueldobase,
+							f.gratificacion,
+							f.comisiones,
+							f.movilizacion,
+							f.colacion,
+							f.basecalculoannosservicio,
+							f.basecalculovacaciones,
+							f.indemnizacionmesaviso,
+							f.indemnizacionannosservicio,
+							f.indemnizacionferiadolegal,
+							f.rempendiente,
+							f.indemnizacionvoluntaria,
+							f.desahucio,
+							f.totalindemnizaciones,
+							f.prestamoempresa,
+							f.prestamoccaf,
+							f.otros,
+							f.totaldescuentos,
+							f.totalfiniquito')
+            ->from('rem_finiquito f')
+            ->from('rem_causal_finiquito c','f.idcausal = c.idcausal')
+            ->where('f.id',$idfiniquito)
+            ->where('f.idempresa',$this->session->userdata('empresaid'));
 
         $query = $this->db->get();
         return $query->result();

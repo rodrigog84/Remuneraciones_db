@@ -618,18 +618,29 @@ public function add_finiquito($array_datos,$idtrabajador){
 
         $this->db->trans_start();
         	$this->load->model('admin');
-
+        	$this->load->model('rrhh_model');
         	
         	$formatosdocumentos = $this->admin->get_formatos_documentos($datos_documento['tipo_documento']);
 
         	$pdf_content = $formatosdocumentos[0]->txt_documento;
 
         	$personal = $this->admin->get_personal_total($datos_documento['id_trabajador']);
+        	$datos_finiquito = $this->rrhh_model->get_personal_finiquitos($datos_documento['id_trabajador']); 
+
+
         	//echo '<pre>';
-        	//var_dump($personal); exit;
+        	//var_dump($datos_finiquito); exit;
 
+        	if(is_null($datos_finiquito->idfiniquito)){
+        		$tiene_finiquito = false;
+        		$idfiniquito = 0;
+        	}else{
+        		$tiene_finiquito = true;
+        		$idfiniquito = $datos_finiquito->idfiniquito;
+        	}
 			 
-
+        	//var_dump($tiene_finiquito);
+        	//var_dump($idfiniquito); exit;
         	$pdf_content = str_replace("{FechaActual}",date('d/m/Y'),$pdf_content);
         	$pdf_content = str_replace("{TextoFechaActual}",date('d') . ' de ' . month2string((int)date('m')) . ' de ' . date('Y'),$pdf_content);
 			$pdf_content = str_replace("{Nombre}",$personal->nombre.' '.$personal->apaterno.' '.$personal->amaterno,$pdf_content);
@@ -647,7 +658,7 @@ public function add_finiquito($array_datos,$idtrabajador){
 			//$pdf_content = str_replace("{FechaIngreso}",formato_fecha($personal->fecingreso,'Y-m-d','d/m/Y'),$pdf_content);
 			$pdf_content = str_replace("{Afp}",$personal->nomafp,$pdf_content);
 			$pdf_content = str_replace("{InstitucionSalud}",$personal->nomisapre,$pdf_content);
-			$pdf_content = str_replace("{MontoFiniquito}",'$ ' . number_format($personal->totalfiniquito,0,'.','.'),$pdf_content);
+			
 			
 			$tipo_contrato = '';
 			if($personal->tipocontrato == 'I'){
@@ -660,6 +671,71 @@ public function add_finiquito($array_datos,$idtrabajador){
 			$pdf_content = str_replace("{FechaIngreso}",$personal->fecingreso_format,$pdf_content);
 
 
+			//solo si tiene finiquito hacemos esta parte
+			if($tiene_finiquito){
+
+			  		$finiquitos = $this->admin->get_finiquito($idfiniquito);
+			  		$finiquito = $finiquitos[0];
+			  		//var_dump($pdf_content); exit;
+
+/*
+						{CausalFiniquito}: Causal del Finiquito
+						{FechaAvisoDespido}: Fecha Despido del Colaborador
+						{FechaFiniquito}: Fecha Finiquito del Colaborador
+						{TotalDiasTrabajados}: Días Trabajados total del Colaborador
+						{TotalDiasAviso}: Días de aviso del despido del Colaborador
+						{FactorCalculoDiario}: Factor de cálculo diario utilizado para el colaborador
+						{AñosServicio}: Años de servicio del Colaborador
+						{TotalVacaciones}: Total Vacaciones acumuladas del Colaborador
+						{DiasVacacionesTomados}: Total Vacaciones utilizadas por el Colaborador
+						{SaldoVacaciones}: Saldo Final Vacaciones Colaborador
+						{DiasInhabiles}: Días Inhábiles Posteriores del Colaborador
+						{TotalVacacionesPendientes}: Total Vacaciones Pendientes del Colaborador
+						{BaseCalculoAñosServicio}: Base de Cálculo utilizada para cálculo de Años de Servicio
+						{BaseCalculoVacacionesProporcionales}: Base de Cálculo utilizada para cálculo de
+						Vacaciones Proporcionales
+						{IndemnizacionMesAviso}: Monto Indemnización Mes de Aviso
+						{IndemnizacionAñosServicio}: Monto Indemnización Años de Servicio
+						{IndemnizacionFeriadoLegal}: Monto Indemnización Feriado Legal
+						{RemuneracionPendiente}: Monto Remuneración Pendiente
+						{IndemnizacionVoluntaria}: Monto Indemnización Voluntaria
+						{Desahucio}: Monto Desahucio
+						{TotalIndemnizacion}: Monto Total Indemnizaciones
+						{DescuentoPrestamoEmpresa}: Monto Descuento por Préstamo Empresa
+						{DescuentoPrestamoCcaf}: Monto Descuento por Préstamo CCAF
+						{OtrosDescuentos}: Monto Otros Descuentos*/
+						$pdf_content = str_replace("{CausalFiniquito}",$finiquito->motivocausal,$pdf_content);
+						$pdf_content = str_replace("{FechaAvisoDespido}",formato_fecha($finiquito->fechaaviso,'Y-m-d','d/m/Y'),$pdf_content);
+						$pdf_content = str_replace("{FechaFiniquito}",formato_fecha($finiquito->fechafiniquito,'Y-m-d','d/m/Y'),$pdf_content);
+						$pdf_content = str_replace("{TotalDiasTrabajados}",number_format($finiquito->totaldiastrabajados,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{TotalDiasAviso}",number_format($finiquito->totaldiasaviso,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{FactorCalculoDiario}",str_replace('.',',',$finiquito->factorcalculodiario),$pdf_content);
+						$pdf_content = str_replace("{AñosServicio}",$finiquito->annosservicio,$pdf_content);
+						$pdf_content = str_replace("{A&ntilde;osServicio}",$finiquito->annosservicio,$pdf_content);
+						$pdf_content = str_replace("{TotalVacaciones}",str_replace('.',',',$finiquito->totalvacaciones),$pdf_content);
+						$pdf_content = str_replace("{DiasVacacionesTomados}",number_format($finiquito->diasvacacionestomados,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{SaldoVacaciones}",number_format($finiquito->saldovacaciones,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{DiasInhabiles}",number_format($finiquito->diasinhabilespost,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{TotalVacacionesPendientes}",number_format($finiquito->totalvacacionespendientes,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{BaseCalculoAñosServicio}",number_format($finiquito->basecalculoannosservicio,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{BaseCalculoA&ntilde;osServicio}",number_format($finiquito->basecalculoannosservicio,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{BaseCalculoVacacionesProporcionales}",number_format($finiquito->basecalculovacaciones,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{IndemnizacionMesAviso}",number_format($finiquito->indemnizacionmesaviso,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{IndemnizacionAñosServicio}",number_format($finiquito->indemnizacionannosservicio,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{IndemnizacionA&ntilde;osServicio}",number_format($finiquito->indemnizacionannosservicio,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{IndemnizacionFeriadoLegal}",number_format($finiquito->indemnizacionferiadolegal,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{RemuneracionPendiente}",number_format($finiquito->rempendiente,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{IndemnizacionVoluntaria}",number_format($finiquito->indemnizacionvoluntaria,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{Desahucio}",number_format($finiquito->desahucio,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{TotalIndemnizacion}",number_format($finiquito->totalindemnizaciones,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{DescuentoPrestamoEmpresa}",number_format($finiquito->prestamoempresa,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{DescuentoPrestamoCcaf}",number_format($finiquito->prestamoccaf,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{OtrosDescuentos}",number_format($finiquito->otros,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{TotalDescuentos}",number_format($finiquito->totaldescuentos,0,'.','.'),$pdf_content);
+
+						$pdf_content = str_replace("{MontoFiniquito}",'$ ' . number_format($finiquito->totalfiniquito,0,'.','.'),$pdf_content);
+
+			}
 
         	
 

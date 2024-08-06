@@ -86,7 +86,6 @@
 
                                 <ul>
                                   <li><b>{CausalFiniquito}</b>: Causal del Finiquito</li>
-                                  <li><b>{FechaContrato}</b>: Fecha contrato del Colaborador</li>
                                   <li><b>{FechaAvisoDespido}</b>: Fecha Despido del Colaborador</li>
                                   <li><b>{FechaFiniquito}</b>: Fecha Finiquito del Colaborador</li>
                                   <li><b>{TotalDiasTrabajados}</b>: D&iacute;as Trabajados total del Colaborador</li>
