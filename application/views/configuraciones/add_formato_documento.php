@@ -8,7 +8,7 @@
 
   <form id="basicBootstrapForm" action="<?php echo base_url(); ?>configuraciones/submit_documentos" method="post">
   <div class='row'>  
-<div class="col-md-6">
+<div class="col-md-4">
                           <div class="panel panel-inverse">                       
                                 <div class="panel-heading">
                                       <h4 class="panel-title">Listado de Tipos de Documento</h4>
@@ -34,10 +34,10 @@
                     </div>
                   </div>
 
-<div class="col-md-6">
+<div class="col-md-4">
                           <div class="panel panel-inverse">                       
                                 <div class="panel-heading">
-                                      <h4 class="panel-title">C&oacute;digos para agregar en el texto</h4>
+                                      <h4 class="panel-title">C&oacute;digos  Datos Generales  para agregar en el texto</h4>
                                   </div>
                       <div class="panel-body">
                         <div class='row'>                       
@@ -61,18 +61,68 @@
                                   <li><b>{FechaIngreso}</b>: Fecha de Ingreso a la Empresa</li>
                                   <li><b>{Afp}</b>: Nombre de la AFP a la que est&aacute; asociada el Colaborador</li>
                                   <li><b>{InstitucionSalud}</b>: Instituci&oacute;n de Salud a la que pertenece el Colaborador</li>
-                                  <li><b>{MontoFiniquito}</b>: Monto asociado al finiquito del colaborador (en caso que corresponda)</li>
-                                  <li><b>{DetallePagoFiniquito}</b>: Desglose de haberes y descuentos asociados al finiquito de un colaborador</li>
-
-                                  
                                 </ul>
+
+
+
                             </div>                      
 
                         </div><!-- /.box-body -->
                  
                       </div>
                     </div>
-                  </div>                  
+                  </div>   
+
+
+
+<div class="col-md-4">
+                          <div class="panel panel-inverse">                       
+                                <div class="panel-heading">
+                                      <h4 class="panel-title">C&oacute;digos Finiquito para agregar en el texto </h4>
+                                  </div>
+                      <div class="panel-body">
+                        <div class='row'>                       
+                          <div class="col-md-12">
+
+                                <ul>
+                                  <li><b>{CausalFiniquito}</b>: Causal del Finiquito</li>
+                                  <li><b>{FechaContrato}</b>: Fecha contrato del Colaborador</li>
+                                  <li><b>{FechaAvisoDespido}</b>: Fecha Despido del Colaborador</li>
+                                  <li><b>{FechaFiniquito}</b>: Fecha Finiquito del Colaborador</li>
+                                  <li><b>{TotalDiasTrabajados}</b>: D&iacute;as Trabajados total del Colaborador</li>
+                                  <li><b>{TotalDiasAviso}</b>: D&iacute;as de aviso del despido del Colaborador</li>
+                                  <li><b>{FactorCalculoDiario}</b>: Factor de c&aacute;lculo diario utilizado para el colaborador</li>
+                                  <li><b>{AñosServicio}</b>: Años de servicio del Colaborador</li>
+                                  <li><b>{TotalVacaciones}</b>: Total Vacaciones acumuladas del Colaborador</li>
+                                  <li><b>{DiasVacacionesTomados}</b>: Total Vacaciones utilizadas por el Colaborador</li>
+                                  <li><b>{SaldoVacaciones}</b>: Saldo Final Vacaciones Colaborador</li>
+                                  <li><b>{DiasInhabiles}</b>: D&iacute;as Inh&aacute;biles Posteriores del Colaborador</li>
+                                  <li><b>{TotalVacacionesPendientes}</b>: Total Vacaciones Pendientes del Colaborador</li>
+                                  <li><b>{BaseCalculoAñosServicio}</b>: Base de C&aacute;lculo utilizada para c&aacute;lculo de A&ntilde;os de Servicio</li>
+                                  <li><b>{BaseCalculoVacacionesProporcionales}</b>: Base de C&aacute;lculo utilizada para c&aacute;lculo de Vacaciones Proporcionales</li>
+                                  <li><b>{IndemnizacionMesAviso}</b>: Monto Indemnizaci&oacute;n Mes de Aviso</li>
+                                  <li><b>{IndemnizacionAñosServicio}</b>: Monto Indemnizaci&oacute;n A&ntilde;os de Servicio</li>
+                                  <li><b>{IndemnizacionFeriadoLegal}</b>: Monto Indemnizaci&oacute;n Feriado Legal</li>
+                                  <li><b>{RemuneracionPendiente}</b>: Monto Remuneraci&oacute;n Pendiente</li>
+                                  <li><b>{IndemnizacionVoluntaria}</b>: Monto Indemnizaci&oacute;n Voluntaria</li>
+                                  <li><b>{Desahucio}</b>: Monto Desahucio</li>
+                                  <li><b>{TotalIndemnizacion}</b>: Monto Total Indemnizaciones</li>
+                                  <li><b>{DescuentoPrestamoEmpresa}</b>: Monto Descuento por Pr&eacute;stamo Empresa</li>
+                                  <li><b>{DescuentoPrestamoCcaf}</b>: Monto Descuento por Pr&eacute;stamo CCAF</li>
+                                  <li><b>{OtrosDescuentos}</b>: Monto Otros Descuentos</li>
+                                  <li><b>{TotalDescuentos}</b>: Monto Total Descuentos</li>
+                                  <li><b>{MontoFiniquito}</b>: Monto Total Finiquito</li>
+                                </ul>
+
+
+
+                            </div>                      
+
+                        </div><!-- /.box-body -->
+                 
+                      </div>
+                    </div>
+                  </div>                                 
                 </div> 
 
 							
