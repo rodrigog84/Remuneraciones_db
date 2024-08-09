@@ -106,6 +106,7 @@ class Admin extends CI_Model
 							f.rempendiente,
 							f.indemnizacionvoluntaria,
 							f.desahucio,
+							f.indemnizacionespecial,
 							f.totalindemnizaciones,
 							f.prestamoempresa,
 							f.prestamoccaf,

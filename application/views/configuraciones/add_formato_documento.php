@@ -105,6 +105,7 @@
                                   <li><b>{RemuneracionPendiente}</b>: Monto Remuneraci&oacute;n Pendiente</li>
                                   <li><b>{IndemnizacionVoluntaria}</b>: Monto Indemnizaci&oacute;n Voluntaria</li>
                                   <li><b>{Desahucio}</b>: Monto Desahucio</li>
+                                  <li><b>{IndemnizacionEspecial}</b>: Monto Indemnizaci&oacute;n Especial</li>
                                   <li><b>{TotalIndemnizacion}</b>: Monto Total Indemnizaciones</li>
                                   <li><b>{DescuentoPrestamoEmpresa}</b>: Monto Descuento por Pr&eacute;stamo Empresa</li>
                                   <li><b>{DescuentoPrestamoCcaf}</b>: Monto Descuento por Pr&eacute;stamo CCAF</li>

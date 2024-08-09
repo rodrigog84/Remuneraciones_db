@@ -1785,4 +1785,6 @@ create table rem_finiquito (
 	totaldescuentos bigint,
 	totalfiniquito bigint,
 	created_at datetime DEFAULT GETDATE() )
+/*************************************************************************************/
 
+alter table rem_finiquito add indemnizacionespecial bigint

@@ -721,16 +721,17 @@ if (!function_exists('formato_fecha'))
 if (!function_exists('dias_vacaciones'))
 {
 
-  function dias_vacaciones($fecinicio,$saldoinicvac)
+  function dias_vacaciones($fecinicio,$saldoinicvac,$fechafin = null)
   {
 
+    $fechafin = is_null($fechafin) ? date("Y-m-d") : $fechafin;
 
     $anno_inicio = substr($fecinicio,0,4);
     $mes_inicio = substr($fecinicio,5,2);
 
     $fecinicio_mesinicio = $anno_inicio."-".$mes_inicio."-01";
 
-    $meses = meses_transcurridos($fecinicio_mesinicio,date("Y-m-d"));
+    $meses = meses_transcurridos($fecinicio_mesinicio,$fechafin);
 
     #MESES DONDE SE CALCULARÁN VACACIONES COMPLETAS
     $meses_completos = ($meses - 1) <= 0 ? 0 : ($meses - 1);
@@ -740,13 +741,13 @@ if (!function_exists('dias_vacaciones'))
     #MESES PROPORCIONALES (PRIMERO Y ULTIMO)
 
    // $dias_mes_inic = $meses == 0 ? dias_transcurridos($fecinicio,date("Y-m-d")) : dias_transcurridos($fecinicio,$anno_inicio."-".$mes_inicio."-".ultimo_dia_mes($anno_inicio,$mes_inicio));
-     $dias_mes_inic = $meses_completos == 0 ? dias_transcurridos($fecinicio,date("Y-m-d")) : dias_transcurridos($fecinicio,$anno_inicio."-".$mes_inicio."-".ultimo_dia_mes($anno_inicio,$mes_inicio));
+     $dias_mes_inic = $meses_completos == 0 ? dias_transcurridos($fecinicio,$fechafin) : dias_transcurridos($fecinicio,$anno_inicio."-".$mes_inicio."-".ultimo_dia_mes($anno_inicio,$mes_inicio));
     #$mes_prop_mes_inic = round($dias_mes_inic/30,2);
     $mes_prop_mes_inic = $dias_mes_inic/30;
 
 
     //$dias_mes_fin = $meses == 0 ? 0 : dias_transcurridos(date("Y-m")."-01",date("Y-m-d"));
-    $dias_mes_fin = $meses_completos == 0 ? 0 : dias_transcurridos(date("Y-m")."-01",date("Y-m-d"));
+    $dias_mes_fin = $meses_completos == 0 ? 0 : dias_transcurridos(substr($fechafin,0,7)."-01",$fechafin);
     #$mes_prop_mes_fin = round($dias_mes_fin/30,2);
     $mes_prop_mes_fin = $dias_mes_fin/30;
 

@@ -6166,6 +6166,9 @@ public function submit_anticipos(){
         $desahucio = $this->input->post("desahucio");
         $desahucio = str_replace(".","",$desahucio);
 
+        $indemnizacionespecial = $this->input->post("indespecial");
+        $indemnizacionespecial = str_replace(".","",$indemnizacionespecial);
+
         $totalindemnizaciones = $this->input->post("indtotal");
         $totalindemnizaciones = str_replace(".","",$totalindemnizaciones);
 
@@ -6213,6 +6216,7 @@ public function submit_anticipos(){
                                     ,'rempendiente' => $rempendiente
                                     ,'indemnizacionvoluntaria' => $indemnizacionvoluntaria
                                     ,'desahucio' => $desahucio
+                                    ,'indemnizacionespecial' => $indemnizacionespecial
                                     ,'totalindemnizaciones' => $totalindemnizaciones
                                     ,'prestamoempresa' => $prestamoempresa
                                     ,'prestamoccaf' => $prestamoccaf
@@ -7833,7 +7837,7 @@ public function genera_carta($idpersonal){
 
 
 
- public function get_valores_finiquito($idtrabajador,$fechafiniquito = '',$diashabiles = 0)
+ public function get_valores_finiquito($idtrabajador,$fechafiniquito = '',$diashabiles = 0,$fechaaviso = '')
     {
 
         //if ($this->ion_auth->is_allowed($this->router->fetch_class(), $this->router->fetch_method())) {
@@ -7854,14 +7858,22 @@ public function genera_carta($idpersonal){
 
 
             $periodo = $this->admin->get_periodo_by_mes($mes_finiquito,$anno_finiquito);
+            
+
             $idperiodo = $periodo->id_periodo;
 
             $parametros['sueldominimo'] = $this->admin->get_indicadores_by_periodo($idperiodo,'Sueldo Minimo');
             $tope_legal_gratificacion = ($parametros['sueldominimo']*4.75)/12;
             $trabajador = $this->rrhh_model->get_personal($idtrabajador);
+            $personal = $this->admin->get_personal_total($idtrabajador); 
+
+            $fecfinvacaciones = substr($fechaaviso,0,4).'-'.substr($fechaaviso,4,2).'-'.substr($fechaaviso,6,2);
 
 
+            $dias_vacaciones = dias_vacaciones($personal->fecinicvacaciones,$personal->saldoinicvacaciones,$fecfinvacaciones);
             //vacaciones = sueldo base + bonos 
+            $dias_progresivos = $this->auxiliar->get_dias_progresivos($idtrabajador);
+            $num_dias_progresivos = num_dias_progresivos($personal->fecinicvacaciones,$personal->saldoinicvacprog,$dias_progresivos);
 
 
             $periodo = $this->admin->get_periodo_by_mes($mes_finiquito,$anno_finiquito);
@@ -7986,6 +7998,9 @@ public function genera_carta($idpersonal){
             $data['movilizacion'] = $movilizacion;
             $data['colacion'] = $colacion;
             $data['dias_inhabiles'] = $dias_inhabiles;
+            $data['dias_vacaciones'] = $dias_vacaciones;
+            $data['num_dias_progresivos'] = $num_dias_progresivos;
+
 
 
 

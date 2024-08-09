@@ -727,6 +727,7 @@ public function add_finiquito($array_datos,$idtrabajador){
 						$pdf_content = str_replace("{RemuneracionPendiente}",number_format($finiquito->rempendiente,0,'.','.'),$pdf_content);
 						$pdf_content = str_replace("{IndemnizacionVoluntaria}",number_format($finiquito->indemnizacionvoluntaria,0,'.','.'),$pdf_content);
 						$pdf_content = str_replace("{Desahucio}",number_format($finiquito->desahucio,0,'.','.'),$pdf_content);
+						$pdf_content = str_replace("{IndemnizacionEspecial}",number_format($finiquito->indemnizacionespecial,0,'.','.'),$pdf_content);
 						$pdf_content = str_replace("{TotalIndemnizacion}",number_format($finiquito->totalindemnizaciones,0,'.','.'),$pdf_content);
 						$pdf_content = str_replace("{DescuentoPrestamoEmpresa}",number_format($finiquito->prestamoempresa,0,'.','.'),$pdf_content);
 						$pdf_content = str_replace("{DescuentoPrestamoCcaf}",number_format($finiquito->prestamoccaf,0,'.','.'),$pdf_content);

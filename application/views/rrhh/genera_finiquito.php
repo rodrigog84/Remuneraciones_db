@@ -395,6 +395,13 @@
 
                         <div class='row'>
 
+                          <div class='col-md-4'>
+                            <div class="form-group">
+                              <label for="rut">Indemnizaci&oacute;n Especial</label>
+                              <input type="text" name="indespecial" id="indespecial" class="form-control miles required indemnizacion" placeholder="Ingrese Monto" size="20" value="<?php echo $idfiniquito == 0 ? '0' : number_format($finiquito->indemnizacionespecial,0,'.','.');?>" <?php echo $idfiniquito == 0 ? '' : 'readonly';?>>
+                            </div>
+
+                          </div>   
 
                           <div class='col-md-4'>
                               <div class="form-group">
@@ -570,6 +577,7 @@
         var indferiadolegal = $('#indferiadolegal').val();
         var indvoluntaria = $('#indvoluntaria').val();
         var desahucio = $('#desahucio').val();
+        var indespecial = $('#indespecial').val();
 
         rem_pendiente = rem_pendiente == '' ? 0 : parseInt(replaceAll(rem_pendiente, ".", ""));
         indmesaviso = indmesaviso == '' ? 0 : parseInt(replaceAll(indmesaviso, ".", ""));
@@ -577,8 +585,10 @@
         indferiadolegal = indferiadolegal == '' ? 0 : parseInt(replaceAll(indferiadolegal, ".", ""));
         indvoluntaria = indvoluntaria == '' ? 0 : parseInt(replaceAll(indvoluntaria, ".", ""));
         desahucio = desahucio == '' ? 0 : parseInt(replaceAll(desahucio, ".", ""));
+        indespecial = indespecial == '' ? 0 : parseInt(replaceAll(indespecial, ".", ""));
 
-        var indtotal = rem_pendiente + indmesaviso + indannoservicio + indferiadolegal + indvoluntaria + desahucio;
+
+        var indtotal = rem_pendiente + indmesaviso + indannoservicio + indferiadolegal + indvoluntaria + desahucio + indespecial;
 
         $('#indtotal').val(number_format(indtotal, 0, '.', '.'));    
 
@@ -772,6 +782,7 @@
 
         var art_161 = false;
         var art_163 = false;
+        var art_159_5 = false;
         if($('#causalfiniquito').val() != ''){
           if (causal_finiquito.indexOf("161") >= 0){
             art_161 = true;
@@ -781,10 +792,17 @@
           if (causal_finiquito.indexOf("163") >= 0){
             art_163 = true;
           
-          }                        
+          }     
+
+
+          if (causal_finiquito.indexOf("159") >= 0 && causal_finiquito.indexOf("Inciso 5") >= 0){
+            art_159_5 = true;
+          
+          }                               
         }
 
        //console.log(causal_finiquito);
+       //console.log(art_159_5);
 
 
         var fecha1 = moment(fechaaviso.substring(6)+'-'+fechaaviso.substring(3,5)+'-'+fechaaviso.substring(0,2));
@@ -793,12 +811,13 @@
 
 
        var fechafiniquito_consulta = fechafiniquito.substring(6)+fechafiniquito.substring(3,5)+fechafiniquito.substring(0,2);
+       var fechaaviso_consulta = fechaaviso.substring(6)+fechaaviso.substring(3,5)+fechaaviso.substring(0,2);
        var saldovacaciones = parseInt($('#saldovacaciones').val());
        var idtrabajador = $('#idtrabajador').val();
 
        $.ajax({
             type: "GET",
-            url: '<?php echo base_url();?>rrhh/get_valores_finiquito/'+idtrabajador+'/'+fechafiniquito_consulta+'/'+saldovacaciones,
+            url: '<?php echo base_url();?>rrhh/get_valores_finiquito/'+idtrabajador+'/'+fechafiniquito_consulta+'/'+saldovacaciones+'/'+fechaaviso_consulta,
             dataType: 'json',
             async: false,
         }).success(function(data) {
@@ -808,6 +827,14 @@
           $('#comisiones').val(number_format(data.comisiones, 0, '.', '.'));
           $('#movilizacion').val(number_format(data.movilizacion, 0, '.', '.'));
           $('#colacion').val(number_format(data.colacion, 0, '.', '.'));
+          $('#totalvacaciones').val(number_format(data.dias_vacaciones + data.num_dias_progresivos, 2, ',', '.'));
+
+          $('#totalvacaciones').val(number_format(data.dias_vacaciones + data.num_dias_progresivos, 2, ',', '.'));
+
+          var vacacionestomados = $('#vacacionestomados').val();
+
+          $('#saldovacaciones').val(number_format(data.dias_vacaciones + data.num_dias_progresivos - vacacionestomados, 2, ',', '.'));          
+          
           calcular_total_vacaciones();
         });
 
@@ -843,7 +870,14 @@
         }
 
 
+        if(art_159_5){
+            
+            $('#diasinhabiles').val(0)
+            $('#diasinhabiles').trigger('input')
+        }
 
+
+          
 
 
         var ind_feriado_legal =  parseInt(vtotalcont_vac)/30*parseFloat($('#totvacpendientes').val());
