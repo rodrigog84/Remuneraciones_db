@@ -6820,6 +6820,72 @@ public function mov_personal($resultid = '')
   } 
 
 
+
+
+ public function distribucion_colaborador($resultid = '')
+  {
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+      $resultid = $this->session->flashdata('documentos_colaborador_result');
+      if($resultid == 1){
+        $vars['message'] = "Error al crear documento.  Colaborador no existe";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }else if($resultid == 2){
+        $vars['message'] = "Error al eliminar documento.  Debe indicar Colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }else if($resultid == 3){
+        $vars['message'] = "Error al imprimir documento.  Debe indicar Colaborador";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }        
+
+
+      $personal = $this->rrhh_model->get_personal(); 
+      $distribucion = $this->rrhh_model->get_distribucion_ccosto_by_empresa(); 
+
+      $array_distribucion = array();
+      foreach($distribucion as $dist){
+        $array_distribucion[$dist->idpersonal] = $dist->distribucion;
+
+      }
+
+      $content = array(
+            'menu' => 'Remuneraciones',
+            'title' => 'Remuneraciones',
+            'subtitle' => 'Distribuci&oacute;n del Colaborador Centro Costo');
+
+      $vars['content_menu'] = $content;       
+      $vars['personal'] = $personal;  
+      $vars['distribucion'] = $array_distribucion;  
+      $vars['content_view'] = 'rrhh/distribucion_colaborador';
+      $vars['datatable'] = true;
+      $vars['gritter'] = true;
+
+      $template = "template";
+      
+
+      $this->load->view($template,$vars); 
+
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+  } 
+
+
+
 public function crear_documentos_colaborador($idtrabajador = null){
     
     if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){  
@@ -6912,6 +6978,140 @@ public function crear_documentos_colaborador($idtrabajador = null){
 
 
   }  
+
+
+
+public function distribucion_colaborador_ccosto($idtrabajador = null){
+    
+    if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){  
+
+
+      $resultid = $this->session->flashdata('crear_documentos_colaborador_result');
+      if($resultid == 1){
+        $vars['message'] = "Documento Creado Correctamente";
+        $vars['classmessage'] = 'success';
+        $vars['icon'] = 'fa-check';
+      }else if($resultid == 2){
+        $vars['message'] = "Error al eliminar Documento.  Debe indicar documento";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }else if($resultid == 3){
+        $vars['message'] = "Error al eliminar Documento.  Documento no existe";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }else if($resultid == 4){
+        $vars['message'] = "Documento eliminado correctamente";
+        $vars['classmessage'] = 'success';
+        $vars['icon'] = 'fa-check';
+      }else if($resultid == 5){
+        $vars['message'] = "Error al imprimir documento. Documento no existe";
+        $vars['classmessage'] = 'danger';
+        $vars['icon'] = 'fa-ban';
+      }
+
+
+
+
+      if(is_null($idtrabajador)){
+        $this->session->set_flashdata('documentos_colaborador_result', 1);
+        redirect('rrhh/distribucion_colaborador'); 
+
+      }
+
+      $this->load->model('admin');
+      //var_dump_new($formatos_documentos); exit;
+
+
+
+
+
+      $this->load->model('rrhh_model');
+      $this->load->model('configuracion');
+      $personal = $this->rrhh_model->get_personal($idtrabajador);
+      $centrocosto = $this->configuracion->centro_costo();
+
+      $distribucion = $this->rrhh_model->get_distribucion_ccosto($idtrabajador);
+
+      $array_distribucion = array();
+      foreach($distribucion as $dist){
+        $array_distribucion[$dist->idcentrocosto] = $dist->valor;
+
+
+      }
+
+      //var_dump($array_distribucion); //exit;
+      if(is_null($personal)){
+        $this->session->set_flashdata('documentos_colaborador_result', 1);
+        redirect('rrhh/distribucion_colaborador'); 
+      }
+
+
+      $content = array(
+            'menu' => 'Remuneraciones',
+            'title' => 'Remuneraciones',
+            'subtitle' => 'Crear Distribuci&oacute;n Colaborador');
+
+      $vars['content_menu'] = $content; 
+
+      
+      $vars['content_view'] = 'rrhh/distribucion_colaborador_ccosto';
+      $vars['formValidation'] = true;
+      $vars['personal'] = $personal;
+      $vars['centro_costo'] = $centrocosto;
+      $vars['distribucion'] = $array_distribucion;
+     $vars['sweetalert'] = true;
+      $vars['gritter'] = true;
+      $template = "template";
+      
+
+      $this->load->view($template,$vars); 
+    }else{
+      $content = array(
+            'menu' => 'Error 403',
+            'title' => 'Error 403',
+            'subtitle' => '403 error');
+
+
+      $vars['content_menu'] = $content;       
+      $vars['content_view'] = 'forbidden';
+      $this->load->view('template',$vars);
+
+    }
+
+
+  }  
+
+
+
+    public function guarda_distribucion_colaborador_ccosto($data = '')
+    {
+
+        if($this->ion_auth->is_allowed($this->router->fetch_class(),$this->router->fetch_method())){
+
+
+            $idpersonal = $this->input->post('idpersonal');
+            $centrocosto = $this->input->post('centro_costo');
+
+            $this->rrhh_model->save_distribucion_ccosto($idpersonal,$centrocosto);
+
+
+            $data = array();
+            echo json_encode($data);
+
+        }else{
+            $content = array(
+                        'menu' => 'Error 403',
+                        'title' => 'Error 403',
+                        'subtitle' => '403 error');
+
+
+            $vars['content_menu'] = $content;               
+            $vars['content_view'] = 'forbidden';
+            $this->load->view('template',$vars);
+
+        }
+
+    }
 
 
 public function submit_documento_colaborador()

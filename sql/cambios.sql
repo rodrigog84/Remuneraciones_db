@@ -1788,3 +1788,99 @@ create table rem_finiquito (
 /*************************************************************************************/
 
 alter table rem_finiquito add indemnizacionespecial bigint
+
+
+
+/***********************************************************************************************/
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/distribucion_colaborador'
+,'Distribuci&oacute;n Colaborador'
+,4
+,0
+,1
+,1
+,6
+)
+
+
+
+insert into rem_role (appid,levelid) values (6134,2)
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/distribucion_colaborador_ccosto'
+,null
+,4
+,0
+,0
+,1
+,null
+)
+
+
+
+insert into rem_role (appid,levelid) values (6135,2)
+
+
+
+insert into rem_app (
+
+funcion
+,nombre
+,menuid
+,leaf
+,visible
+,valid
+,orden
+
+)
+
+values (
+'rrhh/guarda_distribucion_colaborador_ccosto'
+,null
+,4
+,0
+,0
+,1
+,null
+)
+
+
+
+insert into rem_role (appid,levelid) values (6136,2)
+
+
+create table rem_dist_centro_costo (
+id int identity,
+idpersonal int,
+idcentrocosto int,
+valor float,
+created_at datetime default getdate()
+)
+

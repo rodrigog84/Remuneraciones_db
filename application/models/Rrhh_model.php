@@ -1338,6 +1338,93 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 		return 1;
 	}
 
+
+
+
+
+	public function save_distribucion_ccosto($idpersonal,$centrocosto){
+
+		$this->db->trans_start();
+
+		// Decodificar el JSON para obtener los datos
+		    $centrocostos = json_decode($centrocosto, true);
+
+		    if (!is_array($centrocostos)) {
+		        return; // Validación básica en caso de datos inválidos
+		    }
+
+		    foreach ($centrocostos as $centro) {
+
+		        $idcentrocosto = $centro['idcentrocosto'];
+		        $valor = $centro['valor'];
+
+
+				$this->db->select('id')
+								  ->from('rem_dist_centro_costo a')
+								  ->where('idpersonal', $idpersonal)
+								  ->where('idcentrocosto', $idcentrocosto);
+                 
+				$query = $this->db->get();
+
+
+		        if ($query->num_rows() > 0) {
+		            // Si el registro existe, actualizar el valor
+		            $this->db->where('idpersonal', $idpersonal);
+		            $this->db->where('idcentrocosto', $idcentrocosto);
+		            $this->db->update('rem_dist_centro_costo', ['valor' => $valor]);
+		        } else {
+		            // Si no existe, insertar un nuevo registro
+		            $this->db->insert('rem_dist_centro_costo', [
+		                'idpersonal' => $idpersonal,
+		                'idcentrocosto' => $idcentrocosto,
+		                'valor' => $valor
+		            ]);
+		        }
+		    }
+
+
+		$this->db->trans_complete();
+		return 1;
+	}
+
+
+
+
+
+	public function get_distribucion_ccosto_by_empresa(){
+
+	
+
+	        $queryQuestion = $this->db->query('select		idpersonal, sum(valor) as distribucion
+												from		rem_dist_centro_costo
+												where		idpersonal in (select		id_personal
+																			from		rem_personal p
+																			where		id_empresa = ' . $this->session->userdata('empresaid'). ')
+												group by	idpersonal');
+	       	 $data = $queryQuestion->result();
+	       	 return $data;
+
+
+	}
+
+
+
+	public function get_distribucion_ccosto($idpersonal){
+
+	
+
+		$this->db->select('idpersonal, idcentrocosto, valor')
+						  ->from('rem_dist_centro_costo a')
+						  ->where('idpersonal', $idpersonal);
+         
+		$query = $this->db->get();
+
+		return $query->result();
+
+
+	}
+
+
 	public function get_personal_datos($rut = null,$idtrabajador = null){
 
 
@@ -4139,7 +4226,7 @@ public function get_remuneraciones_by_id($idremuneracion){
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
-						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and pr.id_empresa = ' . $this->session->userdata('empresaid') . ' and pe.idcentrocosto = pr.id_centro_costo')
+						  ->join('rem_periodo_remuneracion as pr','r.id_periodo = pr.id_periodo and pr.id_empresa = ' . $this->session->userdata('empresaid') . ' and pe.idcentrocosto = pr.id_centro_costo','left')
 						  ->join('rem_isapre as i','pe.idisapre = i.id_isapre')
 						  ->join('rem_cargos as c','pe.idcargo = c.id_cargos','left')
 						  ->join('rem_afp as a','pe.idafp = a.id_afp')
