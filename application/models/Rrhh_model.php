@@ -7293,9 +7293,9 @@ public function get_decjurada_rentas($anno)
 																	, r.id_periodo
 																	, pe.mes
 																	,isnull(r.sueldoliquido,0) as sueldoliquido
-																	,isnull((r.totalleyessociales - r.montoahorrovol - r.impuesto),0) as leyessociales
-																	,isnull((r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)),0) as rentatotalsinactualizar
-																	,round(isnull((r.sueldoimponible - (r.totalleyessociales - r.montoahorrovol - r.impuesto)),0)*(SELECT       1 + (t.dic/100) 
+																	,isnull((r.totaldescuentoslegales - r.montoahorrovol - r.impuesto),0) as leyessociales
+																	,isnull((r.sueldoimponible - (r.totaldescuentoslegales - r.montoahorrovol - r.impuesto)),0) as rentatotalsinactualizar
+																	,round(isnull((r.sueldoimponible - (r.totaldescuentoslegales - r.montoahorrovol - r.impuesto)),0)*(SELECT       1 + (t.dic/100) 
 																	FROM            rem_periodo p
 																	left JOIN   rem_tabla_correccion_monetaria t  ON p.mes = t.mes_orig AND p.anno = t.anno
 																	WHERE       p.id_periodo = r.id_periodo  ),0) as rentatotalneta
@@ -7309,17 +7309,19 @@ public function get_decjurada_rentas($anno)
 																	FROM            rem_periodo p
 																	left JOIN   rem_tabla_correccion_monetaria t  ON p.mes = t.mes_orig AND p.anno = t.anno
 																	WHERE       p.id_periodo = r.id_periodo  ),0) as impuestoactualizado
-																	,round((SELECT isnull(sum(monto),0) as monto 
+																	,round(  ((SELECT isnull(sum(monto),0) as monto 
 																	  from rem_haber_descuento_remuneracion
 																	  where	idremuneracion = r.id_remuneracion
-																	  and	imponible = 0)*(SELECT       1 + (t.dic/100) 
+																	  and   tipo = 'HABER'
+																	  and	imponible = 0) + isnull(r.movilizacion,0) + isnull(r.colacion,0) + isnull(r.asigfamiliar,0)) *(SELECT       1 + (t.dic/100) 
 																	FROM            rem_periodo p
 																	left JOIN   rem_tabla_correccion_monetaria t  ON p.mes = t.mes_orig AND p.anno = t.anno
 																	WHERE       p.id_periodo = r.id_periodo  ),0) as bonosnoimponibles
-																	,(SELECT isnull(sum(monto),0) as monto 
+																	,( (SELECT isnull(sum(monto),0) as monto 
 																	  from rem_haber_descuento_remuneracion
 																	  where	idremuneracion = r.id_remuneracion
-																	  and	imponible = 0) as bonosnoimponiblessinactualizar
+																	  and   tipo = 'HABER'
+																	  and	imponible = 0)  + isnull(r.movilizacion,0) + isnull(r.colacion,0) + isnull(r.asigfamiliar,0)) as bonosnoimponiblessinactualizar
 																	,(SELECT       1 + (t.dic/100) 
 																	FROM            rem_periodo p
 																	left JOIN   rem_tabla_correccion_monetaria t  ON p.mes = t.mes_orig AND p.anno = t.anno
