@@ -7293,7 +7293,7 @@ public function get_decjurada_rentas($anno)
 																	, r.id_periodo
 																	, pe.mes
 																	,isnull(r.sueldoliquido,0) as sueldoliquido
-																	,isnull((r.totaldescuentoslegales - r.montoahorrovol - r.impuesto),0) as leyessociales
+																	,isnull((r.totaldescuentoslegales - r.montoahorrovol - r.impuesto + r.aportesegcesantia + r.aportepatronal + r.seginvalidez),0) as leyessociales
 																	,isnull((r.sueldoimponible - (r.totaldescuentoslegales - r.montoahorrovol - r.impuesto)),0) as rentatotalsinactualizar
 																	,round(isnull((r.sueldoimponible - (r.totaldescuentoslegales - r.montoahorrovol - r.impuesto)),0)*(SELECT       1 + (t.dic/100) 
 																	FROM            rem_periodo p
