@@ -1884,3 +1884,7 @@ valor float,
 created_at datetime default getdate()
 )
 
+
+
+alter table rem_remuneracion add cotcapindividual int default 0
+alter table rem_remuneracion add cotsegsocialprev int default 0

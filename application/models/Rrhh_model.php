@@ -2590,6 +2590,15 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$porc_com_afp = $datos_afp->porc > 0 ? $datos_afp->porc - 10 : 0;
 			$porc_cot_oblig = $datos_afp->exregimen == 2 ? 0 : 0.1;
 			
+            if($perint >= 202508){
+                $porc_cap_individual = 0.1/100;
+                $porc_seg_social_prev = 0.9/100;
+
+            }else{
+                $porc_cap_individual = 0;
+                $porc_seg_social_prev = 0;
+
+            }
 
 			//$gratificacion = $trabajador->sueldobase*0.25;
 
@@ -2685,6 +2694,9 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$comision_afp = round($sueldo_imponible_afp*($porc_com_afp/100),0);
 			$adic_afp = round($sueldo_imponible*($trabajador->adicafp/100),0);
 
+
+            $cot_cap_individual = round($sueldo_imponible_afp * $porc_cap_individual, 0);
+            $cot_seg_social_prev = round($sueldo_imponible_afp * $porc_seg_social_prev, 0);
 
 			// SOLO SE PAGA POR 11 AÑOS
 
@@ -3133,7 +3145,9 @@ limit 1		*/
 					'idafp_rem' => $trabajador->idafp,
 					'idisapre_rem' => $trabajador->idisapre,
 					'idmutual_rem' => $empresa->idmutual,
-					'idcaja_rem' => $empresa->idcaja
+					'idcaja_rem' => $empresa->idcaja,
+	                'cotcapindividual' => $cot_cap_individual,
+	                'cotsegsocialprev' => $cot_seg_social_prev,    					
 				);
 
 			$this->db->where('idpersonal', $datos_remuneracion->idpersonal);
