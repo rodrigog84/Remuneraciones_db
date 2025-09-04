@@ -6399,7 +6399,11 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 	                }
 
 	                $rentaimponible_mes_anterior = $linea_trabajador['codprevired'] == 3 || $linea_trabajador['codprevired'] == 6 ? $sueldoimponible_ant : 0;
-					$cot_expectativa_vida += $rentaimponible_mes_anterior * (0.9/100);
+
+
+	                
+					$cot_expectativa_vida += round($rentaimponible_mes_anterior * (0.9/100),0);
+
 
 					// DATOS DEL TRABAJADOR
 					$linea  = str_pad($remuneracion->rut,11,"0",STR_PAD_LEFT); // rut
