@@ -6197,6 +6197,8 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 				$movimientos_personal = $this->get_lista_movimientos($idtrabajador,null,$idperiodo); 
 				$cod_mov_personal = "00";
 				$array_lineas_trabajador = array();
+				$tiene_licencia = false;
+				$dias_licencia = 0;
 				$i = 0;
 				foreach ($movimientos_personal as $movimiento_personal) {
 					if(count($array_lineas_trabajador) == 0){
@@ -6204,11 +6206,36 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 						$array_lineas_trabajador[$i]['codprevired'] = str_pad($movimiento_personal->codprevired,2,"0",STR_PAD_LEFT);
 						$array_lineas_trabajador[$i]['fechadesde'] = formato_fecha($movimiento_personal->fecmovimiento,'Y-m-d','d-m-Y');
 						$array_lineas_trabajador[$i]['fechahasta'] = formato_fecha($movimiento_personal->fechastamovimiento,'Y-m-d','d-m-Y');
+
+						$array_lineas_trabajador[$i]['fechadesdeformat'] = $movimiento_personal->fecmovimiento;
+						$array_lineas_trabajador[$i]['fechahastaformat'] = $movimiento_personal->fechastamovimiento;						
 					}else{
 						$array_lineas_trabajador[$i]['tipo_linea'] = "01";
 						$array_lineas_trabajador[$i]['codprevired'] = str_pad($movimiento_personal->codprevired,2,"0",STR_PAD_LEFT);
 						$array_lineas_trabajador[$i]['fechadesde'] = formato_fecha($movimiento_personal->fecmovimiento,'Y-m-d','d-m-Y');
 						$array_lineas_trabajador[$i]['fechahasta'] = formato_fecha($movimiento_personal->fechastamovimiento,'Y-m-d','d-m-Y');			
+						$array_lineas_trabajador[$i]['fechadesdeformat'] = $movimiento_personal->fecmovimiento;
+						$array_lineas_trabajador[$i]['fechahastaformat'] = $movimiento_personal->fechastamovimiento;												
+					}
+
+					if($movimiento_personal->codprevired == 3 || $movimiento_personal->codprevired == 6){
+						$tiene_licencia = true;
+
+            			//var_dump($linea_trabajador); exit;
+		            	$fecdesdelic = $movimiento_personal->fecmovimiento ;
+	            		$fechastalic = $movimiento_personal->fechastamovimiento;			
+
+	            		$periodo_data = $this->db->select('count(*) as cantidad', false)
+							  ->from('rem_calendario as c')
+							  ->where("c.fecha between '" . str_replace('-','',$fecdesdelic) . "' and '" . str_replace('-','',$fechastalic) . "'");
+
+
+						$query_dias_licencia = $this->db->get();	
+
+						$result_dias_licencia =  $query_dias_licencia->row();     
+						$dias_licencia +=     $result_dias_licencia->cantidad;    
+	            		
+
 					}
 
 					$i++;
@@ -6219,6 +6246,8 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 						$array_lineas_trabajador[0]['codprevired'] = "00";
 						$array_lineas_trabajador[$i]['fechadesde'] = "00-00-0000";
 						$array_lineas_trabajador[$i]['fechahasta'] = "00-00-0000";						
+						$array_lineas_trabajador[$i]['fechadesdeformat'] = '00000000';
+						$array_lineas_trabajador[$i]['fechahastaformat'] = '00000000';
 				}
 
 				/*$rut = str_pad($remuneracion->rut,11,"0",STR_PAD_LEFT);
@@ -6398,11 +6427,47 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 
 	                }
 
-	                $rentaimponible_mes_anterior = $linea_trabajador['codprevired'] == 3 || $linea_trabajador['codprevired'] == 6 ? $sueldoimponible_ant : 0;
 
 
-	                
-					$cot_expectativa_vida += round($rentaimponible_mes_anterior * (0.9/100),0);
+
+            		//if($linea_trabajador['codprevired'] == 3 || $linea_trabajador['codprevired'] == 6){
+
+	                if($remuneracion->pensionado == 1){ //pensionado
+
+	                	$cot_expectativa_vida = 0;
+
+	                }else{
+			                if($linea_trabajador['tipo_linea'] == "00" && $tiene_licencia){ // sólo en la primera linea
+		            			
+
+				                $rentaimponible_mes_anterior = $sueldoimponible_ant;
+				                $rentaimponible_mes_anterior =  round(($rentaimponible_mes_anterior/30)*$dias_licencia,0);
+
+				                //var_dump($rentaimponible_mes_anterior);
+				                //var_dump(($rentaimponible_mes_anterior/30)*$dias_licencia);
+				                //exit;
+								$cot_expectativa_vida += round($rentaimponible_mes_anterior * (0.9/100),0);
+
+
+		            		}else{
+
+		            			$rentaimponible_mes_anterior = 0;
+		            			$cot_expectativa_vida += round($rentaimponible_mes_anterior * (0.9/100),0);
+
+		            		}
+	                }
+
+
+
+
+            		/*if($idtrabajador == 20836){
+            			echo '<pre>';
+            			var_dump($remuneracion);
+            			var_dump($tipo_trabajador);
+            			var_dump($cot_expectativa_vida); exit;
+            		}*/
+
+
 
 
 					// DATOS DEL TRABAJADOR
