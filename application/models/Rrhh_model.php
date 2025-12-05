@@ -6431,7 +6431,7 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 
 
             		//if($linea_trabajador['codprevired'] == 3 || $linea_trabajador['codprevired'] == 6){
-
+	                $rentaimponible_mes_anterior = 0;
 	                if($remuneracion->pensionado == 1){ //pensionado
 
 	                	$cot_expectativa_vida = 0;
