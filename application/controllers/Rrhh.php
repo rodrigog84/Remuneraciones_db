@@ -2233,7 +2233,7 @@ public function mod_trabajador($idtrabajador = null)
 	
 
       $data = array();
-        if($this->session->userdata('empresaid') == 10160 || $this->session->userdata('empresaid') == 10169 || !ACTUALIZA_INDICADORES){
+        if($this->session->userdata('empresaid') == 10160 || $this->session->userdata('empresaid') == 10169  || $this->session->userdata('empresaid') == 10202 || !ACTUALIZA_INDICADORES){
 
 
             $data['result'] = "ok";
