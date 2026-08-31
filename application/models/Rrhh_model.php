@@ -2545,7 +2545,19 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 			$monto_semana_corrida = 0;
 			//CALCULO SEMANA CORRIDA
 			if($trabajador->semana_corrida == 'SI'){
+
+
 				$monto_semana_corrida = round(($haberes_semana_corrida/$array_dias['dias_habiles'])*$array_dias['dias_inhabiles'],0);
+
+				/*
+				if($trabajador->id_personal == 21981){
+					var_dump($haberes_semana_corrida);
+					var_dump($array_dias['dias_habiles']);
+					var_dump($array_dias['dias_inhabiles']);
+					var_dump($monto_semana_corrida);
+					exit;
+				}
+				*/				
 			}	
 
 
@@ -2593,10 +2605,12 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
             if($perint >= 202508){
                 $porc_cap_individual = 0.1/100;
                 $porc_seg_social_prev = 0.9/100;
+                $porc_çot_exp_vida = 0.72/100;
 
             }else{
                 $porc_cap_individual = 0;
                 $porc_seg_social_prev = 0;
+                $porc_çot_exp_vida = 0;
 
             }
 
@@ -2698,9 +2712,11 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 
             $cot_cap_individual = 0;
             $cot_seg_social_prev = 0;
+            $cot_expectativa_vida = 0;
             if($trabajador->pensionado == 0){
                 $cot_cap_individual = round($sueldo_imponible_afp * $porc_cap_individual, 0);
                 $cot_seg_social_prev = round($sueldo_imponible_afp * $porc_seg_social_prev, 0);
+                $cot_expectativa_vida = round($sueldo_imponible_afp * $porc_çot_exp_vida, 0);
 
             }
 
@@ -3154,7 +3170,8 @@ limit 1		*/
 					'idmutual_rem' => $empresa->idmutual,
 					'idcaja_rem' => $empresa->idcaja,
 	                'cotcapindividual' => $cot_cap_individual,
-	                'cotsegsocialprev' => $cot_seg_social_prev,    					
+	                'cotsegsocialprev' => $cot_seg_social_prev,    
+	                'cotexpectvida' => $cot_expectativa_vida,   					
 				);
 
 			$this->db->where('idpersonal', $datos_remuneracion->idpersonal);
@@ -3371,7 +3388,7 @@ public function get_periodos_aprobados_detalle($empresaid,$idperiodo = null,$idc
 
 	public function get_remuneraciones_by_periodo($idperiodo,$sinsueldo = null,$idcentrocosto = null){
 		
-		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.basetributaria, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentosnolegales, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, ap.nombre as nomapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips, pe.direccion, com.nombre as comuna, pe.parttime, pe.idregion, pe.idcomuna, a.codlre, i.codlre as codlreisapre, ccaf.codlre as codlrecaja, m.codprevired as codlremutual, pr.cierre, pr.aprueba,  f.tramo as tramo_asig_familiar, f.tramo, r.totaldescuentoslegales, cc.codigo as codcentrocosto, r.sueldoimponibleafcnotrabajo, r.sueldoimponibleimposicionesnotrabajo, pe.pensionado, isnull(r.ccafcredito,0) as ccafcredito, isnull(r.ccafseguro,0) as ccafseguro, isnull(r.cotcapindividual,0) as cotcapindividual, isnull(r.cotsegsocialprev,0) as cotsegsocialprev ')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.basetributaria, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentosnolegales, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, ap.nombre as nomapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips, pe.direccion, com.nombre as comuna, pe.parttime, pe.idregion, pe.idcomuna, a.codlre, i.codlre as codlreisapre, ccaf.codlre as codlrecaja, m.codprevired as codlremutual, pr.cierre, pr.aprueba,  f.tramo as tramo_asig_familiar, f.tramo, r.totaldescuentoslegales, cc.codigo as codcentrocosto, r.sueldoimponibleafcnotrabajo, r.sueldoimponibleimposicionesnotrabajo, pe.pensionado, isnull(r.ccafcredito,0) as ccafcredito, isnull(r.ccafseguro,0) as ccafseguro, isnull(r.cotcapindividual,0) as cotcapindividual, isnull(r.cotsegsocialprev,0) as cotsegsocialprev, isnull(r.cotexpectvida,0) as cotexpectvida ')
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
@@ -6188,6 +6205,10 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 				$idperiodo = $remuneracion->id_periodo;
 				$idperiodo_ant = $this->admin->get_periodo_anterior($idperiodo);
 
+				$idperiodo_ant2 = $this->admin->get_periodo_anterior($idperiodo_ant);
+				$idperiodo_ant3 = $this->admin->get_periodo_anterior($idperiodo_ant2);
+
+
 				$remuneraciones_ant = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo_ant,true,$idcentrocosto);
 
 
@@ -6373,7 +6394,8 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 					$cot_obligatoria_afp  = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cotizacionobligatoria+$remuneracion->comisionafp + $remuneracion->cotcapindividual : 0;
 
 
-					$cot_expectativa_vida  = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cotsegsocialprev : 0;
+					$cot_expectativa_vida  = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cotexpectvida : 0;
+					$cot_rentabilidad_protegida  = $linea_trabajador['tipo_linea'] == "00" ? $remuneracion->cotsegsocialprev: 0;
 
 					$cot_obligatoria_ips = $dato_afp->exregimen == 1 ? $cot_obligatoria_afp : 0;
 					$cot_obligatoria_afp = $dato_afp->exregimen == 1 ? 0 : $cot_obligatoria_afp;
@@ -6423,6 +6445,22 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 	                foreach($remuneraciones_ant as $rem_ant){
 	                    if($rem_ant->idtrabajador == $idtrabajador){
 	                        $sueldoimponible_ant = $rem_ant->sueldoimponibleimposiciones;
+	                        if($sueldoimponible_ant == 0){
+	                        		$remuneraciones_ant2 = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo_ant2,true,$idcentrocosto);
+	                        		foreach($remuneraciones_ant2 as $rem_ant2){
+	                        			if($rem_ant2->idtrabajador == $idtrabajador){
+
+	                        				$sueldoimponible_ant = $rem_ant2->sueldoimponibleimposiciones;
+
+	                        			}
+
+	                        		}
+	                        }
+
+
+	                        	
+
+
 	                    }
 
 	                }
@@ -6435,6 +6473,7 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 	                if($remuneracion->pensionado == 1){ //pensionado
 
 	                	$cot_expectativa_vida = 0;
+	                	$cot_rentabilidad_protegida = 0;
 
 	                }else{
 			                if($linea_trabajador['tipo_linea'] == "00" && $tiene_licencia){ // sólo en la primera linea
@@ -6447,21 +6486,26 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 				                //var_dump(($rentaimponible_mes_anterior/30)*$dias_licencia);
 				                //exit;
 								$cot_expectativa_vida += round($rentaimponible_mes_anterior * (0.9/100),0);
+								$cot_rentabilidad_protegida += round($rentaimponible_mes_anterior * (0.72/100),0);
 
 
 		            		}else{
 
 		            			$rentaimponible_mes_anterior = 0;
 		            			$cot_expectativa_vida += round($rentaimponible_mes_anterior * (0.9/100),0);
+		            			$cot_rentabilidad_protegida += round($rentaimponible_mes_anterior * (0.72/100),0);
 
 		            		}
 	                }
 
 
 
-
-            		/*if($idtrabajador == 20836){
+	                /*
+            		if($idtrabajador == 20867){
             			echo '<pre>';
+            			var_dump($tiene_licencia);
+            			var_dump($sueldoimponible_ant);
+            			var_dump($rentaimponible_mes_anterior);
             			var_dump($remuneracion);
             			var_dump($tipo_trabajador);
             			var_dump($cot_expectativa_vida); exit;
@@ -6594,7 +6638,8 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 	                $linea .= str_pad($rentaimponible_mes_anterior, 8, "0", STR_PAD_LEFT); //Renta Imponible Mes Anterior a la Licencia (RIMA)************  (*)
 	                $linea .= $tipojornada; //Tipo de Jornada ***************** (*)
 	                $linea .= str_pad($cot_expectativa_vida, 8, "0", STR_PAD_LEFT); //Cotización Expectativa de Vida ***************** (*)
-	                $linea .= "                    "; //Código de Sucursal (Uso Futuro) (VER SI ES BLANCO O CEROS) *****************
+	                $linea .= str_pad($cot_rentabilidad_protegida, 20, "0", STR_PAD_LEFT);; //Código de Sucursal (Uso Futuro) (VER SI ES BLANCO O CEROS) *****************
+	                //$linea .= "                    "; //Código de Sucursal (Uso Futuro) (VER SI ES BLANCO O CEROS) *****************
 
 					//$linea .= "00000000"; //Otros descuentos CCAF 1 (Uso Futuro) *****************
 					//$linea .= "00000000"; //Otros descuentos CCAF 2 (Uso Futuro) *****************
