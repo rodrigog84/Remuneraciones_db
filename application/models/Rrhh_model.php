@@ -2924,6 +2924,20 @@ public function save_horas_extraordinarias($array_trabajadores,$mes,$anno){
 				$sueldo_calculo_sis = $sueldo_calculo_sis > $sueldo_imponible_afp ? $sueldo_imponible_afp : $sueldo_calculo_sis;
 				$seginvalidez = round($sueldo_calculo_sis*($parametros['tasasis']/100),0);
 
+		/*
+					
+			if($trabajador->id_personal == 20911){
+				var_dump_new($seginvalidez);
+				var_dump_new($sueldo_calculo_sis);
+				var_dump_new($sueldo_base_mes);
+				var_dump_new($gratificacion);
+				var_dump_new($aguinaldo_bruto);
+				var_dump_new($bonos_imponibles);
+				var_dump_new($monto_semana_corrida);
+				var_dump_new($monto_horas50);
+				var_dump_new($monto_horas100);//exit;
+			}*/
+
 			}
 			#$seginvalidez = $trabajador->pensionado == 1 ? 0 : round($sueldo_imponible*($parametros->tasasis/100),0);
 			#SI TRABAJADOR TIENE LICENCIA MEDIDA, ENTONCES SE CALCULA POR SUELDO IMPONIBLE PROPORCIONAL A DIAS TRABAJADOS
@@ -3086,8 +3100,14 @@ limit 1		*/
 			$suma_aporte_patronal += $aportepatronal;
 			$suma_impuesto += $impuesto;
 
+			/*
+			if($trabajador->id_personal == 20911){
 
-			/*if($trabajador->id_personal == 20460){
+				echo '-----';
+				var_dump_new($imponibles_no_trabajo);
+				var_dump_new($diastrabajo);
+
+				var_dump_new($seginvalidez);
 				var_dump_new($aportepatronal);
 				var_dump_new($aportesegcesantia);
 				var_dump_new($sueldo_imponible_afp);
@@ -3388,7 +3408,7 @@ public function get_periodos_aprobados_detalle($empresaid,$idperiodo = null,$idc
 
 	public function get_remuneraciones_by_periodo($idperiodo,$sinsueldo = null,$idcentrocosto = null){
 		
-		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.basetributaria, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentosnolegales, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, ap.nombre as nomapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips, pe.direccion, com.nombre as comuna, pe.parttime, pe.idregion, pe.idcomuna, a.codlre, i.codlre as codlreisapre, ccaf.codlre as codlrecaja, m.codprevired as codlremutual, pr.cierre, pr.aprueba,  f.tramo as tramo_asig_familiar, f.tramo, r.totaldescuentoslegales, cc.codigo as codcentrocosto, r.sueldoimponibleafcnotrabajo, r.sueldoimponibleimposicionesnotrabajo, pe.pensionado, isnull(r.ccafcredito,0) as ccafcredito, isnull(r.ccafseguro,0) as ccafseguro, isnull(r.cotcapindividual,0) as cotcapindividual, isnull(r.cotsegsocialprev,0) as cotsegsocialprev, isnull(r.cotexpectvida,0) as cotexpectvida ')
+		$periodo_data = $this->db->select('r.id_remuneracion, r.id_periodo, pe.id_personal as idtrabajador, p.mes, p.anno, pe.nombre, pe.apaterno, pe.amaterno, pe.sexo, pe.nacionalidad, pe.fecingreso as fecingreso, pe.rut, pe.dv, i.nombre as prev_salud, pe.idisapre, pe.valorpactado, c.nombre as cargo, a.id_afp as idafp, a.nombre as afp, a.porc, r.sueldobase, r.gratificacion, r.bonosimponibles, r.valorhorasextras50, r.montohorasextras50, r.valorhorasextras100, r.montohorasextras100, r.aguinaldo, r.aguinaldobruto, r.diastrabajo, r.totalhaberes, r.totaldescuentos, r.sueldoliquido, r.horasextras50, r.horasextras100, r.horasdescuento, pe.cargassimples, pe.cargasinvalidas, pe.cargasmaternales, pe.cargasretroactivas, r.sueldoimponible, r.movilizacion, r.colacion, r.bonosnoimponibles, r.asigfamiliar, r.totalhaberes, r.basetributaria, r.cotizacionobligatoria, r.comisionafp, r.adicafp, r.segcesantia, r.cotizacionsalud, r.fonasa, r.inp, r.adicisapre, r.cotadicisapre, r.adicsalud, r.impuesto, r.montoahorrovol, r.montocotapv, r.anticipo, r.montodescuento, pr.cierre, r.sueldonoimponible, r.totalleyessociales, r.otrosdescuentos, r.descuentosnolegales, r.montocargaretroactiva, r.seginvalidez, pe.idasigfamiliar, r.valorpactado as valorpactadoperiodo, ap.id_apv as idapv, ap.nombre as nomapv, pe.nrocontratoapv, pe.formapagoapv, pe.depconvapv, co.idmutual, r.aportepatronal, co.idcaja, pe.segcesantia as afilsegcesantia, r.semana_corrida, r.aportesegcesantia, r.sueldoimponibleimposiciones, r.sueldoimponibleafc, r.sueldoimponibleips, pe.direccion, com.nombre as comuna, pe.parttime, pe.idregion, pe.idcomuna, a.codlre, i.codlre as codlreisapre, ccaf.codlre as codlrecaja, m.codprevired as codlremutual, pr.cierre, pr.aprueba,  f.tramo as tramo_asig_familiar, f.tramo, r.totaldescuentoslegales, cc.codigo as codcentrocosto, r.sueldoimponibleafcnotrabajo, r.sueldoimponibleimposicionesnotrabajo, pe.pensionado, isnull(r.ccafcredito,0) as ccafcredito, isnull(r.ccafseguro,0) as ccafseguro, isnull(r.cotcapindividual,0) as cotcapindividual, isnull(r.cotsegsocialprev,0) as cotsegsocialprev, isnull(r.cotexpectvida,0) as cotexpectvida, p.periodo ')
 						  ->from('rem_periodo as p')
 						  ->join('rem_remuneracion as r','r.id_periodo = p.id_periodo')
 						  ->join('rem_personal as pe','pe.id_personal = r.idpersonal')
@@ -6192,6 +6212,7 @@ public function lre($datos_remuneracion,$periodo)
 
 public function previred($datos_remuneracion, $idcentrocosto = null){
 
+	
 			$this->load->model('admin');
 			$nombre_archivo = $this->session->userdata('empresaid')."_previred_".date("Ymd").".txt";
 			$path_archivo = "./uploads/tmp/";
@@ -6441,16 +6462,19 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 
 
 	                $sueldoimponible_ant = 0;
+	                $periodo_ant = 0;
 
 	                foreach($remuneraciones_ant as $rem_ant){
 	                    if($rem_ant->idtrabajador == $idtrabajador){
 	                        $sueldoimponible_ant = $rem_ant->sueldoimponibleimposiciones;
+	                        $periodo_ant = $rem_ant->periodo;
 	                        if($sueldoimponible_ant == 0){
 	                        		$remuneraciones_ant2 = $this->rrhh_model->get_remuneraciones_by_periodo($idperiodo_ant2,true,$idcentrocosto);
 	                        		foreach($remuneraciones_ant2 as $rem_ant2){
 	                        			if($rem_ant2->idtrabajador == $idtrabajador){
 
 	                        				$sueldoimponible_ant = $rem_ant2->sueldoimponibleimposiciones;
+	                        				$periodo_ant = $rem_ant2->periodo;
 
 	                        			}
 
@@ -6465,6 +6489,12 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 
 	                }
 
+	               /* 
+            		if($idtrabajador == 21819){
+            			echo '<pre>';
+            			//var_dump($remuneraciones_ant);
+            			var_dump($cot_expectativa_vida);
+            		}*/
 
 
 
@@ -6485,30 +6515,38 @@ public function previred($datos_remuneracion, $idcentrocosto = null){
 				                //var_dump($rentaimponible_mes_anterior);
 				                //var_dump(($rentaimponible_mes_anterior/30)*$dias_licencia);
 				                //exit;
-								$cot_expectativa_vida += round($rentaimponible_mes_anterior * (0.9/100),0);
-								$cot_rentabilidad_protegida += round($rentaimponible_mes_anterior * (0.72/100),0);
+								$cot_expectativa_vida += round($rentaimponible_mes_anterior * (0.72/100),0);
+
+								if($periodo_ant > 202608){
+									$cot_rentabilidad_protegida += round($rentaimponible_mes_anterior * (0.9/100),0);
+								}
+								
 
 
 		            		}else{
 
 		            			$rentaimponible_mes_anterior = 0;
-		            			$cot_expectativa_vida += round($rentaimponible_mes_anterior * (0.9/100),0);
-		            			$cot_rentabilidad_protegida += round($rentaimponible_mes_anterior * (0.72/100),0);
+		            			$cot_expectativa_vida += round($rentaimponible_mes_anterior * (0.72/100),0);
+		            			if($periodo_ant > 202608){
+									$cot_rentabilidad_protegida += round($rentaimponible_mes_anterior * (0.9/100),0);
+								}
+		            			
 
 		            		}
 	                }
 
 
 
-	                /*
-            		if($idtrabajador == 20867){
+	              /*  
+            		if($idtrabajador == 21819){
             			echo '<pre>';
             			var_dump($tiene_licencia);
             			var_dump($sueldoimponible_ant);
             			var_dump($rentaimponible_mes_anterior);
             			var_dump($remuneracion);
             			var_dump($tipo_trabajador);
-            			var_dump($cot_expectativa_vida); exit;
+            			var_dump($cot_expectativa_vida);
+            			var_dump($cot_rentabilidad_protegida); exit;
             		}*/
 
 
